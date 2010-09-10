@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100901203319) do
+ActiveRecord::Schema.define(:version => 20100910182314) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -118,6 +118,17 @@ ActiveRecord::Schema.define(:version => 20100901203319) do
   end
 
   add_index "shifts", ["section_id"], :name => "index_shifts_on_section_id"
+
+  create_table "vacation_requests", :force => true do |t|
+    t.integer  "requester_id", :null => false
+    t.integer  "section_id",   :null => false
+    t.text     "dates",        :null => false
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "vacation_requests", ["requester_id"], :name => "index_vacation_requests_on_requester_id"
 
   create_table "weekly_schedules", :force => true do |t|
     t.integer  "section_id",   :null => false

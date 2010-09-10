@@ -17,6 +17,8 @@ RadiologyScheduler::Application.routes.draw do
     end
 
     resources :shifts
+
+    resources :vacation_requests
   end
 
   controller :schedules do

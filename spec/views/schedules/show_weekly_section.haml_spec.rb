@@ -39,9 +39,8 @@ describe "schedules/show_weekly_section.haml" do
   end
 
   it do
-    rendered.should have_selector("div.navcontainer ul.navlist.tableNavList") do |navlist|
-      navlist.should have_selector("li a", :content => "shifts on left")
-      navlist.should have_selector("li a", :content => "people on left")
+    rendered.should have_selector("table.schedule thead") do |table_head|
+      table_head.should have_selector("th a", :content => "people on left")
     end
   end
 end

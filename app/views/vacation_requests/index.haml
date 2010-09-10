@@ -1,0 +1,8 @@
+%h3 Vacation Requests
+
+%p= link_to "New Request", new_section_vacation_request_path(@section)
+
+%table
+  - @vacation_requests.each do |vacation_request|
+    %tr
+      %td= vacation_request.requester.short_name

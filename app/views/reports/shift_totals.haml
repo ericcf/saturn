@@ -21,7 +21,7 @@
 
 %p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date)
 
-%table
+%table.decimal_data
   %thead
     %tr{ :class => cycle("odd", "", :name => "row") }
       %th Shifts
@@ -40,7 +40,7 @@
 
 %br
 
-%table
+%table.decimal_data
   %thead
     %tr{ :class => cycle("odd", "", :name => "row") }
       %th Shift Categories

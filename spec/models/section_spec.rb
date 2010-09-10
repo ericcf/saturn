@@ -22,6 +22,8 @@ describe Section do
 
   it { should have_many(:shifts).dependent(:destroy) }
 
+  it { should have_many(:vacation_requests).dependent(:destroy) }
+
   # validations
 
   it { should validate_presence_of(:title) }

@@ -11,6 +11,7 @@ class Section < ActiveRecord::Base
   has_many :weekly_schedules, :dependent => :destroy
   has_many :shifts, :dependent => :destroy
   accepts_nested_attributes_for :shifts
+  has_many :vacation_requests, :dependent => :destroy
 
   validates :title, :presence => true, :uniqueness => true
 
