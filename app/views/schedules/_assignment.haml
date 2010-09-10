@@ -1,0 +1,32 @@
+- assignment_id = assignment_duration = person_id = public_note = private_note = position = nil
+- unless assignment.nil?
+  - assignment_id = assignment.id
+  - assignment_duration = assignment.duration
+  - person_id = assignment.person_id
+  - public_note = assignment.public_note
+  - private_note = assignment.private_note
+  - position = assignment.position
+%div.assignment{ :id => "assignment_#{assignment_id}" }><
+  %span.person_name><= defined?(people_names) ? people_names[person_id] : nil
+  %span.button><
+    %span.ui-state-default><
+      - duration_class = assignment_duration.nil? ? "" : "ui-icon ui-icon-clock"
+      %span.duration_icon{ :class => duration_class }>< &nbsp;
+    - notes_class = public_note.blank? ? "" : "public"
+    - notes_class += private_note.blank? ? "" : "private"
+    %span.notes_icon{ :class => notes_class }>< &nbsp;
+  = hidden_field_tag "assignments[][id]", assignment_id
+  = hidden_field_tag "assignments[][shift_id]", defined?(shift) ? shift.id : nil
+  = hidden_field_tag "assignments[][person_id]", person_id
+  = hidden_field_tag "assignments[][date]", defined?(date) ? date : nil
+  = hidden_field_tag "assignments[][position]", position
+  = hidden_field_tag "assignments[][_destroy]", false
+  %div.details><
+    %p= link_to "Delete", "#", :class => "destructive"
+    = label_tag "Public note"
+    = text_area_tag "assignments[][public_note]", public_note
+    = label_tag "Private note"
+    = text_area_tag "assignments[][private_note]", private_note
+    = label_tag "Modified duration"
+    - durations = ["Select...", 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+    = select_tag "assignments[][duration]", options_for_select(durations, assignment_duration)

@@ -1,0 +1,20 @@
+%h2 People
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Group
+      %th Sections
+      %th Abbrev. name
+      %th Initials
+      %th Actions
+  - @people.each do |person|
+    - if person.sections.size > 0
+      %tr{ :class => cycle("odd", "") }
+        %td= link_to person.full_name, schedule_person_path(person), :title => "View Schedule"
+        %td= person.groups.select{|g| Section::SCHEDULE_GROUPS.include?(g.title)}.map(&:title).join(", ")
+        %td= person.sections.map(&:title).join(", ")
+        %td= person.short_name
+        %td= person.initials
+        %td= link_to "Edit", edit_person_path(person)

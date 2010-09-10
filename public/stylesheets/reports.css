@@ -1,0 +1,27 @@
+table thead th {
+  padding-left: 2px;
+  padding-right: 2px; }
+table tbody th {
+  width: 150px; }
+table tr.odd td, table tr.odd th {
+  background-color: #eaf6fe; }
+  table tr.odd td.odd, table tr.odd th.odd {
+    background-color: #d9e5ec; }
+    table tr.odd td.odd.person_name, table tr.odd th.odd.person_name {
+      background-color: #ededed; }
+  table tr.odd td.person_name, table tr.odd th.person_name {
+    background-color: white; }
+  table tr.odd td.shift_label, table tr.odd th.shift_label {
+    background-color: #eaf6fe; }
+  table tr.odd td.placeholder, table tr.odd th.placeholder {
+    background-color: white; }
+table tr td, table tr th {
+  border-bottom: 1px solid #a0a0a0;
+  border-right: 1px solid #dedede;
+  background-color: white; }
+  table tr td.odd, table tr th.odd {
+    background-color: #ededed; }
+  table tr td.shift_label, table tr th.shift_label {
+    background-color: white; }
+table tr td.total {
+  font-weight: bold; }

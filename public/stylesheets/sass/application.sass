@@ -1,0 +1,148 @@
+// general
+
+*
+  margin: 0
+  padding: 0
+
+body, p, h1, h2, h3, h4, h5, h6, ul, li, form, input
+  font-size: 12px
+  line-height: 18px
+
+body, p, ul, li, form, input
+  font-family: Arial, Helvetica, sans-serif
+
+body, p, h1, h2, h3, h4, h5, h6, ul, li
+  color: #333
+  background: #FFF
+
+h1, h2, h3, h4, h5, h6
+  font-family: Georgia, Times, serif
+
+h2
+  font-size: 18px
+
+h3
+  font-size: 16px
+
+p, h2, h3, h4, h5, h6
+  margin-bottom: 18px
+
+input
+  height: 18px
+
+.button
+  height: 27px
+
+// layout
+
+#main
+  padding-left: 18px
+
+// links
+
+a, a:visited, a:active
+  color: #000099
+
+// lists
+ul
+  list-style: none
+
+// tables
+
+!oddRowBackgroundColor = #dedede
+!tableCellBorderColor = #ccc
+
+table
+  border-collapse: collapse
+  border-left: 1px solid
+  border-left-color = !tableCellBorderColor
+  border-top: 1px solid
+  border-top-color = !tableCellBorderColor
+  &.schedule
+    width: 900px
+
+th
+  text-align: left
+  font-size: 12px
+
+tr
+  height: 18px
+  &.odd
+    background-color = !oddRowBackgroundColor
+
+td, th
+  line-height: 16px
+  color: #000
+  border-bottom: 1px solid
+  border-bottom-color = !tableCellBorderColor
+  border-right: 1px solid
+  border-right-color = !tableCellBorderColor
+  padding: 0 2px
+  vertical-align: top
+
+td
+  font-size: 10px
+
+// navigation
+
+!navBorderColor = #778
+!navBackgroundColor = #dde
+!navLinkColor = #448
+!navVisitedLinkColor = #667
+!navHoverLinkColor = #000
+!navHoverBackgroundColor = #aae
+!navHoverBorderColor = #227
+!navActiveBackgroundColor = #fff
+!navActiveBorderBottomColor = #fff
+
+.navcontainer
+  margin-bottom: 9px
+
+.navlist
+  padding: 1px 0
+  margin-left: 0
+  border-bottom: 1px solid
+  border-bottom-color = !navBorderColor
+  li
+    list-style: none
+    margin: 0
+    display: inline
+    a
+      font-weight: bold
+      padding: 3px 0.5em
+      margin-left: 3px
+      border: 1px solid
+      border-color = !navBorderColor
+      border-bottom: none
+      background = !navBackgroundColor
+      text-decoration: none
+      &:link
+        color = !navLinkColor
+      &:visited
+        color = !navVisitedLinkColor
+      &:hover
+        color = !navHoverLinkColor
+        background = !navHoverBackgroundColor
+        border-color = !navHoverBorderColor
+      &.current
+        background = !navActiveBackgroundColor
+        border-bottom: 1px solid
+        border-bottom-color = !navActiveBorderBottomColor
+
+.tableNavList
+  border-bottom: none
+
+// misc
+
+.subheadline
+  height: 3em
+  *
+    float: left
+
+.inline_form
+  margin: 0 0.5em
+
+// jquery ui related
+
+.ui-datepicker-trigger
+  cursor: pointer

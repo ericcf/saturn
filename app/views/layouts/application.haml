@@ -1,0 +1,32 @@
+!!!
+%html
+  %head
+    %title
+      Schedules:
+      = controller.action_name
+
+    = stylesheet_link_tag "application"
+    = stylesheet_link_tag "print", :media => :print
+    = yield :stylesheets
+    = yield :javascripts
+
+  %body
+    %div.navcontainer
+      %ul.navlist
+        != nav_item "On Call", weekly_call_schedule_path
+        != nav_item "Duty Roster", daily_duty_schedule_path
+        != nav_item "Sections", sections_path
+        != nav_item "People", people_path
+    %div#main
+      - if @section && !@section.new_record?
+        %h2= @section.title
+        %div.navcontainer
+          %ul.navlist
+            != nav_item "View Schedule", weekly_section_schedule_path(@section)
+            != nav_item "Edit Schedule", edit_weekly_section_schedule_path(@section, :year => Date.today.year, :month => Date.today.month, :day => Date.today.day)
+            != nav_item "Members", section_path(@section)
+            != nav_item "Shifts", section_shifts_path(@section)
+            != nav_item "Shift Categories", section_shift_tags_path(@section)
+            != nav_item "Reports", section_shift_totals_path(@section)
+      = render "shared/flash_banner"
+      = yield :layout

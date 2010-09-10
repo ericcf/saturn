@@ -1,0 +1,79 @@
+label
+  display: block
+
+div.person, span.person_name
+  cursor: pointer
+
+.groups li a
+  font-size: 13px
+
+#assignment_template
+  display: none
+
+a.destructive
+  color: red !important
+
+table.schedule
+  border-collapse: collapse
+  .table_control
+    .button_wrapper
+      display: block
+      width: 16px
+      float: right
+      cursor: pointer
+  tbody td.date
+    width: 80px
+  .date_value
+    display: none
+  tbody
+    tr
+      background-color: #fff774
+    td
+      background-color: #fff
+      border-bottom: 1px solid #a0a0a0
+      border-right: 1px solid #dedede
+      padding: 0
+    td.shift_day
+      vertical-align: top
+      width: 110px
+      &.ui-state-active
+        background: transparent
+      &.modified
+        border-bottom: 1px solid #ff3300
+      &.selected
+        background: transparent
+      .assignment_button
+        cursor: pointer
+      .ui-icon-person
+        float: right
+        display: none
+      .assignment
+        width: 92px
+        position: relative
+        .details
+          display: none
+        .button
+          width: 30px
+          height: 16px
+          position: absolute
+          right: 0px
+          cursor: pointer
+          .ui-state-default
+            float: right
+            border: none
+          .notes_icon
+            display: none
+            float: right
+            width: 14px
+            height: 16px
+            background-image: url('/images/add-note.gif')
+            background-repeat: no-repeat
+            background-position: right center
+          .private
+            background-image: url('/images/pri-note.gif')
+          .public
+            background-image: url('/images/pub-note.gif')
+          .publicprivate
+            background-image: url('/images/pnp-note.gif')
+          .private, .public, .publicprivate
+            display: inline !important

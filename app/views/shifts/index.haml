@@ -1,0 +1,56 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-1.4.2'
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'sections/section_shifts'
+  = javascript_include_tag 'sections/shift'
+  = javascript_include_tag 'sections/shift_tags'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+  = stylesheet_link_tag 'shifts'
+
+%span.hidden#tags_search_url= search_section_shift_tags_path(@section)
+
+%h3 Manage Shifts
+
+%p= link_to "Add New Shift", new_section_shift_path(@section)
+
+= form_for @section do |section_form|
+  = section_form.submit "Save Changes", :class => "button"
+  = hidden_field_tag "redirect_path", section_shifts_path(@section)
+  %table#current_shifts
+    %thead
+      %tr
+        %th
+        %th Shift
+        %th Categories
+        %th Duration
+        %th Phone
+        %th Notes
+        %th{ :colspan => 2 } Retire?
+    %tbody
+      - @current_shifts.each do |shift|
+        %tr.shift{ :class => cycle("odd", "") }
+          = section_form.fields_for :shifts, shift do |shift_form|
+            %td.control
+              %label.handle &nbsp;
+            %td.title= shift_form.text_field :title
+            %td.tags
+              = shift_form.text_field "tags", :size => 40
+            - durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
+            %td.duration= shift_form.select :duration, durations
+            %td.phone= shift_form.text_field :phone, :size => 15
+            %td.description= shift_form.text_field :description
+            %td= shift_form.check_box :retire
+            %td.details.hidden= shift_form.hidden_field :position
+  = section_form.submit "Save Changes", :class => "button"
+
+  - if @retired_shifts.size > 0
+    %h3 Retired Shifts
+    %table#retired_shifts
+      %tbody
+        - @retired_shifts.each do |shift|
+          %tr
+            %td
+              %label.handle &nbsp;
+            %td= shift.title

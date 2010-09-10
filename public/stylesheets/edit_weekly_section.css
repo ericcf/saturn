@@ -1,0 +1,77 @@
+label {
+  display: block; }
+
+div.person, span.person_name {
+  cursor: pointer; }
+
+.groups li a {
+  font-size: 13px; }
+
+#assignment_template {
+  display: none; }
+
+a.destructive {
+  color: red !important; }
+
+table.schedule {
+  border-collapse: collapse; }
+  table.schedule .table_control .button_wrapper {
+    display: block;
+    width: 16px;
+    float: right;
+    cursor: pointer; }
+  table.schedule tbody td.date {
+    width: 80px; }
+  table.schedule .date_value {
+    display: none; }
+  table.schedule tbody tr {
+    background-color: #fff774; }
+  table.schedule tbody td {
+    background-color: white;
+    border-bottom: 1px solid #a0a0a0;
+    border-right: 1px solid #dedede;
+    padding: 0; }
+  table.schedule tbody td.shift_day {
+    vertical-align: top;
+    width: 110px; }
+    table.schedule tbody td.shift_day.ui-state-active {
+      background: transparent; }
+    table.schedule tbody td.shift_day.modified {
+      border-bottom: 1px solid #ff3300; }
+    table.schedule tbody td.shift_day.selected {
+      background: transparent; }
+    table.schedule tbody td.shift_day .assignment_button {
+      cursor: pointer; }
+    table.schedule tbody td.shift_day .ui-icon-person {
+      float: right;
+      display: none; }
+    table.schedule tbody td.shift_day .assignment {
+      width: 92px;
+      position: relative; }
+      table.schedule tbody td.shift_day .assignment .details {
+        display: none; }
+      table.schedule tbody td.shift_day .assignment .button {
+        width: 30px;
+        height: 16px;
+        position: absolute;
+        right: 0px;
+        cursor: pointer; }
+        table.schedule tbody td.shift_day .assignment .button .ui-state-default {
+          float: right;
+          border: none; }
+        table.schedule tbody td.shift_day .assignment .button .notes_icon {
+          display: none;
+          float: right;
+          width: 14px;
+          height: 16px;
+          background-image: url("/images/add-note.gif");
+          background-repeat: no-repeat;
+          background-position: right center; }
+        table.schedule tbody td.shift_day .assignment .button .private {
+          background-image: url("/images/pri-note.gif"); }
+        table.schedule tbody td.shift_day .assignment .button .public {
+          background-image: url("/images/pub-note.gif"); }
+        table.schedule tbody td.shift_day .assignment .button .publicprivate {
+          background-image: url("/images/pnp-note.gif"); }
+        table.schedule tbody td.shift_day .assignment .button .private, table.schedule tbody td.shift_day .assignment .button .public, table.schedule tbody td.shift_day .assignment .button .publicprivate {
+          display: inline !important; }

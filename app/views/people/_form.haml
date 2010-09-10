@@ -1,0 +1,7 @@
+= form_for @person do |person_form|
+  = person_form.fields_for :names_alias do |alias_form|
+    %div= alias_form.label :short_name
+    %div= alias_form.text_field :short_name
+    %div= alias_form.label :initials
+    %div= alias_form.text_field :initials
+  %div= person_form.submit "Save Changes"

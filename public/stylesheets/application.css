@@ -1,0 +1,120 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+body, p, h1, h2, h3, h4, h5, h6, ul, li, form, input {
+  font-size: 12px;
+  line-height: 18px; }
+
+body, p, ul, li, form, input {
+  font-family: Arial, Helvetica, sans-serif; }
+
+body, p, h1, h2, h3, h4, h5, h6, ul, li {
+  color: #333333;
+  background: white; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Georgia, Times, serif; }
+
+h2 {
+  font-size: 18px; }
+
+h3 {
+  font-size: 16px; }
+
+p, h2, h3, h4, h5, h6 {
+  margin-bottom: 18px; }
+
+input {
+  height: 18px; }
+
+.button {
+  height: 27px; }
+
+#main {
+  padding-left: 18px; }
+
+a, a:visited, a:active {
+  color: #000099; }
+
+ul {
+  list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-left: 1px solid;
+  border-left-color: #cccccc;
+  border-top: 1px solid;
+  border-top-color: #cccccc; }
+  table.schedule {
+    width: 900px; }
+
+th {
+  text-align: left;
+  font-size: 12px; }
+
+tr {
+  height: 18px; }
+  tr.odd {
+    background-color: #dedede; }
+
+td, th {
+  line-height: 16px;
+  color: black;
+  border-bottom: 1px solid;
+  border-bottom-color: #cccccc;
+  border-right: 1px solid;
+  border-right-color: #cccccc;
+  padding: 0 2px;
+  vertical-align: top; }
+
+td {
+  font-size: 10px; }
+
+.navcontainer {
+  margin-bottom: 9px; }
+
+.navlist {
+  padding: 1px 0;
+  margin-left: 0;
+  border-bottom: 1px solid;
+  border-bottom-color: #777788; }
+  .navlist li {
+    list-style: none;
+    margin: 0;
+    display: inline; }
+    .navlist li a {
+      font-weight: bold;
+      padding: 3px 0.5em;
+      margin-left: 3px;
+      border: 1px solid;
+      border-color: #777788;
+      border-bottom: none;
+      background: #ddddee;
+      text-decoration: none; }
+      .navlist li a:link {
+        color: #444488; }
+      .navlist li a:visited {
+        color: #666677; }
+      .navlist li a:hover {
+        color: black;
+        background: #aaaaee;
+        border-color: #222277; }
+      .navlist li a.current {
+        background: white;
+        border-bottom: 1px solid;
+        border-bottom-color: white; }
+
+.tableNavList {
+  border-bottom: none; }
+
+.subheadline {
+  height: 3em; }
+  .subheadline * {
+    float: left; }
+
+.inline_form {
+  margin: 0 0.5em; }
+
+.ui-datepicker-trigger {
+  cursor: pointer; }

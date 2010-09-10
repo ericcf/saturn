@@ -1,0 +1,58 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-1.4.2'
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+  = stylesheet_link_tag 'reports'
+
+%div.subheadline
+  = form_tag section_shift_totals_path(@section), :method => :get do
+    %h3
+      %span#start_date_text= @start_date.to_s(:long)
+    %div.inline_form
+      = text_field_tag "start_date", @start_date.to_s
+    %h3
+      %span to&nbsp;
+      %span#end_date_text= @end_date.to_s(:long)
+    %div.inline_form
+      = text_field_tag "end_date", @end_date.to_s
+
+%p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date)
+
+%table
+  %thead
+    %tr{ :class => cycle("odd", "", :name => "row") }
+      %th Shifts
+      - @report.each_group do |group_name, people|
+        %th= group_name + ":"
+        - people.each do |person|
+          %th.person_name{ :class => cycle("odd", "", :name => "header"), :title => person.full_name }= link_to person.initials, section_person_shift_totals_path(@section, person, :start_date => @start_date, :end_date => @end_date)
+  %tbody
+    - @report.each_shift do |shift|
+      %tr{ :class => cycle("odd", "", :name => "row") }
+        %th.shift_label.odd= shift.title
+        - @report.each_group do |group_name, people|
+          %td.total= @report.shift_group_total(shift, group_name)
+          - people.each do |person|
+            %td{ :class => cycle("odd", "", :name => "col") }><= @report.shift_person_total(shift, person)
+
+%br
+
+%table
+  %thead
+    %tr{ :class => cycle("odd", "", :name => "row") }
+      %th Shift Categories
+      - @report.each_group do |group_name, people|
+        %th= group_name + ":"
+        - people.each do |person|
+          %th.person_name{ :class => cycle("odd", "", :name => "header"), :title => person.full_name }= person.initials
+  %tbody
+    - @report.each_shift_tag do |shift_tag|
+      %tr{ :class => cycle("odd", "", :name => "row") }
+        %th{ :class => cycle("odd", "", :name => "col") }= shift_tag.title
+        - @report.each_group do |group_name, people|
+          %td.total= @report.shift_tag_group_total(shift_tag, group_name)
+          - people.each do |person|
+            %td{ :class => cycle("odd", "", :name => "col") }><= @report.shift_tag_person_total(shift_tag, person)

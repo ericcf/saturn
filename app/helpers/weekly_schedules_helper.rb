@@ -1,0 +1,33 @@
+module WeeklySchedulesHelper
+
+  def short_date(date)
+    "#{date.strftime("%a")} #{date.month}/#{date.day}"
+  end
+
+  def format_header(item, *options)
+    show_markup = options.include?(:no_markup) ? false : true
+    case item.class.to_s
+    when "Date"
+      short_date(item)
+    when "Shift"
+      if show_markup
+        color = item.shift_tags.map(&:display_color).compact.last
+        color = "#" + color if color
+        [
+          (image_tag('phone.jpg', :title => item.phone) if item.phone),
+         "<span style=\"color:#{color};\">#{item.title}</span>"
+        ].compact.join("")
+      else
+        item.title
+      end
+    when "Person"
+      if show_markup
+        link_to item.short_name, schedule_person_path(item)
+      else
+        item.short_name
+      end
+    else
+      item.to_s if item.respond_to?(:to_s)
+    end
+  end
+end

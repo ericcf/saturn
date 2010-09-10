@@ -1,0 +1,29 @@
+%h2 On Duty
+
+%h3= @date.to_s(:long)
+
+%div.notes
+  - @notes.each do |note|
+    = "#{note[:shift]} on #{note[:day]}, #{note[:initials]}: #{note[:text]}"
+    %br
+
+- mapped_assignments = @clinical_assignments.group_by(&:person_id)
+- @sections.each do |section|
+  %div.section
+    %h4= section.title
+
+    %table
+      %tr
+        %th Person
+        %th Assignments
+        %th Alpha Pager
+      - section.people_with_associations(:phones).each do |person|
+        %tr
+          %td= person.full_name(:family_first)
+          %td
+            - person_assignments = mapped_assignments[person.id]
+            - if person_assignments
+              - person_assignments.each do |assignment|
+                = assignment.shift.title
+                %br
+          %td= person.alpha_pager

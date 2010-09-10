@@ -1,0 +1,4 @@
+= form_for [@section, @shift_tag] do |form|
+  = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
+  %div= form.text_field :title
+  %div= form.submit "Save"

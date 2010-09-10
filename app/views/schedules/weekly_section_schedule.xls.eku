@@ -1,0 +1,34 @@
+# initialize
+sheet1 = xls.create_worksheet
+
+# formats
+bold = Spreadsheet::Format.new(:weight => :bold)
+sheet1.column(0).default_format = bold
+
+sheet1[0, 0] = @section.title
+sheet1[1, 0] = "Week of #{@dates.first.to_s(:long)}"
+
+row = 3
+sheet1.row(3).default_format = bold
+col = 0
+#sheet1[row, col] = "Shifts"
+row += 1
+col += 1
+sheet1.row(row).default_format = bold
+@schedule_view.each_x_axis_item do |x_item|
+  sheet1[row, col] = format_header(x_item, :no_markup)
+  col += 1
+end
+
+row += 1
+col = 0
+@schedule_view.each_y_axis_item do |y_item|
+  sheet1[row, col] = format_header(y_item, :no_markup)
+  col += 1
+  @schedule_view.each_x_axis_item do |x_item|
+    sheet1[row, col]  = @schedule_view.format(@schedule_view.value(x_item, y_item), "\n")
+    col += 1
+  end
+  row += 1
+  col = 0
+end

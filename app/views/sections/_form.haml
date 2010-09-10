@@ -1,0 +1,10 @@
+= form_for @section do |form|
+  = form.label :title
+  %br
+  = form.text_field :title
+  %br
+  = form.label :description
+  %br
+  = form.text_area :description
+  %br
+  = form.submit "Submit"

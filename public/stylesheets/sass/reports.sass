@@ -1,0 +1,32 @@
+table
+  thead
+    th
+      padding-left: 2px
+      padding-right: 2px
+  tbody
+    th
+      width: 150px
+  tr
+    &.odd
+      td, th
+        background-color: #eaf6fe
+        &.odd
+          background-color: #d9e5ec
+          &.person_name
+            background-color: #ededed
+        &.person_name
+          background-color: #fff
+        &.shift_label
+          background-color: #eaf6fe
+        &.placeholder
+          background-color: #fff
+    td, th
+      border-bottom: 1px solid #a0a0a0
+      border-right: 1px solid #dedede
+      background-color: #fff
+      &.odd
+        background-color: #ededed
+      &.shift_label
+        background-color: #fff
+    td.total
+      font-weight: bold

@@ -1,0 +1,14 @@
+%h3 Add new Members
+
+= form_for @section do |section_form|
+  = section_form.submit "Save", :class => "button"
+  or
+  = link_to "Cancel", @section
+  %ul
+    - @people.each do |person|
+      %li
+        = check_box_tag "section[memberships_attributes][][person_id]", person.id
+        = label_tag :person_id, person.full_name
+  = section_form.submit "Save", :class => "button"
+  or
+  = link_to "Cancel", @section

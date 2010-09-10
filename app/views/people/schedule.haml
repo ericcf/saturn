@@ -1,0 +1,32 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-1.4.2'
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+
+%h2= @person.full_name
+
+%div.subheadline
+  %h3= "Week of #{@dates.first.to_s(:long)}"
+  %div.inline_form
+    = form_tag schedule_person_path(@person), :method => :get do
+      = text_field_tag "date", @dates.first.to_s
+
+%table
+  %thead
+    %tr
+      %th
+      - @dates.each do |date|
+        %th= short_date(date)
+    - @person.sections.each do |section|
+      %tr
+        %th= link_to section.title, weekly_section_schedule_path(section)
+        - section_assignments = @assignments_by_section[section] || []
+        - assignments_by_date = section_assignments.group_by(&:date)
+        - @dates.each do |date|
+          - if assignments_by_date[date]
+            %td!= assignments_by_date[date].map{|a|a.shift.title}.join("<br/>")
+          - else
+            %td &nbsp;

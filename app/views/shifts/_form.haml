@@ -1,0 +1,4 @@
+= form_for [@section, @shift] do |shift_form|
+  %div= shift_form.label :title
+  %div= shift_form.text_field :title
+  = shift_form.submit "Save"

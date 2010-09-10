@@ -1,0 +1,22 @@
+%h2 On Call
+
+%h3= "Week of #{@start_date.to_s(:long)}"
+
+%table
+  %tr
+    %th Shifts
+    - @dates.each do |date|
+      %th= short_date(date)
+  - mapped_assignments = @call_assignments.group_by {|a| [a.shift_id, a.date]}
+  - @call_shifts.each do |shift|
+    %tr
+      %td= shift.title
+      - @dates.each do |date|
+        - assignments_by_shift_and_date = mapped_assignments[[shift.id, date]]
+        - if assignments_by_shift_and_date
+          %td
+            - assignments_by_shift_and_date.each do |assignment|
+              = assignment.person.short_name
+              %br
+        - else
+          %td &nbsp;

@@ -1,0 +1,36 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-1.4.2'
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+
+%div.subheadline
+  %h3= "Week of #{@dates.first.to_s(:long)}"
+  %div.inline_form
+    = form_tag weekly_section_schedule_path(@section), :method => :get do
+      = text_field_tag "date", @dates.first.to_s
+
+%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => @dates.first.to_s, :view_mode => @view_mode)
+
+%ul.notes
+  - @notes.each do |note|
+    %li= "#{note[:shift]} on #{note[:day]}, #{note[:initials]}: #{note[:text]}"
+
+%table.schedule
+  %thead
+    %tr
+      %th
+        - if @view_mode == "2"
+          = link_to "shifts on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s)
+        - else
+          = link_to "people on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s, :view_mode => 2)
+      - @schedule_view.each_x_axis_item do |x_item|
+        %th!= format_header(x_item)
+  %tbody
+    - @schedule_view.each_y_axis_item do |y_item|
+      %tr{ :class => cycle("odd", "") }
+        %th!= format_header(y_item)
+        - @schedule_view.each_x_axis_item do |x_item|
+          %td!= @schedule_view.format(@schedule_view.value(x_item, y_item), "<br/>")
