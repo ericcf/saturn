@@ -152,12 +152,27 @@ describe PeopleController do
       before(:each) do
         Person.should_receive(:find).with(mock_person.id).
           and_return(mock_person)
-        get :schedule, :id => mock_person.id
       end
 
-      it { assigns(:person).should == mock_person }
+      context "any format" do
 
-      it { assigns(:dates).should include(Date.today) }
+        before(:each) do
+          get :schedule, :id => mock_person.id
+        end
+
+        it { assigns(:person).should == mock_person }
+
+        it { assigns(:dates).should include(Date.today) }
+      end
+
+      context "the format is ics" do
+
+        before(:each) do
+          get :schedule, :id => mock_person.id, :format => "ics"
+        end
+
+        it { response.content_type.should == "text/calendar" }
+      end
     end
 
     context "the requested person is not found" do

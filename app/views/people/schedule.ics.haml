@@ -1,0 +1,7 @@
+- require 'vpim/icalendar'
+- calendar = Vpim::Icalendar.create2
+- @assignments.each do |assignment|
+  - calendar.add_event do |event|
+    - assignment.to_ics_event event
+
+= calendar.encode

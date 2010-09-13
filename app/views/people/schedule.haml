@@ -14,6 +14,9 @@
     = form_tag schedule_person_path(@person), :method => :get do
       = text_field_tag "date", @dates.first.to_s
 
+%p.content_actions
+  = link_to "Download as iCalendar", schedule_person_path(@person, :format => :ics, :date => @dates.first.to_s)
+
 %table
   %thead
     %tr

@@ -33,6 +33,12 @@ class Assignment < ActiveRecord::Base
     duration || shift.duration
   end
 
+  def to_ics_event(event)
+    event.dtstart date
+    event.dtend date
+    event.summary shift.title
+  end
+
   private
 
   def filter_attributes

@@ -43,8 +43,13 @@ class PeopleController < ApplicationController
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
     @person = Person.find(params[:id])
-    assignments = Assignment.find_all_by_person_id_and_date(@person.id, @dates, :include => [:weekly_schedule, :shift])
-    @assignments_by_section = assignments.group_by{|a|a.weekly_schedule.section}
+    @assignments = Assignment.find_all_by_person_id_and_date(@person.id, @dates, :include => [:weekly_schedule, :shift])
+    @assignments_by_section = @assignments.group_by{|a|a.weekly_schedule.section}
+
+    respond_to do |format|
+      format.html
+      format.ics { render :ics => "schedule.ics", :layout => false }
+    end
 
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested person not found"
