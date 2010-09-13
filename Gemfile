@@ -6,6 +6,7 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'ruby-mysql'
 gem 'haml'
 gem 'mongrel'
+gem 'devise'
 # Excel import/export
 gem 'ekuseru'
 # iCalendar import/export

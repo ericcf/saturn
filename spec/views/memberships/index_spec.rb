@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "sections/show" do
+describe "memberships/index" do
 
   def mock_section(stubs={})
     @mock_section ||= mock_model(Section, stubs)
@@ -9,7 +9,7 @@ describe "sections/show" do
   before(:each) do
     @mock_section = assign(:section, mock_section)
     @mock_person = stub_model(Person, :full_name => "B. Favre")
-    assign(:grouped_section_members, { "Group 1" => [@mock_person] })
+    assign(:members_by_group, { "Group 1" => [@mock_person] })
   end
 
   it "renders a form for updating section members" do

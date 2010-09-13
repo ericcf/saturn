@@ -1,10 +1,11 @@
 %p= link_to "Add Members", new_section_membership_path(@section)
 
-= form_for @section do |section_form|
-  = section_form.submit "Save Changes", :class => "button"
-  - if @grouped_section_members
+- if @members_by_group
+  = form_for @section do |section_form|
+    = hidden_field_tag "redirect_path", section_memberships_path(@section)
+    = section_form.submit "Save Changes", :class => "button"
     %table
-      - @grouped_section_members.each do |group_name, people|
+      - @members_by_group.each do |group_name, people|
         - if people.size > 0
           %tr
             %th= group_name
@@ -14,4 +15,4 @@
               = section_form.fields_for :memberships, person.section_memberships.where(:section_id => @section.id).first do |membership_form|
                 %td= person.full_name
                 %td= membership_form.check_box :_destroy
-  = section_form.submit "Save Changes", :class => "button"
+    = section_form.submit "Save Changes", :class => "button"

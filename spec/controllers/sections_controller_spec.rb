@@ -16,42 +16,11 @@ describe SectionsController do
     it { assigns(:sections).should eq([mock_section]) }
   end
 
-  describe "GET show" do
-
-    context "the requested section is found" do
-
-      before(:each) do
-        Section.should_receive(:find).with(mock_section.id).
-          and_return(mock_section)
-        mock_people = mock('people')
-        @members_by_group = { "Faculty" => mock_people }
-        mock_section.should_receive(:members_by_group).
-          and_return(@members_by_group)
-        get :show, :id => mock_section.id
-      end
-
-      it { assigns(:section).should eq(mock_section) }
-
-      it { assigns(:grouped_section_members).should eq(@members_by_group) }
-    end
-
-    context "the requested section is not found" do
-
-      before(:each) do
-        Section.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        get :show, :id => 1
-      end
-
-      it { flash[:error].should == "Error: requested section not found" }
-
-      it { should redirect_to(sections_path) }
-    end
-  end
-
   describe "GET new" do
 
     before(:each) do
       Section.should_receive(:new).and_return(mock_section)
+      controller.should_receive(:authenticate_user!)
       get :new
     end
 
@@ -59,6 +28,10 @@ describe SectionsController do
   end
 
   describe "POST create" do
+    
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
 
     context "always" do
 
@@ -80,7 +53,7 @@ describe SectionsController do
         post :create
       end
 
-      it { should render_template(:show) }
+      it { should redirect_to(section_memberships_path(mock_section)) }
     end
 
     context "with invalid parameters" do
@@ -96,6 +69,10 @@ describe SectionsController do
   end
 
   describe "GET edit" do
+
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
 
     context "the requested section is found" do
 
@@ -125,6 +102,10 @@ describe SectionsController do
 
   describe "PUT update" do
 
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
+
     context "the requested section is found" do
 
       context "always" do
@@ -135,8 +116,7 @@ describe SectionsController do
           Section.should_receive(:find).
             with(mock_section.id).
             and_return(mock_section)
-          put :update, :id => mock_section.id,
-            :section => { :these => :params }
+          put :update, :id => mock_section.id, :section => { :these => :params }
         end
 
         it { assigns(:section).should eq(mock_section) }
@@ -196,6 +176,10 @@ describe SectionsController do
   end
 
   describe "DELETE destroy" do
+
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
 
     context "the requested section is found" do
 

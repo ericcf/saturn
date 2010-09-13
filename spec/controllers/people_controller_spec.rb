@@ -44,6 +44,10 @@ describe PeopleController do
 
   describe "GET 'edit'" do
 
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
+
     context "the requested person is found" do
 
       before(:each) do
@@ -93,6 +97,10 @@ describe PeopleController do
   end
 
   describe "PUT 'update'" do
+
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
 
     context "the requested person is found" do
 

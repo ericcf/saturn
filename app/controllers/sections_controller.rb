@@ -1,16 +1,9 @@
 class SectionsController < ApplicationController
 
+  before_filter :authenticate_user!, :except => :index
+
   def index
     @sections = Section.all
-  end
-
-  def show
-    @section = Section.find(params[:id])
-    @grouped_section_members = @section.members_by_group
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested section not found"
-    redirect_to sections_path
   end
 
   def new
@@ -21,7 +14,7 @@ class SectionsController < ApplicationController
     @section = Section.new(params[:section])
 
     if @section.save
-      render :show
+      redirect_to section_memberships_path(@section)
     else
       render :new
     end

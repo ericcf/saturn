@@ -32,9 +32,13 @@ GEM
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.3.2)
+    bcrypt-ruby (2.1.2)
     builder (2.1.2)
     columnize (0.3.1)
     daemons (1.0.10)
+    devise (1.1.2)
+      bcrypt-ruby (~> 2.1.2)
+      warden (~> 0.10.7)
     diff-lcs (1.1.2)
     ekuseru (0.3.8)
       spreadsheet (>= 0.6)
@@ -117,6 +121,8 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
     vpim (0.695)
+    warden (0.10.7)
+      rack (>= 1.0.0)
     webrat (0.7.1)
       nokogiri (>= 1.2.0)
       rack (>= 1.0)
@@ -127,6 +133,7 @@ PLATFORMS
 
 DEPENDENCIES
   autotest
+  devise
   ekuseru
   factory_girl_rails
   haml

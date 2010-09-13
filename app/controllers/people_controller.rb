@@ -4,6 +4,8 @@ class PeopleController < ApplicationController
 
   include DateHelpers
 
+  before_filter :authenticate_user!, :only => [:edit, :update]
+
   def index
     @people = Person.
       all(:include => [:names_alias, :sections, :groups])
@@ -48,7 +50,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.ics { render :ics => "schedule.ics", :layout => false }
+      format.ics { render :ics => "personal_schedule.ics", :layout => false }
     end
 
   rescue ActiveRecord::RecordNotFound

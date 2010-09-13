@@ -215,6 +215,7 @@ describe SchedulesController do
         with(mock_section(:shifts => @mock_section_shifts).id).
         and_return(mock_section)
       WeeklySchedule.stub!(:find).and_return(mock_schedule.as_null_object)
+      controller.should_receive(:authenticate_user!)
     end
 
     it "assigns Monday before the requested date to @week_start_date" do
@@ -293,6 +294,7 @@ describe SchedulesController do
 
     before(:each) do
       Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      controller.should_receive(:authenticate_user!)
     end
 
     context "with valid params" do
@@ -340,6 +342,10 @@ describe SchedulesController do
   end
 
   describe "PUT update_weekly_section" do
+    
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+    end
 
     context "with valid params" do
 

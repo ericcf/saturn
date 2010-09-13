@@ -1,4 +1,7 @@
 RadiologyScheduler::Application.routes.draw do
+  devise_for :users
+  devise_for :admins
+
   get "shift_tags/search"
 
   resources :people, :except => [:new, :create, :destroy] do
@@ -7,8 +10,8 @@ RadiologyScheduler::Application.routes.draw do
     end
   end
 
-  resources :sections do
-    resources :memberships, :only => [:new, :create]
+  resources :sections, :except => :show do
+    resources :memberships, :only => [:index, :new]
 
     resources :shift_tags do
       collection do
@@ -56,4 +59,6 @@ RadiologyScheduler::Application.routes.draw do
       end
     end
   end
+
+  root :to => "sections#index"
 end

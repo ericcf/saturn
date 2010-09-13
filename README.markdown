@@ -2,6 +2,9 @@
 
 A Rails 3 application for managing physicians' rotation schedules.
 
+## Installation
+1. set up your database.yml file and database(s) as necessary
+
 ## Testing
 Run specs with:
     rake spec
@@ -14,10 +17,11 @@ Then open up localhost:8888 in a browser.
 * Supports multiple sections
 * Supports multiple types of users (currently Faculty, Fellows, Residents)
 * Provides drag-n-drop shift assignments
-* Exports to Excel
+* Exports section reports to Excel
+* Exports individual schedules to iCalendar
 * Allows for grouping shifts into "categories" (e.g. AM, PM, Clinical)
 
-##Todo
+## Todo
 * Add permissions management
 * Sync with external calendars
 * Rule-based automated shift assignment
@@ -26,4 +30,4 @@ Then open up localhost:8888 in a browser.
 * Resident rotation scheduling
 * E-mail notification
 
-###### Copyright (c) 2010 Eric Carty-Fickes, released under MIT licence
+#### Copyright (c) 2010 Eric Carty-Fickes, released under MIT licence

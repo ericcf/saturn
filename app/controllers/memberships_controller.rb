@@ -1,6 +1,11 @@
 class MembershipsController < ApplicationController
 
+  before_filter :authenticate_user!
   before_filter :find_section
+
+  def index
+    @members_by_group = @section.members_by_group
+  end
 
   def new
     schedule_groups = Group.find_all_by_title(Section::SCHEDULE_GROUPS)
@@ -9,16 +14,6 @@ class MembershipsController < ApplicationController
         schedule_groups.any? { |g| p.member_of_group? g }
     end
     @membership = SectionMembership.new(:section_id => @section.id)
-  end
-
-  def create
-    @membership = SectionMembership.new(params[:section_membership])
-
-    if @section.memberships << @membership
-      return(redirect_to section_path(@section))
-    end
-    flash[:error] = @membership.errors.full_messages.join(", ")
-    render :new
   end
 
   private

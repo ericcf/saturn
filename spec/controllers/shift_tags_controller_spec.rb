@@ -11,6 +11,7 @@ describe ShiftTagsController do
     @mock_section = mock_model(Section, :shift_tags => @section_shift_tags)
     Section.stub!(:find).with(@mock_section.id).
       and_return(@mock_section)
+    controller.should_receive(:authenticate_user!)
   end
 
   describe "GET index" do

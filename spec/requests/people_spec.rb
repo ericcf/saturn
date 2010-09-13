@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-include  Webrat::Matchers
-
 describe "people" do
+
+  include AuthenticationHelpers
 
   def person_record(attributes={})
     @person_record ||= Factory(:person, attributes)
@@ -67,6 +67,10 @@ describe "people" do
 
   describe "edit" do
 
+    before(:each) do
+      sign_in_user
+    end
+
     context "an existing person" do
 
       it "renders a form for updating the person" do
@@ -94,6 +98,10 @@ describe "people" do
   end
 
   describe "update" do
+
+    before(:each) do
+      sign_in_user
+    end
 
     context "an existing person" do
 

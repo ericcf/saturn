@@ -17,6 +17,13 @@
         != nav_item "Duty Roster", daily_duty_schedule_path
         != nav_item "Sections", sections_path
         != nav_item "People", people_path
+    %div#personal
+      - if user_signed_in?
+        = current_user.email
+        |
+        = link_to "Sign out", destroy_user_session_path
+      - else
+        = link_to "Sign in", new_user_session_path
     %div#main
       - if @section && !@section.new_record?
         %h2= @section.title
@@ -25,7 +32,7 @@
             != nav_item "View Schedule", weekly_section_schedule_path(@section)
             != nav_item "Vacation Requests", section_vacation_requests_path(@section)
             != nav_item "Edit Schedule", edit_weekly_section_schedule_path(@section, :year => Date.today.year, :month => Date.today.month, :day => Date.today.day)
-            != nav_item "Members", section_path(@section)
+            != nav_item "Members", section_memberships_path(@section)
             != nav_item "Shifts", section_shifts_path(@section)
             != nav_item "Shift Categories", section_shift_tags_path(@section)
             != nav_item "Reports", section_shift_totals_path(@section)

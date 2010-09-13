@@ -4,6 +4,9 @@ class SchedulesController < ApplicationController
 
   include DateHelpers
 
+  before_filter :authenticate_user!, :only => [:edit_weekly_section,
+    :create_weekly_section, :update_weekly_section]
+
   def weekly_call
     @start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(@start_date)
