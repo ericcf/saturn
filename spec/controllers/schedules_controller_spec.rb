@@ -216,6 +216,7 @@ describe SchedulesController do
         and_return(mock_section)
       WeeklySchedule.stub!(:find).and_return(mock_schedule.as_null_object)
       controller.should_receive(:authenticate_user!)
+      controller.stub!(:authorize!)
     end
 
     it "assigns Monday before the requested date to @week_start_date" do
@@ -254,6 +255,7 @@ describe SchedulesController do
         WeeklySchedule.stub!(:find_by_section_id_and_date).
           with(mock_section.id, @monday).
           and_return(mock_schedule)
+        controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
         assigns[:weekly_schedule].should == mock_schedule
@@ -265,6 +267,7 @@ describe SchedulesController do
       it "assigns a new schedule to @weekly_schedule" do
         WeeklySchedule.stub!(:find_by_section_id_and_date)
         WeeklySchedule.should_receive(:new).and_return(mock_schedule)
+        controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
         assigns[:weekly_schedule].should == mock_schedule
@@ -295,6 +298,7 @@ describe SchedulesController do
     before(:each) do
       Section.stub!(:find).with(mock_section.id).and_return(mock_section)
       controller.should_receive(:authenticate_user!)
+      controller.stub!(:authorize!)
     end
 
     context "with valid params" do
@@ -303,6 +307,7 @@ describe SchedulesController do
         WeeklySchedule.should_receive(:new).
           with({'section_id' => mock_section.id, 'these' => 'params', 'assignments_attributes' => {}}).
           and_return(mock_schedule(:save => true, :date => Date.today))
+        controller.should_receive(:authorize!).with(:manage, mock_schedule)
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:these => 'params'}
         assigns[:weekly_schedule].should ==  mock_schedule
@@ -326,8 +331,7 @@ describe SchedulesController do
       before(:each) do
         mock_schedule(:save => false,
           :errors => mock("ActiveModel::Errors", :full_messages=>[]))
-        WeeklySchedule.stub!(:new).
-          and_return(mock_schedule.as_null_object)
+        WeeklySchedule.stub!(:new).and_return(mock_schedule.as_null_object)
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:date => Date.today.to_s}
       end
@@ -345,6 +349,7 @@ describe SchedulesController do
     
     before(:each) do
       controller.should_receive(:authenticate_user!)
+      controller.stub!(:authorize!)
     end
 
     context "with valid params" do
@@ -354,6 +359,7 @@ describe SchedulesController do
         mock_schedule(:update_attributes => true, :date => Date.today)
         WeeklySchedule.stub!(:find).with(mock_schedule.id).
           and_return(mock_schedule.as_null_object)
+        controller.should_receive(:authorize!).with(:update, mock_schedule)
       end
 
       it "assigns the requested schedule section to @section" do

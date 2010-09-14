@@ -17,6 +17,7 @@ describe MembershipsController do
     before(:each) do
       @mock_members_by_group = mock("members by group")
       @mock_section.stub!(:members_by_group).and_return(@mock_members_by_group)
+      controller.should_receive(:authorize!).with(:manage, SectionMembership)
       get :index, :section_id => @mock_section.id
     end
 
@@ -26,10 +27,13 @@ describe MembershipsController do
   describe "GET new" do
 
     before(:each) do
-      SectionMembership.should_receive(:new).and_return(mock_membership)
+      Group.stub!(:find_all_by_title).and_return([mock_model(Group)])
+      @mock_person = mock_model(Person, :section_ids => [], :member_of_group? => true)
+      Person.stub_chain(:current, :includes).and_return([@mock_person])
+      controller.should_receive(:authorize!).with(:manage, SectionMembership)
       get :new, :section_id => @mock_section.id
     end
 
-    it { assigns(:membership).should eq(mock_membership) }
+    it { assigns(:people).should eq([@mock_person]) }
   end
 end

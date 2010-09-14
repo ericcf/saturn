@@ -7,6 +7,7 @@ gem 'ruby-mysql'
 gem 'haml'
 gem 'mongrel'
 gem 'devise'
+gem 'cancan'
 # Excel import/export
 gem 'ekuseru'
 # iCalendar import/export

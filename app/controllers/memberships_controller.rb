@@ -5,6 +5,7 @@ class MembershipsController < ApplicationController
 
   def index
     @members_by_group = @section.members_by_group
+    authorize! :manage, SectionMembership
   end
 
   def new
@@ -13,7 +14,7 @@ class MembershipsController < ApplicationController
       !p.section_ids.include?(@section.id) &&
         schedule_groups.any? { |g| p.member_of_group? g }
     end
-    @membership = SectionMembership.new(:section_id => @section.id)
+    authorize! :manage, SectionMembership
   end
 
   private

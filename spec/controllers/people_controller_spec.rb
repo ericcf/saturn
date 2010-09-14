@@ -53,6 +53,7 @@ describe PeopleController do
       before(:each) do
         Person.should_receive(:find).with(mock_person.id).
           and_return(mock_person)
+        controller.should_receive(:authorize!).with(:update, mock_person)
       end
 
       context "always" do
@@ -111,6 +112,7 @@ describe PeopleController do
             with("these" => :params)
           Person.should_receive(:find).with(mock_person.id).
             and_return(mock_person)
+          controller.stub!(:authorize!)
           put :update, :id => mock_person.id, :person => { :these => :params }
         end
 
@@ -122,6 +124,7 @@ describe PeopleController do
         before(:each) do
           Person.stub!(:find).
             and_return(mock_person(:update_attributes => true))
+          controller.should_receive(:authorize!).with(:update, mock_person)
           put :update, :id => mock_person.id
         end
 
@@ -133,6 +136,7 @@ describe PeopleController do
         before(:each) do
           Person.stub!(:find).
             and_return(mock_person(:update_attributes => false))
+          controller.should_receive(:authorize!).with(:update, mock_person)
           put :update, :id => mock_person.id
         end
 

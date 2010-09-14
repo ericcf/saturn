@@ -2,7 +2,7 @@ RadiologyScheduler::Application.routes.draw do
   devise_for :users
   devise_for :admins
 
-  get "shift_tags/search"
+  #get "shift_tags/search"
 
   resources :people, :except => [:new, :create, :destroy] do
     member do
@@ -13,13 +13,13 @@ RadiologyScheduler::Application.routes.draw do
   resources :sections, :except => :show do
     resources :memberships, :only => [:index, :new]
 
-    resources :shift_tags do
+    resources :shift_tags, :only => [:index, :new, :create] do
       collection do
         get "search"
       end
     end
 
-    resources :shifts
+    resources :shifts, :except => [:show, :edit, :update]
 
     resources :vacation_requests
   end

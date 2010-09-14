@@ -11,9 +11,9 @@ describe ShiftsController do
     @section_shifts = stub("shifts", :active_as_of => shifts_subset,
       :retired_as_of => shifts_subset)
     @mock_section = mock_model(Section, :shifts => @section_shifts)
-    Section.stub!(:find).with(@mock_section.id).
-      and_return(@mock_section)
+    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
     controller.should_receive(:authenticate_user!)
+    controller.should_receive(:authorize!).with(:manage, @mock_section)
   end
 
   describe "GET index" do
@@ -48,38 +48,6 @@ describe ShiftsController do
       end
       
       it { assigns(:retired_shifts).should eq([mock_shift]) }
-    end
-  end
-
-  describe "GET show" do
-
-    before(:each) do
-      @mock_shifts = mock("shifts")
-      @mock_section.stub!(:shifts).and_return(@mock_shifts)
-    end
-
-    context "the requested shift is found" do
-
-      before(:each) do
-        @mock_shifts.should_receive(:find).with(mock_shift.id).
-          and_return(mock_shift)
-        get :show, :section_id => @mock_section.id,
-          :id => mock_shift.id
-      end
-
-      it { assigns(:shift).should eq(mock_shift) }
-    end
-
-    context "the requested shift is not found" do
-
-      before(:each) do
-        @mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        get :show, :section_id => @mock_section.id, :id => 1
-      end
-
-      it { flash[:error].should == "Error: requested shift not found" }
-
-      it { should redirect_to(section_shifts_path) }
     end
   end
 
@@ -132,102 +100,6 @@ describe ShiftsController do
       end
 
       it { should render_template(:new) }
-    end
-  end
-
-  describe "GET edit" do
-
-    before(:each) do
-      @mock_shifts = mock("shifts")
-      @mock_section.stub!(:shifts).and_return(@mock_shifts)
-    end
-
-    context "the requested shift is found" do
-
-      before(:each) do
-        @mock_shifts.should_receive(:find).with(mock_shift.id).
-          and_return(mock_shift)
-        get :edit, :section_id => @mock_section.id,
-          :id => mock_shift.id
-      end
-
-      it { assigns(:shift).should eq(mock_shift) }
-
-      it { should render_template(:edit) }
-    end
-
-    context "the requested shift is not found" do
-
-      before(:each) do
-        @mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        get :edit, :section_id => @mock_section.id, :id => 1
-      end
-
-      it { flash[:error].should == "Error: requested shift not found" }
-
-      it { should redirect_to(section_shifts_path) }
-    end
-  end
-
-  describe "PUT update" do
-
-    before(:each) do
-      @mock_shifts = mock("shifts")
-      @mock_section.stub!(:shifts).and_return(@mock_shifts)
-    end
-
-    context "the requested shift is found" do
-
-      context "always" do
-
-        before(:each) do
-          mock_shift.should_receive(:update_attributes).
-            with("these" => :params)
-          @mock_shifts.should_receive(:find).with(mock_shift.id).
-            and_return(mock_shift)
-          put :update, :section_id => @mock_section.id,
-            :id => mock_shift.id, :shift => { :these => :params }
-        end
-
-        it { assigns(:shift).should eq(mock_shift) }
-      end
-
-      context "with valid parameters" do
-
-        before(:each) do
-          @mock_shifts.stub!(:find).
-            and_return(mock_shift(:update_attributes => true))
-          put :update, :section_id => @mock_section.id,
-            :id => mock_shift.id
-        end
-
-        it { should redirect_to(section_shift_path(@mock_section, mock_shift)) }
-      end
-
-      context "with invalid parameters" do
-
-        before(:each) do
-          @mock_shifts.stub!(:find).
-            and_return(mock_shift(:update_attributes => false))
-          put :update, :section_id => @mock_section.id,
-            :id => mock_shift.id
-        end
-
-        it { should render_template(:edit) }
-      end
-    end
-
-    context "the requested shift is not found" do
-
-      before(:each) do
-        @mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        put :update, :section_id => @mock_section.id,
-          :id => mock_shift.id
-      end
-
-      it { flash[:error].should == "Error: requested shift not found" }
-
-      it { should redirect_to(section_shifts_path(@mock_section)) }
     end
   end
 

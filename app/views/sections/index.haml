@@ -1,6 +1,7 @@
 %h2 Sections
 
-%p= link_to "Add new Section", new_section_path
+%ul
+  != nav_item "Add Section", new_section_path, :create, Section
 
 %ul
   - @sections.each do |section|

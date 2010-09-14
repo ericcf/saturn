@@ -4,7 +4,7 @@ describe "shift_tags/_form" do
 
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
-    @shift_tag = assign(:shift_tag, mock_model(ShiftTag, :title => "Call"))
+    assign(:shift_tag, stub_model(ShiftTag).as_new_record)
     render
   end
 
@@ -20,8 +20,7 @@ describe "shift_tags/_form" do
     rendered.should have_selector("form") do |form|
       form.should have_selector("input",
         :type => "text",
-        :name => "shift_tag[title]",
-        :value => @shift_tag.title
+        :name => "shift_tag[title]"
       )
     end
   end

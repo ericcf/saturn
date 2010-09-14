@@ -21,6 +21,7 @@ describe SectionsController do
     before(:each) do
       Section.should_receive(:new).and_return(mock_section)
       controller.should_receive(:authenticate_user!)
+      controller.should_receive(:authorize!).with(:create, mock_section)
       get :new
     end
 
@@ -39,6 +40,7 @@ describe SectionsController do
         Section.should_receive(:new).
           with("these" => :params).
           and_return(mock_section)
+        controller.should_receive(:authorize!).with(:create, mock_section)
         post :create, :section => { :these => :params }
       end
 
@@ -50,6 +52,7 @@ describe SectionsController do
       before(:each) do
         Section.should_receive(:new).
           and_return(mock_section(:save => true))
+        controller.should_receive(:authorize!).with(:create, mock_section)
         post :create
       end
 
@@ -61,6 +64,7 @@ describe SectionsController do
       before(:each) do
         Section.should_receive(:new).
           and_return(mock_section(:save => false))
+        controller.should_receive(:authorize!).with(:create, mock_section)
         post :create
       end
 
@@ -79,6 +83,7 @@ describe SectionsController do
       before(:each) do
         Section.should_receive(:find).with(mock_section.id).
           and_return(mock_section)
+        controller.should_receive(:authorize!).with(:update, mock_section)
         get :edit, :id => mock_section.id
       end
 
@@ -116,6 +121,7 @@ describe SectionsController do
           Section.should_receive(:find).
             with(mock_section.id).
             and_return(mock_section)
+          controller.should_receive(:authorize!).with(:update, mock_section)
           put :update, :id => mock_section.id, :section => { :these => :params }
         end
 
@@ -127,6 +133,7 @@ describe SectionsController do
         before(:each) do
           Section.stub!(:find).
             and_return(mock_section(:update_attributes => true))
+          controller.should_receive(:authorize!).with(:update, mock_section)
         end
 
         context "and no 'redirect_path' parameter" do
@@ -153,6 +160,7 @@ describe SectionsController do
         before(:each) do
           Section.stub!(:find).
             and_return(mock_section(:update_attributes => false))
+          controller.should_receive(:authorize!).with(:update, mock_section)
           put :update, :id => mock_section.id
         end
 
@@ -186,6 +194,7 @@ describe SectionsController do
       before(:each) do
         Section.should_receive(:find).with(mock_section.id).
           and_return(mock_section)
+        controller.should_receive(:authorize!).with(:destroy, mock_section)
       end
 
       context "the section is destroyed successfully" do

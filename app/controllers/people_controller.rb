@@ -21,6 +21,7 @@ class PeopleController < ApplicationController
 
   def edit
     @person = Person.find(params[:id])
+    authorize! :update, @person
     @person.build_names_alias unless @person.names_alias
 
   rescue ActiveRecord::RecordNotFound
@@ -30,6 +31,7 @@ class PeopleController < ApplicationController
 
   def update
     @person = Person.find(params[:id])
+    authorize! :update, @person
 
     if @person.update_attributes(params[:person])
       return(redirect_to person_path(@person))

@@ -2,20 +2,13 @@ class ShiftsController < ApplicationController
 
   before_filter :authenticate_user!
   before_filter :find_section
+  before_filter :authorize_action
 
   def index
     @current_shifts = @section.shifts.active_as_of(Date.today).
       find(:all, :include => :shift_tags)
     @retired_shifts = @section.shifts.retired_as_of(Date.today).
       find(:all, :include => :shift_tags)
-  end
-
-  def show
-    @shift = @section.shifts.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift not found"
-    redirect_to section_shifts_path
   end
 
   def new
@@ -28,26 +21,6 @@ class ShiftsController < ApplicationController
       return(redirect_to section_shifts_path(@section))
     end
     render :new
-  end
-
-  def edit
-    @shift = @section.shifts.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift not found"
-    redirect_to section_shifts_path(@section)
-  end
-
-  def update
-    @shift = @section.shifts.find(params[:id])
-    if @shift.update_attributes(params[:shift])
-      return(redirect_to section_shift_path(@section, @shift))
-    end
-    render :edit
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift not found"
-    redirect_to section_shifts_path(@section)
   end
 
   def destroy
@@ -70,5 +43,9 @@ class ShiftsController < ApplicationController
     section_id = params[:section_id]
     return(redirect_to(sections_path)) unless section_id
     @section = Section.find(section_id)
+  end
+
+  def authorize_action
+    authorize! :manage, @section
   end
 end

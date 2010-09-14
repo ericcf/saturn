@@ -31,10 +31,10 @@
           %ul.navlist
             != nav_item "View Schedule", weekly_section_schedule_path(@section)
             != nav_item "Vacation Requests", section_vacation_requests_path(@section)
-            != nav_item "Edit Schedule", edit_weekly_section_schedule_path(@section, :year => Date.today.year, :month => Date.today.month, :day => Date.today.day)
-            != nav_item "Members", section_memberships_path(@section)
-            != nav_item "Shifts", section_shifts_path(@section)
-            != nav_item "Shift Categories", section_shift_tags_path(@section)
+            != nav_item "Edit Schedule", edit_weekly_section_schedule_path(@section, :year => Date.today.year, :month => Date.today.month, :day => Date.today.day), :update, WeeklySchedule
+            != nav_item "Members", section_memberships_path(@section), :manage, SectionMembership
+            != nav_item "Shifts", section_shifts_path(@section), :manage, Shift
+            != nav_item "Shift Categories", section_shift_tags_path(@section), :manage, ShiftTag
             != nav_item "Reports", section_shift_totals_path(@section)
       = render "shared/flash_banner"
       = yield :layout

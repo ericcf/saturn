@@ -82,6 +82,7 @@ class SchedulesController < ApplicationController
       :section_id => params[:section_id],
       :date => @week_start_date
     )
+    authorize! :manage, @weekly_schedule
     @assignments = @weekly_schedule.assignments
     @grouped_people = @section.members_by_group
     @people_names = {}
@@ -96,6 +97,7 @@ class SchedulesController < ApplicationController
       :assignments_attributes => params[:assignments] || {}
     })
     @weekly_schedule = WeeklySchedule.new(schedule_attributes)
+    authorize! :manage, @weekly_schedule
     if @weekly_schedule.save
       date = @weekly_schedule.date
       redirect_to edit_weekly_section_schedule_path(
@@ -121,6 +123,7 @@ class SchedulesController < ApplicationController
     }
     @section = Section.find(params[:section_id])
     @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])
+    authorize! :update, @weekly_schedule
     @weekly_schedule.publish = params[:weekly_schedule][:publish]
 
     if @weekly_schedule.update_attributes(schedule_attributes)

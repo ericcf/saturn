@@ -8,20 +8,22 @@ class SectionsController < ApplicationController
 
   def new
     @section = Section.new
+    authorize! :create, @section
   end
 
   def create
     @section = Section.new(params[:section])
+    authorize! :create, @section
 
     if @section.save
-      redirect_to section_memberships_path(@section)
-    else
-      render :new
+      return(redirect_to(section_memberships_path(@section)))
     end
+    render :new
   end
 
   def edit
     @section = Section.find(params[:id])
+    authorize! :update, @section
 
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested section not found"
@@ -30,6 +32,7 @@ class SectionsController < ApplicationController
 
   def update
     @section = Section.find(params[:id])
+    authorize! :update, @section
 
     if @section.update_attributes(params[:section])
       redirect_to(params[:redirect_path] || section_path(@section))
@@ -45,6 +48,7 @@ class SectionsController < ApplicationController
 
   def destroy
     @section = Section.find(params[:id])
+    authorize! :destroy, @section
 
     if @section.destroy
       flash[:notice] = "Successfully deleted section"

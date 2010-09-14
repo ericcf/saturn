@@ -2,17 +2,10 @@ class ShiftTagsController < ApplicationController
 
   before_filter :authenticate_user!
   before_filter :find_section
+  before_filter :authorize_action
 
   def index
     @shift_tags = @section.shift_tags
-  end
-
-  def show
-    @shift_tag = @section.shift_tags.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift tag not found"
-    redirect_to section_shift_tags_path(@section)
   end
 
   def new
@@ -28,40 +21,6 @@ class ShiftTagsController < ApplicationController
     render :new
   end
 
-  def edit
-    @shift_tag = @section.shift_tags.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift tag not found"
-    redirect_to section_shift_tags_path(@section)
-  end
-
-  def update
-    @shift_tag = @section.shift_tags.find(params[:id])
-    if @shift_tag.update_attributes(params[:shift_tag])
-      return(redirect_to section_shift_tag_path(@section, @shift_tag))
-    end
-    render :edit
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift tag not found"
-    redirect_to section_shift_tags_path(@section)
-  end
-
-  def destroy
-    @shift_tag = @section.shift_tags.find(params[:id])
-    if @shift_tag.destroy
-      flash[:notice] = "Successfully deleted shift tag"
-    else
-      flash[:error] = "Error: failed to delete shift tag"
-    end
-    redirect_to section_shift_tags_path(@section)
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested shift tag not found"
-    redirect_to section_shift_tags_path(@section)
-  end
-
   def search
     render :json => @section.shift_tags.title_like(params[:term]).map(&:title)
   end
@@ -72,5 +31,9 @@ class ShiftTagsController < ApplicationController
     section_id = params[:section_id]
     return(redirect_to(sections_path)) unless section_id
     @section = Section.find(section_id)
+  end
+
+  def authorize_action
+    authorize! :manage, @section
   end
 end

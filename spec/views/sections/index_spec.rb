@@ -8,6 +8,7 @@ describe "sections/index" do
 
   it "renders a link to each section schedule" do
     assign(:sections, [mock_section(:title => "The Best Section")])
+    view.stub!(:nav_item)
     render
     rendered.should have_selector("a",
       :href => weekly_section_schedule_path(mock_section),
