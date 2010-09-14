@@ -18,6 +18,9 @@ body, p, h1, h2, h3, h4, h5, h6, ul, li
 h1, h2, h3, h4, h5, h6
   font-family: Georgia, Times, serif
 
+h1
+  font-size: 24px
+
 h2
   font-size: 18px
 
@@ -35,8 +38,47 @@ input
 
 // layout
 
-#personal
-  float: right
+#logo
+  float: left
+  background: transparent
+  a
+    color: #fff
+
+div#top-menu-wrapper
+  width: 100%
+  height: 18px
+  background-color: #000033
+  div#top-menu
+    width: 900px
+    margin: auto
+    ul
+      list-style: none
+      background: none
+      float: right
+      li
+        background: none
+        float: left
+        padding: 0px 10px
+        a
+          color: #efefef
+          text-decoration: none
+          &.current
+            font-weight: bold
+
+div#personal-wrapper
+  width: 100%
+  height: 18px
+  background-color: #fff
+  div#personal
+    width: 900px
+    margin: auto
+    div
+      background: none
+      float: right
+      span
+        padding: 0px 10px
+        &.first
+          border-right: 1px solid #ccc
 
 #main
   padding-left: 18px
@@ -45,6 +87,9 @@ input
 
 a, a:visited, a:active
   color: #000099
+  text-decoration: none
+a:hover
+  text-decoration: underline
 
 // lists
 ul
@@ -54,6 +99,8 @@ ul
 
 !oddRowBackgroundColor = #dedede
 !tableCellBorderColor = #ccc
+!hoverRowBackgroundColor = #46f
+!hoverRowTextColor = #fff
 
 table
   border-collapse: collapse
@@ -68,11 +115,6 @@ th
   text-align: left
   font-size: 12px
 
-tr
-  height: 18px
-  &.odd
-    background-color = !oddRowBackgroundColor
-
 td, th
   line-height: 16px
   color: #000
@@ -82,6 +124,17 @@ td, th
   border-right-color = !tableCellBorderColor
   padding: 0 2px
   vertical-align: top
+
+tr
+  height: 18px
+  &.odd
+    background-color = !oddRowBackgroundColor
+  &.hover
+    background-color = !hoverRowBackgroundColor
+    td, th, a
+      color = !hoverRowTextColor
+    a
+      text-decoration: underline
 
 td
   font-size: 10px
@@ -94,7 +147,7 @@ table.decimal_data td
 
 !navBorderColor = #778
 !navBackgroundColor = #dde
-!navLinkColor = #448
+!navLinkColor = #667
 !navVisitedLinkColor = #667
 !navHoverLinkColor = #000
 !navHoverBackgroundColor = #aae
@@ -138,6 +191,27 @@ table.decimal_data td
 
 .tableNavList
   border-bottom: none
+
+// flash
+
+div#flash-wrapper
+  position: absolute
+  top: 18px
+  left: 150px
+  width: 500px
+  margin: auto
+  div.flash
+    padding: 2px
+    font-weight: bold
+    border-top: none !important
+    background-color: #cb9
+    border: 2px solid beige
+    &.notice
+      background-color: #9f3
+      border: 2px solid #eee
+    &.error
+      background-color: #f99
+      border: 2px solid #f00
 
 // misc
 

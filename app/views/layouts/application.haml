@@ -2,28 +2,34 @@
 %html
   %head
     %title
-      Schedules:
+      = controller.controller_name
       = controller.action_name
 
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "print", :media => :print
     = yield :stylesheets
+    = javascript_include_tag "jquery/jquery-1.4.2.min"
     = yield :javascripts
+    = javascript_include_tag "shared/flash"
 
   %body
-    %div.navcontainer
-      %ul.navlist
-        != nav_item "On Call", weekly_call_schedule_path
-        != nav_item "Duty Roster", daily_duty_schedule_path
-        != nav_item "Sections", sections_path
-        != nav_item "People", people_path
-    %div#personal
-      - if user_signed_in?
-        = current_user.email
-        |
-        = link_to "Sign out", destroy_user_session_path
-      - else
-        = link_to "Sign in", new_user_session_path
+    %h1#logo
+      = link_to "Scheduler", root_path
+    %div#top-menu-wrapper
+      %div#top-menu
+        %ul
+          != nav_item "On Call", weekly_call_schedule_path
+          != nav_item "Sections", sections_path
+          != nav_item "People", people_path, :manage, Person
+    %div#personal-wrapper
+      %div#personal
+        %div
+          - if user_signed_in?
+            %span.first= current_user.email
+            %span= link_to "Sign out", destroy_user_session_path
+          - else
+            %span= link_to "Sign in", new_user_session_path
+    = render "shared/flash_banner"
     %div#main
       - if @section && !@section.new_record?
         %h2= @section.title
@@ -36,5 +42,4 @@
             != nav_item "Shifts", section_shifts_path(@section), :manage, Shift
             != nav_item "Shift Categories", section_shift_tags_path(@section), :manage, ShiftTag
             != nav_item "Reports", section_shift_totals_path(@section)
-      = render "shared/flash_banner"
       = yield :layout

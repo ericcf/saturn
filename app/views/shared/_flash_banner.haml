@@ -1,4 +1,3 @@
-- if flash[:error]
-  %p.error= flash[:error]
-- if flash[:notice]
-  %p.notice= flash[:notice]
+%div#flash-wrapper
+  - flash.each do |key, value|
+    %div.flash{ :class => key }= value

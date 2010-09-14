@@ -2,8 +2,6 @@ RadiologyScheduler::Application.routes.draw do
   devise_for :users
   devise_for :admins
 
-  #get "shift_tags/search"
-
   resources :people, :except => [:new, :create, :destroy] do
     member do
       get "schedule"
@@ -60,5 +58,5 @@ RadiologyScheduler::Application.routes.draw do
     end
   end
 
-  root :to => "sections#index"
+  root :to => "schedules#weekly_call"
 end

@@ -1,3 +1,5 @@
+%h2 Adding Section
+
 = form_for @section do |form|
   = form.label :title
   %br
@@ -7,4 +9,6 @@
   %br
   = form.text_area :description
   %br
-  = form.submit "Submit"
+  = form.submit "Submit", :class => "button"
+  or
+  = link_to "Cancel", sections_path
