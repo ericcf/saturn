@@ -44,6 +44,13 @@ RadiologyScheduler::Application.routes.draw do
     end
   end
 
+  resources :rotations, :except => :show
+  controller :residents do
+    scope "/schedules/residents" do
+      get "rotations", :as => :resident_rotations
+    end
+  end
+
   controller :reports do
     scope "/sections" do
       scope :path => "/:section_id/reports" do

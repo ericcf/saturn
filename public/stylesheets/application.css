@@ -54,7 +54,10 @@ div#top-menu-wrapper {
       div#top-menu-wrapper div#top-menu ul li {
         background: none;
         float: left;
-        padding: 0px 10px; }
+        padding: 0px 10px;
+        border-right: 1px solid #666666; }
+        div#top-menu-wrapper div#top-menu ul li.last {
+          border-right: none; }
         div#top-menu-wrapper div#top-menu ul li a {
           color: #efefef;
           text-decoration: none; }
@@ -114,21 +117,34 @@ td, th {
 
 tr {
   height: 18px; }
+  tr th {
+    background-color: white; }
   tr.odd {
     background-color: #dedede; }
+    tr.odd th {
+      background-color: #dedede; }
   tr.hover {
     background-color: #4466ff; }
-    tr.hover td, tr.hover th, tr.hover a {
+    tr.hover td, tr.hover a {
       color: white; }
     tr.hover a {
       text-decoration: underline; }
+    tr.hover td.hover {
+      background-color: #333333; }
 
 td {
   font-size: 10px; }
+  td.hover {
+    background-color: #c0d9d9; }
 
 table.decimal_data td {
   text-align: right;
   font-size: 12px; }
+
+table .schedule_block {
+  float: left;
+  border: 1px solid;
+  padding: 0px 2px; }
 
 .navcontainer {
   margin-bottom: 9px; }

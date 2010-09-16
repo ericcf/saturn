@@ -7,3 +7,4 @@ autotest/*
 .rspec
 config/database.yml
 lib/legacy*
+lib/resident*

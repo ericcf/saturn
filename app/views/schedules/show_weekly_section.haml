@@ -6,6 +6,9 @@
 - content_for :stylesheets do
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
 
+- content_for :content_menu do
+  = render "section_menu"
+
 %div.subheadline
   %h3= "Week of #{@dates.first.to_s(:long)}"
   %div.inline_form

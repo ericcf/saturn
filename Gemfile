@@ -10,6 +10,10 @@ gem 'devise'
 gem 'cancan'
 # Excel import/export
 gem 'ekuseru'
+# roo and roo dependencies
+gem 'roo'
+gem 'zip'
+gem 'google-spreadsheet-ruby'
 # iCalendar import/export
 gem 'vpim'
 

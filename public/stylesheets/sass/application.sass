@@ -59,6 +59,9 @@ div#top-menu-wrapper
         background: none
         float: left
         padding: 0px 10px
+        border-right: 1px solid #666
+        &.last
+          border-right: none
         a
           color: #efefef
           text-decoration: none
@@ -100,6 +103,7 @@ ul
 !oddRowBackgroundColor = #dedede
 !tableCellBorderColor = #ccc
 !hoverRowBackgroundColor = #46f
+!hoverColBackgroundColor = #C0D9D9
 !hoverRowTextColor = #fff
 
 table
@@ -127,21 +131,34 @@ td, th
 
 tr
   height: 18px
+  th
+    background-color: #fff
   &.odd
     background-color = !oddRowBackgroundColor
+    th
+      background-color = !oddRowBackgroundColor
   &.hover
     background-color = !hoverRowBackgroundColor
-    td, th, a
+    td, a
       color = !hoverRowTextColor
     a
       text-decoration: underline
+    td.hover
+      background-color: #333
 
 td
   font-size: 10px
+  &.hover
+    background-color = !hoverColBackgroundColor
 
 table.decimal_data td
   text-align: right
   font-size: 12px
+
+table .schedule_block
+  float: left
+  border: 1px solid
+  padding: 0px 2px
 
 // navigation
 

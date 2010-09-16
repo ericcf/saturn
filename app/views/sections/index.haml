@@ -1,7 +1,7 @@
 %h2 Sections
 
 %ul
-  != nav_item "Add Section", new_section_path, :create, Section
+  != nav_item "Add Section", new_section_path, {}, :create, Section
 
 %ul
   - @sections.each do |section|

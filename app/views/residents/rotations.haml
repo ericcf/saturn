@@ -1,0 +1,21 @@
+- content_for :content_menu do
+  = render "rotations/rotation_menu"
+
+%h3 Rotation Schedule
+
+%table
+  %thead
+    %tr
+      %th
+      - @block_weeks.each do |weeks|
+        %th= weeks.first.to_s(:long)
+  - @residents.each do |resident|
+    %tr
+      %td= resident.full_name
+      - @block_weeks.each do |weeks|
+        %td
+          - weeks.each do |week|
+            - assignment = @assignment_by_person_and_date[[resident.id, week]]
+            - if assignment
+              - width = 10 * (assignment.ends_on-assignment.starts_on+1)
+              %div.schedule_block{ :style => "width:#{width.to_i-6}px;" }= assignment.rotation.title

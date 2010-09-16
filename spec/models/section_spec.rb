@@ -29,4 +29,10 @@ describe Section do
   it { should validate_presence_of(:title) }
 
   it { should validate_uniqueness_of(:title) }
+
+  # attribute cleanup
+
+  it { should clean_attribute(:title) }
+
+  it { should clean_attribute(:description) }
 end

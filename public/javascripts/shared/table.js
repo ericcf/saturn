@@ -4,4 +4,12 @@ $(function() {
   }).mouseout(function() {
     $(this).removeClass("hover");
   });
+
+  $("tbody td, thead th").mouseover(function() {
+    var colNumber = $(this).index() + 1;
+    $("tr :nth-child(" + colNumber + ")").addClass("hover");
+  }).mouseout(function() {
+    var colIndex = $(this).index();
+    $("td").removeClass("hover");
+  });
 });

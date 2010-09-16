@@ -7,7 +7,7 @@ class Shift < ActiveRecord::Base
   validates_presence_of :title, :duration, :position, :section
   validates_uniqueness_of :title, :scope => :section_id
 
-  before_validation :filter_attributes
+  before_validation { clean_attributes :title, :description, :phone }
 
   default_scope :order => "position"
   scope :active_as_of, lambda { |cutoff_date|
@@ -40,17 +40,6 @@ class Shift < ActiveRecord::Base
   def retire=(value)
     if value.to_i == 1
       self[:retired_on] = Date.today
-    end
-  end
-
-  private
-
-  def filter_attributes
-    [:title, :description, :phone].each do |attr|
-      unless self[attr].nil?
-        self[attr].strip!
-        self[attr] = nil if self[attr].blank?
-      end
     end
   end
 end

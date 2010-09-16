@@ -1,0 +1,6 @@
+%h2 Residents
+
+%div.navcontainer
+  %ul.navlist
+    != nav_item "Rotation Schedule", resident_rotations_path
+    != nav_item "Edit Rotations", rotations_path, {}, :manage, Rotation

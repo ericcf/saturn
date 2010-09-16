@@ -77,4 +77,8 @@ describe ShiftTag do
       end
     end
   end
+
+  # attribute cleanup
+
+  it { should clean_attribute(:display_color) }
 end

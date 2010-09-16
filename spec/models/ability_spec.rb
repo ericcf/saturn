@@ -16,4 +16,6 @@ describe Ability do
   it { should be_able_to(:manage, Person) }
 
   it { should be_able_to(:manage, Section) }
+
+  it { should be_able_to(:manage, Rotation) }
 end

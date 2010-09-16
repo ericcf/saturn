@@ -12,7 +12,7 @@ class ShiftTag < ActiveRecord::Base
   validates_format_of :display_color, :with => /^[0-9a-fA-F]{6}$/,
     :allow_nil => true
 
-  before_validation :filter_attributes
+  before_validation { clean_attributes :display_color }
 
   default_scope :order => :title, :include => :shifts
   scope :title_like, lambda { |term| where(["title like ?", "%#{term}%"]) }
@@ -32,14 +32,5 @@ class ShiftTag < ActiveRecord::Base
     return true if assignments.count.zero?
     errors[:base] << "Shifts present"
     false
-  end
-
-  def filter_attributes
-    unless self[:display_color].nil?
-      self[:display_color].strip!
-      if self[:display_color].blank?
-        self[:display_color] = nil
-      end
-    end
   end
 end

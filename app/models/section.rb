@@ -15,6 +15,8 @@ class Section < ActiveRecord::Base
 
   validates :title, :presence => true, :uniqueness => true
 
+  before_validation { clean_attributes :title, :description }
+
   def people_with_associations(assns=nil)
     Person.find_all_by_id(memberships.map(&:person_id), :include => assns)
   end

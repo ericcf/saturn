@@ -32,17 +32,10 @@ describe PersonAlias do
   it { should validate_format_of(:initials).not_with("abcd").
     with_message(/must be either 2 or 3 letters/) }
 
-  # attribute filtering
+  # attribute cleanup
 
-  it "converts blank initials to nil" do
-    p_alias = PersonAlias.new(@valid_attributes.merge({ :initials => " " }))
-    p_alias.valid?
-    p_alias.initials.should be_nil
-  end
+  it { should clean_attribute(:initials) }
 
-  it "converts blank short_name to nil" do
-    p_alias = PersonAlias.new(@valid_attributes.merge({ :short_name => " " }))
-    p_alias.valid?
-    p_alias.short_name.should be_nil
-  end
+  it { should clean_attribute(:short_name) }
+
 end

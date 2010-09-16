@@ -103,12 +103,9 @@ describe Shift do
     end
   end
 
-  # attribute filtering
+  # attribute cleanup
 
   [:title, :description, :phone].each do |attr|
-    it "should set blank '#{attr}' value to nil" do
-      @shift.update_attributes(attr => " ")
-      @shift.send(attr).should be_nil
-    end
+    it { should clean_attribute(attr) }
   end
 end
