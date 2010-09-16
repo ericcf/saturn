@@ -7,4 +7,8 @@ module ApplicationHelper
     link_to(title, path, :class => current_page?(path) ? "current" : "") +
     "</li>"
   end
+
+  def save_or_cancel(form, cancel_path)
+    "#{form.submit "Save", :class => "button"} or #{link_to "Cancel", cancel_path}".html_safe
+  end
 end

@@ -8,8 +8,7 @@ describe "schedules/show_weekly_section.haml" do
     @note = { :shift => "Shift", :day => "Mon", :initials => "AB", :text => "Foo" }
     assign(:notes, [@note])
     assign(:schedule_view, TabularView.new)
-    view.should_receive(:_render_partial).
-      with(hash_including(:partial => "section_menu"))
+    should_render_partial("section_menu")
     render
   end
 

@@ -30,4 +30,5 @@ Then open up localhost:8888 in a browser.
 * Resident rotation scheduling
 * E-mail notification
 
-#### Copyright (c) 2010 Eric Carty-Fickes, released under MIT licence
+## Copyright
+Copyright (c) 2010 Eric Carty-Fickes, released under MIT licence

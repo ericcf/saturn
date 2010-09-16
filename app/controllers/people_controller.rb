@@ -11,14 +11,6 @@ class PeopleController < ApplicationController
       all(:include => [:names_alias, :sections, :groups])
   end
 
-  def show
-    @person = Person.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested person not found"
-    redirect_to people_path
-  end
-
   def edit
     @person = Person.find(params[:id])
     authorize! :update, @person

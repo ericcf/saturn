@@ -5,6 +5,7 @@ describe "shift_tags/_form" do
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
     assign(:shift_tag, stub_model(ShiftTag).as_new_record)
+    should_render_partial("schedules/section_menu")
     render
   end
 

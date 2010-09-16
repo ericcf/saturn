@@ -1,11 +1,11 @@
 class MembershipsController < ApplicationController
 
   before_filter :authenticate_user!
+  before_filter { authorize! :manage, SectionMembership }
   before_filter :find_section
 
   def index
     @members_by_group = @section.members_by_group
-    authorize! :manage, SectionMembership
   end
 
   def new
@@ -14,7 +14,6 @@ class MembershipsController < ApplicationController
       !p.section_ids.include?(@section.id) &&
         schedule_groups.any? { |g| p.member_of_group? g }
     end
-    authorize! :manage, SectionMembership
   end
 
   private

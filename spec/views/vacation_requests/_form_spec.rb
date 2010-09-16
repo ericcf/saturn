@@ -5,6 +5,7 @@ describe "vacation_requests/_form" do
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
     @mock_vacation_request = assign(:vacation_request, stub_model(VacationRequest))
+    should_render_partial("schedules/section_menu")
     render
   end
 

@@ -6,6 +6,9 @@
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
   = stylesheet_link_tag 'reports'
 
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
 %h3= "Shift Totals for #{@person.full_name}"
 
 %div.subheadline

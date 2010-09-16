@@ -1,15 +1,14 @@
-%h3 Add new Members
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3 Add Members
 
 = form_for @section do |section_form|
   = hidden_field_tag "redirect_path", section_memberships_path(@section)
-  = section_form.submit "Save", :class => "button"
-  or
-  = link_to "Cancel", section_memberships_path(@section)
+  = save_or_cancel section_form, section_memberships_path(@section)
   %ul
     - @people.each do |person|
       %li
         = check_box_tag "section[memberships_attributes][][person_id]", person.id
         = label_tag :person_id, person.full_name
-  = section_form.submit "Save", :class => "button"
-  or
-  = link_to "Cancel", section_memberships_path(@section)
+  = save_or_cancel section_form, section_memberships_path(@section)

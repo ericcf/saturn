@@ -5,6 +5,7 @@ describe "shifts/_form" do
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
     @mock_shift = assign(:shift, stub_model(Shift))
+    should_render_partial("schedules/section_menu")
     render
   end
 

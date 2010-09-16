@@ -1,4 +1,8 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
 = form_for [@section, @shift_tag] do |form|
   = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
+  %div= form.label :title
   %div= form.text_field :title
-  %div= form.submit "Save"
+  %div= save_or_cancel form, section_shift_tags_path(@section)

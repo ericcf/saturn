@@ -1,3 +1,6 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
 %h3 Vacation Requests
 
 %p= link_to "New Request", new_section_vacation_request_path(@section)

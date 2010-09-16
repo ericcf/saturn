@@ -37,34 +37,6 @@ describe "people" do
     end
   end
 
-  describe "show" do
-
-    context "a valid person" do
-
-      it "renders the given name" do
-        get person_path(person_record)
-        response.should have_selector("h2",
-          :content => person_record.given_name
-        )
-      end
-    end
-
-    context "a nonexistant person" do
-
-      before(:each) do
-        get person_path(:id => 0)
-      end
-
-      it "renders an error message" do
-        flash[:error].should match(/Error:/)
-      end
-
-      it "redirects to the index" do
-        response.should redirect_to(people_path)
-      end
-    end
-  end
-
   describe "edit" do
 
     before(:each) do

@@ -7,6 +7,4 @@
     %div= alias_form.label :initials
     %div= alias_form.text_field :initials
   %div
-    = person_form.submit "Save Changes", :class => "button"
-    or
-    = link_to "Cancel", people_path
+    = save_or_cancel person_form, people_path

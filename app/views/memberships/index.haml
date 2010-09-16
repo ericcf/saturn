@@ -1,9 +1,12 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
 %p= link_to "Add Members", new_section_membership_path(@section)
 
 - if @members_by_group
   = form_for @section do |section_form|
     = hidden_field_tag "redirect_path", section_memberships_path(@section)
-    = section_form.submit "Save Changes", :class => "button"
+    = save_or_cancel section_form, section_memberships_path(@section)
     %table
       - @members_by_group.each do |group_name, people|
         - if people.size > 0
@@ -15,4 +18,4 @@
               = section_form.fields_for :memberships, person.section_memberships.where(:section_id => @section.id).first do |membership_form|
                 %td= person.full_name
                 %td= membership_form.check_box :_destroy
-    = section_form.submit "Save Changes", :class => "button"
+    = save_or_cancel section_form, section_memberships_path(@section)

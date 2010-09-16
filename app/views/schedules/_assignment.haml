@@ -16,7 +16,7 @@
     - notes_class += private_note.blank? ? "" : "private"
     %span.notes_icon{ :class => notes_class }>< &nbsp;
   = hidden_field_tag "assignments[][id]", assignment_id
-  = hidden_field_tag "assignments[][shift_id]", defined?(shift) ? shift.id : nil
+  = hidden_field_tag "assignments[][shift_id]", defined?(shift_id) ? shift_id : nil
   = hidden_field_tag "assignments[][person_id]", person_id
   = hidden_field_tag "assignments[][date]", defined?(date) ? date : nil
   = hidden_field_tag "assignments[][position]", position

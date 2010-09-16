@@ -11,10 +11,15 @@ describe "schedules/edit_weekly_section" do
     assign(:assignments, [])
     assign(:people_names, {})
     assign(:shifts, [])
+    should_render_partial("shift")
+    should_render_partial("date_header")
+    should_render_partial("group")
+    should_render_partial("assignment")
+    should_render_partial("section_menu")
+    render
   end
 
   it "renders a form to change the schedule date" do
-    render
     rendered.should have_selector("form",
       :action => edit_weekly_section_schedule_path(@mock_section),
       :method => "get"
@@ -22,7 +27,6 @@ describe "schedules/edit_weekly_section" do
   end
 
   it "renders a field for selecting a date" do
-    render
     rendered.should have_selector("form input",
       :type => "text",
       :name => "date"
@@ -30,7 +34,6 @@ describe "schedules/edit_weekly_section" do
   end
 
   it "renders a form to save changes to the schedule" do
-    render
     rendered.should have_selector("form",
       :action => update_weekly_section_schedule_path(@mock_section),
       :method => "post"
@@ -40,7 +43,6 @@ describe "schedules/edit_weekly_section" do
   end
 
   it "renders a field for publishing" do
-    render
     rendered.should have_selector("form input",
       :type => "checkbox",
       :name => "weekly_schedule[publish]"

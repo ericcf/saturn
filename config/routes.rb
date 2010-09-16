@@ -2,7 +2,7 @@ RadiologyScheduler::Application.routes.draw do
   devise_for :users
   devise_for :admins
 
-  resources :people, :except => [:new, :create, :destroy] do
+  resources :people, :only => [:index, :edit, :update] do
     member do
       get "schedule"
     end

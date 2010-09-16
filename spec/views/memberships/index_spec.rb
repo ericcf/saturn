@@ -10,6 +10,15 @@ describe "memberships/index" do
     @mock_section = assign(:section, mock_section)
     @mock_person = stub_model(Person, :full_name => "B. Favre")
     assign(:members_by_group, { "Group 1" => [@mock_person] })
+    should_render_partial("schedules/section_menu")
+  end
+
+  it "renders a link to add new members" do
+    render
+    rendered.should have_selector("a",
+      :href => new_section_membership_path(@mock_section),
+      :content => "Add Members"
+    )
   end
 
   it "renders a form for updating section members" do
@@ -20,14 +29,6 @@ describe "memberships/index" do
     ) do |form|
       form.should have_selector("input", :type => "submit")
     end
-  end
-
-  it "renders a link to add new members" do
-    render
-    rendered.should have_selector("a",
-      :href => new_section_membership_path(@mock_section),
-      :content => "Add Members"
-    )
   end
 
   it "renders the title of each group" do

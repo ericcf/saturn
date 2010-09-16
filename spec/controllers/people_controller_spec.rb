@@ -16,32 +16,6 @@ describe PeopleController do
     it { assigns(:people).should eq([mock_person]) }
   end
 
-  describe "GET 'show'" do
-
-    context "the requested person is found" do
-
-      before(:each) do
-        Person.should_receive(:find).with(mock_person.id).
-          and_return(mock_person)
-        get :show, :id => mock_person.id
-      end
-
-      it { assigns(:person).should eq(mock_person) }
-    end
-
-    context "the requested person is not found" do
-
-      before(:each) do
-        Person.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        get :show, :id => 1
-      end
-
-      it { flash[:error].should == "Error: requested person not found" }
-
-      it { should redirect_to(people_path) }
-    end
-  end
-
   describe "GET 'edit'" do
 
     before(:each) do

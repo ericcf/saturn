@@ -125,9 +125,9 @@ tr {
       background-color: #dedede; }
   tr.hover {
     background-color: #4466ff; }
-    tr.hover td, tr.hover a {
+    tr.hover td, tr.hover td a {
       color: white; }
-    tr.hover a {
+    tr.hover td a {
       text-decoration: underline; }
     tr.hover td.hover {
       background-color: #333333; }

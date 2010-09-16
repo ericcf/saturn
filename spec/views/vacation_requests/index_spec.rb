@@ -7,6 +7,7 @@ describe "vacation_requests/index" do
     @mock_request = mock_model(VacationRequest)
     @mock_request.stub_chain(:requester, :short_name).and_return("E. Fudd")
     assign(:vacation_requests, [@mock_request])
+    should_render_partial("schedules/section_menu")
     render
   end
 

@@ -1,7 +1,11 @@
-%p= link_to "Add New Category", new_section_shift_tag_path(@section)
+- content_for :content_menu do
+  = render "schedules/section_menu"
 
+%p= link_to "Add Category", new_section_shift_tag_path(@section)
+
+- if @shift_tags.size > 0
 = form_for @section do |section_form|
-  = section_form.submit "Save Changes" if @shift_tags.size > 0
+  = save_or_cancel section_form, section_shift_tags_path(@section)
   = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
   %table
     - @shift_tags.each do |shift_tag|
@@ -18,4 +22,4 @@
             - else
               remove category from shifts?
               = shift_tag_form.check_box :clear_assignments
-  = section_form.submit "Save Changes" if @shift_tags.size > 0
+  = save_or_cancel section_form, section_shift_tags_path(@section)

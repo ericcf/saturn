@@ -8,6 +8,7 @@ describe "memberships/new" do
       stub_model(SectionMembership, :section_id => @mock_section.id).as_new_record)
     @mock_person = stub_model(Person)
     assign(:people, [@mock_person])
+    should_render_partial("schedules/section_menu")
     render
   end
 

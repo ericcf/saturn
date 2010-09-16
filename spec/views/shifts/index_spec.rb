@@ -12,13 +12,14 @@ describe "shifts/index" do
       :tags => "PM", :retired_on => Date.yesterday)
     assign(:current_shifts, [@mock_current_shift])
     assign(:retired_shifts, [@mock_retired_shift])
+    should_render_partial("schedules/section_menu")
   end
 
   it "renders a link to add a new shift" do
     render
     rendered.should have_selector("a",
       :href => new_section_shift_path(@section),
-      :content => "Add New Shift"
+      :content => "Add Shift"
     )
   end
 

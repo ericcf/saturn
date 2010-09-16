@@ -9,13 +9,14 @@ describe "shift_tags/index" do
       :shifts => [@mock_shift], :display_color => "abcdef")
     @mock_orphan_tag =  stub_model(ShiftTag, :title => "Baz", :shifts => [])
     assign(:shift_tags, [@mock_shift_tag, @mock_orphan_tag])
+    should_render_partial("schedules/section_menu")
     render
   end
 
   it "renders a link to add a new tag" do
     rendered.should have_selector("a",
       :href => new_section_shift_tag_path(@mock_section),
-      :content => "Add New Category"
+      :content => "Add Category"
     )
   end
 

@@ -1,8 +1,9 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
 %h3 Vacation Request
 
 = form_for [@section, @vacation_request] do |vacation_request_form|
   %div= vacation_request_form.label :comments
   %div= vacation_request_form.text_area :comments, :rows => 5
-  = vacation_request_form.submit "Save"
-  or
-  = link_to "Cancel", section_vacation_requests_path(@section)
+  = save_or_cancel vacation_request_form, section_vacation_requests_path(@section)

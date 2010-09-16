@@ -9,11 +9,6 @@ describe PeopleController do
         should route_to(:controller => "people", :action => "index") 
     end
 
-    it "recognizes and generates #show" do
-      { :get => "/people/1" }.
-        should route_to(:controller => "people", :action => "show", :id => "1") 
-    end
-
     it "does not recognize #create" do
       { :post => "/people" }.should_not be_routable
     end

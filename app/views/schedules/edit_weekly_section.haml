@@ -12,6 +12,9 @@
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
   = stylesheet_link_tag 'edit_weekly_section'
 
+- content_for :content_menu do
+  = render "section_menu"
+
 %div.subheadline
   %h3= "Week of #{@week_start_date.to_s(:long)}"
   %div.inline_form
@@ -37,9 +40,7 @@
 
   %div.schedule_publishing
     = @weekly_schedule.published? ? "Published: #{@weekly_schedule.published_at.to_s(:long)}" : "Unpublished"
-    = form.submit "Save Changes"
-    or
-    = link_to "Cancel", edit_weekly_section_schedule_path(@section)
+    = save_or_cancel form, edit_weekly_section_schedule_path(@section)
     | Publish?
     = form.check_box :publish
 
