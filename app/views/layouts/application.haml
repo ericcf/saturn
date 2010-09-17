@@ -19,8 +19,9 @@
       %div#top-menu
         %ul
           != nav_item "People", people_path, {}, :manage, Person
-          != nav_item "On Call", weekly_call_schedule_path
           != nav_item "Residents", resident_rotations_path
+          != nav_item "On Call", weekly_call_schedule_path
+          != nav_item "Users", users_path, {}, :manage, User
           != nav_item "Sections", sections_path, {:class=>"last"}
     %div#personal-wrapper
       %div#personal

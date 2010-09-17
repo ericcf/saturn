@@ -34,7 +34,7 @@ describe "sections" do
   describe "new" do
 
     it "renders a form for a new section" do
-      sign_in_user
+      sign_in_user :admin => true
       get new_section_path
       response.should have_selector("form", :action => sections_path)
     end
@@ -43,7 +43,7 @@ describe "sections" do
   describe "create" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "with valid parameters" do
@@ -71,7 +71,7 @@ describe "sections" do
   describe "edit" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "an existing section" do
@@ -103,7 +103,7 @@ describe "sections" do
   describe "update" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "an existing section" do
@@ -148,7 +148,7 @@ describe "sections" do
   describe "destroy" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "an existing section" do

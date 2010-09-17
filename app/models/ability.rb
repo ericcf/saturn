@@ -3,9 +3,10 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    if user
+    return if user.nil?
+    if user.admin?
       can :manage, [WeeklySchedule, SectionMembership, Shift, ShiftTag, Person,
-        Section, Rotation]
+        Section, Rotation, User]
     end
   end
 end

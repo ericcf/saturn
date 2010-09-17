@@ -54,7 +54,7 @@ describe "schedules" do
     context "with no schedules or assignments in the database" do
 
       it "renders successfully" do
-        sign_in_user
+        sign_in_user :admin => true
         Section.delete_all
         section = Factory(:section)
         date = Date.today

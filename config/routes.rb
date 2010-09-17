@@ -1,6 +1,10 @@
 RadiologyScheduler::Application.routes.draw do
   devise_for :users
-  devise_for :admins
+  resources :users, :only => :index do
+    collection do
+      put "roles" => "users#update_roles"
+    end
+  end
 
   resources :people, :only => [:index, :edit, :update] do
     member do

@@ -9,6 +9,7 @@ module ApplicationHelper
   end
 
   def save_or_cancel(form, cancel_path)
-    "#{form.submit "Save", :class => "button"} or #{link_to "Cancel", cancel_path}".html_safe
+    save_button = form.nil? ? submit_tag("Save", :class => "button") : form.submit("Save", :class => "button")
+    "#{save_button} or #{link_to "Cancel", cancel_path}".html_safe
   end
 end

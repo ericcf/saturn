@@ -40,7 +40,7 @@ describe "people" do
   describe "edit" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "an existing person" do
@@ -72,7 +72,7 @@ describe "people" do
   describe "update" do
 
     before(:each) do
-      sign_in_user
+      sign_in_user :admin => true
     end
 
     context "an existing person" do

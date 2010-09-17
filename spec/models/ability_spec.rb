@@ -3,7 +3,7 @@ require 'cancan/matchers'
 
 describe Ability do
 
-  subject { Ability.new(User.new) }
+  subject { Ability.new(mock_model(User, :admin? => true)) }
 
   it { should be_able_to(:manage, WeeklySchedule) }
 
@@ -18,4 +18,6 @@ describe Ability do
   it { should be_able_to(:manage, Section) }
 
   it { should be_able_to(:manage, Rotation) }
+
+  it { should be_able_to(:manage, User) }
 end
