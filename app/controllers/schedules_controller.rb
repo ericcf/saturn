@@ -1,4 +1,5 @@
 require 'date_helpers'
+require 'tables'
 
 class SchedulesController < ApplicationController
 
@@ -15,7 +16,7 @@ class SchedulesController < ApplicationController
     @call_assignments = Assignment.by_schedules_and_shifts(
       @schedules,
       @call_shifts
-    ).find(:all, :order => :position, :include => :person)
+    ).find(:all, :order => :position, :include => { :person => :names_alias })
     @notes = @call_assignments.map(&:public_note_details).compact
   end
 
@@ -53,12 +54,12 @@ class SchedulesController < ApplicationController
     @view_mode = params[:view_mode]
     @schedule_view = case @view_mode
                      when nil, "1"
-                       TabularView.new(:x => [@dates, :clone],
+                       Tables::TabularData.new(:x => [@dates, :clone],
       :y => [@shifts, :id],
       :mapped_values => @assignments.group_by {|a| [a.date, a.shift_id]},
       :content_formatter => lambda { |assgnmnt| assgnmnt.person.short_name })
                      when "2"
-                       TabularView.new(:x => [@dates, :clone],
+                       Tables::TabularData.new(:x => [@dates, :clone],
       :y => [@section.people_with_associations(:names_alias), :id], 
       :mapped_values => @assignments.group_by {|a| [a.date, a.person_id]},
       :content_formatter => lambda { |assgnmt| assgnmt.shift.title })

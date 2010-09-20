@@ -26,6 +26,8 @@ module WeeklySchedulesHelper
       else
         item.short_name
       end
+    when "Rotation"
+      item.title
     else
       item.to_s if item.respond_to?(:to_s)
     end

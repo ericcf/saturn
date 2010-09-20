@@ -7,15 +7,24 @@
   %thead
     %tr
       %th
-      - @block_weeks.each do |weeks|
-        %th= weeks.first.to_s(:long)
-  - @residents.each do |resident|
-    %tr
-      %td= resident.full_name
-      - @block_weeks.each do |weeks|
-        %td
-          - weeks.each do |week|
-            - assignment = @assignment_by_person_and_date[[resident.id, week]]
-            - if assignment
-              - width = 10 * (assignment.ends_on-assignment.starts_on+1)
-              %div.schedule_block{ :style => "width:#{width.to_i-6}px;" }= assignment.rotation.title
+        - if @view_mode == 1
+          = link_to "show rotations on left", resident_rotations_path(:view_mode => 2)
+        - else
+          = link_to "show residents on left", resident_rotations_path(:view_mode => 1)
+      - @rotation_data.each_x_axis_item do |x_item|
+        %th!= format_header(x_item)
+  %tbody
+    - @rotation_data.each_y_axis_item_with_bin do |y_item, bin|
+      - if bin
+        - rows = bin.rows
+        - tr_class = cycle("odd", "")
+        %tr{ :class => tr_class }
+          %th{ :rowspan => rows.size }!= format_header(y_item)
+          - rows.first[:items].each do |item|
+            %td{ :colspan => item.size }!= item.data ? @rotation_data.format(item.data) : nil
+        - rows.each_index do |row_index|
+          - row = rows[row_index]
+          - if row_index > 0
+            %tr{ :class => tr_class }
+              - row[:items].each do |item|
+                %td{ :colspan => item.size }!= item.data ? @rotation_data.format(item.data) : nil

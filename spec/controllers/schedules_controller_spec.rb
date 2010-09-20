@@ -55,7 +55,7 @@ describe SchedulesController do
       mock_assignment = stub_model(Assignment)
       assignments = stub('assignments')
       assignments.should_receive(:find).
-        with(:all, :order => :position, :include => :person).
+        with(:all, :order => :position, :include => {:person => :names_alias}).
         and_return([mock_assignment])
       Assignment.should_receive(:by_schedules_and_shifts).with([], []).
         and_return(assignments)

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'tables'
 
 describe "schedules/show_weekly_section.haml" do
 
@@ -7,7 +8,7 @@ describe "schedules/show_weekly_section.haml" do
     @dates = assign(:dates, [Date.today])
     @note = { :shift => "Shift", :day => "Mon", :initials => "AB", :text => "Foo" }
     assign(:notes, [@note])
-    assign(:schedule_view, TabularView.new)
+    assign(:schedule_view, Tables::TabularData.new)
     should_render_partial("section_menu")
     render
   end

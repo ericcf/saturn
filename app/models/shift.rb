@@ -18,7 +18,8 @@ class Shift < ActiveRecord::Base
   }
 
   def Shift.by_tag(term)
-    ShiftTag.where(:title => term).joins(:shifts).map(&:shifts).flatten.uniq
+    ShiftTag.find_all_by_title(term, :include => [:assignments, :shifts]).
+      map(&:shifts).flatten.uniq
   end
 
   def tags

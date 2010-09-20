@@ -1,3 +1,6 @@
+- content_for :content_menu do
+  = render "rotation_menu"
+
 = form_for @rotation do |rotation_form|
   %div= rotation_form.label :title
   %div= rotation_form.text_field :title
