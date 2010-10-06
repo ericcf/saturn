@@ -36,13 +36,13 @@ RadiologyScheduler::Application.routes.draw do
 
     scope "/sections" do
       scope :path => "/:section_id/schedule(/:year/:month/:day)" do
-        get "" => "schedules#show_weekly_section",
+        get "/" => "schedules#show_weekly_section",
           :as => :weekly_section_schedule
         get "edit" => "schedules#edit_weekly_section",
           :as => :edit_weekly_section_schedule
-        post "" => "schedules#create_weekly_section",
+        post "/" => "schedules#create_weekly_section",
           :as => :create_weekly_section_schedule
-        put "" => "schedules#update_weekly_section",
+        put "/" => "schedules#update_weekly_section",
           :as => :update_weekly_section_schedule
       end
     end
