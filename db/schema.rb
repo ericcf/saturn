@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100914183403) do
+ActiveRecord::Schema.define(:version => 20101005174741) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20100914183403) do
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["person_id"], :name => "index_assignments_on_person_id"
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
 
@@ -38,15 +39,47 @@ ActiveRecord::Schema.define(:version => 20100914183403) do
     t.date   "employment_ends_on"
   end
 
+  create_table "feedback_statuses", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.boolean  "default",    :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feedback_statuses", ["name"], :name => "index_feedback_statuses_on_name", :unique => true
+
+  create_table "feedback_tickets", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "request_url"
+    t.integer  "status_id"
+    t.text     "description", :null => false
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "feedback_tickets", ["status_id"], :name => "index_feedback_tickets_on_status_id"
+  add_index "feedback_tickets", ["user_id"], :name => "index_feedback_tickets_on_user_id"
+
   create_table "groups", :force => true do |t|
     t.string "type"
     t.string "title"
+  end
+
+  create_table "help_questions", :force => true do |t|
+    t.text     "title"
+    t.text     "answer"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "memberships", :force => true do |t|
     t.integer "contact_id"
     t.integer "group_id"
   end
+
+  add_index "memberships", ["contact_id"], :name => "index_memberships_on_contact_id"
+  add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
 
   create_table "person_aliases", :force => true do |t|
     t.integer  "person_id",  :null => false
@@ -63,6 +96,8 @@ ActiveRecord::Schema.define(:version => 20100914183403) do
     t.string  "value"
   end
 
+  add_index "phones", ["contact_id"], :name => "index_phones_on_contact_id"
+
   create_table "rotation_assignments", :force => true do |t|
     t.integer  "person_id",   :null => false
     t.integer  "rotation_id", :null => false
@@ -71,6 +106,9 @@ ActiveRecord::Schema.define(:version => 20100914183403) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "rotation_assignments", ["person_id"], :name => "index_rotation_assignments_on_person_id"
+  add_index "rotation_assignments", ["rotation_id"], :name => "index_rotation_assignments_on_rotation_id"
 
   create_table "rotations", :force => true do |t|
     t.string   "title",       :null => false
@@ -170,6 +208,7 @@ ActiveRecord::Schema.define(:version => 20100914183403) do
   end
 
   add_index "vacation_requests", ["requester_id"], :name => "index_vacation_requests_on_requester_id"
+  add_index "vacation_requests", ["section_id"], :name => "index_vacation_requests_on_section_id"
 
   create_table "weekly_schedules", :force => true do |t|
     t.integer  "section_id",   :null => false

@@ -9,7 +9,7 @@ describe PeopleController do
   describe "GET 'index'" do
 
     before(:each) do
-      Person.should_receive(:all).and_return([mock_person])
+      Person.should_receive(:includes).and_return([mock_person])
       get :index
     end
 

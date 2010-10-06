@@ -7,6 +7,7 @@
 
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "print", :media => :print
+    = formtastic_stylesheet_link_tag
     = yield :stylesheets
     = javascript_include_tag "jquery/jquery-1.4.2.min"
     = yield :javascripts
@@ -14,15 +15,18 @@
 
   %body
     %h1#logo
-      = link_to "Scheduler", root_path
+      = link_to "Saturn", root_path
     %div#top-menu-wrapper
       %div#top-menu
         %ul
-          != nav_item "People", people_path, {}, :manage, Person
-          != nav_item "Residents", resident_rotations_path
+          -#!= nav_item "Residents", resident_rotations_path
           != nav_item "On Call", weekly_call_schedule_path
+          != nav_item "Sections", sections_path
+          != nav_item "All Physicians", people_path, {}, :manage, Person
           != nav_item "Users", users_path, {}, :manage, User
-          != nav_item "Sections", sections_path, {:class=>"last"}
+          != nav_item "Admin", admin_path
+          != nav_item "FAQ", help_questions_path
+          != nav_item "Report Problem", new_feedback_ticket_path, {:class=>"last"}
     %div#personal-wrapper
       %div#personal
         %div

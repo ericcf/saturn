@@ -25,6 +25,8 @@ describe VacationRequest do
 
   it { should have_db_index(:requester_id) }
 
+  it { should have_db_index(:section_id) }
+
   # associations
 
   it { should belong_to(:requester) }

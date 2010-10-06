@@ -8,6 +8,9 @@ class CreateRotationAssignments < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :rotation_assignments, :person_id
+    add_index :rotation_assignments, :rotation_id
   end
 
   def self.down

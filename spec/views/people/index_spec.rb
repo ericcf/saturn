@@ -11,9 +11,9 @@ describe "people/index" do
     mock_person(
       :full_name => "IP Daily",
       :short_name => "I. Daily",
-      :initials => "ID",
-      :sections => [mock_section]
+      :initials => "ID"
     )
+    mock_person.stub!(:sections).and_return([mock_section])
     assign(:people, [mock_person])
     render
     rendered.should have_selector("a",

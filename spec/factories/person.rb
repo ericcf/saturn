@@ -1,5 +1,7 @@
 require 'factory_girl'
 
 Factory.define :person do |p|
-  p.given_name "John"
+  #factory :person do
+    p.given_name "John"
+  #end
 end

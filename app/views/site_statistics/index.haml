@@ -1,0 +1,15 @@
+%table
+  %thead
+    %tr
+      %th Class
+      %th Count
+      %th Time Since Last Update
+  %tbody
+    %tr
+      %td Assignments
+      %td= @assignment_count
+      %td= time_ago_in_words @assignments_last_updated
+    %tr
+      %td Sections
+      %td= @section_count
+      %td= time_ago_in_words @sections_last_updated

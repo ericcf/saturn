@@ -20,6 +20,8 @@
       %span#end_date_text= @end_date.to_s(:long)
     %div.inline_form
       = text_field_tag "end_date", @end_date.to_s
+    %div.inline_form
+      = submit_tag "Get Report"
 
 %p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date)
 

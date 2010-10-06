@@ -28,6 +28,10 @@ describe RotationAssignment do
 
   it { should have_db_column(:ends_on).with_options(:null => false) }
 
+  it { should have_db_index(:person_id) }
+
+  it { should have_db_index(:rotation_id) }
+
   # validation
   
   it { should validate_presence_of(:person) }

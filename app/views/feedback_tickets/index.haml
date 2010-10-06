@@ -1,0 +1,18 @@
+%h2 Feedback Tickets
+
+%table
+  %thead
+    %tr
+      %th Description
+      %th User
+      %th Status
+      %th Created
+      %th Updated
+  %tbody
+    - @feedback_tickets.each do |ticket|
+      %tr
+        %td= link_to ticket.description, ticket
+        %td= ticket.user.nil? ? "anonymous" : ticket.user.email
+        %td= ticket.status.name
+        %td= ticket.created_at.to_s
+        %td= ticket.updated_at.to_s

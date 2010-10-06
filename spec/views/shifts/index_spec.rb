@@ -7,9 +7,11 @@ describe "shifts/index" do
     @section = Factory(:section)
     assign(:section, @section)
     @mock_current_shift = stub_model(Shift, :title => "AM Duty",
-      :tags => "AM", :retired_on => nil)
+      :retired_on => nil)
+    @mock_current_shift.stub!(:tags).and_return("AM")
     @mock_retired_shift = stub_model(Shift, :title => "PM Duty",
-      :tags => "PM", :retired_on => Date.yesterday)
+      :retired_on => Date.yesterday)
+    @mock_retired_shift.stub!(:tags).and_return("PM")
     assign(:current_shifts, [@mock_current_shift])
     assign(:retired_shifts, [@mock_retired_shift])
     should_render_partial("schedules/section_menu")

@@ -10,6 +10,7 @@ class CreateVacationRequests < ActiveRecord::Migration
     end
 
     add_index :vacation_requests, :requester_id
+    add_index :vacation_requests, :section_id
   end
 
   def self.down

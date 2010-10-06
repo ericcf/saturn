@@ -2,14 +2,11 @@ require 'spec_helper'
 
 describe ReportsController do
 
-  before(:each) do
-    @mock_section = mock_model(Section)
-    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
-  end
-
   describe "GET shift_totals" do
 
     before(:each) do
+      @mock_section = mock_model(Section)
+      Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
       grouped_people = mock("grouped people")
       @mock_section.stub!(:members_by_group).and_return(grouped_people)
       mock_shifts = Array.new
@@ -30,5 +27,14 @@ describe ReportsController do
     it { assigns(:end_date).should == Date.today }
 
     it { assigns(:report).should == @mock_report }
+  end
+
+  describe "GET section_person_shift_totals" do
+
+    before(:each) do
+      @mock_person = mock_model(Person)
+      Person.stub!(:find).with(@mock_person.id).and_return(@mock_person)
+      get :section_person_shift_totals, :person_id => @mock_person.id
+    end
   end
 end

@@ -23,6 +23,9 @@ RadiologyScheduler::Application.configure do
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
+  files_to_keep = 10
+  max_file_size_in_bytes = 10*1024*1024
+  config.logger = Logger.new(config.paths.log.first, files_to_keep, max_file_size_in_bytes)
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store

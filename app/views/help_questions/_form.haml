@@ -1,0 +1,7 @@
+= semantic_form_for @help_question do |question_form|
+  = question_form.input :title
+  = question_form.input :answer
+  = question_form.buttons do
+    = question_form.commit_button
+    or
+    = link_to "Cancel", help_questions_path

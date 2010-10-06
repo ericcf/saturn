@@ -27,7 +27,7 @@
   - group_names = %w[Faculty Fellows Residents]
   %ul
     - group_names.each do |group_name|
-      - if @grouped_people[group_name] && @grouped_people[group_name].size > 0
+      - unless @grouped_people[group_name].blank?
         %li= link_to group_name, "#groups-#{group_name.downcase}"
   = render :partial => 'group', :locals => { :grouped_people => @grouped_people }, :collection => %w[Faculty Fellows Residents]
 

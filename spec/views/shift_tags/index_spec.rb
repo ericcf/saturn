@@ -4,9 +4,10 @@ describe "shift_tags/index" do
 
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
-    @mock_shift = mock_model(Shift, :title => "AM Call")
+    @mock_shift = stub_model(Shift, :title => "AM Call")
     @mock_shift_tag = stub_model(ShiftTag, :title => "Call",
-      :shifts => [@mock_shift], :display_color => "abcdef")
+      :display_color => "abcdef")
+    @mock_shift_tag.stub!(:shifts).and_return([@mock_shift])
     @mock_orphan_tag =  stub_model(ShiftTag, :title => "Baz", :shifts => [])
     assign(:shift_tags, [@mock_shift_tag, @mock_orphan_tag])
     should_render_partial("schedules/section_menu")

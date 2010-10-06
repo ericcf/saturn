@@ -1,6 +1,8 @@
 require 'factory_girl'
 
 Factory.define :shift do |s|
-  s.title "AM Shift"
-  s.association :section, :factory => :section
+  #factory :shift do
+    s.title "AM Shift"
+    s.association :section
+  #end
 end

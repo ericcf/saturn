@@ -1,8 +1,4 @@
-module WeeklySchedulesHelper
-
-  def short_date(date)
-    "#{date.strftime("%a")} #{date.month}/#{date.day}"
-  end
+module TablesHelper
 
   def format_header(item, *options)
     show_markup = options.include?(:no_markup) ? false : true

@@ -20,4 +20,10 @@ describe Ability do
   it { should be_able_to(:manage, Rotation) }
 
   it { should be_able_to(:manage, User) }
+
+  it { should be_able_to(:manage, FeedbackStatus) }
+
+  it { should be_able_to(:manage, FeedbackTicket) }
+
+  it { should be_able_to(:manage, HelpQuestion) }
 end

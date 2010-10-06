@@ -1,5 +1,6 @@
 GEM
   remote: http://rubygems.org/
+  remote: http://gems.github.com/
   specs:
     abstract (1.0.0)
     actionmailer (3.0.0)
@@ -31,13 +32,13 @@ GEM
     archive-tar-minitar (0.5.2)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    autotest (4.3.2)
+    autotest (4.4.1)
     bcrypt-ruby (2.1.2)
     builder (2.1.2)
-    cancan (1.3.4)
+    cancan (1.4.0)
     columnize (0.3.1)
     daemons (1.0.10)
-    devise (1.1.2)
+    devise (1.1.3)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 0.10.7)
     diff-lcs (1.1.2)
@@ -49,21 +50,27 @@ GEM
     factory_girl_rails (1.0)
       factory_girl (~> 1.3)
       rails (>= 3.0.0.beta4)
+    formtastic (1.1.0)
+      actionpack (>= 2.3.0)
+      activesupport (>= 2.3.0)
+      i18n (>= 0.4.0)
     gem_plugin (0.2.3)
-    google-spreadsheet-ruby (0.1.1)
-      hpricot (>= 0.3)
+    google-spreadsheet-ruby (0.1.2)
+      nokogiri (>= 1.4.3.1)
       oauth (>= 0.3.6)
-    haml (3.0.18)
-    hpricot (0.8.2)
+    haml (3.0.21)
     i18n (0.4.1)
-    jasmine (0.11.1.0)
+    jasmine (1.0.1)
+      json_pure (>= 1.4.3)
       rack (>= 1.0.0)
+      rake (>= 0.8.7)
       rspec (>= 1.1.5)
       selenium-client (>= 1.2.17)
       selenium-rc (>= 2.1.0)
+    json_pure (1.4.6)
     linecache19 (0.5.11)
       ruby_core_source (>= 0.1.4)
-    mail (2.2.5)
+    mail (2.2.6.1)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
@@ -75,9 +82,9 @@ GEM
     oauth (0.4.3)
     polyglot (0.3.1)
     rack (1.2.1)
-    rack-mount (0.6.12)
+    rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.4)
+    rack-test (0.5.6)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)
@@ -94,16 +101,18 @@ GEM
       thor (~> 0.14.0)
     rake (0.8.7)
     roo (1.9.3)
-    rspec (2.0.0.beta.20)
-      rspec-core (= 2.0.0.beta.20)
-      rspec-expectations (= 2.0.0.beta.20)
-      rspec-mocks (= 2.0.0.beta.20)
-    rspec-core (2.0.0.beta.20)
-    rspec-expectations (2.0.0.beta.20)
+    rspec (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
+      rspec-mocks (= 2.0.0.rc)
+    rspec-core (2.0.0.rc)
+    rspec-expectations (2.0.0.rc)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.20)
-    rspec-rails (2.0.0.beta.20)
-      rspec (= 2.0.0.beta.20)
+    rspec-mocks (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
+    rspec-rails (2.0.0.rc)
+      rspec (= 2.0.0.rc)
     ruby-debug-base19 (0.11.24)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -123,7 +132,7 @@ GEM
     spreadsheet (0.6.4.1)
       ruby-ole
     sqlite3-ruby (1.3.1)
-    thor (0.14.0)
+    thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
@@ -144,11 +153,13 @@ DEPENDENCIES
   cancan
   devise
   ekuseru
+  factory_girl
   factory_girl_rails
+  formtastic
   google-spreadsheet-ruby
   haml
   jasmine
-  mongrel
+  mongrel (= 1.2.0.pre2)
   rails (= 3.0.0)
   roo
   rspec-rails (>= 2.0.0.beta.19)

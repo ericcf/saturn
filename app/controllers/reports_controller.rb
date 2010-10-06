@@ -23,7 +23,8 @@ class ReportsController < ApplicationController
     find_person
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
     @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today
-    assignments = Assignment.all(:conditions => ["person_id = ? and date >= ? and date <= ?", @person.id, @start_date, @end_date], :include => :shift)
+    assignments = Assignment.where(:person_id => @person.id).
+      date_in_range(@start_date, @end_date).includes(:shift)
     @shifts = Shift.find(assignments.map(&:shift_id).uniq)
     @assignment_by_shift_and_date = assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift, assignment.date]] = assignment

@@ -69,5 +69,14 @@ RadiologyScheduler::Application.routes.draw do
     end
   end
 
+  resources :feedback_statuses
+  resources :feedback_tickets
+  resources :help_questions, :except => :show
+
+  match "admin", :to => "admin#index", :via => "get"
+  scope "/admin" do
+    resources :site_statistics, :only => :index
+  end
+
   root :to => "schedules#weekly_call"
 end

@@ -4,6 +4,8 @@ class CreatePhones < ActiveRecord::Migration
       t.integer :contact_id
       t.string :value
     end
+
+    add_index :phones, :contact_id
   end
 
   def self.down

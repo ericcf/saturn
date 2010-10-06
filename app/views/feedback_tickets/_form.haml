@@ -1,0 +1,6 @@
+= semantic_form_for @feedback_ticket do |ticket_form|
+  = ticket_form.input :description, :label => "Describe your issue"
+  = ticket_form.buttons do
+    = ticket_form.commit_button
+    or
+    = link_to "Cancel", feedback_tickets_path

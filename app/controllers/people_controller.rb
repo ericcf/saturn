@@ -7,8 +7,7 @@ class PeopleController < ApplicationController
   before_filter :authenticate_user!, :only => [:edit, :update]
 
   def index
-    @people = Person.
-      all(:include => [:names_alias, :sections, :groups])
+    @people = Person.includes([:names_alias, :sections, :groups])
   end
 
   def edit

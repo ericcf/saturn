@@ -6,7 +6,7 @@ class Ability
     return if user.nil?
     if user.admin?
       can :manage, [WeeklySchedule, SectionMembership, Shift, ShiftTag, Person,
-        Section, Rotation, User]
+        Section, Rotation, User, FeedbackStatus, FeedbackTicket, HelpQuestion]
     end
   end
 end

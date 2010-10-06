@@ -46,6 +46,8 @@ describe Assignment do
 
   it { should have_db_index(:weekly_schedule_id) }
 
+  it { should have_db_index(:person_id) }
+
   # associations
 
   it { should belong_to(:weekly_schedule) }
