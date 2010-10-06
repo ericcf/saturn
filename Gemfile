@@ -19,8 +19,9 @@ gem 'google-spreadsheet-ruby'
 # iCalendar import/export
 gem 'vpim'
 
-# Deploy with Capistrano
+# Deployment
 # gem 'capistrano'
+gem 'heroku'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
@@ -33,5 +34,5 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'jasmine'
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  #gem 'ruby-debug19', :require => 'ruby-debug'
 end
