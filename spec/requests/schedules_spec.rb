@@ -14,14 +14,18 @@ describe "schedules" do
       end
     end
 
-    context "with a current assignment" do
+    context "with a current assignment to a call shift" do
 
       before(:all) do
         Assignment.delete_all
         Shift.delete_all
         Person.delete_all
         Section.delete_all
-        @assignment = Factory(:assignment)
+        person = Factory(:person, :family_name => "Jones")
+        @assignment = Factory(:assignment, :person => person)
+        call_shift_tag = Factory(:shift_tag, :title => "Call")
+        Factory(:shift_tag_assignment, :shift => @assignment.shift,
+          :shift_tag => call_shift_tag)
       end
 
       context "with an unpublished weekly schedule" do
@@ -35,8 +39,7 @@ describe "schedules" do
       context "with a published weekly schedule" do
 
         it "renders the assignment" do
-          # set schedule date to Monday
-          WeeklySchedule.last.update_attribute(:publish, 1)
+          WeeklySchedule.last.update_attribute(:published_at, Date.today)
           get weekly_call_schedule_path
           response.should contain(@assignment.person.family_name)
         end

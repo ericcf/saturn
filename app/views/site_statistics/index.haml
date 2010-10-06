@@ -8,8 +8,8 @@
     %tr
       %td Assignments
       %td= @assignment_count
-      %td= time_ago_in_words @assignments_last_updated
+      %td= @assignments_last_updated ? time_ago_in_words(@assignments_last_updated) : "never"
     %tr
       %td Sections
       %td= @section_count
-      %td= time_ago_in_words @sections_last_updated
+      %td= @sections_last_updated ? time_ago_in_words(@sections_last_updated) : "never"

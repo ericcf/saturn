@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "admin/index" do
 
   before(:each) do
+    should_render_partial("deadbolt/shared_partials/admin_menu")
     render
   end
 

@@ -1,6 +1,6 @@
 class FeedbackTicket < ActiveRecord::Base
 
-  belongs_to :user
+  belongs_to :user, :class_name => "Deadbolt::User"
   belongs_to :status, :class_name => "FeedbackStatus",
     :foreign_key => :status_id
 

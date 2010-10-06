@@ -23,18 +23,12 @@
           != nav_item "On Call", weekly_call_schedule_path
           != nav_item "Sections", sections_path
           != nav_item "All Physicians", people_path, {}, :manage, Person
-          != nav_item "Users", users_path, {}, :manage, User
           != nav_item "Admin", admin_path
           != nav_item "FAQ", help_questions_path
           != nav_item "Report Problem", new_feedback_ticket_path, {:class=>"last"}
     %div#personal-wrapper
       %div#personal
-        %div
-          - if user_signed_in?
-            %span.first= current_user.email
-            %span= link_to "Sign out", destroy_user_session_path
-          - else
-            %span= link_to "Sign in", new_user_session_path
+        %div= render "deadbolt/shared_partials/personal"
     = render "shared/flash_banner"
     %div#main
       = yield :content_menu

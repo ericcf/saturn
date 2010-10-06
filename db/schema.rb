@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "memberships", ["contact_id"], :name => "index_memberships_on_contact_id"
   add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
 
+  create_table "permissions", :force => true do |t|
+    t.string   "action",      :null => false
+    t.string   "target_type", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "person_aliases", :force => true do |t|
     t.integer  "person_id",  :null => false
     t.string   "initials"
@@ -97,6 +104,31 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   end
 
   add_index "phones", ["contact_id"], :name => "index_phones_on_contact_id"
+
+  create_table "role_assignments", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "role_id",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "role_assignments", ["role_id", "user_id"], :name => "index_role_assignments_on_role_id_and_user_id", :unique => true
+
+  create_table "role_permissions", :force => true do |t|
+    t.integer  "role_id",       :null => false
+    t.integer  "permission_id", :null => false
+    t.integer  "target_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["name"], :name => "index_roles_on_name", :unique => true
 
   create_table "rotation_assignments", :force => true do |t|
     t.integer  "person_id",   :null => false
@@ -177,6 +209,7 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.string   "email",                               :default => "",    :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "",    :null => false
     t.string   "password_salt",                       :default => "",    :null => false
+    t.string   "authentication_token"
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -188,7 +221,6 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.integer  "failed_attempts",                     :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.string   "authentication_token"
     t.boolean  "admin",                               :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
