@@ -1,5 +1,4 @@
 source 'http://rubygems.org'
-source 'http://gems.github.com'
 
 gem 'rails', '3.0.0'
 
@@ -9,7 +8,7 @@ gem 'haml'
 gem 'mongrel', '= 1.2.0.pre2'
 
 # authentication/authorization
-gem 'deadbolt', :git => 'git@github.com:ericcf/deadbolt.git'
+gem 'deadbolt', :git => 'git://github.com/ericcf/deadbolt.git'
 # required by Deadbolt
 gem 'devise'
 gem 'cancan'
