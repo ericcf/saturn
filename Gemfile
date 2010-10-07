@@ -37,5 +37,5 @@ group :development, :test do
   gem 'factory_girl'
   gem 'factory_girl_rails'
   gem 'jasmine'
-  gem 'ruby-debug19', :require => 'ruby-debug'
+  #gem 'ruby-debug19', :require => 'ruby-debug'
 end
