@@ -1,12 +1,11 @@
 GIT
-  remote: git@github.com:ericcf/deadbolt.git
+  remote: git://github.com/ericcf/deadbolt.git
   revision: 224c1f4a33e4d98a7ad5b143983278139fa48587
   specs:
     deadbolt (0.0.1)
 
 GEM
   remote: http://rubygems.org/
-  remote: http://gems.github.com/
   specs:
     abstract (1.0.0)
     actionmailer (3.0.0)
@@ -81,7 +80,7 @@ GEM
       rake (>= 0.8.1)
     linecache19 (0.5.11)
       ruby_core_source (>= 0.1.4)
-    mail (2.2.6.1)
+    mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
