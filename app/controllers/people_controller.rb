@@ -25,7 +25,7 @@ class PeopleController < ApplicationController
     authorize! :update, @person
 
     if @person.update_attributes(params[:person])
-      return(redirect_to person_path(@person))
+      return(redirect_to people_path)
     end
     render :edit
 

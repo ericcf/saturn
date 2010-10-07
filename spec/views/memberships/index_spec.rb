@@ -33,14 +33,14 @@ describe "memberships/index" do
 
   it "renders the title of each group" do
     render
-    rendered.should have_selector("th", :content => "Group 1")
+    rendered.should have_selector("legend span", :content => "Group 1")
   end
 
   it "renders full names of members" do
     render
-    rendered.should have_selector("td",
-      :content => @mock_person.full_name
-    )
+    rendered.should have_selector("label") do |label|
+      label.should contain(@mock_person.full_name)
+    end
   end
 
   it "renders fields to destroy members" do

@@ -1,8 +1,12 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-= form_for [@section, @shift_tag] do |form|
-  = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
-  %div= form.label :title
-  %div= form.text_field :title
-  %div= save_or_cancel form, section_shift_tags_path(@section)
+%div.form-container
+  = semantic_form_for [@section, @shift_tag] do |tag_form|
+    = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
+    = tag_form.inputs :title
+    = tag_form.buttons do
+      = tag_form.commit_button
+      %li
+        or
+        = link_to "Cancel", section_shift_tags_path(@section)

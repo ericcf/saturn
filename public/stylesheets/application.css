@@ -10,8 +10,13 @@ body, p, ul, li, form, input {
   font-family: Arial, Helvetica, sans-serif; }
 
 body, p, h1, h2, h3, h4, h5, h6, ul, li {
-  color: #333333;
   background: white; }
+
+body, p, li {
+  color: #6e6f72; }
+
+h1, h2, h3, h4, h5, h6, th {
+  color: #333333; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: Georgia, Times, serif; }
@@ -28,9 +33,6 @@ h3 {
 p, h2, h3, h4, h5, h6 {
   margin-bottom: 18px; }
 
-input {
-  height: 18px; }
-
 .button {
   height: 27px; }
 
@@ -43,7 +45,7 @@ input {
 div#top-menu-wrapper {
   width: 100%;
   height: 18px;
-  background-color: #000033; }
+  background-color: #333333; }
   div#top-menu-wrapper div#top-menu {
     width: 900px;
     margin: auto; }
@@ -59,10 +61,11 @@ div#top-menu-wrapper {
         div#top-menu-wrapper div#top-menu ul li.last {
           border-right: none; }
         div#top-menu-wrapper div#top-menu ul li a {
-          color: #efefef;
-          text-decoration: none; }
+          color: #c6c8cb;
+          text-decoration: none;
+          font-weight: bold; }
           div#top-menu-wrapper div#top-menu ul li a.current {
-            font-weight: bold; }
+            color: white; }
 
 div#personal-wrapper {
   width: 100%;
@@ -83,7 +86,7 @@ div#personal-wrapper {
   padding-left: 18px; }
 
 a, a:visited, a:active {
-  color: #000099;
+  color: #2f4462;
   text-decoration: none; }
 
 a:hover {
@@ -91,6 +94,34 @@ a:hover {
 
 ul {
   list-style: none; }
+
+div.form-container {
+  width: 900px; }
+
+input {
+  height: 18px; }
+
+.commit input.create, .commit input.update {
+  height: 27px;
+  color: #f2ece9;
+  font-weight: bold;
+  background-color: #6e8a41;
+  cursor: pointer;
+  border: none;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 0px 5px;
+  text-transform: capitalize; }
+
+input, textarea {
+  border: 1px solid;
+  border-color: #c4c7cb; }
+
+form fieldset.buttons li {
+  line-height: 27px; }
+
+.inline_form {
+  margin: 0 0.5em; }
 
 table {
   border-collapse: collapse;
@@ -107,7 +138,6 @@ th {
 
 td, th {
   line-height: 16px;
-  color: black;
   border-bottom: 1px solid;
   border-bottom-color: #cccccc;
   border-right: 1px solid;
@@ -165,17 +195,22 @@ table .schedule_block {
       border: 1px solid;
       border-color: #777788;
       border-bottom: none;
-      background: #ddddee;
-      text-decoration: none; }
+      background: #2f4462;
+      text-decoration: none;
+      -moz-border-radius-topLeft: 5px;
+      -moz-border-radius-topRight: 5px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px; }
       .navlist li a:link {
-        color: #666677; }
+        color: #f2ece9; }
       .navlist li a:visited {
-        color: #666677; }
+        color: #f2ece9; }
       .navlist li a:hover {
-        color: black;
-        background: #aaaaee;
+        color: #2f4462;
+        background: #f2ece9;
         border-color: #222277; }
       .navlist li a.current {
+        color: #2f4462;
         background: white;
         border-bottom: 1px solid;
         border-bottom-color: white; }
@@ -203,12 +238,14 @@ div#flash-wrapper {
       border: 2px solid red; }
 
 .subheadline {
-  height: 3em; }
+  height: 36px; }
   .subheadline * {
     float: left; }
+  .subheadline h3, .subheadline .inline_form {
+    margin: 5px; }
 
-.inline_form {
-  margin: 0 0.5em; }
+.current-date {
+  background-color: #e6ddda; }
 
 .ui-datepicker-trigger {
   cursor: pointer; }

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "people/edit" do
 
   before(:each) do
-    assign(:person, mock_model(Person).as_null_object)
+    assign(:person, stub_model(Person).as_null_object)
     render
   end
 

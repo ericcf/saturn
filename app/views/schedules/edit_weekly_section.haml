@@ -32,7 +32,7 @@
   = render :partial => 'group', :locals => { :grouped_people => @grouped_people }, :collection => %w[Faculty Fellows Residents]
 
 - form_url = @weekly_schedule.new_record? ? create_weekly_section_schedule_path(@section) : update_weekly_section_schedule_path(@section)
-= form_for @weekly_schedule, :url => form_url do |form|
+= semantic_form_for @weekly_schedule, :url => form_url do |form|
   - if @weekly_schedule.new_record?
     = form.hidden_field :date
   - else
@@ -40,9 +40,13 @@
 
   %div.schedule_publishing
     = @weekly_schedule.published? ? "Published: #{@weekly_schedule.published_at.to_s(:long)}" : "Unpublished"
-    = save_or_cancel form, edit_weekly_section_schedule_path(@section)
     | Publish?
     = form.check_box :publish
+    = form.buttons do
+      = form.commit_button
+      %li
+        or
+        = link_to "Cancel", edit_weekly_section_schedule_path(@section)
 
   %table.schedule
     %thead

@@ -41,8 +41,8 @@ describe "schedules/weekly_call" do
     it "renders the call shift titles on the rows from @call_shifts" do
       render
       rendered.should have_selector("table") do |table|
-        table.should have_selector("tr > td", :content => "Shift A")
-        table.should have_selector("tr > td", :content => "Shift B")
+        table.should have_selector("tr > th", :content => "Shift A")
+        table.should have_selector("tr > th", :content => "Shift B")
       end
     end
 

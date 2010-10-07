@@ -1,7 +1,10 @@
-= semantic_form_for @feedback_status do |status_form|
-  = status_form.input :name
-  = status_form.input :default, :label => "This is the default status"
-  = status_form.buttons do
-    = status_form.commit_button
-    or
-    = link_to "Cancel", feedback_statuses_path
+%div.form-container
+  = semantic_form_for @feedback_status do |status_form|
+    = status_form.inputs do
+      = status_form.input :name
+      = status_form.input :default, :label => "Make this the default"
+    = status_form.buttons do
+      = status_form.commit_button
+      %li
+        or
+        = link_to "Cancel", feedback_statuses_path

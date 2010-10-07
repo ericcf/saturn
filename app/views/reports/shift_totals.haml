@@ -10,7 +10,7 @@
   = render "schedules/section_menu"
 
 %div.subheadline
-  = form_tag section_shift_totals_path(@section), :method => :get do
+  = semantic_form_for @section, :url => section_shift_totals_path(@section), :html => { :method => :get } do |report_form|
     %h3
       %span#start_date_text= @start_date.to_s(:long)
     %div.inline_form
@@ -20,8 +20,8 @@
       %span#end_date_text= @end_date.to_s(:long)
     %div.inline_form
       = text_field_tag "end_date", @end_date.to_s
-    %div.inline_form
-      = submit_tag "Get Report"
+    %ol
+      = report_form.commit_button "Get Report"
 
 %p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date)
 

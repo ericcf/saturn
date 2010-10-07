@@ -1,9 +1,11 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-= form_for [@section, @shift] do |shift_form|
-  %div= shift_form.label :title
-  %div= shift_form.text_field :title
-  = shift_form.submit "Save", :class => "button"
-  or
-  = link_to "Cancel", section_shifts_path(@section)
+%div.form-container
+  = semantic_form_for [@section, @shift] do |shift_form|
+    = shift_form.inputs :title
+    = shift_form.buttons do
+      = shift_form.commit_button
+      %li
+        or
+        = link_to "Cancel", section_shifts_path(@section)

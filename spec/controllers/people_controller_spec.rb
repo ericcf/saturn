@@ -102,7 +102,7 @@ describe PeopleController do
           put :update, :id => mock_person.id
         end
 
-        it { should redirect_to(person_path(mock_person)) }
+        it { should redirect_to(people_path) }
       end
 
       context "with invalid parameters" do

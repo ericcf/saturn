@@ -17,8 +17,12 @@
 
 %p= link_to "Add Shift", new_section_shift_path(@section)
 
-= form_for @section do |section_form|
-  = section_form.submit "Save Changes", :class => "button"
+= semantic_form_for @section do |section_form|
+  = section_form.buttons do
+    = section_form.commit_button
+    %li
+      or
+      = link_to "Cancel", section_shifts_path(@section)
   = hidden_field_tag "redirect_path", section_shifts_path(@section)
   %table#current_shifts
     %thead
@@ -45,7 +49,11 @@
             %td.description= shift_form.text_field :description
             %td= shift_form.check_box :retire
             %td.details.hidden= shift_form.hidden_field :position
-  = section_form.submit "Save Changes", :class => "button"
+  = section_form.buttons do
+    = section_form.commit_button
+    %li
+      or
+      = link_to "Cancel", section_shifts_path(@section)
 
   - if @retired_shifts.size > 0
     %h3 Retired Shifts

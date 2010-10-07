@@ -4,22 +4,31 @@
 %p= link_to "Add Category", new_section_shift_tag_path(@section)
 
 - if @shift_tags.size > 0
-= form_for @section do |section_form|
-  = save_or_cancel section_form, section_shift_tags_path(@section)
-  = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
-  %table
-    - @shift_tags.each do |shift_tag|
-      %tr{ :class => cycle("odd", "") }
-        = section_form.fields_for :shift_tags, shift_tag do |shift_tag_form|
-          %td= shift_tag_form.text_field :title
-          %td= shift_tag.shifts.map(&:title).join(", ")
-          - colors = options_for_select([["light blue", "3399ff"], ["dark blue", "000099"], ["light green", "11cc11"], ["dark green", "007700"]], shift_tag.display_color)
-          %td= shift_tag_form.select :display_color, colors, :prompt => "select color..."
-          %td
-            - if shift_tag.shifts.size == 0
-              delete category?
-              = shift_tag_form.check_box :_destroy
-            - else
-              remove category from shifts?
-              = shift_tag_form.check_box :clear_assignments
-  = save_or_cancel section_form, section_shift_tags_path(@section)
+  %div.form-container
+    = semantic_form_for @section do |section_form|
+      = section_form.buttons do
+        = section_form.commit_button
+        %li
+          or
+          = link_to "Cancel", section_shift_tags_path(@section)
+      = hidden_field_tag "redirect_path", section_shift_tags_path(@section)
+      %table
+        - @shift_tags.each do |shift_tag|
+          %tr{ :class => cycle("odd", "") }
+            = section_form.fields_for :shift_tags, shift_tag do |shift_tag_form|
+              %td= shift_tag_form.text_field :title
+              %td= shift_tag.shifts.map(&:title).join(", ")
+              - colors = options_for_select([["light blue", "3399ff"], ["dark blue", "000099"], ["light green", "11cc11"], ["dark green", "007700"]], shift_tag.display_color)
+              %td= shift_tag_form.select :display_color, colors, :prompt => "select color..."
+              %td
+                - if shift_tag.shifts.size == 0
+                  delete category?
+                  = shift_tag_form.check_box :_destroy
+                - else
+                  remove category from shifts?
+                  = shift_tag_form.check_box :clear_assignments
+      = section_form.buttons do
+        = section_form.commit_button
+        %li
+          or
+          = link_to "Cancel", section_shift_tags_path(@section)

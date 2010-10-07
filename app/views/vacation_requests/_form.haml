@@ -3,7 +3,12 @@
 
 %h3 Vacation Request
 
-= form_for [@section, @vacation_request] do |vacation_request_form|
-  %div= vacation_request_form.label :comments
-  %div= vacation_request_form.text_area :comments, :rows => 5
-  = save_or_cancel vacation_request_form, section_vacation_requests_path(@section)
+%div.form-container
+  = semantic_form_for [@section, @vacation_request] do |vacation_request_form|
+    = vacation_request_form.inputs do
+      = vacation_request_form.input :comments, :input_html => { :rows => 5 }
+    = vacation_request_form.buttons do
+      = vacation_request_form.commit_button
+      %li
+        or
+        = link_to "Cancel", section_vacation_requests_path(@section)

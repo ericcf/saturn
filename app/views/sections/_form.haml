@@ -1,12 +1,10 @@
 %h2 Add Section
 
-= form_for @section do |form|
-  = form.label :title
-  %br
-  = form.text_field :title
-  %br
-  = form.label :description
-  %br
-  = form.text_area :description
-  %br
-  = save_or_cancel form, sections_path
+%div.form-container
+  = semantic_form_for @section do |section_form|
+    = section_form.inputs :title, :description
+    = section_form.buttons do
+      = section_form.commit_button
+      %li
+        or
+        = link_to "Cancel", sections_path

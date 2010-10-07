@@ -1,4 +1,16 @@
+// see http://colorschemedesigner.com/#0e3221BsOw0w0 for scheme
+
 // general
+
+!baseLineHeight = 18px
+!baseTextColor = #6e6f72
+!mediumTextColor = #C6C8CB
+!oppositeTextColor = #f2ece9
+!baseHeaderColor = #333
+!baseLinkColor = #2f4462
+!baseOkayColor = #6e8a41
+!topMenuBackgroundColor = #333
+!highlightColor = #e6ddda
 
 *
   margin: 0
@@ -6,14 +18,19 @@
 
 body, p, h1, h2, h3, h4, h5, h6, ul, li, form, input
   font-size: 12px
-  line-height: 18px
+  line-height = !baseLineHeight
 
 body, p, ul, li, form, input
   font-family: Arial, Helvetica, sans-serif
 
 body, p, h1, h2, h3, h4, h5, h6, ul, li
-  color: #333
   background: #FFF
+
+body, p, li
+  color = !baseTextColor
+
+h1, h2, h3, h4, h5, h6, th
+  color = !baseHeaderColor
 
 h1, h2, h3, h4, h5, h6
   font-family: Georgia, Times, serif
@@ -30,9 +47,6 @@ h3
 p, h2, h3, h4, h5, h6
   margin-bottom: 18px
 
-input
-  height: 18px
-
 .button
   height: 27px
 
@@ -47,7 +61,7 @@ input
 div#top-menu-wrapper
   width: 100%
   height: 18px
-  background-color: #000033
+  background-color = !topMenuBackgroundColor
   div#top-menu
     width: 900px
     margin: auto
@@ -63,10 +77,11 @@ div#top-menu-wrapper
         &.last
           border-right: none
         a
-          color: #efefef
+          color = !mediumTextColor
           text-decoration: none
+          font-weight: bold
           &.current
-            font-weight: bold
+            color = #fff
 
 div#personal-wrapper
   width: 100%
@@ -89,7 +104,7 @@ div#personal-wrapper
 // links
 
 a, a:visited, a:active
-  color: #000099
+  color = !baseLinkColor
   text-decoration: none
 a:hover
   text-decoration: underline
@@ -97,6 +112,42 @@ a:hover
 // lists
 ul
   list-style: none
+
+// forms
+
+!formLabelWidth = 200px
+!formLabelMargin = 5px
+!formInputBorderColor = #C4C7CB
+
+div.form-container
+  width: 900px
+
+input
+  height = !baseLineHeight
+
+.commit
+  input.create, input.update
+    height = 1.5*!baseLineHeight
+    color = !oppositeTextColor
+    font-weight: bold
+    background-color = !baseOkayColor
+    cursor: pointer
+    border: none
+    -moz-border-radius: 5px
+    border-radius: 5px
+    padding: 0px 5px
+    text-transform: capitalize
+
+input, textarea
+  border: 1px solid
+  border-color = !formInputBorderColor
+
+form fieldset.buttons
+  li
+    line-height = 1.5*!baseLineHeight
+
+.inline_form
+  margin: 0 0.5em
 
 // tables
 
@@ -121,7 +172,6 @@ th
 
 td, th
   line-height: 16px
-  color: #000
   border-bottom: 1px solid
   border-bottom-color = !tableCellBorderColor
   border-right: 1px solid
@@ -163,11 +213,11 @@ table .schedule_block
 // navigation
 
 !navBorderColor = #778
-!navBackgroundColor = #dde
-!navLinkColor = #667
-!navVisitedLinkColor = #667
-!navHoverLinkColor = #000
-!navHoverBackgroundColor = #aae
+!navBackgroundColor = !baseLinkColor
+!navLinkColor = !oppositeTextColor
+!navVisitedLinkColor = !oppositeTextColor
+!navHoverLinkColor = !baseLinkColor
+!navHoverBackgroundColor = !oppositeTextColor
 !navHoverBorderColor = #227
 !navActiveBackgroundColor = #fff
 !navActiveBorderBottomColor = #fff
@@ -193,6 +243,10 @@ table .schedule_block
       border-bottom: none
       background = !navBackgroundColor
       text-decoration: none
+      -moz-border-radius-topLeft: 5px
+      -moz-border-radius-topRight: 5px
+      border-top-left-radius: 5px
+      border-top-right-radius: 5px
       &:link
         color = !navLinkColor
       &:visited
@@ -202,6 +256,7 @@ table .schedule_block
         background = !navHoverBackgroundColor
         border-color = !navHoverBorderColor
       &.current
+        color = !navHoverLinkColor
         background = !navActiveBackgroundColor
         border-bottom: 1px solid
         border-bottom-color = !navActiveBorderBottomColor
@@ -233,12 +288,14 @@ div#flash-wrapper
 // misc
 
 .subheadline
-  height: 3em
+  height = 2 * !baseLineHeight
   *
     float: left
+  h3, .inline_form
+    margin: 5px
 
-.inline_form
-  margin: 0 0.5em
+.current-date
+  background-color = !highlightColor
 
 // jquery ui related
 

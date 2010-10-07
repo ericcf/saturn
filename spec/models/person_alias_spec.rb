@@ -27,6 +27,8 @@ describe PersonAlias do
 
   it { should validate_presence_of(:person) }
 
+  it { should allow_value(nil).for(:initials) }
+
   it { should validate_format_of(:initials).with("EE") }
 
   it { should validate_format_of(:initials).not_with("abcd").

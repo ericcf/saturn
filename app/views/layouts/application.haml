@@ -5,9 +5,9 @@
       = controller.controller_name
       = controller.action_name
 
+    = formtastic_stylesheet_link_tag
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "print", :media => :print
-    = formtastic_stylesheet_link_tag
     = yield :stylesheets
     = javascript_include_tag "jquery/jquery-1.4.2.min"
     = yield :javascripts

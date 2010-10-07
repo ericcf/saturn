@@ -1,10 +1,12 @@
 %h2= "Editing Aliases for #{@person.full_name}"
 
-= form_for @person do |person_form|
-  = person_form.fields_for :names_alias do |alias_form|
-    %div= alias_form.label :short_name
-    %div= alias_form.text_field :short_name
-    %div= alias_form.label :initials
-    %div= alias_form.text_field :initials
-  %div
-    = save_or_cancel person_form, people_path
+%div.form-container
+  = semantic_form_for @person do |person_form|
+    = person_form.inputs do
+      = person_form.semantic_fields_for :names_alias do |alias_form|
+        = alias_form.inputs :short_name, :initials
+    = person_form.buttons do
+      = person_form.commit_button
+      %li
+        or
+        = link_to "Cancel", people_path
