@@ -9,7 +9,7 @@ gem 'haml'
 gem 'mongrel', '= 1.2.0.pre2'
 
 # authentication/authorization
-gem 'deadbolt', :path => '/mnt/hgfs/projects/suite/deadbolt'
+gem 'deadbolt', :git => 'git@github.com:ericcf/deadbolt.git'
 # required by Deadbolt
 gem 'devise'
 gem 'cancan'

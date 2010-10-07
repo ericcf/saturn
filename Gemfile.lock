@@ -1,5 +1,6 @@
-PATH
-  remote: /mnt/hgfs/projects/suite/deadbolt
+GIT
+  remote: git@github.com:ericcf/deadbolt.git
+  revision: 224c1f4a33e4d98a7ad5b143983278139fa48587
   specs:
     deadbolt (0.0.1)
 
