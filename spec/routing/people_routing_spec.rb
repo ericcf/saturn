@@ -27,6 +27,11 @@ describe PeopleController do
       { :delete => "/people/1" }.should_not be_routable
     end
 
+    it "recognizes and generates #search" do
+      { :get => "/people/search" }.
+        should route_to(:controller => "people", :action => "search")
+    end
+
     it "recognizes and generates #schedule" do
       { :get => "/people/1/schedule" }.
         should route_to(:controller => "people", :action => "schedule", :id => "1")

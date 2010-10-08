@@ -18,6 +18,8 @@ describe Section do
 
   it { should have_many(:memberships).dependent(:destroy) }
 
+  it { should have_many(:members).through(:memberships) }
+
   it { should have_many(:weekly_schedules).dependent(:destroy) }
 
   it { should have_many(:shifts).dependent(:destroy) }

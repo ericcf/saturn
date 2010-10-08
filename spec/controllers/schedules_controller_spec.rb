@@ -57,6 +57,7 @@ describe SchedulesController do
       assignments.should_receive(:find).
         with(:all, :order => :position, :include => {:person => :names_alias}).
         and_return([mock_assignment])
+      WeeklySchedule.delete_all; Shift.delete_all
       Assignment.should_receive(:by_schedules_and_shifts).with([], []).
         and_return(assignments)
       get :weekly_call, :date => date
@@ -70,67 +71,6 @@ describe SchedulesController do
         and_return([mock_assignment])
       get :weekly_call
       assigns(:notes).should == [details]
-    end
-  end
-
-  describe "GET daily_duty_roster" do
-
-    context "there is a :date parameter" do
-
-      it "assigns the requested date to @date" do
-        get :daily_duty_roster, :date => "2010-01-01"
-        assigns[:date].should == Date.parse("2010-01-01")
-      end
-    end
-
-    context "there is not a :date paramter" do
-
-      it "assigns the current date to @date" do
-        get :daily_duty_roster
-        assigns(:date).should == Date.today
-      end
-    end
-
-    it "assigns all schedule sections to @sections" do
-      Section.should_receive(:all).and_return([mock_section])
-      get :daily_duty_roster
-      assigns[:sections].should == [mock_section]
-    end
-
-    it "assigns all clinical shifts to @clinical_shifts" do
-      mock_shift = mock_model(Shift)
-      Shift.should_receive(:by_tag).with("Clinical").and_return([mock_shift])
-      get :daily_duty_roster
-      assigns(:clinical_shifts).should == [mock_shift]
-    end
-
-    it "assigns published schedules covering the date to @weekly_schedules" do
-      WeeklySchedule.stub_chain(:published, :find_all_by_date).
-        and_return([mock_schedule])
-      get :daily_duty_roster
-      assigns(:weekly_schedules).should == [mock_schedule]
-    end
-
-    it "assigns ordered assignments today to @clinical_assignments" do
-      date = Date.today
-      mock_assignment = stub_model(Assignment)
-      assignments = stub('assignments')
-      assignments.should_receive(:find_all_by_date).
-        with(date, :order => :position, :include => [:person, :shift]).
-        and_return([mock_assignment])
-      Assignment.should_receive(:by_schedules_and_shifts).with([], []).
-        and_return(assignments)
-      get :daily_duty_roster, :date => date
-      assigns[:clinical_assignments].should == [mock_assignment]
-    end
-
-    it "assigns public note details from assignments to @notes" do
-      details = mock('note details')
-      assignment = mock_model(Assignment, :public_note_details => details)
-      assignments = stub('assignments', :find_all_by_date => [assignment])
-      Assignment.stub!(:by_schedules_and_shifts).and_return(assignments)
-      get :daily_duty_roster
-      assigns[:notes].should == [details]
     end
   end
 
@@ -204,6 +144,14 @@ describe SchedulesController do
       mock_section.stub_chain(:weekly_schedules, :published, :find_by_date)
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:notes).should == [details]
+    end
+
+    context "view_mode = 2 (people on y-axis)" do
+
+      it "assigns tabular data object to @schedule_view" do
+        get :show_weekly_section, :section_id => mock_section.id, :view_mode => 2
+        assigns(:schedule_view).should be_an_instance_of(Tables::TabularData)
+      end
     end
   end
 

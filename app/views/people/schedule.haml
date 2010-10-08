@@ -21,14 +21,14 @@
     %tr
       %th
       - @dates.each do |date|
-        %th= short_date(date)
+        %th{ :class => date == Date.today ? "current-date" : "" }= short_date(date)
     - @person.sections.each do |section|
       %tr
         %th= link_to section.title, weekly_section_schedule_path(section)
         - section_assignments = @assignments_by_section[section] || []
         - assignments_by_date = section_assignments.group_by(&:date)
         - @dates.each do |date|
-          - if assignments_by_date[date]
-            %td!= assignments_by_date[date].map{|a|a.shift.title}.join("<br/>")
+          - unless assignments_by_date[date].blank?
+            %td{ :class => date == Date.today ? "current-date" : "" }!= assignments_by_date[date].map{|a|a.shift.title}.join("<br/>")
           - else
             %td &nbsp;

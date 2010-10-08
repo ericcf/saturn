@@ -8,6 +8,7 @@ class Section < ActiveRecord::Base
     :class_name => 'SectionMembership',
     :dependent => :destroy
   accepts_nested_attributes_for :memberships, :allow_destroy => true
+  has_many :members, :through => :memberships, :source => :person
   has_many :weekly_schedules, :dependent => :destroy
   has_many :shifts, :dependent => :destroy
   accepts_nested_attributes_for :shifts
@@ -17,17 +18,19 @@ class Section < ActiveRecord::Base
 
   before_validation { clean_attributes :title, :description }
 
-  def people_with_associations(assns=nil)
-    Person.find_all_by_id(memberships.map(&:person_id), :include => assns)
+  def physician_members
+    physician_groups = Group.find_all_by_title(SCHEDULE_GROUPS)
+    members.select do |person|
+      physician_groups.any? { |group| person.member_of_group? group }
+    end
   end
 
   # returns the members of this section grouped by SCHEDULE_GROUPS, i.e.:
   # { "Faculty" => [p1, p2], "Fellows" => [p3, p4], "Residents" => [p5, p6] }
   def members_by_group
-    section_members = people_with_associations([:memberships, :names_alias])
     grouped_people = {}
     Group.find_all_by_title(SCHEDULE_GROUPS).each do |group|
-      grouped_people[group.title] = section_members.select do |person|
+      grouped_people[group.title] = members.select do |person|
         person.member_of_group? group
       end
     end

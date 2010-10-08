@@ -1,6 +1,4 @@
-class Group < ActiveRecord::Base
-
-  establish_connection Rails.env.to_sym#Rails.env == "test" ? :test : :directory
+class Group < DirectoryModel
 
   has_many :memberships
   has_many :people, :through => :memberships

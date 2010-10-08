@@ -131,6 +131,30 @@ describe PeopleController do
     end
   end
 
+  describe "GET search" do
+
+    context "no query parameter" do
+
+      before(:each) do
+        get :search
+      end
+
+      it { should render_template(:search) }
+    end
+
+    context "query parameter present" do
+
+      before(:each) do
+        Person.should_receive(:name_like).with("Boo").and_return([mock_person])
+        get :search, :query => "Boo"
+      end
+
+      it { assigns(:people).should eq([mock_person]) }
+
+      it { assigns(:query).should eq("Boo") }
+    end
+  end
+
   describe "GET schedule" do
 
     context "the requested person is found" do

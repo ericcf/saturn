@@ -9,7 +9,9 @@ class ReportsController < ApplicationController
     shifts = @section.shifts.active_as_of(@start_date)
     shift_tags = @section.shift_tags
     assignments = Assignment.date_in_range(@start_date, @end_date).
-      find_all_by_shift_id(shifts.map(&:id), :include => :shift)
+      where(:shift_id => shifts.map(&:id)).
+      includes(:shift).
+      published
     @report = ShiftsReport.new(assignments, shifts, shift_tags, people_by_group)
 
     respond_to do |format|
@@ -24,7 +26,9 @@ class ReportsController < ApplicationController
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
     @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today
     assignments = Assignment.where(:person_id => @person.id).
-      date_in_range(@start_date, @end_date).includes(:shift)
+      date_in_range(@start_date, @end_date).
+      includes(:shift).
+      published
     @shifts = Shift.find(assignments.map(&:shift_id).uniq)
     @assignment_by_shift_and_date = assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift, assignment.date]] = assignment

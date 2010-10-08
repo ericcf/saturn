@@ -1,6 +1,9 @@
 RadiologyScheduler::Application.routes.draw do
 
   resources :people, :only => [:index, :edit, :update] do
+    collection do
+      get "search"
+    end
     member do
       get "schedule"
     end
@@ -24,8 +27,6 @@ RadiologyScheduler::Application.routes.draw do
     scope "/schedules" do
       match "call", :to => "schedules#weekly_call", :via => "get",
         :as => :weekly_call_schedule
-      match "duty", :to => "schedules#daily_duty_roster", :via => "get",
-        :as => :daily_duty_schedule
     end
 
     scope "/sections" do
@@ -72,5 +73,5 @@ RadiologyScheduler::Application.routes.draw do
     resources :site_statistics, :only => :index
   end
 
-  root :to => "schedules#weekly_call"
+  root :to => "people#search"
 end

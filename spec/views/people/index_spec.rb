@@ -15,6 +15,7 @@ describe "people/index" do
     )
     mock_person.stub!(:sections).and_return([mock_section])
     assign(:people, [mock_person])
+    view.should_receive(:will_paginate).twice
     render
     rendered.should have_selector("a",
       :href => schedule_person_path(mock_person),

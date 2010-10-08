@@ -9,7 +9,7 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%h3= "Shift Totals for #{@person.full_name}"
+%h3= "Totals from Published Schedules for #{@person.full_name}"
 
 %div.subheadline
   = form_tag section_person_shift_totals_path(@section, @person), :method => :get do

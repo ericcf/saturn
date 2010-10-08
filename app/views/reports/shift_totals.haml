@@ -9,6 +9,8 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
+%h3 Totals from Published Weekly Schedules
+
 %div.subheadline
   = semantic_form_for @section, :url => section_shift_totals_path(@section), :html => { :method => :get } do |report_form|
     %h3

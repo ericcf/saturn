@@ -9,11 +9,6 @@ describe SchedulesController do
         should route_to(:controller => "schedules", :action => "weekly_call") 
     end
 
-    it "recognizes and generates #daily_duty_roster" do
-      { :get => "/schedules/duty" }.
-        should route_to(:controller => "schedules", :action => "daily_duty_roster") 
-    end
-
     it "recognizes and generates #show_weekly_section" do
       { :get => "/sections/1/schedule" }.
         should route_to(:controller => "schedules", :action => "show_weekly_section", :section_id => "1")

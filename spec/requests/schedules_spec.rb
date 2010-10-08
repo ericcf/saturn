@@ -19,9 +19,8 @@ describe "schedules" do
       before(:all) do
         Assignment.delete_all
         Shift.delete_all
-        Person.delete_all
         Section.delete_all
-        person = Factory(:person, :family_name => "Jones")
+        person = Factory(:physician_membership).person
         @assignment = Factory(:assignment, :person => person)
         call_shift_tag = Factory(:shift_tag, :title => "Call")
         Factory(:shift_tag_assignment, :shift => @assignment.shift,
@@ -47,41 +46,20 @@ describe "schedules" do
     end
   end
 
-  describe "daily duty schedule" do
+  context "show a weekly section schedule" do
 
-    context "with no records in the database" do
-
-      it "renders successfully" do
-        get daily_duty_schedule_path
-        response.should be_success
-      end
-    end
-
-    context "with a section in the database" do
-
-      before(:all) { Section.delete_all; @section = Factory(:section) }
+    context "view_mode == 2 (people on y-axis)" do
 
       it "renders successfully" do
-        get daily_duty_schedule_path
+        Section.delete_all; section = Factory(:section)
+        get weekly_section_schedule_path(:section_id => section.id,
+          :view_mode => 2)
         response.should be_success
-      end
-
-      context "with a person in the section" do
-
-        before(:all) do
-          @person = Factory(:person)
-          @person.sections << @section
-        end
-
-        it "renders successfully" do
-          get daily_duty_schedule_path
-          response.should be_success
-        end
       end
     end
   end
 
-  context "edit a weekly schedule" do
+  context "edit a weekly section schedule" do
 
     context "with no schedules or assignments in the database" do
 

@@ -9,7 +9,7 @@
 !baseHeaderColor = #333
 !baseLinkColor = #2f4462
 !baseOkayColor = #6e8a41
-!topMenuBackgroundColor = #333
+!headerBackgroundColor = #333
 !highlightColor = #e6ddda
 
 *
@@ -58,10 +58,10 @@ p, h2, h3, h4, h5, h6
   a
     color: #fff
 
-div#top-menu-wrapper
+div#header
   width: 100%
   height: 18px
-  background-color = !topMenuBackgroundColor
+  background-color = !headerBackgroundColor
   div#top-menu
     width: 900px
     margin: auto
@@ -73,7 +73,9 @@ div#top-menu-wrapper
         background: none
         float: left
         padding: 0px 10px
-        border-right: 1px solid #666
+        border-left: 1px solid #666
+        &:first-child
+          border-left: none
         &.last
           border-right: none
         a
@@ -110,8 +112,17 @@ a:hover
   text-decoration: underline
 
 // lists
+
 ul
   list-style: none
+
+dt
+  float: left
+  clear: left
+  width: 15%
+dd
+  float: left
+  margin-bottom: 20px
 
 // forms
 
@@ -125,18 +136,17 @@ div.form-container
 input
   height = !baseLineHeight
 
-.commit
-  input.create, input.update
-    height = 1.5*!baseLineHeight
-    color = !oppositeTextColor
-    font-weight: bold
-    background-color = !baseOkayColor
-    cursor: pointer
-    border: none
-    -moz-border-radius: 5px
-    border-radius: 5px
-    padding: 0px 5px
-    text-transform: capitalize
+.commit input.create, .commit input.update, input.submit
+  height = 1.5*!baseLineHeight
+  color = !oppositeTextColor
+  font-weight: bold
+  background-color = !baseOkayColor
+  cursor: pointer
+  border: none
+  -moz-border-radius: 5px
+  border-radius: 5px
+  padding: 0px 5px
+  text-transform: capitalize
 
 input, textarea
   border: 1px solid
@@ -285,6 +295,23 @@ div#flash-wrapper
       background-color: #f99
       border: 2px solid #f00
 
+// pagination
+
+.pagination
+  height: 2.5em
+  a, em, span
+    border: 1px solid !baseLinkColor
+    display: block
+    float: left
+    margin-right: 1px
+    padding: 0.2em 0.5em
+  span.disabled
+    border-color = !mediumTextColor
+    color = !mediumTextColor
+  em
+    background-color = !baseLinkColor
+    color = !oppositeTextColor
+
 // misc
 
 .subheadline
@@ -292,9 +319,9 @@ div#flash-wrapper
   *
     float: left
   h3, .inline_form
-    margin: 5px
+    margin: 5px 5px 5px 0px
 
-.current-date
+.current-date, .highlight
   background-color = !highlightColor
 
 // jquery ui related

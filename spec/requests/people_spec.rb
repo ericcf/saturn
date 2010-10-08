@@ -4,8 +4,8 @@ describe "people" do
 
   include AuthenticationHelpers
 
-  def person_record(attributes={})
-    @person_record ||= Factory(:person, attributes)
+  def physician_record
+    @physician_record ||= Factory(:physician_membership).person
   end
 
   describe "index" do
@@ -46,9 +46,9 @@ describe "people" do
     context "an existing person" do
 
       it "renders a form for updating the person" do
-        get edit_person_path(person_record)
+        get edit_person_path(physician_record)
         response.should have_selector("form",
-          :action => person_path(person_record)
+          :action => person_path(physician_record)
         )
       end
     end
@@ -80,13 +80,13 @@ describe "people" do
       context "with valid parameters" do
 
         it "updates the requested Person" do
-          put person_path(person_record), :person => {
+          put person_path(physician_record), :person => {
             :names_alias_attributes => {
               :initials => "MM",
               :short_name => "M. Mouse"
             }
           }
-          person = Person.find(:last, :order => :id)
+          person = Person.order("contacts.id").last
           person.initials.should == "MM"
           person.short_name.should == "M. Mouse"
         end
@@ -95,7 +95,7 @@ describe "people" do
       context "with invalid parameters" do
 
         it "does not update the requested Person" do
-          put person_path(person_record), :person => {
+          put person_path(physician_record), :person => {
             :given_name => nil
           }
           Person.last.given_name.should_not be_nil

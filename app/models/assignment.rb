@@ -17,7 +17,10 @@ class Assignment < ActiveRecord::Base
           :shift_id => shifts.map(&:id))
   }
   scope :date_in_range, lambda { |start_date, end_date|
-    where(["date >= ? and date <= ?", start_date, end_date])
+    where("assignments.date >= ? and assignments.date <= ?", start_date, end_date)
+  }
+  scope :published, lambda {
+    joins(:weekly_schedule).where("weekly_schedules.published_at is not null")
   }
 
   def public_note_details

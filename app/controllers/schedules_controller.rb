@@ -20,24 +20,6 @@ class SchedulesController < ApplicationController
     @notes = @call_assignments.map(&:public_note_details).compact
   end
 
-  def daily_duty_roster
-    @date = (params[:date] || Date.today).to_date
-    @week_start_date = @date.at_beginning_of_week
-    @sections = Section.all
-    @weekly_schedules = WeeklySchedule.published.
-      find_all_by_date(@week_start_date)
-    @clinical_shifts = Shift.by_tag("Clinical")
-    @clinical_assignments = Assignment.by_schedules_and_shifts(
-      @weekly_schedules,
-      @clinical_shifts
-    ).find_all_by_date(
-      @date,
-      :order => :position,
-      :include => [:person, :shift]
-    )
-    @notes = @clinical_assignments.map(&:public_note_details).compact
-  end
-
   def show_weekly_section
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
@@ -52,15 +34,15 @@ class SchedulesController < ApplicationController
       :include => [{ :person => :names_alias }, :shift])
     @notes = @assignments.map(&:public_note_details).compact
     @view_mode = params[:view_mode]
-    @schedule_view = case @view_mode
-                     when nil, "1"
+    @schedule_view = case @view_mode.to_i
+                     when 0, 1
                        Tables::TabularData.new(:x => [@dates, :clone],
       :y => [@shifts, :id],
       :mapped_values => @assignments.group_by {|a| [a.date, a.shift_id]},
       :content_formatter => lambda { |assgnmnt| assgnmnt.person.short_name })
-                     when "2"
+                     when 2
                        Tables::TabularData.new(:x => [@dates, :clone],
-      :y => [@section.people_with_associations(:names_alias), :id], 
+      :y => [@section.members, :id], 
       :mapped_values => @assignments.group_by {|a| [a.date, a.person_id]},
       :content_formatter => lambda { |assgnmt| assgnmt.shift.title })
                      end

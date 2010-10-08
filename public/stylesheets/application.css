@@ -42,29 +42,31 @@ p, h2, h3, h4, h5, h6 {
   #logo a {
     color: white; }
 
-div#top-menu-wrapper {
+div#header {
   width: 100%;
   height: 18px;
   background-color: #333333; }
-  div#top-menu-wrapper div#top-menu {
+  div#header div#top-menu {
     width: 900px;
     margin: auto; }
-    div#top-menu-wrapper div#top-menu ul {
+    div#header div#top-menu ul {
       list-style: none;
       background: none;
       float: right; }
-      div#top-menu-wrapper div#top-menu ul li {
+      div#header div#top-menu ul li {
         background: none;
         float: left;
         padding: 0px 10px;
-        border-right: 1px solid #666666; }
-        div#top-menu-wrapper div#top-menu ul li.last {
+        border-left: 1px solid #666666; }
+        div#header div#top-menu ul li:first-child {
+          border-left: none; }
+        div#header div#top-menu ul li.last {
           border-right: none; }
-        div#top-menu-wrapper div#top-menu ul li a {
+        div#header div#top-menu ul li a {
           color: #c6c8cb;
           text-decoration: none;
           font-weight: bold; }
-          div#top-menu-wrapper div#top-menu ul li a.current {
+          div#header div#top-menu ul li a.current {
             color: white; }
 
 div#personal-wrapper {
@@ -95,13 +97,22 @@ a:hover {
 ul {
   list-style: none; }
 
+dt {
+  float: left;
+  clear: left;
+  width: 15%; }
+
+dd {
+  float: left;
+  margin-bottom: 20px; }
+
 div.form-container {
   width: 900px; }
 
 input {
   height: 18px; }
 
-.commit input.create, .commit input.update {
+.commit input.create, .commit input.update, input.submit {
   height: 27px;
   color: #f2ece9;
   font-weight: bold;
@@ -237,14 +248,29 @@ div#flash-wrapper {
       background-color: #ff9999;
       border: 2px solid red; }
 
+.pagination {
+  height: 2.5em; }
+  .pagination a, .pagination em, .pagination span {
+    border: 1px solid #2f4462;
+    display: block;
+    float: left;
+    margin-right: 1px;
+    padding: 0.2em 0.5em; }
+  .pagination span.disabled {
+    border-color: #c6c8cb;
+    color: #c6c8cb; }
+  .pagination em {
+    background-color: #2f4462;
+    color: #f2ece9; }
+
 .subheadline {
   height: 36px; }
   .subheadline * {
     float: left; }
   .subheadline h3, .subheadline .inline_form {
-    margin: 5px; }
+    margin: 5px 5px 5px 0px; }
 
-.current-date {
+.current-date, .highlight {
   background-color: #e6ddda; }
 
 .ui-datepicker-trigger {

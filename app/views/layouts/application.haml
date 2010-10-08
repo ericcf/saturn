@@ -14,18 +14,19 @@
     = javascript_include_tag "shared/flash"
 
   %body
-    %h1#logo
-      = link_to "Saturn", root_path
-    %div#top-menu-wrapper
+    %div#header
+      %h1#logo
+        = link_to "Saturn", root_path
       %div#top-menu
         %ul
           -#!= nav_item "Residents", resident_rotations_path
+          != nav_item "Home", search_people_path
           != nav_item "On Call", weekly_call_schedule_path
           != nav_item "Sections", sections_path
-          != nav_item "All Physicians", people_path, {}, :manage, Person
-          != nav_item "Admin", admin_path
+          != nav_item "Physicians", people_path, {}, :manage, Person
           != nav_item "FAQ", help_questions_path
-          != nav_item "Report Problem", new_feedback_ticket_path, {:class=>"last"}
+          != nav_item "Report Problem", new_feedback_ticket_path
+          != nav_item "Admin", admin_path
     %div#personal-wrapper
       %div#personal
         %div= render "deadbolt/shared_partials/personal"

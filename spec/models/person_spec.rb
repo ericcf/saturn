@@ -10,8 +10,6 @@ describe Person do
 
   it { should have_many(:memberships) }
 
-  it { should have_many(:phones) }
-
   it { should have_one(:names_alias) }
 
   # attributes

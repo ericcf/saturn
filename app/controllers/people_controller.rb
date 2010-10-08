@@ -7,7 +7,7 @@ class PeopleController < ApplicationController
   before_filter :authenticate_user!, :only => [:edit, :update]
 
   def index
-    @people = Person.includes([:names_alias, :sections, :groups])
+    @people = Person.includes(:groups).paginate(:page => params[:page])
   end
 
   def edit
@@ -32,6 +32,13 @@ class PeopleController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested person not found"
     redirect_to people_path
+  end
+
+  def search
+    unless params[:query].blank?
+      @query = params[:query]
+      @people = Person.name_like(params[:query])
+    end
   end
 
   def schedule

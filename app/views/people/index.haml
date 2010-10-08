@@ -3,6 +3,8 @@
 
 %h2 People
 
+= will_paginate @people, :previous_label => "« Previous", :next_label => "Next »"
+
 %table
   %thead
     %tr
@@ -21,3 +23,5 @@
         %td= person.short_name
         %td= person.initials
         %td= link_to "Edit", edit_person_path(person)
+
+= will_paginate @people, :previous_label => "« Previous", :next_label => "Next »"
