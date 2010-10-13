@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-RadiologyScheduler::Application.load_tasks
+Saturn::Application.load_tasks

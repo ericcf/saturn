@@ -1,4 +1,4 @@
-RadiologyScheduler::Application.routes.draw do
+Saturn::Application.routes.draw do
 
   resources :physicians, :only => :index do
     collection do

@@ -1,9 +1,11 @@
-# Scheduler
+# Saturn
 
 A Rails 3 application for managing physicians' rotation schedules.
 
 ## Installation
-1. set up your database.yml file and database(s) as necessary
+1. git clone git://github.com/ericcf/saturn.git
+2. configure Gemfile; bundle install
+3. set up your database.yml file and database(s) as necessary
 
 ## Testing
 Run specs with:
