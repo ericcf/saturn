@@ -18,8 +18,6 @@ describe Section do
 
   it { should have_many(:memberships).dependent(:destroy) }
 
-  it { should have_many(:members).through(:memberships) }
-
   it { should have_many(:weekly_schedules).dependent(:destroy) }
 
   it { should have_many(:shifts).dependent(:destroy) }
@@ -34,7 +32,7 @@ describe Section do
 
   # attribute cleanup
 
-  it { should clean_attribute(:title) }
+  it { should clean_text_attribute(:title) }
 
-  it { should clean_attribute(:description) }
+  it { should clean_text_attribute(:description) }
 end

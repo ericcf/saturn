@@ -3,7 +3,7 @@ class CreateAssignments < ActiveRecord::Migration
     create_table :assignments do |t|
       t.integer :weekly_schedule_id, :null => false
       t.integer :shift_id, :null => false
-      t.integer :person_id, :null => false
+      t.integer :physician_id, :null => false
       t.date :date, :null => false
       t.integer :position, :null => false, :default => 1
       t.string :public_note
@@ -15,7 +15,7 @@ class CreateAssignments < ActiveRecord::Migration
 
     add_index :assignments, [:weekly_schedule_id, :shift_id]
     add_index :assignments, :weekly_schedule_id
-    add_index :assignments, :person_id
+    add_index :assignments, :physician_id
   end
 
   def self.down

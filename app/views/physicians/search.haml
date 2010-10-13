@@ -1,0 +1,19 @@
+%h2 Find Physician Schedules
+
+= form_tag search_physicians_path, :method => :get, :class => "formtastic" do
+  = field_set_tag nil, :class => "inputs" do
+    %ol
+      %li
+        = label_tag ""
+        = text_field_tag "query"
+        = submit_tag "Search Physicians", :class => "submit"
+
+- unless @query.blank?
+  %h3= "Results for '#{@query}'"
+  %h4= Date.today.to_s(:long)
+
+- unless @physicians.blank?
+  %dl
+    - @physicians.each do |physician|
+      %dt= link_to physician.full_name(:family_first), schedule_physician_path(physician)
+      %dd!= (@shifts_by_physician[physician.id] || []).map(&:title).join("<br/>")

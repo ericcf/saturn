@@ -8,12 +8,12 @@ describe Assignment do
       and_return(mock_schedule)
     mock_shift = stub_model(Shift)
     Shift.stub!(:find).with(mock_shift.id, anything).and_return(mock_shift)
-    person = stub_model(Person)
-    Person.stub!(:find).with(person.id, anything).and_return(person)
+    physician = stub_model(Physician)
+    Physician.stub!(:find).with(physician.id, anything).and_return(physician)
     @valid_attributes = {
       :weekly_schedule_id => mock_schedule.id,
       :shift_id => mock_shift.id,
-      :person_id => person.id,
+      :physician_id => physician.id,
       :date => Date.today,
       :position => 1,
       :public_note => "value for public_note",
@@ -30,7 +30,7 @@ describe Assignment do
 
   it { should have_db_column(:shift_id).with_options(:null => false) }
 
-  it { should have_db_column(:person_id).with_options(:null => false) }
+  it { should have_db_column(:physician_id).with_options(:null => false) }
 
   it { should have_db_column(:date).with_options(:null => false) }
 
@@ -46,7 +46,7 @@ describe Assignment do
 
   it { should have_db_index(:weekly_schedule_id) }
 
-  it { should have_db_index(:person_id) }
+  it { should have_db_index(:physician_id) }
 
   # associations
 
@@ -54,19 +54,19 @@ describe Assignment do
 
   it { should belong_to(:shift) }
 
-  it { should belong_to(:person) }
+  it { should belong_to(:physician) }
 
   # validations
 
   it { should validate_presence_of(:shift) }
 
-  it { should validate_presence_of(:person) }
+  it { should validate_presence_of(:physician) }
 
   it { should validate_presence_of(:date) }
 
   it { should validate_numericality_of(:position) }
 
-  it { should validate_uniqueness_of(:person_id).
+  it { should validate_uniqueness_of(:physician_id).
     scoped_to(:weekly_schedule_id, :shift_id, :date) }
 
   [-1, 0].each do |value|
@@ -112,11 +112,11 @@ describe Assignment do
     context "public note present" do
 
       it "returns a details hash" do
-        person = mock_model(Person, :initials => "AB")
-        Person.stub!(:find).and_return(person)
+        physician = mock_model(Physician, :initials => "AB")
+        Physician.stub!(:find).and_return(physician)
         attributes = @valid_attributes.merge({
           :public_note => "Foo!",
-          :person_id => person.id
+          :physician_id => physician.id
         })
         detail_keys = Assignment.new(attributes).public_note_details.keys
         detail_keys.should include(:shift)

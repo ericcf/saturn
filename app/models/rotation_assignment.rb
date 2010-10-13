@@ -1,9 +1,9 @@
 class RotationAssignment < ActiveRecord::Base
 
-  belongs_to :person
+  belongs_to :physician
   belongs_to :rotation
 
-  validates :person, :rotation, :starts_on, :ends_on, :presence => true
+  validates :physician, :rotation, :starts_on, :ends_on, :presence => true
   validate :ends_on_not_before_starts_on?
 
   private

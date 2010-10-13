@@ -115,13 +115,13 @@ input {
 .commit input.create, .commit input.update, input.submit {
   height: 27px;
   color: #f2ece9;
-  font-weight: bold;
+  font-weight: bold !important;
   background-color: #6e8a41;
   cursor: pointer;
   border: none;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 0px 5px;
+  padding: 0px 5px !important;
   text-transform: capitalize; }
 
 input, textarea {

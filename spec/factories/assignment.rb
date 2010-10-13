@@ -4,7 +4,7 @@ Factory.define :assignment do |a|
   #factory :assignment do
     a.association :weekly_schedule
     a.association :shift
-    a.association :person
+    a.association :physician
     a.date Date.today
   #end
 end

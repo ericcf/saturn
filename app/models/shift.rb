@@ -7,7 +7,7 @@ class Shift < ActiveRecord::Base
   validates_presence_of :title, :duration, :position, :section
   validates_uniqueness_of :title, :scope => :section_id
 
-  before_validation { clean_attributes :title, :description, :phone }
+  before_validation { clean_text_attributes :title, :description, :phone }
 
   default_scope :order => "position"
   scope :active_as_of, lambda { |cutoff_date|

@@ -5,7 +5,7 @@ $(function() {
     $(this).removeClass("hover");
   });
 
-  $("tbody td, thead th").mouseover(function() {
+  $("tbody td, thead th, tfoot th").mouseover(function() {
     var colNumber = $(this).index() + 1;
     $("tr :nth-child(" + colNumber + ")").addClass("hover");
   }).mouseout(function() {

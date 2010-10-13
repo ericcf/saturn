@@ -15,7 +15,7 @@ describe "schedules/_group" do
   context "there are people in the group" do
 
     it "renders the group" do
-      people = [stub_model(Person, :short_name => "F. Bar")]
+      people = [stub_model(Physician, :short_name => "F. Bar")]
       view.should_receive(:grouped_people).and_return({ "Bar" => people })
       view.should_receive(:group).any_number_of_times.and_return("Bar")
       render

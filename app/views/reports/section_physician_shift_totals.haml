@@ -1,0 +1,39 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+  = stylesheet_link_tag 'reports'
+
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3= "Totals from Published Schedules for #{@physician.full_name}"
+
+%div.subheadline
+  = form_tag section_physician_shift_totals_path(@section, @physician), :method => :get do
+    %h3
+      %span#start_date_text= @start_date.to_s(:long)
+    %div.inline_form
+      = text_field_tag "start_date", @start_date.to_s
+    %h3
+      %span to&nbsp;
+      %span#end_date_text= @end_date.to_s(:long)
+    %div.inline_form
+      = text_field_tag "end_date", @end_date.to_s
+
+%table.decimal_data
+  %thead
+    %tr
+      %th
+      - (@start_date..@end_date).each do |date|
+        %th= short_date(date)
+    - @shifts.each do |shift|
+      %tr
+        %th= "#{shift.title} (#{shift.duration})"
+        - (@start_date..@end_date).each do |date|
+          - if @assignment_by_shift_and_date[[shift, date]]
+            %td= @assignment_by_shift_and_date[[shift, date]].fixed_duration
+          -else
+            %td &nbsp;

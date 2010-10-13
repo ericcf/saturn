@@ -22,7 +22,6 @@ Then open up localhost:8888 in a browser.
 * Allows for grouping shifts into "categories" (e.g. AM, PM, Clinical)
 
 ## Todo
-* Add permissions management
 * Sync with external calendars
 * Rule-based automated shift assignment
 * Vacation request management

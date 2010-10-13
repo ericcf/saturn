@@ -16,7 +16,7 @@ class SchedulesController < ApplicationController
     @call_assignments = Assignment.by_schedules_and_shifts(
       @schedules,
       @call_shifts
-    ).find(:all, :order => :position, :include => { :person => :names_alias })
+    ).includes(:physician => :names_alias)
     @notes = @call_assignments.map(&:public_note_details).compact
   end
 
@@ -24,26 +24,26 @@ class SchedulesController < ApplicationController
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])
-    @shifts = @section.shifts.active_as_of(start_date).find(:all, :include => :shift_tags)
+    @shifts = @section.shifts.active_as_of(start_date).includes(:shift_tags)
     @schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
-      WeeklySchedule.new(
-        :section_id => params[:section_id],
-        :date => start_date
-      )
-    @assignments = Assignment.find_all_by_weekly_schedule_id(@schedule.id,
-      :include => [{ :person => :names_alias }, :shift])
+      @section.weekly_schedules.build(:date => start_date)
+    @assignments = @schedule.assignments.includes(:shift)
     @notes = @assignments.map(&:public_note_details).compact
     @view_mode = params[:view_mode]
     @schedule_view = case @view_mode.to_i
                      when 0, 1
+                       physician_ids = @assignments.map(&:physician_id)
+                       physicians = Physician.where(:id => physician_ids).
+                         includes(:names_alias).
+                         each_with_object({}) {|p, hsh| hsh[p.id] = p.short_name}
                        Tables::TabularData.new(:x => [@dates, :clone],
       :y => [@shifts, :id],
       :mapped_values => @assignments.group_by {|a| [a.date, a.shift_id]},
-      :content_formatter => lambda { |assgnmnt| assgnmnt.person.short_name })
+      :content_formatter => lambda { |assgnmnt| physicians[assgnmnt.physician_id] })
                      when 2
                        Tables::TabularData.new(:x => [@dates, :clone],
       :y => [@section.members, :id], 
-      :mapped_values => @assignments.group_by {|a| [a.date, a.person_id]},
+      :mapped_values => @assignments.group_by {|a| [a.date, a.physician_id]},
       :content_formatter => lambda { |assgnmt| assgnmt.shift.title })
                      end
     respond_to do |format|
@@ -94,7 +94,7 @@ class SchedulesController < ApplicationController
       @week_dates = week_dates_beginning_with(@week_start_date)
       @section = Section.find(params[:section_id])
       @grouped_people = @section.members_by_group
-      @assignments = @weekly_schedule.assignments_including([:person, :shift])
+      @assignments = @weekly_schedule.assignments_including([:physician, :shift])
       flash[:error] = "There was an error creating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
       render :edit_weekly_section
     end

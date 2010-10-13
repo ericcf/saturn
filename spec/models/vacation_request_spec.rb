@@ -3,13 +3,14 @@ require 'spec_helper'
 describe VacationRequest do
 
   before(:each) do
-    @mock_person = mock_model(Person)
-    Person.stub!(:find).with(@mock_person.id, anything).and_return(@mock_person)
+    @mock_physician = mock_model(Physician)
+    Physician.stub!(:find).with(@mock_physician.id, anything).
+      and_return(@mock_physician)
     @mock_section = mock_model(Section)
     Section.stub!(:find).with(@mock_section.id, anything).
       and_return(@mock_section)
     @valid_attributes = {
-      :requester => @mock_person,
+      :requester => @mock_physician,
       :section => @mock_section,
       :dates => [Date.today]
     }

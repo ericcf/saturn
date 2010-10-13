@@ -27,12 +27,14 @@ describe MembershipsController do
   describe "GET new" do
 
     before(:each) do
-      Group.stub!(:find_all_by_title).and_return([mock_model(Group)])
-      @mock_person = mock_model(Person, :section_ids => [], :member_of_group? => true)
-      Person.stub_chain(:current, :includes).and_return([@mock_person])
+      RadDirectory::Group.stub!(:find_all_by_title).
+        and_return([mock_model(RadDirectory::Group)])
+      @mock_section.stub!(:memberships).and_return([])
+      @mock_physician = stub_model(Physician, :in_group? => true)
+      Physician.stub_chain(:current, :includes).and_return([@mock_physician])
       get :new, :section_id => @mock_section.id
     end
 
-    it { assigns(:people).should eq([@mock_person]) }
+    it { assigns(:physicians).should == ([@mock_physician]) }
   end
 end

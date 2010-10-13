@@ -2,12 +2,12 @@ class Assignment < ActiveRecord::Base
 
   belongs_to :weekly_schedule
   belongs_to :shift
-  belongs_to :person
+  belongs_to :physician
 
-  validates :shift, :person, :date, :presence => true
+  validates :shift, :physician, :date, :presence => true
   validates_numericality_of :position,
     :greater_than_or_equal_to => 1
-  validates_uniqueness_of :person_id,
+  validates_uniqueness_of :physician_id,
     :scope => [:weekly_schedule_id, :shift_id, :date]
 
   before_validation :filter_attributes
@@ -22,12 +22,13 @@ class Assignment < ActiveRecord::Base
   scope :published, lambda {
     joins(:weekly_schedule).where("weekly_schedules.published_at is not null")
   }
+  default_scope order(:position)
 
   def public_note_details
     public_note.blank? ? nil : {
       :shift => shift.title,
       :day => date.strftime("%a"),
-      :initials => person.initials,
+      :initials => physician.initials,
       :text => public_note
     }
   end

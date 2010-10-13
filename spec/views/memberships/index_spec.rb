@@ -8,7 +8,7 @@ describe "memberships/index" do
 
   before(:each) do
     @mock_section = assign(:section, mock_section)
-    @mock_person = stub_model(Person, :full_name => "B. Favre")
+    @mock_person = stub_model(Physician, :full_name => "B. Favre")
     assign(:members_by_group, { "Group 1" => [@mock_person] })
     should_render_partial("schedules/section_menu")
   end

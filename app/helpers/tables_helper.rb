@@ -16,9 +16,9 @@ module TablesHelper
       else
         item.title
       end
-    when "Person"
+    when "RadDirectory::Person"
       if show_markup
-        link_to item.short_name, schedule_person_path(item)
+        link_to item.short_name, schedule_physician_path(item)
       else
         item.short_name
       end

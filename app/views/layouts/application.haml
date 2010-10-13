@@ -20,10 +20,10 @@
       %div#top-menu
         %ul
           -#!= nav_item "Residents", resident_rotations_path
-          != nav_item "Home", search_people_path
+          != nav_item "Home", search_physicians_path
           != nav_item "On Call", weekly_call_schedule_path
           != nav_item "Sections", sections_path
-          != nav_item "Physicians", people_path, {}, :manage, Person
+          != nav_item "Physicians", physicians_path, {}, :manage, Physician
           != nav_item "FAQ", help_questions_path
           != nav_item "Report Problem", new_feedback_ticket_path
           != nav_item "Admin", admin_path

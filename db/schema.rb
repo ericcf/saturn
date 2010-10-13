@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
     t.integer  "shift_id",                                                        :null => false
-    t.integer  "person_id",                                                       :null => false
+    t.integer  "physician_id",                                                    :null => false
     t.date     "date",                                                            :null => false
     t.integer  "position",                                         :default => 1, :null => false
     t.string   "public_note"
@@ -25,19 +25,9 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.datetime "updated_at"
   end
 
-  add_index "assignments", ["person_id"], :name => "index_assignments_on_person_id"
+  add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
-
-  create_table "contacts", :force => true do |t|
-    t.string "type"
-    t.string "given_name"
-    t.string "family_name"
-    t.string "other_given_names"
-    t.string "suffixes"
-    t.date   "employment_starts_on"
-    t.date   "employment_ends_on"
-  end
 
   create_table "feedback_statuses", :force => true do |t|
     t.string   "name",                          :null => false
@@ -61,25 +51,12 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "feedback_tickets", ["status_id"], :name => "index_feedback_tickets_on_status_id"
   add_index "feedback_tickets", ["user_id"], :name => "index_feedback_tickets_on_user_id"
 
-  create_table "groups", :force => true do |t|
-    t.string "type"
-    t.string "title"
-  end
-
   create_table "help_questions", :force => true do |t|
     t.text     "title"
     t.text     "answer"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "memberships", :force => true do |t|
-    t.integer "contact_id"
-    t.integer "group_id"
-  end
-
-  add_index "memberships", ["contact_id"], :name => "index_memberships_on_contact_id"
-  add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
 
   create_table "permissions", :force => true do |t|
     t.string   "action",      :null => false
@@ -88,22 +65,22 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.datetime "updated_at"
   end
 
-  create_table "person_aliases", :force => true do |t|
-    t.integer  "person_id",  :null => false
-    t.string   "initials"
-    t.string   "short_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "person_aliases", ["person_id"], :name => "index_person_aliases_on_person_id", :unique => true
-
   create_table "phones", :force => true do |t|
     t.integer "contact_id"
     t.string  "value"
   end
 
   add_index "phones", ["contact_id"], :name => "index_phones_on_contact_id"
+
+  create_table "physician_aliases", :force => true do |t|
+    t.integer  "physician_id", :null => false
+    t.string   "initials"
+    t.string   "short_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "physician_aliases", ["physician_id"], :name => "index_physician_aliases_on_physician_id", :unique => true
 
   create_table "role_assignments", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -131,15 +108,15 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "roles", ["name"], :name => "index_roles_on_name", :unique => true
 
   create_table "rotation_assignments", :force => true do |t|
-    t.integer  "person_id",   :null => false
-    t.integer  "rotation_id", :null => false
-    t.date     "starts_on",   :null => false
-    t.date     "ends_on",     :null => false
+    t.integer  "physician_id", :null => false
+    t.integer  "rotation_id",  :null => false
+    t.date     "starts_on",    :null => false
+    t.date     "ends_on",      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "rotation_assignments", ["person_id"], :name => "index_rotation_assignments_on_person_id"
+  add_index "rotation_assignments", ["physician_id"], :name => "index_rotation_assignments_on_physician_id"
   add_index "rotation_assignments", ["rotation_id"], :name => "index_rotation_assignments_on_rotation_id"
 
   create_table "rotations", :force => true do |t|
@@ -150,14 +127,14 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   end
 
   create_table "section_memberships", :force => true do |t|
-    t.integer  "person_id",  :null => false
-    t.integer  "section_id", :null => false
+    t.integer  "physician_id", :null => false
+    t.integer  "section_id",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "section_memberships", ["person_id", "section_id"], :name => "index_section_memberships_on_person_id_and_section_id", :unique => true
-  add_index "section_memberships", ["person_id"], :name => "index_section_memberships_on_person_id"
+  add_index "section_memberships", ["physician_id", "section_id"], :name => "index_section_memberships_on_physician_id_and_section_id", :unique => true
+  add_index "section_memberships", ["physician_id"], :name => "index_section_memberships_on_physician_id"
   add_index "section_memberships", ["section_id"], :name => "index_section_memberships_on_section_id"
 
   create_table "sections", :force => true do |t|

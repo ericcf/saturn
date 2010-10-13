@@ -9,9 +9,9 @@ describe ReportsController do
         should route_to(:controller => "reports", :action => "shift_totals", :section_id => "1") 
     end
 
-    it "recognizes and generates #section_person_shift_totals" do
+    it "recognizes and generates #section_physician_shift_totals" do
       { :get => "/sections/1/reports/people/2/shift_totals" }.
-        should route_to(:controller => "reports", :action => "section_person_shift_totals", :section_id => "1", :person_id => "2")
+        should route_to(:controller => "reports", :action => "section_physician_shift_totals", :section_id => "1", :physician_id => "2")
     end
   end
 end

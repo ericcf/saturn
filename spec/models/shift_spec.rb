@@ -106,6 +106,6 @@ describe Shift do
   # attribute cleanup
 
   [:title, :description, :phone].each do |attr|
-    it { should clean_attribute(attr) }
+    it { should clean_text_attribute(attr) }
   end
 end

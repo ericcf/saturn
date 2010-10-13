@@ -80,5 +80,5 @@ describe ShiftTag do
 
   # attribute cleanup
 
-  it { should clean_attribute(:display_color) }
+  it { should clean_text_attribute(:display_color) }
 end

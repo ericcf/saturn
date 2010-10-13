@@ -47,17 +47,17 @@ describe "schedules/weekly_call" do
     end
 
     it "renders the assignments corresponding to the shifts and dates" do
-      mock_person = stub('Person', :short_name => "L. Effant")
+      mock_physician = stub('Physician', :short_name => "L. Effant")
       assign(:call_assignments, [
         mock_model(Assignment,
-                   :person => mock_person,
+                   :physician => mock_physician,
                    :shift_id => @call_shifts.first.id,
                    :date => @today)
       ])
       render
       rendered.should have_selector("table") do |table|
         table.should have_selector("tr > td",
-          :content => mock_person.short_name
+          :content => mock_physician.short_name
         )
       end
     end

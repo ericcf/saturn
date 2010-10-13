@@ -9,10 +9,11 @@ class MembershipsController < ApplicationController
   end
 
   def new
-    schedule_groups = Group.find_all_by_title(Section::SCHEDULE_GROUPS)
-    @people = Person.current.includes([:section_memberships, :memberships]).select do |p|
-      !p.section_ids.include?(@section.id) &&
-        schedule_groups.any? { |g| p.member_of_group? g }
+    schedule_groups = RadDirectory::Group.find_all_by_title(Section::SCHEDULE_GROUPS)
+    memberships = @section.memberships.map(&:physician_id)
+    @physicians = Physician.current.includes(:memberships).select do |p|
+      !memberships.include?(p.id) &&
+        schedule_groups.any? { |g| p.in_group? g }
     end
   end
 

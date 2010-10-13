@@ -12,10 +12,10 @@
         or
         = link_to "Cancel", section_memberships_path(@section)
     %ul
-      - @people.each do |person|
+      - @physicians.each do |physician|
         %li
-          = check_box_tag "section[memberships_attributes][][person_id]", person.id
-          = label_tag :person_id, person.full_name
+          = check_box_tag "section[memberships_attributes][][physician_id]", physician.id
+          = label_tag :physician_id, physician.full_name
     = section_form.buttons do
       = section_form.commit_button
       %li

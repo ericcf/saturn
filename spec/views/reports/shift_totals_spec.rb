@@ -4,8 +4,9 @@ describe "reports/shift_totals" do
 
   before(:each) do
     assign(:section, mock_model(Section))
-    assign(:report, stub("report", :each_group => nil, :each_shift => nil,
-      :each_shift_tag => nil))
+    assign(:physicians_by_group, {})
+    assign(:shifts, [])
+    assign(:shift_tags, [])
     @start_date = assign(:start_date, Date.today)
     @end_date = assign(:end_date, Date.tomorrow)
     should_render_partial("schedules/section_menu")

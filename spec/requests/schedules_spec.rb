@@ -4,9 +4,17 @@ describe "schedules" do
 
   include AuthenticationHelpers
 
+  def clean_up_database
+    [Assignment, Shift, SectionMembership, Section, WeeklySchedule].each do |klass|
+      klass.delete_all
+    end
+  end
+
   describe "weekly call schedules" do
 
     context "with no records in the database" do
+
+      before(:each) { clean_up_database }
 
       it "renders successfully" do
         get weekly_call_schedule_path
@@ -17,11 +25,9 @@ describe "schedules" do
     context "with a current assignment to a call shift" do
 
       before(:all) do
-        Assignment.delete_all
-        Shift.delete_all
-        Section.delete_all
-        person = Factory(:physician_membership).person
-        @assignment = Factory(:assignment, :person => person)
+        clean_up_database
+        physician = Factory(:physician)
+        @assignment = Factory(:assignment, :physician => physician)
         call_shift_tag = Factory(:shift_tag, :title => "Call")
         Factory(:shift_tag_assignment, :shift => @assignment.shift,
           :shift_tag => call_shift_tag)
@@ -31,7 +37,7 @@ describe "schedules" do
 
         it "does not render the assignment" do
           get weekly_call_schedule_path
-          response.should_not contain(@assignment.person.family_name)
+          response.should_not contain(@assignment.physician.family_name)
         end
       end
 
@@ -40,7 +46,7 @@ describe "schedules" do
         it "renders the assignment" do
           WeeklySchedule.last.update_attribute(:published_at, Date.today)
           get weekly_call_schedule_path
-          response.should contain(@assignment.person.family_name)
+          response.should contain(@assignment.physician.family_name)
         end
       end
     end
@@ -48,24 +54,33 @@ describe "schedules" do
 
   context "show a weekly section schedule" do
 
+    before(:each) { clean_up_database }
+
     context "view_mode == 2 (people on y-axis)" do
 
-      it "renders successfully" do
-        Section.delete_all; section = Factory(:section)
+      before(:each) do
+        @physician = Factory(:physician)
+        section = Factory(:section)
+        SectionMembership.create(:physician => @physician, :section => section)
+        Factory(:assignment, :physician => @physician)
         get weekly_section_schedule_path(:section_id => section.id,
           :view_mode => 2)
-        response.should be_success
+      end
+
+      it "renders physician names in the left column" do
+        response.should have_selector("tbody tr th a", :content => @physician.short_name)
       end
     end
   end
 
   context "edit a weekly section schedule" do
 
+    before(:each) { clean_up_database }
+
     context "with no schedules or assignments in the database" do
 
       it "renders successfully" do
         sign_in_user :admin => true
-        Section.delete_all
         section = Factory(:section)
         date = Date.today
         get edit_weekly_section_schedule_path(:section_id => section.id,

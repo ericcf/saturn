@@ -6,8 +6,8 @@ describe "memberships/new" do
     @mock_section = assign(:section, mock_model(Section).as_null_object)
     assign(:membership,
       stub_model(SectionMembership, :section_id => @mock_section.id).as_new_record)
-    @mock_person = stub_model(Person)
-    assign(:people, [@mock_person])
+    @mock_physician = stub_model(Physician)
+    assign(:physicians, [@mock_physician])
     should_render_partial("schedules/section_menu")
     render
   end
@@ -21,11 +21,11 @@ describe "memberships/new" do
     end
   end
 
-  it "renders a checkbox for each person" do
+  it "renders a checkbox for each physician" do
     rendered.should have_selector("form input",
       :type => "checkbox",
-      :name => "section[memberships_attributes][][person_id]",
-      :value => @mock_person.id.to_s
+      :name => "section[memberships_attributes][][physician_id]",
+      :value => @mock_physician.id.to_s
     )
   end
 end

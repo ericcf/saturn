@@ -52,14 +52,10 @@ describe SchedulesController do
 
     it "assigns ordered assignments this week to @call_assignments" do
       date = Date.today
-      mock_assignment = stub_model(Assignment)
-      assignments = stub('assignments')
-      assignments.should_receive(:find).
-        with(:all, :order => :position, :include => {:person => :names_alias}).
-        and_return([mock_assignment])
       WeeklySchedule.delete_all; Shift.delete_all
-      Assignment.should_receive(:by_schedules_and_shifts).with([], []).
-        and_return(assignments)
+      mock_assignment = stub_model(Assignment)
+      Assignment.stub_chain(:by_schedules_and_shifts, :includes).
+        and_return([mock_assignment])
       get :weekly_call, :date => date
       assigns[:call_assignments].should == [mock_assignment]
     end
@@ -67,7 +63,7 @@ describe SchedulesController do
     it "assigns public note details from assignments to @notes" do
       details = mock('note details')
       mock_assignment = mock_model(Assignment, :public_note_details => details)
-      Assignment.stub_chain(:by_schedules_and_shifts, :find).
+      Assignment.stub_chain(:by_schedules_and_shifts, :includes).
         and_return([mock_assignment])
       get :weekly_call
       assigns(:notes).should == [details]
@@ -78,6 +74,9 @@ describe SchedulesController do
 
     before(:each) do
       Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      mock_schedule.stub_chain(:assignments, :includes).and_return([])
+      mock_section.stub_chain(:weekly_schedules, :published, :find_by_date).
+        and_return(mock_schedule)
     end
 
     it "assigns the requested schedule section to @section" do
@@ -101,11 +100,8 @@ describe SchedulesController do
       context "the corresponding weekly schedule is published" do
 
         it "assigns the weekly schedule to @weekly_schedule" do
-          published_schedules = mock('published schedules',
-            :find_by_date => mock_schedule.as_null_object)
-          schedules = mock('schedules', :published => published_schedules)
-          mock_section.stub!(:weekly_schedules).and_return(schedules)
-          get :show_weekly_section, :date => @date, :section_id => mock_section.id
+          get :show_weekly_section, :date => @date,
+            :section_id => mock_section.id
           assigns(:schedule).should == mock_schedule
         end
       end
@@ -113,12 +109,9 @@ describe SchedulesController do
       context "the corresponding weekly schedule is not published" do
 
         it "assigns a new weekly schedule to @schedule" do
-          published_schedules = mock('published schedules', :find_by_date => nil)
-          schedules = mock('schedules', :published => published_schedules)
-          mock_section.stub!(:weekly_schedules).and_return(schedules)
-          new_schedule = mock_model(WeeklySchedule).as_null_object
-          WeeklySchedule.should_receive(:new).
-            with(:section_id => mock_section.id, :date => @date).
+          mock_section.stub_chain(:weekly_schedules, :published, :find_by_date)
+          new_schedule = stub_model(WeeklySchedule)
+          mock_section.stub_chain(:weekly_schedules, :build).
             and_return(new_schedule)
           get :show_weekly_section, :date => @date, :section_id => mock_section.id
           assigns(:schedule).should == new_schedule
@@ -128,11 +121,10 @@ describe SchedulesController do
 
     it "assigns weekly schedule assignments to @assignments" do
       assignment = stub_model(Assignment)
-      Assignment.should_receive(:find_all_by_weekly_schedule_id).
-        with(mock_schedule.id, :include => [{:person=>:names_alias}, :shift]).
-        and_return([assignment])
-      WeeklySchedule.stub!(:new).and_return(mock_schedule)
+      mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
       mock_section.stub_chain(:weekly_schedules, :published, :find_by_date)
+      mock_section.stub_chain(:weekly_schedules, :build).
+        and_return(mock_schedule)
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:assignments).should == [assignment]
     end
@@ -140,8 +132,7 @@ describe SchedulesController do
     it "assigns public note details from assignments to @notes" do
       details = mock('note details')
       assignment = stub_model(Assignment, :public_note_details => details)
-      Assignment.stub!(:find_all_by_weekly_schedule_id).and_return([assignment])
-      mock_section.stub_chain(:weekly_schedules, :published, :find_by_date)
+      mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:notes).should == [details]
     end

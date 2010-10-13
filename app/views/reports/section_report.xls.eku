@@ -5,7 +5,7 @@ sheet1 = xls.create_worksheet
 bold = Spreadsheet::Format.new(:weight => :bold)
 sheet1.column(0).default_format = bold
 
-widest_shift_title = @report.shifts.map{|s|s.title.size}.max
+widest_shift_title = @shifts.map{|s|s.title.size}.max
 sheet1.column(0).width = widest_shift_title + 1
 
 sheet1[0, 0] = @section.title
@@ -15,25 +15,25 @@ row = 3
 sheet1.row(3).default_format = bold
 sheet1[row, 0] = "Shifts"
 col = 1
-@report.each_group do |group_name, people|
+@physicians_by_group.each do |group_name, physicians|
   sheet1[row, col] = group_name + ":"
   col += 1
-  people.each do |person|
-    sheet1[row, col] = person.initials
+  physicians.each do |physician|
+    sheet1[row, col] = physician.initials
     col += 1
   end
 end
 
 col = 0
 row += 1
-@report.each_shift do |shift|
+@shifts.each do |shift|
   sheet1[row, col] = shift.title
   col += 1
-  @report.each_group do |group_name, people|
-    sheet1[row, col] = @report.shift_group_total(shift, group_name)
+  @physicians_by_group.each do |group_name, physicians|
+    sheet1[row, col] = @totals_by_group_and_shift[[group_name, shift.id]]
     col += 1
-    people.each do |person|
-      sheet1[row, col] = @report.shift_person_total(shift, person)
+    physicians.each do |physician|
+      sheet1[row, col] = @totals_by_physician_and_shift[[physician.id, shift.id]]
       col += 1
     end
   end
@@ -45,25 +45,25 @@ row += 1
 sheet1.row(row).default_format = bold
 sheet1[row, col] = "Categories"
 col += 1
-@report.each_group do |group_name, people|
+@physicians_by_group.each do |group_name, physicians|
   sheet1[row, col] = group_name + ":"
   col += 1
-  people.each do |person|
-    sheet1[row, col] = person.initials
+  physicians.each do |physician|
+    sheet1[row, col] = physician.initials
     col += 1
   end
 end
 
 col = 0
 row += 1
-@report.each_shift_tag do |shift_tag|
+@shift_tags.each do |shift_tag|
   sheet1[row, col] = shift_tag.title
   col += 1
-  @report.each_group do |group_name, people|
-    sheet1[row, col] = @report.shift_tag_group_total(shift_tag, group_name)
+  @physicians_by_group.each do |group_name, physicians|
+    sheet1[row, col] = @totals_by_group_and_tag[[group_name, shift_tag.id]]
     col += 1
-    people.each do |person|
-      sheet1[row, col] = @report.shift_tag_person_total(shift_tag, person)
+    physicians.each do |physician|
+      sheet1[row, col] = @totals_by_physician_and_tag[[physician.id, shift_tag.id]]
       col += 1
     end
   end

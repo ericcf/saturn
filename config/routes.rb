@@ -1,25 +1,23 @@
 RadiologyScheduler::Application.routes.draw do
 
-  resources :people, :only => [:index, :edit, :update] do
+  resources :physicians, :only => :index do
     collection do
       get "search"
     end
     member do
       get "schedule"
     end
+    resource :physician_alias, :only => [:new, :create, :edit, :update]
   end
 
   resources :sections, :except => :show do
     resources :memberships, :only => [:index, :new]
-
     resources :shift_tags, :only => [:index, :new, :create] do
       collection do
         get "search"
       end
     end
-
     resources :shifts, :except => [:show, :edit, :update]
-
     resources :vacation_requests
   end
 
@@ -55,9 +53,9 @@ RadiologyScheduler::Application.routes.draw do
       scope :path => "/:section_id/reports" do
         get "shift_totals", :as => :section_shift_totals
         scope "/people" do
-          scope :path => "/:person_id" do
-            match "shift_totals", :to => "reports#section_person_shift_totals",
-              :via => "get", :as => :section_person_shift_totals 
+          scope :path => "/:physician_id" do
+            match "shift_totals", :to => "reports#section_physician_shift_totals",
+              :via => "get", :as => :section_physician_shift_totals 
           end
         end
       end
@@ -73,5 +71,5 @@ RadiologyScheduler::Application.routes.draw do
     resources :site_statistics, :only => :index
   end
 
-  root :to => "people#search"
+  root :to => "physicians#search"
 end
