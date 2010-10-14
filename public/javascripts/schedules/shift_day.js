@@ -59,7 +59,7 @@
 
     this.add_assignment = function(assignment) {
       if (!has_person(assignment.getPersonId())) {
-        var element = schedule.make_view_from_assignment(obj, assignment);
+        var element = schedule.assignmentElementFromAssignment(obj, assignment);
         append_assignment_element(element);
         return true;
       }

@@ -289,16 +289,17 @@ describe SchedulesController do
     before(:each) do
       controller.should_receive(:authenticate_user!)
       controller.stub!(:authorize!)
+      Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      mock_schedule(:date => Date.today)
+      WeeklySchedule.stub!(:find).with(mock_schedule.id).
+        and_return(mock_schedule)
+      controller.should_receive(:authorize!).with(:update, mock_schedule)
     end
 
     context "with valid params" do
 
       before(:each) do
-        Section.stub!(:find).with(mock_section.id).and_return(mock_section)
-        mock_schedule(:update_attributes => true, :date => Date.today)
-        WeeklySchedule.stub!(:find).with(mock_schedule.id).
-          and_return(mock_schedule.as_null_object)
-        controller.should_receive(:authorize!).with(:update, mock_schedule)
+        mock_schedule.stub!(:update_attributes).and_return(true)
       end
 
       it "assigns the requested schedule section to @section" do
@@ -327,7 +328,7 @@ describe SchedulesController do
         assigns[:weekly_schedule].should == mock_schedule
       end
 
-      it "redirects to the updated schedule" do
+      it "redirects to the edit template for the updated schedule" do
         put :update_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => { :id => mock_schedule.id }
         response.should redirect_to(edit_weekly_section_schedule_path(
@@ -337,6 +338,28 @@ describe SchedulesController do
           :day => mock_schedule.date.day
         ))
       end
+
+      it { flash[:notice].should == "Successfully updated schedule." }
+    end
+
+    context "with invalid params" do
+
+      before(:each) do
+        mock_schedule.stub!(:update_attributes).and_return(false)
+        put :update_weekly_section, :section_id => mock_section.id,
+          :weekly_schedule => { :id => mock_schedule.id }
+      end
+
+      it "redirects to the edit template for the schedule" do
+        response.should redirect_to(edit_weekly_section_schedule_path(
+          :section_id => mock_section.id,
+          :year => mock_schedule.date.year,
+          :month => mock_schedule.date.month,
+          :day => mock_schedule.date.day
+        ))
+      end
+
+      it { flash[:error].should match(/There was an error updating the schedule:/) }
     end
   end
 end

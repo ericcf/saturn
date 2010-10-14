@@ -107,16 +107,19 @@ class SchedulesController < ApplicationController
     @section = Section.find(params[:section_id])
     @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])
     authorize! :update, @weekly_schedule
-    @weekly_schedule.publish = params[:weekly_schedule][:publish]
+    @weekly_schedule.publish = 1 if params[:weekly_schedule][:publish]
 
     if @weekly_schedule.update_attributes(schedule_attributes)
-      date = @weekly_schedule.date
-      redirect_to edit_weekly_section_schedule_path(
-        :section_id => @section.id,
-        :year => date.year,
-        :month => date.month,
-        :day => date.day
-      )
+      flash[:notice] = "Successfully updated schedule."
+    else
+      flash[:error] = "There was an error updating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
     end
+    date = @weekly_schedule.date
+    redirect_to edit_weekly_section_schedule_path(
+      :section_id => @section.id,
+      :year => date.year,
+      :month => date.month,
+      :day => date.day
+    )
   end
 end

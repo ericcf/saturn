@@ -51,7 +51,7 @@
     };
 
     this.getPersonId = function() {
-      return elem.find("input[name*=person_id]").val();
+      return elem.find("input[name*=physician_id]").val();
     };
 
     this.getId = function() {
@@ -185,7 +185,7 @@
       cloned_template.
         find("input[name*=shift_id]").val(shift_day.getShiftId());
       cloned_template.
-        find("input[name*=person_id]").val(assignment.getPersonId());
+        find("input[name*=physician_id]").val(assignment.getPersonId());
       cloned_template.
         find("input[name*=position]").val(assignment.getPosition());
       cloned_template.
@@ -202,7 +202,7 @@
     this.make_view_from_person = function(shift_day, person) {
       var cloned_template = elem.children().clone();
       cloned_template.find(".person_name").text(person.name());
-      cloned_template.find("input[name*=person_id]").val(person.id());
+      cloned_template.find("input[name*=physician_id]").val(person.id());
       cloned_template.
         find("input[name*=shift_id]").val(shift_day.getShiftId());
       cloned_template.

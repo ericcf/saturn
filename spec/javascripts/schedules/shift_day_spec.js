@@ -10,6 +10,9 @@ describe("shift_day", function() {
     return this;
   };
   Schedule.prototype.showAddPersonControls = function() {};
+  Schedule.prototype.assignmentElementFromAssignment = function(sd, a) {
+    return $("<div/>");
+  };
   var schedule;
 
   beforeEach(function() {
@@ -82,6 +85,18 @@ describe("shift_day", function() {
     it("returns shift_id", function() {
       $(".shift_day").addClass("shift_id_9");
       expect(shift_day.getShiftId()).toEqual("9");
+    });
+  });
+
+  describe("#add_assignment()", function() {
+    describe("the associated person is not already assigned here", function() {
+      it("returns true", function() {
+        var Assignment = function() {};
+        Assignment.prototype.getPersonId = function() {};
+        var assignment = new Assignment();
+        spyOn(assignment, "getPersonId").andReturn(1);
+        expect(shift_day.add_assignment(assignment)).toBeTruthy();
+      });
     });
   });
 

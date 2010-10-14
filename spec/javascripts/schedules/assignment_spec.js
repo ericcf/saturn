@@ -102,8 +102,8 @@ describe("assignment", function() {
   });
 
   describe("#getPersonId()", function() {
-    it("returns person_id", function() {
-      $("[name*=person_id]").val(42);
+    it("returns physician_id", function() {
+      $("[name*=physician_id]").val(42);
       expect(assignment.getPersonId()).toEqual("42");
     });
   });
@@ -230,8 +230,8 @@ describe("assignment template", function() {
         toEqual(shift_day.getShiftId());
     });
 
-    it("sets person_id from assignment", function() {
-      expect(view.find("[name*=person_id]").val()).
+    it("sets physician_id from assignment", function() {
+      expect(view.find("[name*=physician_id]").val()).
         toEqual(assignment.getPersonId());
     });
 
@@ -277,8 +277,8 @@ describe("assignment template", function() {
         toEqual(person.name());
     });
 
-    it("sets person_id from person", function() {
-      expect(view.find("[name*=person_id]").val()).
+    it("sets physician_id from person", function() {
+      expect(view.find("[name*=physician_id]").val()).
         toEqual(person.id());
     });
 

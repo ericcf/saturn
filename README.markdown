@@ -7,6 +7,9 @@ A Rails 3 application for managing physicians' rotation schedules.
 2. configure Gemfile; bundle install
 3. set up your database.yml file and database(s) as necessary
 
+## Dependencies
+Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for authentication/authorization and [rad_directory](http://github.com/ericcf/rad_directory) as the source of physicians.
+
 ## Testing
 Run specs with:
     rake spec
