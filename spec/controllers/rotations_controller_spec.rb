@@ -131,6 +131,18 @@ describe RotationsController do
         it { should render_template(:edit) }
       end
     end
+
+    context "the rotation is not found" do
+
+      before(:each) do
+        Rotation.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        put :update, :id => mock_rotation.id
+      end
+
+      it { flash[:error].should == "Error: requested rotation not found" }
+
+      it { should redirect_to(rotations_path) }
+    end
   end
 
   describe "DELETE destroy" do

@@ -99,6 +99,10 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.datetime "updated_at"
   end
 
+  add_index "role_permissions", ["permission_id"], :name => "index_role_permissions_on_permission_id"
+  add_index "role_permissions", ["role_id"], :name => "index_role_permissions_on_role_id"
+  add_index "role_permissions", ["target_id"], :name => "index_role_permissions_on_target_id"
+
   create_table "roles", :force => true do |t|
     t.string   "name",       :null => false
     t.datetime "created_at"

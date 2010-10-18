@@ -165,6 +165,18 @@ describe FeedbackTicketsController do
         it { should render_template(:edit) }
       end
     end
+
+    context "the feedback_ticket is not found" do
+
+      before(:each) do
+        FeedbackTicket.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        put :update, :id => mock_feedback_ticket.id
+      end
+
+      it { flash[:error].should == "Error: requested ticket not found" }
+
+      it { should redirect_to(feedback_tickets_path) }
+    end
   end
 
   describe "DELETE destroy" do

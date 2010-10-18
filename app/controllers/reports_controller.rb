@@ -2,25 +2,6 @@ class ReportsController < ApplicationController
 
   before_filter :find_section
 
-  def shift_totals_old
-    @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
-    @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today
-    people_by_group = @section.members_by_group
-    shifts = @section.shifts.active_as_of(@start_date)
-    shift_tags = @section.shift_tags
-    assignments = Assignment.date_in_range(@start_date, @end_date).
-      where(:shift_id => shifts.map(&:id)).
-      includes(:shift).
-      published
-    @report = ShiftsReport.new(assignments, shifts, shift_tags, people_by_group)
-
-    respond_to do |format|
-      format.html
-      format.xls { render :xls => @report,
-        :template => "reports/section_report.xls", :layout => false }
-    end
-  end
-
   def shift_totals
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
     @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today

@@ -43,6 +43,16 @@ describe WeeklySchedule do
 
   # methods
   
+  describe "#published?" do
+
+    it "returns published_at!=nil" do
+      @schedule.published_at = nil
+      @schedule.published?.should be_false
+      @schedule.published_at = Date.today
+      @schedule.published?.should be_true
+    end
+  end
+  
   describe "#publish=(:value)" do
 
     context "value is like true" do

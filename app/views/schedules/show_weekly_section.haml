@@ -29,11 +29,11 @@
           = link_to "shifts on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s)
         - else
           = link_to "people on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s, :view_mode => 2)
-      - @schedule_view.each_x_axis_item do |x_item|
-        %th!= format_header(x_item)
+      - @schedule_presenter.each_col_header do |col_header|
+        %th= render :partial => "schedules/headers/html/#{col_header[:type]}", :object => col_header[:object]
   %tbody
-    - @schedule_view.each_y_axis_item do |y_item|
+    - @schedule_presenter.each_row do |row|
       %tr{ :class => cycle("odd", "") }
-        %th!= format_header(y_item)
-        - @schedule_view.each_x_axis_item do |x_item|
-          %td!= @schedule_view.format(@schedule_view.value(x_item, y_item), "<br/>")
+        %th= render :partial => "schedules/headers/html/#{row.header[:type]}", :object => row.header[:object]
+        - row.each_value do |value|
+          %td!= value && value.join("<br/>")

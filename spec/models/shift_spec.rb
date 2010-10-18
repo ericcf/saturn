@@ -55,7 +55,56 @@ describe Shift do
 
   it { should validate_presence_of(:section) }
 
+  # scopes
+
+  describe ".active_as_of(:cutoff_date)" do
+
+    it "returns shifts with nil retired_on" do
+      @shift.update_attributes({ :retired_on => nil })
+      Shift.active_as_of(Date.today).should include(@shift)
+    end
+
+    it "returns shifts with retired_on > cutoff_date" do
+      @shift.update_attributes({ :retired_on => Date.tomorrow })
+      Shift.active_as_of(Date.yesterday).should include(@shift)
+    end
+
+    it "does not return shifts with retired_on < cutoff_date" do
+      @shift.update_attributes({ :retired_on => Date.yesterday })
+      Shift.active_as_of(Date.tomorrow).should_not include(@shift)
+    end
+  end
+
+  describe ".retired_as_of(:cutoff_date)" do
+
+    it "does not return shifts with retired_on == nil" do
+      @shift.update_attributes({ :retired_on => nil })
+      Shift.retired_as_of(Date.today).should_not include(@shift)
+    end
+
+    it "returns shifts with retired_on < cutoff_date" do
+      @shift.update_attributes({ :retired_on => Date.yesterday })
+      Shift.retired_as_of(Date.tomorrow).should include(@shift)
+    end
+
+    it "does not return shifts with retired_on > cutoff_date" do
+      @shift.update_attributes({ :retired_on => Date.tomorrow })
+      Shift.retired_as_of(Date.yesterday).should_not include(@shift)
+    end
+  end
+
   # methods
+  
+  describe "#tags" do
+
+    it "returns a comma separated list of tag titles" do
+      @shift.stub!(:shift_tags).and_return([
+        stub_model(ShiftTag, :title => "Foo"),
+        stub_model(ShiftTag, :title => "Bar")
+      ])
+      @shift.tags.should eq("Foo, Bar")
+    end
+  end
   
   describe "#tags=(:tags_string)" do
 
@@ -89,6 +138,15 @@ describe Shift do
         @mock_shift_tags.should_not_receive(:<<)
         @shift.tags = "Foo"
       end
+    end
+  end
+
+  describe "#display_color" do
+
+    it "returns the display color value of the last assigned tag" do
+      @shift.stub!(:shift_tags).
+        and_return([stub_model(ShiftTag, :display_color => "blue")])
+      @shift.display_color.should eq("blue")
     end
   end
 

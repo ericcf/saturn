@@ -7,6 +7,10 @@ class CreateRolePermissions < ActiveRecord::Migration
 
       t.timestamps
     end
+
+    add_index :role_permissions, :role_id
+    add_index :role_permissions, :permission_id
+    add_index :role_permissions, :target_id
   end
 
   def self.down

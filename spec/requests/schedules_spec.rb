@@ -43,8 +43,11 @@ describe "schedules" do
 
       context "with a published weekly schedule" do
 
-        it "renders the assignment" do
+        before(:all) do
           WeeklySchedule.last.update_attribute(:published_at, Date.today)
+        end
+
+        it "renders the assignment" do
           get weekly_call_schedule_path
           response.should contain(@assignment.physician.family_name)
         end
@@ -60,15 +63,24 @@ describe "schedules" do
 
       before(:each) do
         @physician = Factory(:physician)
-        section = Factory(:section)
-        SectionMembership.create(:physician => @physician, :section => section)
+        @section = Factory(:section)
+        SectionMembership.create(:physician => @physician, :section => @section)
         Factory(:assignment, :physician => @physician)
-        get weekly_section_schedule_path(:section_id => section.id,
-          :view_mode => 2)
       end
 
       it "renders physician names in the left column" do
+        get weekly_section_schedule_path(:section_id => @section.id,
+          :view_mode => 2)
         response.should have_selector("tbody tr th a", :content => @physician.short_name)
+      end
+
+      context "in xls format" do
+
+        it "renders a spreadsheet" do
+          get weekly_section_schedule_path(:section_id => @section.id,
+            :format => :xls)
+          response.headers["Content-Type"].should =~ /#{Mime::XLS}/
+        end
       end
     end
   end

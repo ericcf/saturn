@@ -1,8 +1,10 @@
 require 'factory_girl'
 
 Factory.define :weekly_schedule do |s|
-  #factory :weekly_schedule do
-    s.association :section
-    s.date Date.today.beginning_of_week
-  #end
+  s.association :section
+  s.date Date.today.beginning_of_week
+end
+
+Factory.define :published_weekly_schedule, :parent => :weekly_schedule do |s|
+  s.published_at Date.today
 end

@@ -166,6 +166,18 @@ describe FeedbackStatusesController do
         it { should render_template(:edit) }
       end
     end
+
+    context "the feedback_status is not found" do
+
+      before(:each) do
+        FeedbackStatus.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        put :update, :id => mock_feedback_status.id
+      end
+
+      it { flash[:error].should == "Error: requested status not found" }
+
+      it { should redirect_to(feedback_statuses_path) }
+    end
   end
 
   describe "DELETE destroy" do

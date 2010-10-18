@@ -7,7 +7,8 @@ describe "shifts/index" do
     @section = Factory(:section)
     assign(:section, @section)
     @mock_current_shift = stub_model(Shift, :title => "AM Duty",
-      :retired_on => nil)
+      :retired_on => nil, :phone => "(123) 456-7890",
+      :description => "Lorem ipsum...")
     @mock_current_shift.stub!(:tags).and_return("AM")
     @mock_retired_shift = stub_model(Shift, :title => "PM Duty",
       :retired_on => Date.yesterday)
@@ -56,7 +57,6 @@ describe "shifts/index" do
   end
 
   it "renders phone field" do
-    @mock_current_shift.stub!(:phone).and_return("(123) 456-7890")
     render
     rendered.should have_selector("form") do |form|
       form.should have_selector("input", :type => "text", :name => "section[shifts_attributes][0][phone]", :value => @mock_current_shift.phone)
@@ -64,7 +64,6 @@ describe "shifts/index" do
   end
 
   it "renders description field" do
-    @mock_current_shift.stub!(:description).and_return("Lorem ipsum...")
     render
     rendered.should have_selector("form") do |form|
       form.should have_selector("input", :type => "text", :name => "section[shifts_attributes][0][description]", :value => @mock_current_shift.description)

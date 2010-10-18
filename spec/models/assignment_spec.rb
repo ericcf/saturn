@@ -147,4 +147,18 @@ describe Assignment do
       end
     end
   end
+
+  describe "#to_ics_event(:event)" do
+
+    it "initializes a vpim calendar event" do
+      date = Date.today
+      shift = Shift.create(:title => "Foo")
+      assignment = Assignment.new(:date => date, :shift => shift)
+      vpim_event = stub("event")
+      vpim_event.should_receive(:dtstart).with(date)
+      vpim_event.should_receive(:dtend).with(date)
+      vpim_event.should_receive(:summary).with(shift.title)
+      assignment.to_ics_event(vpim_event)
+    end
+  end
 end

@@ -33,12 +33,23 @@ describe PhysiciansController do
       before(:each) do
         Physician.stub_chain(:section_members, :name_like).
           and_return([mock_physician])
+        @mock_shift = stub_model(Shift)
+        @mock_assignment = stub_model(Assignment, :shift => @mock_shift,
+          :physician_id => 666)
+        Assignment.stub_chain(:published, :where, :includes).
+          and_return([@mock_assignment])
         get :search, :query => "Boo"
       end
 
       it { assigns(:physicians).should eq([mock_physician]) }
 
       it { assigns(:query).should eq("Boo") }
+
+      it do
+        assigns(:shifts_by_physician).should == {
+          @mock_assignment.physician_id => [@mock_shift]
+        }
+      end
     end
   end
 

@@ -18,7 +18,7 @@
             = section_form.fields_for :shift_tags, shift_tag do |shift_tag_form|
               %td= shift_tag_form.text_field :title
               %td= shift_tag.shifts.map(&:title).join(", ")
-              - colors = options_for_select([["light blue", "3399ff"], ["dark blue", "000099"], ["light green", "11cc11"], ["dark green", "007700"]], shift_tag.display_color)
+              - colors = options_for_select(color_options, shift_tag.display_color)
               %td= shift_tag_form.select :display_color, colors, :prompt => "select color..."
               %td
                 - if shift_tag.shifts.size == 0

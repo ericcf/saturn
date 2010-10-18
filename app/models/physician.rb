@@ -28,6 +28,10 @@ end
 
 class Physician < RadDirectory::Person
 
+  scope :with_assignments, lambda { |assignments|
+    where(:id => assignments.map(&:physician_id))
+  }
+
   def self.section_members
     where(:id => SectionMembership.all.map(&:physician_id).uniq)
   end

@@ -12,10 +12,7 @@ class WeeklySchedule < ActiveRecord::Base
   def published?
     !published_at.nil?
   end
-
-  def publish
-    published?
-  end
+  alias :publish :published?
 
   def publish=(value)
     if value.to_i == 1

@@ -7,13 +7,16 @@ GIT
 
 GIT
   remote: git://github.com/ericcf/deadbolt.git
-  revision: b28a23327e703835692281a12a0e590ccb2b18bf
+  revision: 556c042f9766d0d32f2a3abccb3b8d0af46d2b94
   specs:
-    deadbolt (0.0.1)
+    deadbolt (0.0.3)
+      cancan (~> 1.4.0)
+      devise (~> 1.1.3)
+      formtastic (~> 1.1.0)
 
 GIT
   remote: git://github.com/ericcf/rad_directory.git
-  revision: 97ba0cb9b5d22dae223aec7f79e114d52bb96cd2
+  revision: bce5f4aa4695631e344f88a968c16cee44a584dd
   specs:
     rad_directory (0.0.2)
 
@@ -21,12 +24,12 @@ GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    actionmailer (3.0.0)
-      actionpack (= 3.0.0)
+    actionmailer (3.0.1)
+      actionpack (= 3.0.1)
       mail (~> 2.2.5)
-    actionpack (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
+    actionpack (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
       builder (~> 2.1.2)
       erubis (~> 2.6.6)
       i18n (~> 0.4.1)
@@ -34,26 +37,34 @@ GEM
       rack-mount (~> 0.6.12)
       rack-test (~> 0.5.4)
       tzinfo (~> 0.3.23)
-    activemodel (3.0.0)
-      activesupport (= 3.0.0)
+    activemodel (3.0.1)
+      activesupport (= 3.0.1)
       builder (~> 2.1.2)
       i18n (~> 0.4.1)
-    activerecord (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
+    activerecord (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
       arel (~> 1.0.0)
       tzinfo (~> 0.3.23)
-    activeresource (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
-    activesupport (3.0.0)
+    activeresource (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
+    activesupport (3.0.1)
+    archive-tar-minitar (0.5.2)
     arel (1.0.1)
       activesupport (~> 3.0.0)
     autotest (4.4.1)
     bcrypt-ruby (2.1.2)
     builder (2.1.2)
     cancan (1.4.0)
-    configuration (1.1.0)
+    capistrano (2.5.19)
+      highline
+      net-scp (>= 1.0.0)
+      net-sftp (>= 2.0.0)
+      net-ssh (>= 2.0.14)
+      net-ssh-gateway (>= 1.0.0)
+    columnize (0.3.1)
+    daemons (1.0.10)
     devise (1.1.3)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 0.10.7)
@@ -70,11 +81,9 @@ GEM
       actionpack (>= 2.3.0)
       activesupport (>= 2.3.0)
       i18n (>= 0.4.0)
+    gem_plugin (0.2.3)
     haml (3.0.21)
-    heroku (1.10.14)
-      json_pure (>= 1.2.0, < 1.5.0)
-      launchy (~> 0.3.2)
-      rest-client (>= 1.4.0, < 1.7.0)
+    highline (1.6.1)
     i18n (0.4.1)
     jasmine (1.0.1)
       json_pure (>= 1.4.3)
@@ -84,37 +93,45 @@ GEM
       selenium-client (>= 1.2.17)
       selenium-rc (>= 2.1.0)
     json_pure (1.4.6)
-    launchy (0.3.7)
-      configuration (>= 0.0.5)
-      rake (>= 0.8.1)
+    linecache19 (0.5.11)
+      ruby_core_source (>= 0.1.4)
     mail (2.2.7)
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
     mime-types (1.16)
+    mongrel (1.2.0.pre2)
+      daemons (~> 1.0.10)
+      gem_plugin (~> 0.2.3)
+    net-scp (1.0.4)
+      net-ssh (>= 1.99.1)
+    net-sftp (2.0.5)
+      net-ssh (>= 2.0.9)
+    net-ssh (2.0.23)
+    net-ssh-gateway (1.0.1)
+      net-ssh (>= 1.99.1)
     nokogiri (1.4.3.1)
+    pg (0.9.0)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.6)
       rack (>= 1.0)
-    rails (3.0.0)
-      actionmailer (= 3.0.0)
-      actionpack (= 3.0.0)
-      activerecord (= 3.0.0)
-      activeresource (= 3.0.0)
-      activesupport (= 3.0.0)
+    rails (3.0.1)
+      actionmailer (= 3.0.1)
+      actionpack (= 3.0.1)
+      activerecord (= 3.0.1)
+      activeresource (= 3.0.1)
+      activesupport (= 3.0.1)
       bundler (~> 1.0.0)
-      railties (= 3.0.0)
-    railties (3.0.0)
-      actionpack (= 3.0.0)
-      activesupport (= 3.0.0)
+      railties (= 3.0.1)
+    railties (3.0.1)
+      actionpack (= 3.0.1)
+      activesupport (= 3.0.1)
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    rest-client (1.6.1)
-      mime-types (>= 1.16)
     rspec (2.0.0)
       rspec-core (= 2.0.0)
       rspec-expectations (= 2.0.0)
@@ -125,15 +142,30 @@ GEM
     rspec-mocks (2.0.0)
       rspec-core (= 2.0.0)
       rspec-expectations (= 2.0.0)
-    rspec-rails (2.0.0)
-      rspec (= 2.0.0)
+    rspec-rails (2.0.1)
+      rspec (~> 2.0.0)
+    ruby-debug-base19 (0.11.24)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby_core_source (>= 0.1.4)
+    ruby-debug19 (0.11.6)
+      columnize (>= 0.3.1)
+      linecache19 (>= 0.5.11)
+      ruby-debug-base19 (>= 0.11.19)
+    ruby-mysql (2.9.3)
     ruby-ole (1.2.10.1)
+    ruby_core_source (0.1.4)
+      archive-tar-minitar (>= 0.5.2)
     selenium-client (1.2.18)
     selenium-rc (2.2.4)
       selenium-client (>= 1.2.18)
     shoulda (2.11.3)
+    simplecov (0.3.6)
+      simplecov-html (>= 0.3.7)
+    simplecov-html (0.3.8)
     spreadsheet (0.6.4.1)
       ruby-ole
+    sqlite3-ruby (1.3.1)
     thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
@@ -153,6 +185,7 @@ PLATFORMS
 DEPENDENCIES
   autotest
   cancan
+  capistrano
   deadbolt!
   devise
   ekuseru
@@ -160,13 +193,18 @@ DEPENDENCIES
   factory_girl_rails
   formtastic
   haml
-  heroku
   jasmine
+  mongrel (= 1.2.0.pre2)
   paperclip!
+  pg
   rad_directory!
-  rails (= 3.0.0)
+  rails (>= 3.0.0)
   rspec-rails (>= 2.0.0)
+  ruby-debug19
+  ruby-mysql
   shoulda
+  simplecov (>= 0.3.5)
+  sqlite3-ruby
   vpim
   webrat
   will_paginate (~> 3.0.pre2)

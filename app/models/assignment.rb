@@ -22,7 +22,7 @@ class Assignment < ActiveRecord::Base
   scope :published, lambda {
     joins(:weekly_schedule).where("weekly_schedules.published_at is not null")
   }
-  default_scope order(:position)
+  default_scope order("assignments.position")
 
   def public_note_details
     public_note.blank? ? nil : {

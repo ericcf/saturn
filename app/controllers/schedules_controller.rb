@@ -1,5 +1,4 @@
 require 'date_helpers'
-require 'tables'
 
 class SchedulesController < ApplicationController
 
@@ -12,11 +11,16 @@ class SchedulesController < ApplicationController
     @start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(@start_date)
     @schedules = WeeklySchedule.published.find_all_by_date(@start_date)
-    @call_shifts = Shift.by_tag("Call")
+    @call_shifts = Shift.includes(:shift_tags).
+      where("shift_tags.title" => "Call")
     @call_assignments = Assignment.by_schedules_and_shifts(
       @schedules,
       @call_shifts
-    ).includes(:physician => :names_alias)
+    )
+    @physicians_by_id = Physician.
+      where(:id => @call_assignments.map(&:physician_id)).
+      includes(:names_alias).
+      hash_by_id
     @notes = @call_assignments.map(&:public_note_details).compact
   end
 
@@ -24,31 +28,23 @@ class SchedulesController < ApplicationController
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])
-    @shifts = @section.shifts.active_as_of(start_date).includes(:shift_tags)
-    @schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
+    schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
       @section.weekly_schedules.build(:date => start_date)
-    @assignments = @schedule.assignments.includes(:shift)
-    @notes = @assignments.map(&:public_note_details).compact
+    assignments = schedule.assignments.includes(:shift)
+    @notes = assignments.map(&:public_note_details).compact
     @view_mode = params[:view_mode]
-    @schedule_view = case @view_mode.to_i
-                     when 0, 1
-                       physician_ids = @assignments.map(&:physician_id)
-                       physicians = Physician.where(:id => physician_ids).
-                         includes(:names_alias).
-                         each_with_object({}) {|p, hsh| hsh[p.id] = p.short_name}
-                       Tables::TabularData.new(:x => [@dates, :clone],
-      :y => [@shifts, :id],
-      :mapped_values => @assignments.group_by {|a| [a.date, a.shift_id]},
-      :content_formatter => lambda { |assgnmnt| physicians[assgnmnt.physician_id] })
-                     when 2
-                       Tables::TabularData.new(:x => [@dates, :clone],
-      :y => [@section.members, :id], 
-      :mapped_values => @assignments.group_by {|a| [a.date, a.physician_id]},
-      :content_formatter => lambda { |assgnmt| assgnmt.shift.title })
-                     end
+    @schedule_presenter = case @view_mode.to_i
+                          when 0, 1
+                            WeeklySchedulePresenter.new(@section, @dates,
+      assignments, { :col_type => :dates, :row_type => :shifts })
+                          when 2
+                            WeeklySchedulePresenter.new(@section, @dates,
+      assignments, { :col_type => :dates, :row_type => :physicians })
+                          end
+
     respond_to do |format|
       format.html
-      format.xls { render :xls => @assignments, :template => "schedules/weekly_section_schedule.xls", :layout => false }
+      format.xls { render :xls => @schedule_presenter, :template => "schedules/weekly_section_schedule.xls", :layout => false }
     end
   end
 

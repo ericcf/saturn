@@ -18,7 +18,7 @@
           - if assignments_by_shift_and_date
             %td{ :class => date == Date.today ? "current-date" : "" }
               - assignments_by_shift_and_date.each do |assignment|
-                = assignment.physician.short_name
+                = @physicians_by_id[assignment.physician_id].short_name
                 %br
           - else
             %td &nbsp;

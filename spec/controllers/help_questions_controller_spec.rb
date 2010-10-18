@@ -143,6 +143,18 @@ describe HelpQuestionsController do
         it { should render_template(:edit) }
       end
     end
+
+    context "the help_question is not found" do
+
+      before(:each) do
+        HelpQuestion.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        put :update, :id => mock_help_question.id
+      end
+
+      it { flash[:error].should == "Error: requested question not found" }
+
+      it { should redirect_to(help_questions_path) }
+    end
   end
 
   describe "DELETE destroy" do

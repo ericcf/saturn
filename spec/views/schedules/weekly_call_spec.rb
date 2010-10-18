@@ -8,7 +8,10 @@ describe "schedules/weekly_call" do
     assign(:dates, [@today, @tomorrow])
     view.should_receive(:short_date).with(@today).and_return(@today.to_s)
     view.should_receive(:short_date).with(@tomorrow).and_return(@tomorrow.to_s)
-    assign(:call_shifts, [])
+    @call_shifts = assign(:call_shifts, [
+      mock_model(Shift, :title => "Shift A"),
+      mock_model(Shift, :title => "Shift B")
+    ])
     assign(:call_assignments, [])
   end
 
@@ -29,37 +32,28 @@ describe "schedules/weekly_call" do
     end
   end
 
-  context "with populated call shifts" do
-
-    before(:each) do
-      @call_shifts = assign(:call_shifts, [
-        mock_model(Shift, :title => "Shift A"),
-        mock_model(Shift, :title => "Shift B")
-      ])
+  it "renders the call shift titles on the rows from @call_shifts" do
+    render
+    rendered.should have_selector("table") do |table|
+      table.should have_selector("tr > th", :content => "Shift A")
+      table.should have_selector("tr > th", :content => "Shift B")
     end
+  end
 
-    it "renders the call shift titles on the rows from @call_shifts" do
-      render
-      rendered.should have_selector("table") do |table|
-        table.should have_selector("tr > th", :content => "Shift A")
-        table.should have_selector("tr > th", :content => "Shift B")
-      end
-    end
-
-    it "renders the assignments corresponding to the shifts and dates" do
-      mock_physician = stub('Physician', :short_name => "L. Effant")
-      assign(:call_assignments, [
-        mock_model(Assignment,
-                   :physician => mock_physician,
-                   :shift_id => @call_shifts.first.id,
-                   :date => @today)
-      ])
-      render
-      rendered.should have_selector("table") do |table|
-        table.should have_selector("tr > td",
-          :content => mock_physician.short_name
-        )
-      end
+  it "renders the assignments corresponding to the shifts and dates" do
+    mock_physician = stub_model(Physician, :short_name => "L. Effant")
+    assign(:physicians_by_id, { mock_physician.id => mock_physician })
+    assign(:call_assignments, [
+      mock_model(Assignment,
+                 :physician_id => mock_physician.id,
+                 :shift_id => @call_shifts.first.id,
+                 :date => @today)
+    ])
+    render
+    rendered.should have_selector("table") do |table|
+      table.should have_selector("tr > td",
+        :content => mock_physician.short_name
+      )
     end
   end
 end

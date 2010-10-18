@@ -61,9 +61,4 @@ class SectionsController < ApplicationController
     flash[:error] = "Error: requested section not found"
     redirect_to sections_path
   end
-
-  def search_shift_tags
-    @section = Section.find(params[:id])
-    render :json => @section.shift_tags.label_like(params[:term]).map(&:label)
-  end
 end

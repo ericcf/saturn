@@ -76,4 +76,14 @@ describe ShiftTagsController do
       it { flash[:error].should match(/Error: could not create category/) }
     end
   end
+
+  describe "GET search" do
+
+    before(:each) do
+      @mock_section.stub_chain(:shift_tags, :title_like).and_return([])
+      get :search, :section_id => @mock_section.id
+    end
+
+    it { should respond_with_content_type(:json) }
+  end
 end

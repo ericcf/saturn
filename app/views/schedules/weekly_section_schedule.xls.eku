@@ -15,18 +15,18 @@ col = 0
 row += 1
 col += 1
 sheet1.row(row).default_format = bold
-@schedule_view.each_x_axis_item do |x_item|
-  sheet1[row, col] = format_header(x_item, :no_markup)
+@schedule_presenter.each_col_header do |col_header|
+  sheet1[row, col] = render :partial => "schedules/headers/plain/#{col_header[:type]}", :object => col_header[:object]
   col += 1
 end
 
 row += 1
 col = 0
-@schedule_view.each_y_axis_item do |y_item|
-  sheet1[row, col] = format_header(y_item, :no_markup)
+@schedule_presenter.each_row do |row_data|
+  sheet1[row, col] = render :partial => "schedules/headers/plain/#{row_data.header[:type]}", :object => row_data.header[:object]
   col += 1
-  @schedule_view.each_x_axis_item do |x_item|
-    sheet1[row, col]  = @schedule_view.format(@schedule_view.value(x_item, y_item), "\n")
+  row_data.each_value do |value|
+    sheet1[row, col] = value && value.join("\n")
     col += 1
   end
   row += 1

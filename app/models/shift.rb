@@ -17,11 +17,6 @@ class Shift < ActiveRecord::Base
     where(["retired_on <= ?", cutoff_date])
   }
 
-  def Shift.by_tag(term)
-    ShiftTag.find_all_by_title(term, :include => [:assignments, :shifts]).
-      map(&:shifts).flatten.uniq
-  end
-
   def tags
     shift_tags.map(&:title).join(", ")
   end
@@ -33,6 +28,10 @@ class Shift < ActiveRecord::Base
         shift_tags << section.shift_tags.find_or_create_by_title(title)
       end
     end
+  end
+
+  def display_color
+    shift_tags.map(&:display_color).compact.last
   end
 
   def retire
