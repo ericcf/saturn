@@ -12,7 +12,8 @@ class PhysiciansController < ApplicationController
   def search
     unless params[:query].blank?
       @query = params[:query]
-      @physicians = Physician.section_members.name_like(params[:query])
+      @physicians = Physician.section_members.name_like(params[:query]).
+        paginate(:page => params[:page])
       assignments = Assignment.published.
         where(:physician_id => @physicians.map(&:id), :date => Date.today).
         includes(:shift)

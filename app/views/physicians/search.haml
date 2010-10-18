@@ -9,11 +9,17 @@
         = submit_tag "Search Physicians", :class => "submit"
 
 - unless @query.blank?
-  %h3= "Results for '#{@query}'"
-  %h4= Date.today.to_s(:long)
+  %h3= "#{pluralize(@physicians.total_entries, "Result")} for '#{@query}'"
 
 - unless @physicians.blank?
-  %dl
+  = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"
+  %table
+    %thead
+      %tr
+        %th &nbsp;
+        %th= Date.today.to_s(:long)
     - @physicians.each do |physician|
-      %dt= link_to physician.full_name(:family_first), schedule_physician_path(physician)
-      %dd!= (@shifts_by_physician[physician.id] || []).map(&:title).join("<br/>")
+      %tr
+        %td= link_to physician.full_name(:family_first), schedule_physician_path(physician)
+        %td!= (@shifts_by_physician[physician.id] || []).map(&:title).join("<br/>")
+  = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"

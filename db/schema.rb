@@ -65,13 +65,6 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
     t.datetime "updated_at"
   end
 
-  create_table "phones", :force => true do |t|
-    t.integer "contact_id"
-    t.string  "value"
-  end
-
-  add_index "phones", ["contact_id"], :name => "index_phones_on_contact_id"
-
   create_table "physician_aliases", :force => true do |t|
     t.integer  "physician_id", :null => false
     t.string   "initials"
