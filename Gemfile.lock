@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/ericcf/deadbolt.git
-  revision: 556c042f9766d0d32f2a3abccb3b8d0af46d2b94
+  revision: 4bd02219b80de5299d407e5adc65e35b46bfc712
   specs:
     deadbolt (0.0.3)
       cancan (~> 1.4.0)
@@ -82,7 +82,7 @@ GEM
       activesupport (>= 2.3.0)
       i18n (>= 0.4.0)
     gem_plugin (0.2.3)
-    haml (3.0.21)
+    haml (3.0.22)
     highline (1.6.1)
     i18n (0.4.1)
     jasmine (1.0.1)
@@ -111,7 +111,6 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     nokogiri (1.4.3.1)
-    pg (0.9.0)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
@@ -132,16 +131,16 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    rspec (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-      rspec-mocks (= 2.0.0)
-    rspec-core (2.0.0)
-    rspec-expectations (2.0.0)
+    rspec (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
+      rspec-mocks (~> 2.0.1)
+    rspec-core (2.0.1)
+    rspec-expectations (2.0.1)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
+    rspec-mocks (2.0.1)
+      rspec-core (~> 2.0.1)
+      rspec-expectations (~> 2.0.1)
     rspec-rails (2.0.1)
       rspec (~> 2.0.0)
     ruby-debug-base19 (0.11.24)
@@ -153,7 +152,7 @@ GEM
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
     ruby-mysql (2.9.3)
-    ruby-ole (1.2.10.1)
+    ruby-ole (1.2.11)
     ruby_core_source (0.1.4)
       archive-tar-minitar (>= 0.5.2)
     selenium-client (1.2.18)
@@ -196,15 +195,14 @@ DEPENDENCIES
   jasmine
   mongrel (= 1.2.0.pre2)
   paperclip!
-  pg
   rad_directory!
-  rails (>= 3.0.0)
-  rspec-rails (>= 2.0.0)
+  rails (>= 3.0.1)
+  rspec-rails (>= 2.0.1)
   ruby-debug19
   ruby-mysql
   shoulda
   simplecov (>= 0.3.5)
   sqlite3-ruby
   vpim
-  webrat
+  webrat (= 0.7.1)
   will_paginate (~> 3.0.pre2)

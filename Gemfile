@@ -1,12 +1,10 @@
 source 'http://rubygems.org'
 
-gem 'rails', '>= 3.0.0'
+gem 'rails', '>= 3.0.1'
 
-#gem 'sqlite3-ruby', :require => 'sqlite3'
-#gem 'ruby-mysql'
-#gem 'pg'
+gem 'ruby-mysql'
 gem 'haml'
-#gem 'mongrel', '= 1.2.0.pre2'
+gem 'mongrel', '= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
 
@@ -33,9 +31,10 @@ gem 'vpim'
 gem 'capistrano'
 
 group :development, :test do
-  gem 'rspec-rails', '>= 2.0.0'
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'rspec-rails', '>= 2.0.1'
   gem 'autotest'
-  gem 'webrat'
+  gem 'webrat', '= 0.7.1'
   gem 'shoulda'
   gem 'factory_girl'
   gem 'factory_girl_rails'
