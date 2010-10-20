@@ -8,9 +8,10 @@ describe "schedules/weekly_call" do
     assign(:dates, [@today, @tomorrow])
     view.should_receive(:short_date).with(@today).and_return(@today.to_s)
     view.should_receive(:short_date).with(@tomorrow).and_return(@tomorrow.to_s)
+    mock_section = stub_model(Section, :title => "Section A")
     @call_shifts = assign(:call_shifts, [
-      mock_model(Shift, :title => "Shift A"),
-      mock_model(Shift, :title => "Shift B")
+      mock_model(Shift, :title => "Shift A", :section => mock_section),
+      mock_model(Shift, :title => "Shift B", :section => mock_section)
     ])
     assign(:call_assignments, [])
   end

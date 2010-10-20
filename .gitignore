@@ -9,3 +9,5 @@ config/database.yml
 lib/legacy*
 lib/resident*
 coverage*
+Capfile
+config/deploy.rb

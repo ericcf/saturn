@@ -10,11 +10,11 @@ class SchedulesController < ApplicationController
   def weekly_call
     @start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(@start_date)
-    @schedules = WeeklySchedule.published.find_all_by_date(@start_date)
+    schedules = WeeklySchedule.published.find_all_by_date(@start_date)
     @call_shifts = Shift.includes(:shift_tags).
       where("shift_tags.title" => "Call")
     @call_assignments = Assignment.by_schedules_and_shifts(
-      @schedules,
+      schedules,
       @call_shifts
     )
     @physicians_by_id = Physician.

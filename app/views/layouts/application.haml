@@ -20,7 +20,7 @@
       %div#top-menu
         %ul
           -#!= nav_item "Residents", resident_rotations_path
-          != nav_item "Home", search_physicians_path
+          != nav_item "Home", root_path
           != nav_item "On Call", weekly_call_schedule_path
           != nav_item "Sections", sections_path
           != nav_item "Physicians", physicians_path, {}, :manage, Physician
@@ -29,7 +29,10 @@
           != nav_item "Admin", admin_path
     %div#personal-wrapper
       %div#personal
-        %div= render "deadbolt/shared_partials/personal"
+        %div
+          = Date.today.strftime("%A, %B #{Date.today.day}, %Y")
+          |
+          = render "deadbolt/shared_partials/personal"
     = render "shared/flash_banner"
     %div#main
       = yield :content_menu

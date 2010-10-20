@@ -1,4 +1,4 @@
 - color = shift.display_color
 - color = "#" + color if color
 = image_tag('phone.jpg', :title => shift.phone) if shift.phone
-%span{ :style => "color:#{color}" }><=shift.title
+%span{ :style => "color:#{color}" }><= "#{shift.title} (#{shift.duration})"

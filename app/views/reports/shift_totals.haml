@@ -47,7 +47,7 @@
   %tbody
     - @shifts.each do |shift|
       %tr{ :class => cycle("odd", "", :name => "row") }
-        %th.shift_label.odd= shift.title
+        %th.shift_label.odd= "#{shift.title} (#{shift.duration})"
         - @physicians_by_group.each do |group_name, people|
           - unless people.blank?
             %td.total= @totals_by_group_and_shift[[group_name, shift.id]]

@@ -35,14 +35,6 @@ describe SchedulesController do
       assigns[:dates].should == dates
     end
 
-    it "assigns published weekly schedules from @start_date to @schedules" do
-      date = Date.today.at_beginning_of_week
-      WeeklySchedule.stub_chain(:published, :find_all_by_date).
-        and_return([mock_schedule])
-      get :weekly_call, :date => date
-      assigns(:schedules).should == [mock_schedule]
-    end
-
     it "assigns all call shifts to @call_shifts" do
       mock_shift = mock_model(Shift)
       Shift.stub_chain(:includes, :where).and_return([mock_shift])
