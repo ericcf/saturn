@@ -2,6 +2,7 @@
   = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
   = javascript_include_tag 'shared/date_selector'
   = javascript_include_tag 'shared/table'
+  = javascript_include_tag 'report'
 
 - content_for :stylesheets do
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
@@ -33,17 +34,17 @@
       %th
       - @physicians_by_group.each do |group_name, people|
         - unless people.blank?
-          %th= group_name + ":"
-          - people.each do |person|
-            %th.person_name{ :class => cycle("odd", "", :name => "header"), :title => person.full_name }= link_to person.initials, section_physician_shift_totals_path(@section, person, :start_date => @start_date, :end_date => @end_date)
+          %th{ :class => "group" }
+            %span{ :class => "title" }= group_name
+          = render :partial => 'reports/headers/physician', :collection => people, :locals => { :group_name => group_name }
   %tfoot
     %tr
       %th
       - @physicians_by_group.each do |group_name, people|
         - unless people.blank?
-          %th= group_name + ":"
-          - people.each do |person|
-            %th.person_name{ :class => cycle("odd", "", :name => "header"), :title => person.full_name }= link_to person.initials, section_physician_shift_totals_path(@section, person, :start_date => @start_date, :end_date => @end_date)
+          %th{ :class => "group" }
+            %span{ :class => "title" }= group_name
+          = render :partial => 'reports/headers/physician', :collection => people, :locals => { :group_name => group_name }
   %tbody
     - @shifts.each do |shift|
       %tr{ :class => cycle("odd", "", :name => "row") }
@@ -52,7 +53,7 @@
           - unless people.blank?
             %td.total= @totals_by_group_and_shift[[group_name, shift.id]]
             - people.each do |person|
-              %td{ :class => cycle("odd", "", :name => "col") }><= @totals_by_physician_and_shift[[person.id, shift.id]]
+              %td{ :class => cycle("odd #{group_name}", group_name, :name => "col") }><= @totals_by_physician_and_shift[[person.id, shift.id]]
 
 %br
 
@@ -61,9 +62,9 @@
     %tr{ :class => cycle("odd", "", :name => "row") }
       %th Shift Categories
       - @physicians_by_group.each do |group_name, people|
-        %th= group_name + ":"
-        - people.each do |person|
-          %th.person_name{ :class => cycle("odd", "", :name => "header"), :title => person.full_name }= person.initials
+        %th{ :class => "group" }
+          %span{ :class => "title" }= group_name
+        = render :partial => 'reports/headers/physician', :collection => people, :locals => { :group_name => group_name }
   %tbody
     - @shift_tags.each do |shift_tag|
       %tr{ :class => cycle("odd", "", :name => "row") }
@@ -71,4 +72,4 @@
         - @physicians_by_group.each do |group_name, physician|
           %td.total= @totals_by_group_and_tag[[group_name, shift_tag.id]]
           - physician.each do |physician|
-            %td{ :class => cycle("odd", "", :name => "col") }><= @totals_by_physician_and_tag[[physician.id, shift_tag.id]]
+            %td{ :class => cycle("odd #{group_name}", group_name, :name => "col") }><= @totals_by_physician_and_tag[[physician.id, shift_tag.id]]

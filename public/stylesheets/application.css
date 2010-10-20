@@ -273,5 +273,8 @@ div#flash-wrapper {
 .current-date, .highlight {
   background-color: #e6ddda; }
 
+.clickable {
+  cursor: pointer; }
+
 .ui-datepicker-trigger {
   cursor: pointer; }
