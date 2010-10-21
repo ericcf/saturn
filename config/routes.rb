@@ -1,5 +1,7 @@
 Saturn::Application.routes.draw do
 
+  resources :conferences
+
   resources :physicians, :only => :index do
     collection do
       get "search"

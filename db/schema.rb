@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101005174741) do
+ActiveRecord::Schema.define(:version => 20101021193818) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -28,6 +28,17 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
+
+  create_table "conferences", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.string   "calcium_uid"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.text     "categories"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "feedback_statuses", :force => true do |t|
     t.string   "name",                          :null => false
