@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '>= 3.0.1'
 
-gem 'ruby-mysql'
+gem 'mysql'
 gem 'haml'
 gem 'mongrel', '= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.pre2'
@@ -26,6 +26,7 @@ gem 'ekuseru'
 
 # iCalendar import/export
 gem 'vpim'
+gem 'icalendar'
 
 # Deployment
 gem 'capistrano'
