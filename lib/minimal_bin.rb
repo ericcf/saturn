@@ -5,16 +5,16 @@ class BinItem
     @size, @position, @data = size, position, data
   end
 
-  def to_s
-    (1..@size).map{@size.to_s}.join
-  end
+  #def to_s
+  #  (1..@size).map{@size.to_s}.join
+  #end
 end
 
 class BinPad < BinItem
 
-  def to_s
-    (1..size).map{"."}.join
-  end
+  #def to_s
+  #  (1..size).map{"."}.join
+  #end
 end
 
 class MinimalBin
@@ -28,13 +28,13 @@ class MinimalBin
     pad_rows
   end
 
-  def to_s
-    puts (1..@size).map{"="}.join
-    @rows.each do |row|
-      puts row[:items].map { |item| item.to_s }.join
-    end
-    puts (1..@size).map{"="}.join
-  end
+  #def to_s
+  #  puts (1..@size).map{"="}.join
+  #  @rows.each do |row|
+  #    puts row[:items].map { |item| item.to_s }.join
+  #  end
+  #  puts (1..@size).map{"="}.join
+  #end
 
   private
 
@@ -83,12 +83,3 @@ class MinimalBin
     by_position
   end
 end
-
-#puts MinimalBin.new([
-#  BinItem.new(2, 1),
-#  BinItem.new(4, 4),
-#  BinItem.new(4, 0),
-#  BinItem.new(4, 0),
-#  BinItem.new(4, 4),
-#  BinItem.new(4, 4),
-#]).to_s

@@ -48,7 +48,7 @@ class ReportsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.xls { render :xls => @report, :layout => false,
+      format.xls { render :xls => @section, :layout => false,
         :template => "reports/section_report.xls" }
     end
   end

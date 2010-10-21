@@ -2,15 +2,15 @@
 
 // general
 
-!baseLineHeight = 18px
-!baseTextColor = #6e6f72
-!mediumTextColor = #C6C8CB
-!oppositeTextColor = #f2ece9
-!baseHeaderColor = #333
-!baseLinkColor = #2f4462
-!baseOkayColor = #6e8a41
-!headerBackgroundColor = #333
-!highlightColor = #e6ddda
+$baseLineHeight: 18px
+$baseTextColor: #6e6f72
+$mediumTextColor: #c6c8cb
+$oppositeTextColor: #f2ece9
+$baseHeaderColor: #333333
+$baseLinkColor: #2f4462
+$baseOkayColor: #6e8a41
+$headerBackgroundColor: #333333
+$highlightColor: #e6ddda
 
 *
   margin: 0
@@ -18,19 +18,19 @@
 
 body, p, h1, h2, h3, h4, h5, h6, ul, li, form, input
   font-size: 12px
-  line-height = !baseLineHeight
+  line-height: $baseLineHeight
 
 body, p, ul, li, form, input
   font-family: Arial, Helvetica, sans-serif
 
 body, p, h1, h2, h3, h4, h5, h6, ul, li
-  background: #FFF
+  background: white
 
 body, p, li
-  color = !baseTextColor
+  color: $baseTextColor
 
 h1, h2, h3, h4, h5, h6, th
-  color = !baseHeaderColor
+  color: $baseHeaderColor
 
 h1, h2, h3, h4, h5, h6
   font-family: Georgia, Times, serif
@@ -56,12 +56,12 @@ p, h2, h3, h4, h5, h6
   float: left
   background: transparent
   a
-    color: #fff
+    color: white
 
 div#header
   width: 100%
   height: 18px
-  background-color = !headerBackgroundColor
+  background-color: $headerBackgroundColor
   div#top-menu
     width: 900px
     margin: auto
@@ -73,22 +73,22 @@ div#header
         background: none
         float: left
         padding: 0px 10px
-        border-left: 1px solid #666
+        border-left: 1px solid #666666
         &:first-child
           border-left: none
         &.last
           border-right: none
         a
-          color = !mediumTextColor
+          color: $mediumTextColor
           text-decoration: none
           font-weight: bold
           &.current
-            color = #fff
+            color: white
 
 div#personal-wrapper
   width: 100%
   height: 18px
-  background-color: #fff
+  background-color: white
   div#personal
     width: 900px
     margin: auto
@@ -98,7 +98,7 @@ div#personal-wrapper
       span
         padding: 0px 10px
         &.first
-          border-right: 1px solid #ccc
+          border-right: 1px solid #cccccc
 
 #main
   padding-left: 18px
@@ -106,8 +106,9 @@ div#personal-wrapper
 // links
 
 a, a:visited, a:active
-  color = !baseLinkColor
+  color: $baseLinkColor
   text-decoration: none
+
 a:hover
   text-decoration: underline
 
@@ -120,27 +121,28 @@ dt
   float: left
   clear: left
   width: 15%
+
 dd
   float: left
   margin-bottom: 20px
 
 // forms
 
-!formLabelWidth = 200px
-!formLabelMargin = 5px
-!formInputBorderColor = #C4C7CB
+$formLabelWidth: 200px
+$formLabelMargin: 5px
+$formInputBorderColor: #c4c7cb
 
 div.form-container
   width: 900px
 
 input
-  height = !baseLineHeight
+  height: $baseLineHeight
 
 .commit input.create, .commit input.update, input.submit
-  height = 1.5*!baseLineHeight
-  color = !oppositeTextColor
+  height: 1.5 * $baseLineHeight
+  color: $oppositeTextColor
   font-weight: bold !important
-  background-color = !baseOkayColor
+  background-color: $baseOkayColor
   cursor: pointer
   border: none
   -moz-border-radius: 5px
@@ -150,29 +152,29 @@ input
 
 input, textarea
   border: 1px solid
-  border-color = !formInputBorderColor
+  border-color: $formInputBorderColor
 
 form fieldset.buttons
   li
-    line-height = 1.5*!baseLineHeight
+    line-height: 1.5 * $baseLineHeight
 
 .inline_form
   margin: 0 0.5em
 
 // tables
 
-!oddRowBackgroundColor = #dedede
-!tableCellBorderColor = #ccc
-!hoverRowBackgroundColor = #46f
-!hoverColBackgroundColor = #C0D9D9
-!hoverRowTextColor = #fff
+$oddRowBackgroundColor: #dedede
+$tableCellBorderColor: #cccccc
+$hoverRowBackgroundColor: #4466ff
+$hoverColBackgroundColor: #c0d9d9
+$hoverRowTextColor: white
 
 table
   border-collapse: collapse
   border-left: 1px solid
-  border-left-color = !tableCellBorderColor
+  border-left-color: $tableCellBorderColor
   border-top: 1px solid
-  border-top-color = !tableCellBorderColor
+  border-top-color: $tableCellBorderColor
   &.schedule
     width: 900px
 
@@ -183,33 +185,33 @@ th
 td, th
   line-height: 16px
   border-bottom: 1px solid
-  border-bottom-color = !tableCellBorderColor
+  border-bottom-color: $tableCellBorderColor
   border-right: 1px solid
-  border-right-color = !tableCellBorderColor
+  border-right-color: $tableCellBorderColor
   padding: 0 2px
   vertical-align: top
 
 tr
   height: 18px
   th
-    background-color: #fff
+    background-color: white
   &.odd
-    background-color = !oddRowBackgroundColor
+    background-color: $oddRowBackgroundColor
     th
-      background-color = !oddRowBackgroundColor
+      background-color: $oddRowBackgroundColor
   &.hover
-    background-color = !hoverRowBackgroundColor
+    background-color: $hoverRowBackgroundColor
     td, td a
-      color = !hoverRowTextColor
+      color: $hoverRowTextColor
     td a
       text-decoration: underline
     td.hover
-      background-color: #333
+      background-color: #333333
 
 td
   font-size: 10px
   &.hover
-    background-color = !hoverColBackgroundColor
+    background-color: $hoverColBackgroundColor
 
 table.decimal_data td
   text-align: right
@@ -222,15 +224,15 @@ table .schedule_block
 
 // navigation
 
-!navBorderColor = #778
-!navBackgroundColor = !baseLinkColor
-!navLinkColor = !oppositeTextColor
-!navVisitedLinkColor = !oppositeTextColor
-!navHoverLinkColor = !baseLinkColor
-!navHoverBackgroundColor = !oppositeTextColor
-!navHoverBorderColor = #227
-!navActiveBackgroundColor = #fff
-!navActiveBorderBottomColor = #fff
+$navBorderColor: #777788
+$navBackgroundColor: $baseLinkColor
+$navLinkColor: $oppositeTextColor
+$navVisitedLinkColor: $oppositeTextColor
+$navHoverLinkColor: $baseLinkColor
+$navHoverBackgroundColor: $oppositeTextColor
+$navHoverBorderColor: #222277
+$navActiveBackgroundColor: white
+$navActiveBorderBottomColor: white
 
 .navcontainer
   margin-bottom: 9px
@@ -239,7 +241,7 @@ table .schedule_block
   padding: 1px 0
   margin-left: 0
   border-bottom: 1px solid
-  border-bottom-color = !navBorderColor
+  border-bottom-color: $navBorderColor
   li
     list-style: none
     margin: 0
@@ -249,27 +251,27 @@ table .schedule_block
       padding: 3px 0.5em
       margin-left: 3px
       border: 1px solid
-      border-color = !navBorderColor
+      border-color: $navBorderColor
       border-bottom: none
-      background = !navBackgroundColor
+      background: $navBackgroundColor
       text-decoration: none
       -moz-border-radius-topLeft: 5px
       -moz-border-radius-topRight: 5px
       border-top-left-radius: 5px
       border-top-right-radius: 5px
       &:link
-        color = !navLinkColor
+        color: $navLinkColor
       &:visited
-        color = !navVisitedLinkColor
+        color: $navVisitedLinkColor
       &:hover
-        color = !navHoverLinkColor
-        background = !navHoverBackgroundColor
-        border-color = !navHoverBorderColor
+        color: $navHoverLinkColor
+        background: $navHoverBackgroundColor
+        border-color: $navHoverBorderColor
       &.current
-        color = !navHoverLinkColor
-        background = !navActiveBackgroundColor
+        color: $navHoverLinkColor
+        background: $navActiveBackgroundColor
         border-bottom: 1px solid
-        border-bottom-color = !navActiveBorderBottomColor
+        border-bottom-color: $navActiveBorderBottomColor
 
 .tableNavList
   border-bottom: none
@@ -286,43 +288,43 @@ div#flash-wrapper
     padding: 2px
     font-weight: bold
     border-top: none !important
-    background-color: #cb9
+    background-color: #ccbb99
     border: 2px solid beige
     &.notice
-      background-color: #9f3
-      border: 2px solid #eee
+      background-color: #99ff33
+      border: 2px solid #eeeeee
     &.error
-      background-color: #f99
-      border: 2px solid #f00
+      background-color: #ff9999
+      border: 2px solid red
 
 // pagination
 
 .pagination
   height: 2.5em
   a, em, span
-    border: 1px solid !baseLinkColor
+    border: 1px solid $baseLinkColor
     display: block
     float: left
     margin-right: 1px
     padding: 0.2em 0.5em
   span.disabled
-    border-color = !mediumTextColor
-    color = !mediumTextColor
+    border-color: $mediumTextColor
+    color: $mediumTextColor
   em
-    background-color = !baseLinkColor
-    color = !oppositeTextColor
+    background-color: $baseLinkColor
+    color: $oppositeTextColor
 
 // misc
 
 .subheadline
-  height = 2 * !baseLineHeight
+  height: 2 * $baseLineHeight
   *
     float: left
   h3, .inline_form
     margin: 5px 5px 5px 0px
 
 .current-date, .highlight
-  background-color = !highlightColor
+  background-color: $highlightColor
 
 .clickable
   cursor: pointer
