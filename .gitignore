@@ -5,9 +5,10 @@ log/*.log
 tmp/**/*
 autotest/*
 .rspec
-config/database.yml
 lib/legacy*
 lib/resident*
 coverage*
 Capfile
+config/database.yml
 config/deploy.rb
+config/environments/production.rb
