@@ -17,9 +17,7 @@
     %thead
       %tr
         %th &nbsp;
-        %th= Date.today.to_s(:long)
-    - @physicians.each do |physician|
-      %tr
-        %td= link_to physician.full_name(:family_first), schedule_physician_path(physician)
-        %td!= (@shifts_by_physician[physician.id] || []).map(&:title).join("<br/>")
+        - @dates.each do |date|
+          %th= short_date(date)
+    = render :partial => "weekly_schedule", :collection => physicians_weekly_schedules(@physicians, @dates, @assignments)
   = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"

@@ -24,26 +24,26 @@ describe "physicians/search" do
   context "search results present" do
 
     before(:each) do
-      @mock_physician = stub_model(Physician)
-      @mock_physician.stub!(:full_name).with(:family_first).
-        and_return("John, Brother")
-      physicians = [@mock_physician]
-      physicians.stub!(:total_entries).and_return(1)
-      physicians.stub!(:total_pages).and_return(1)
+      physicians = mock("physicians", :total_entries => 1, :total_pages => 1)
       assign(:physicians, physicians)
-      assign(:shifts_by_physician, {})
+      dates = assign(:dates, [Date.today])
+      @mock_assignments = assign(:assignments, [
+        stub_model(Assignment),
+        stub_model(Assignment)
+      ])
       assign(:query, "bro")
-      render
+      view.should_receive(:physicians_weekly_schedules).
+        with(physicians, dates, @mock_assignments)
     end
 
     it "renders the search query" do
+      render
       rendered.should have_selector("h3", :content => "1 Result for 'bro'")
     end
 
-    it "renders links to each physician" do
-      rendered.should have_selector("table tr td a",
-        :content => @mock_physician.full_name(:family_first),
-        :href => schedule_physician_path(@mock_physician))
+    it "renders the weekly_schedule partial" do
+      should_render_partial("weekly_schedule").once
+      render
     end
   end
 end

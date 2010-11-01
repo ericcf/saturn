@@ -13,14 +13,12 @@ class PhysiciansController < ApplicationController
     unless params[:query].blank?
       @query = params[:query]
       @physicians = Physician.section_members.name_like(params[:query]).
-        paginate(:page => params[:page])
-      assignments = Assignment.published.
-        where(:physician_id => @physicians.map(&:id), :date => Date.today).
+        paginate(:page => params[:page], :per_page => 15)
+      @dates = (Date.today..Date.today+6.days).entries
+      @assignments = Assignment.published.
+        where(:physician_id => @physicians.map(&:id)).
+        date_in_range(@dates.first, @dates.last).
         includes(:shift)
-      @shifts_by_physician = assignments.each_with_object({}) do |assignment, hsh|
-        hsh[assignment.physician_id] ||= []
-        hsh[assignment.physician_id] << assignment.shift
-      end
     end
   end
 
