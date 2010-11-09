@@ -5,6 +5,7 @@ class ShiftTag < ActiveRecord::Base
     :class_name => "ShiftTagAssignment",
     :dependent => :destroy
   has_many :shifts, :through => :assignments
+  has_one :daily_shift_count_rule, :dependent => :destroy
   belongs_to :section
 
   validates :section, :title, :presence => true

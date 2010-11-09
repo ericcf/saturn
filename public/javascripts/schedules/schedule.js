@@ -140,7 +140,10 @@
         },
         drop: function(event, ui) {
           var element = ui.draggable;
-          if ($(this).data("shift_day").add_assignment(element.data("assignment")))
+          var assignment = element.data("assignment");
+          var sourceShiftDay = element.parent().data("shift_day");
+          sourceShiftDay.removePersonId(assignment.getPersonId());
+          if ($(this).data("shift_day").add_assignment(assignment))
             element.remove();
         }
       });

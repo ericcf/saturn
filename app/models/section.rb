@@ -13,6 +13,10 @@ class Section < ActiveRecord::Base
   has_many :shifts, :dependent => :destroy
   accepts_nested_attributes_for :shifts
   has_many :vacation_requests, :dependent => :destroy
+  has_one :weekly_shift_duration_rule, :dependent => :destroy
+  accepts_nested_attributes_for :weekly_shift_duration_rule
+  has_many :daily_shift_count_rules, :dependent => :destroy
+  accepts_nested_attributes_for :daily_shift_count_rules
 
   validates :title, :presence => true, :uniqueness => true
 

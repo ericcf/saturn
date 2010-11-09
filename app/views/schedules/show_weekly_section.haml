@@ -5,6 +5,7 @@
 
 - content_for :stylesheets do
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+  = stylesheet_link_tag 'schedule'
 
 - content_for :content_menu do
   = render "section_menu"
@@ -38,3 +39,5 @@
         %th= render :partial => "schedules/headers/html/#{row.header[:type]}", :object => row.header[:object]
         - row.each_value do |value|
           %td!= value && value.join("<br/>")
+
+%div#rules-conflicts= render "rules_conflicts"

@@ -98,6 +98,17 @@ describe("shift_day", function() {
         expect(shift_day.add_assignment(assignment)).toBeTruthy();
       });
     });
+
+    describe("the associated person is assigned here", function() {
+      it("returns false", function() {
+        var Assignment = function() {};
+        Assignment.prototype.getPersonId = function() {};
+        var assignment = new Assignment();
+        spyOn(assignment, "getPersonId").andReturn(1);
+        spyOn(shift_day, "hasPerson").andReturn(true);
+        expect(shift_day.add_assignment(assignment)).toBeFalsy();
+      });
+    });
   });
 
   /*describe("#updateAssignmentPositions()", function() {

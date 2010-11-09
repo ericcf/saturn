@@ -75,16 +75,25 @@ describe SchedulesController do
         and_return(mock_schedule)
     end
 
+    it "assigns the week dates starting on @week_start_date to @dates" do
+      dates = [mock('date')]
+      controller.should_receive(:week_dates_beginning_with).and_return(dates)
+      get :show_weekly_section, :section_id => mock_section.id
+      assigns(:dates).should eq(dates)
+    end
+
     it "assigns the requested schedule section to @section" do
       get :show_weekly_section, :section_id => mock_section.id
       assigns[:section].should == mock_section
     end
 
-    it "assigns the week dates starting on @week_start_date to @week_dates" do
-      dates = [mock('date')]
-      controller.should_receive(:week_dates_beginning_with).and_return(dates)
+    it "assigns weekly assignments to @assignments" do
+      WeeklySchedulePresenter.stub!(:new)
+      mock_assignment = stub_model(Assignment)
+      mock_schedule.stub_chain(:assignments, :includes).
+        and_return([mock_assignment])
       get :show_weekly_section, :section_id => mock_section.id
-      assigns(:dates).should eq(dates)
+      assigns(:assignments).should eq([mock_assignment])
     end
 
     it "assigns public note details from assignments to @notes" do
@@ -283,7 +292,8 @@ describe SchedulesController do
           :assignments_attributes => [
             { "id" => "1", "_destroy" => "1" },
             { "id" => "2", "these" => "params" }
-          ]
+          ],
+          :publish => 0
         ).and_return(true)
         put :update_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => { :id => mock_schedule.id }, :assignments => [

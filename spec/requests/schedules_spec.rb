@@ -101,4 +101,41 @@ describe "schedules" do
       end
     end
   end
+
+  context "update an existing weekly section schedule" do
+
+    before(:each) { clean_up_database }
+
+    context "publish checkbox is checked" do
+
+      it "publishes the schedule" do
+        sign_in_user :admin => true
+        schedule = Factory(:weekly_schedule)
+        date = Date.today
+        put update_weekly_section_schedule_path(:section_id => schedule.section_id,
+          :weekly_schedule => { :id => schedule.id, :publish => "1" })
+        response.should redirect_to(edit_weekly_section_schedule_path(
+          :section_id => schedule.section_id, :year => schedule.date.year,
+          :month => schedule.date.month, :day => schedule.date.day
+        ))
+        WeeklySchedule.find(schedule.id).published?.should be_true
+      end
+    end
+
+    context "publish checkbox is unchecked" do
+
+      it "unpublishes the schedule" do
+        sign_in_user :admin => true
+        schedule = Factory(:published_weekly_schedule)
+        date = Date.today
+        put update_weekly_section_schedule_path(:section_id => schedule.section_id,
+          :weekly_schedule => { :id => schedule.id, :publish => "0" })
+        response.should redirect_to(edit_weekly_section_schedule_path(
+          :section_id => schedule.section_id, :year => schedule.date.year,
+          :month => schedule.date.month, :day => schedule.date.day
+        ))
+        WeeklySchedule.find(schedule.id).published?.should be_false
+      end
+    end
+  end
 end

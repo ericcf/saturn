@@ -16,6 +16,7 @@ describe "schedules/edit_weekly_section" do
     should_render_partial("group")
     should_render_partial("assignment")
     should_render_partial("section_menu")
+    should_render_partial("rules_conflicts")
     render
   end
 

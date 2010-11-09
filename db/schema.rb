@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101005174741) do
+ActiveRecord::Schema.define(:version => 20101103183610) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -28,6 +28,17 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
+
+  create_table "daily_shift_count_rules", :force => true do |t|
+    t.integer  "section_id",   :null => false
+    t.integer  "shift_tag_id", :null => false
+    t.integer  "maximum"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "daily_shift_count_rules", ["section_id"], :name => "index_daily_shift_count_rules_on_section_id"
+  add_index "daily_shift_count_rules", ["shift_tag_id"], :name => "index_daily_shift_count_rules_on_shift_tag_id", :unique => true
 
   create_table "feedback_statuses", :force => true do |t|
     t.string   "name",                          :null => false
@@ -227,5 +238,15 @@ ActiveRecord::Schema.define(:version => 20101005174741) do
   add_index "weekly_schedules", ["date"], :name => "index_weekly_schedules_on_date"
   add_index "weekly_schedules", ["section_id", "date"], :name => "index_weekly_schedules_on_section_id_and_date", :unique => true
   add_index "weekly_schedules", ["section_id"], :name => "index_weekly_schedules_on_section_id"
+
+  create_table "weekly_shift_duration_rules", :force => true do |t|
+    t.integer  "section_id",                               :null => false
+    t.decimal  "maximum",    :precision => 4, :scale => 1
+    t.decimal  "minimum",    :precision => 4, :scale => 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "weekly_shift_duration_rules", ["section_id"], :name => "index_weekly_shift_duration_rules_on_section_id"
 
 end

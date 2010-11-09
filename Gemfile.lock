@@ -16,9 +16,9 @@ GIT
 
 GIT
   remote: git://github.com/ericcf/rad_directory.git
-  revision: bce5f4aa4695631e344f88a968c16cee44a584dd
+  revision: 27d4d835743ba52bc3f8e68c34766c285bc7344d
   specs:
-    rad_directory (0.0.2)
+    rad_directory (0.0.4)
 
 GEM
   remote: http://rubygems.org/
@@ -53,7 +53,7 @@ GEM
     archive-tar-minitar (0.5.2)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    autotest (4.4.1)
+    autotest (4.4.2)
     bcrypt-ruby (2.1.2)
     builder (2.1.2)
     cancan (1.4.0)
@@ -63,7 +63,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.0.0)
-    columnize (0.3.1)
+    columnize (0.3.2)
     daemons (1.0.10)
     devise (1.1.3)
       bcrypt-ruby (~> 2.1.2)
@@ -134,18 +134,16 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    rspec (2.0.1)
-      rspec-core (~> 2.0.1)
-      rspec-expectations (~> 2.0.1)
-      rspec-mocks (~> 2.0.1)
-    rspec-core (2.0.1)
-    rspec-expectations (2.0.1)
-      diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.1)
-      rspec-core (~> 2.0.1)
-      rspec-expectations (~> 2.0.1)
-    rspec-rails (2.0.1)
-      rspec (~> 2.0.0)
+    rspec (2.1.0)
+      rspec-core (~> 2.1.0)
+      rspec-expectations (~> 2.1.0)
+      rspec-mocks (~> 2.1.0)
+    rspec-core (2.1.0)
+    rspec-expectations (2.1.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.1.0)
+    rspec-rails (2.1.0)
+      rspec (~> 2.1.0)
     ruby-debug-base19 (0.11.24)
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
@@ -161,13 +159,13 @@ GEM
     selenium-rc (2.2.4)
       selenium-client (>= 1.2.18)
     shoulda (2.11.3)
-    simplecov (0.3.6)
+    simplecov (0.3.7)
       simplecov-html (>= 0.3.7)
-    simplecov-html (0.3.8)
+    simplecov-html (0.3.9)
     spreadsheet (0.6.4.1)
       ruby-ole
     sqlite3-ruby (1.3.2)
-    thor (0.14.3)
+    thor (0.14.4)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
@@ -200,7 +198,7 @@ DEPENDENCIES
   mysql
   paperclip!
   rad_directory!
-  rails (>= 3.0.1)
+  rails
   rspec-rails (>= 2.0.1)
   ruby-debug19
   shoulda

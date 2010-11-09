@@ -1,0 +1,26 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3 Shift assignment rules
+
+%ul
+  %li!= nav_item "Edit Rules", edit_section_rules_path(@section), {}, :update, @section
+
+%h4 Weekly limits for shift totals
+%ul
+  %li
+    - if @weekly_shift_duration_rule.nil? or @weekly_shift_duration_rule.maximum.blank?
+      No maximum
+    - else
+      = "Maximum: #{@weekly_shift_duration_rule.maximum}"
+  %li
+    - if @weekly_shift_duration_rule.nil? or @weekly_shift_duration_rule.minimum.blank?
+      No minimum
+    - else
+      = "Minimum: #{@weekly_shift_duration_rule.minimum}"
+
+%h4 Daily limits by category
+%ul
+  - @daily_shift_count_rules.each do |rule|
+    - unless rule.maximum.nil?
+      %li= "#{rule.shift_tag.title}: #{rule.maximum}"

@@ -9,6 +9,7 @@ describe "schedules/show_weekly_section.haml" do
     assign(:notes, [@note])
     assign(:schedule_presenter, stub("presenter", :each_col_header => nil, :each_row => nil))
     should_render_partial("section_menu")
+    should_render_partial("rules_conflicts")
     render
   end
 

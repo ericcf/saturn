@@ -30,16 +30,16 @@ class SchedulesController < ApplicationController
     @section = Section.find(params[:section_id])
     schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
       @section.weekly_schedules.build(:date => start_date)
-    assignments = schedule.assignments.includes(:shift)
-    @notes = assignments.map(&:public_note_details).compact
+    @assignments = schedule.assignments.includes(:shift)
+    @notes = @assignments.map(&:public_note_details).compact
     @view_mode = params[:view_mode]
     @schedule_presenter = case @view_mode.to_i
                           when 0, 1
                             WeeklySchedulePresenter.new(@section, @dates,
-      assignments, { :col_type => :dates, :row_type => :shifts })
+      @assignments, { :col_type => :dates, :row_type => :shifts })
                           when 2
                             WeeklySchedulePresenter.new(@section, @dates,
-      assignments, { :col_type => :dates, :row_type => :physicians })
+      @assignments, { :col_type => :dates, :row_type => :physicians })
                           end
 
     respond_to do |format|
@@ -98,12 +98,12 @@ class SchedulesController < ApplicationController
 
   def update_weekly_section
     schedule_attributes = {
-      :assignments_attributes => params[:assignments] || {}
+      :assignments_attributes => params[:assignments] || {},
+      :publish => params[:weekly_schedule][:publish] || 0
     }
     @section = Section.find(params[:section_id])
     @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])
     authorize! :update, @weekly_schedule
-    @weekly_schedule.publish = 1 if params[:weekly_schedule][:publish]
 
     if @weekly_schedule.update_attributes(schedule_attributes)
       flash[:notice] = "Successfully updated schedule."

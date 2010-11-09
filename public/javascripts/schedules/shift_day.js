@@ -58,7 +58,7 @@
     };
 
     this.add_assignment = function(assignment) {
-      if (!has_person(assignment.getPersonId())) {
+      if (!obj.hasPerson(assignment.getPersonId())) {
         var element = schedule.assignmentElementFromAssignment(obj, assignment);
         append_assignment_element(element);
         return true;
@@ -71,12 +71,28 @@
         $(assignment_element).data("assignment").setPosition(index+1);
       });
     };
+    
+    this.hasPerson = function(id) {
+      for (var i=0; i<people_ids.length; i++) {
+        if (people_ids[i] == id) return true;
+      }
+      return false;
+    };
+
+    this.removePersonId = function(id) {
+      var index = 0;
+      for (; index<people_ids.length; index++) {
+        if (people_ids[index] == id) break;
+      }
+      people_ids.splice(index, 1);
+    };
+
 
     // private
 
     var onPersonAdded = function(event, person) {
       obj.broadcast("onPersonAdded");
-      if (!has_person(person.id())) {
+      if (!obj.hasPerson(person.id())) {
         var element = schedule.assignmentElementFromPerson(obj, person);
         append_assignment_element(element);
         return true;
@@ -97,13 +113,6 @@
         append_assignment_element(assignment_elem);
       });
     };
-    
-    var has_person = function(id) {
-      for (var i=0; i<people_ids.length; i++) {
-        if (people_ids[i] == id) return true;
-      }
-      return false;
-    };
 
     var append_assignment_element = function(element) {
       elem.append(element);
@@ -115,17 +124,9 @@
       assignment.addListener("onAssignmentDestroyed", onAssignmentDestroyed);
     };
     
-    var removePersonId = function(id) {
-      var index = 0;
-      for (; index<people_ids.length; index++) {
-        if (people_ids[index] == id) break;
-      }
-      people_ids.splice(index, 1);
-    };
-
     var onAssignmentDestroyed = function(event) {
       var assignment = $(event.target).data("assignment");
-      removePersonId(assignment.getPersonId());
+      this.removePersonId(assignment.getPersonId());
     };
   };
 

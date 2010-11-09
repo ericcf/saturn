@@ -31,6 +31,8 @@ describe ShiftTag do
 
   it { should have_many(:shifts).through(:assignments) }
 
+  it { should have_one(:daily_shift_count_rule).dependent(:destroy) }
+
   it { should belong_to(:section) }
 
   # validations

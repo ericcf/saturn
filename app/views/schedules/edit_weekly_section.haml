@@ -56,3 +56,5 @@
     %tbody
       - mapped_assignments = @assignments.group_by {|a| [a.shift_id, a.date]}
       = render :partial => 'shift', :collection => @shifts, :locals => { :mapped_assignments => mapped_assignments, :people_names => @people_names }
+
+%div#rules-conflicts= render "rules_conflicts"
