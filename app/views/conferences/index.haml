@@ -1,0 +1,39 @@
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+
+%h2 Educational Conferences
+
+%div.subheadline
+  %h3= "#{@date.today? ? "Today" : @date.strftime("%A, %B #{@date.day}, %Y")}"
+  %div.inline_form
+    = form_tag conferences_path, :method => :get do
+      = text_field_tag "date", @date
+
+
+%table
+  %tr 
+    %th Title
+    %th Presenter
+    %th Description
+    %th Starts at
+    %th Ends at
+    %th Location
+    %th Contact
+    %th Categories
+    %th 
+
+  - @conferences.each do |conference|
+    %tr 
+      %td= conference.title
+      %td= conference.presenter
+      %td= conference.description
+      %td= conference.starts_at.strftime("%I:%M%p").gsub(/^0/, "")
+      %td= conference.ends_at.strftime("%I:%M%p").gsub(/^0/, "")
+      %td= conference.location
+      %td= mail_to conference.contact
+      %td= conference.categories
+      %td= link_to 'Show', conference

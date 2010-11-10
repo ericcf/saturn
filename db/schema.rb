@@ -29,6 +29,22 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
 
+  create_table "conferences", :force => true do |t|
+    t.string   "title"
+    t.string   "presenter"
+    t.text     "description"
+    t.string   "external_uid"
+    t.datetime "starts_at",    :null => false
+    t.datetime "ends_at",      :null => false
+    t.text     "categories"
+    t.string   "location"
+    t.string   "contact"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "conferences", ["external_uid"], :name => "index_conferences_on_external_uid", :unique => true
+
   create_table "daily_shift_count_rules", :force => true do |t|
     t.integer  "section_id",   :null => false
     t.integer  "shift_tag_id", :null => false

@@ -77,5 +77,27 @@ describe WeeklyShiftDurationRule do
         group_below_minimum.keys.should include(mock_physician)
       end
     end
+
+    it "returns physicians below the minimum" do
+      @rule.update_attributes(:minimum => 2.0, :maximum => 100.0)
+      mock_physician = stub_model(Physician)
+      mock_assignment = stub_model(Assignment, :fixed_duration => 1.0)
+      @rule.section.stub!(:members) { [] }
+      group_below_minimum, group_above_maximum = @rule.process({
+        mock_physician => [mock_assignment]
+      })
+      group_below_minimum.should include(mock_physician)
+    end
+
+    it "returns physicians above the maximum" do
+      @rule.update_attributes(:minimum => 0.0, :maximum => 1.0)
+      mock_physician = stub_model(Physician)
+      mock_assignment = stub_model(Assignment, :fixed_duration => 2.0)
+      @rule.section.stub!(:members) { [] }
+      group_below_minimum, group_above_maximum = @rule.process({
+        mock_physician => [mock_assignment]
+      })
+      group_above_maximum.should include(mock_physician)
+    end
   end
 end
