@@ -1,11 +1,11 @@
 class ConferencesController < ApplicationController
 
   def index
-    @conferences = Conference.today
+    @date = params[:date] && Date.parse(params[:date]) || Date.today
+    @conferences = Conference.occur_on(@date).order(:starts_at)
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @conferences }
+      format.html
     end
   end
 
@@ -13,8 +13,7 @@ class ConferencesController < ApplicationController
     @conference = Conference.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @conference }
+      format.html
     end
   end
 end
