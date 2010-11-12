@@ -2,6 +2,18 @@ require 'spec_helper'
 
 describe RulesController do
 
+  def mock_weekly_duration_rule(stubs={})
+    (@mock_weekly_duration_rule ||= mock_model(WeeklyShiftDurationRule).as_null_object).tap do |rule|
+      rule.stub(stubs) unless stubs.empty?
+    end
+  end
+
+  def mock_daily_count_rule(stubs={})
+    (@mock_daily_count_rule ||= mock_model(DailyShiftCountRule).as_null_object).tap do |rule|
+      rule.stub(stubs) unless stubs.empty?
+    end
+  end
+
   before(:each) do
     @mock_section = stub_model(Section)
     Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
@@ -10,17 +22,17 @@ describe RulesController do
   describe "GET 'show'" do
 
     it "assigns weekly shift duration rule to @weekly_shift_duration_rule" do
-      mock_rule = stub_model(WeeklyShiftDurationRule)
-      @mock_section.stub!(:weekly_shift_duration_rule).and_return(mock_rule)
+      @mock_section.stub!(:weekly_shift_duration_rule).
+        and_return(mock_weekly_duration_rule)
       get :show, :section_id => @mock_section.id
-      assigns(:weekly_shift_duration_rule).should eq(mock_rule)
+      assigns(:weekly_shift_duration_rule).should eq(mock_weekly_duration_rule)
     end
 
     it "assigns daily shift count rules to @daily_shift_count_rules" do
-      mock_rule = stub_model(DailyShiftCountRule)
-      @mock_section.stub!(:daily_shift_count_rules).and_return([mock_rule])
+      @mock_section.stub!(:daily_shift_count_rules).
+        and_return([mock_daily_count_rule])
       get :show, :section_id => @mock_section.id
-      assigns(:daily_shift_count_rules).should eq([mock_rule])
+      assigns(:daily_shift_count_rules).should eq([mock_daily_count_rule])
     end
   end
 
@@ -29,49 +41,48 @@ describe RulesController do
     context "there is a weekly shift duration rule" do
 
       it "assigns the rule to @weekly_shift_duration_rule" do
-        mock_rule = stub_model(WeeklyShiftDurationRule)
-        @mock_section.stub!(:weekly_shift_duration_rule).and_return(mock_rule)
+        @mock_section.stub!(:weekly_shift_duration_rule).
+          and_return(mock_weekly_duration_rule)
         get :edit, :section_id => @mock_section.id
-        assigns(:weekly_shift_duration_rule).should eq(mock_rule)
+        assigns(:weekly_shift_duration_rule).
+          should eq(mock_weekly_duration_rule)
       end
     end
 
     context "there is not a weekly shift duration rule" do
 
       it "assigns a new rule to @weekly_shift_duration_rule" do
-        mock_rule = stub_model(WeeklyShiftDurationRule)
         @mock_section.stub!(:weekly_shift_duration_rule)
         @mock_section.stub!(:build_weekly_shift_duration_rule).
-          and_return(mock_rule)
+          and_return(mock_weekly_duration_rule)
         get :edit, :section_id => @mock_section.id
-        assigns(:weekly_shift_duration_rule).should eq(mock_rule)
+        assigns(:weekly_shift_duration_rule).
+          should eq(mock_weekly_duration_rule)
       end
     end
 
     context "there is a daily shift count rule for a shift tag" do
 
       it "assigns the rule to @daily_shift_count_rules" do
-        mock_rule = stub_model(DailyShiftCountRule)
         mock_shift_tag = stub_model(ShiftTag,
-          :daily_shift_count_rule => mock_rule)
+          :daily_shift_count_rule => mock_daily_count_rule)
         @mock_section.stub_chain(:shift_tags, :includes).
           and_return([mock_shift_tag])
         get :edit, :section_id => @mock_section.id
-        assigns(:daily_shift_count_rules).should include(mock_rule)
+        assigns(:daily_shift_count_rules).should include(mock_daily_count_rule)
       end
     end
 
     context "there is not a daily shift count rule for a shift tag" do
 
       it "assigns a new rule to @daily_shift_count_rules" do
-        mock_rule = stub_model(DailyShiftCountRule)
         mock_shift_tag = stub_model(ShiftTag,
           :daily_shift_count_rule => nil,
-          :build_daily_shift_count_rule => mock_rule)
+          :build_daily_shift_count_rule => mock_daily_count_rule)
         @mock_section.stub_chain(:shift_tags, :includes).
           and_return([mock_shift_tag])
         get :edit, :section_id => @mock_section.id
-        assigns(:daily_shift_count_rules).should include(mock_rule)
+        assigns(:daily_shift_count_rules).should include(mock_daily_count_rule)
       end
     end
   end

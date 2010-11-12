@@ -20,6 +20,7 @@ module Saturn
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
     config.generators do |g|
       g.template_engine :haml
+      g.test_framework :rspec
     end
 
     # Activate observers that should always be running.

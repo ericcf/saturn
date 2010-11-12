@@ -3,7 +3,9 @@ require 'spec_helper'
 describe ShiftsController do
 
   def mock_shift(stubs={})
-    @mock_shift ||= mock_model(Shift, stubs).as_null_object
+    (@mock_shift ||= mock_model(Shift).as_null_object).tap do |shift|
+      shift.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do

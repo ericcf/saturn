@@ -3,11 +3,15 @@ require 'spec_helper'
 describe SchedulesController do
 
   def mock_section(stubs={})
-    @mock_section ||= mock_model(Section, stubs).as_null_object
+    (@mock_section ||= mock_model(Section).as_null_object).tap do |section|
+      section.stub(stubs) unless stubs.empty?
+    end
   end
 
   def mock_schedule(stubs={})
-    @mock_schedule ||= mock_model(WeeklySchedule, stubs)
+    (@mock_schedule ||= mock_model(WeeklySchedule).as_null_object).tap do |schedule|
+      schedule.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do

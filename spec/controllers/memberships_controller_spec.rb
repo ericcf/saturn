@@ -3,7 +3,9 @@ require 'spec_helper'
 describe MembershipsController do
 
   def mock_membership(stubs={})
-    @mock_membership ||= mock_model(SectionMembership, stubs).as_null_object
+    (@mock_membership ||= stub_model(SectionMembership)).tap do |membership|
+      membership.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do

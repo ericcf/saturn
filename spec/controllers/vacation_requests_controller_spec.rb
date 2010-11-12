@@ -2,8 +2,10 @@ require 'spec_helper'
 
 describe VacationRequestsController do
 
-  def mock_vacation_request(stubs={})
-    @mock_vacation_request ||= mock_model(VacationRequest, stubs).as_null_object
+  def mock_request(stubs={})
+    (@mock_request ||= mock_model(VacationRequest).as_null_object).tap do |v_request|
+      v_request.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do
@@ -14,36 +16,36 @@ describe VacationRequestsController do
   describe "GET index" do
 
     before(:each) do
-      @mock_section.stub!(:vacation_requests).and_return([mock_vacation_request])
+      @mock_section.stub!(:vacation_requests).and_return([mock_request])
       get :index, :section_id => @mock_section.id
     end
     
-    it { assigns(:vacation_requests).should eq([mock_vacation_request]) }
+    it { assigns(:vacation_requests).should eq([mock_request]) }
   end
 
   describe "GET show" do
 
     before(:each) do
-      @mock_vacation_requests = mock("vacation_requests")
-      @mock_section.stub!(:vacation_requests).and_return(@mock_vacation_requests)
+      @mock_requests = mock("vacation_requests")
+      @mock_section.stub!(:vacation_requests).and_return(@mock_requests)
     end
 
     context "the requested vacation_request is found" do
 
       before(:each) do
-        @mock_vacation_requests.should_receive(:find).with(mock_vacation_request.id).
-          and_return(mock_vacation_request)
+        @mock_requests.should_receive(:find).with(mock_request.id).
+          and_return(mock_request)
         get :show, :section_id => @mock_section.id,
-          :id => mock_vacation_request.id
+          :id => mock_request.id
       end
 
-      it { assigns(:vacation_request).should eq(mock_vacation_request) }
+      it { assigns(:vacation_request).should eq(mock_request) }
     end
 
     context "the requested vacation_request is not found" do
 
       before(:each) do
-        @mock_vacation_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
         get :show, :section_id => @mock_section.id, :id => 1
       end
 
@@ -56,11 +58,11 @@ describe VacationRequestsController do
   describe "GET new" do
 
     before(:each) do
-      VacationRequest.should_receive(:new).and_return(mock_vacation_request)
+      VacationRequest.should_receive(:new).and_return(mock_request)
       get :new, :section_id => @mock_section.id
     end
 
-    it { assigns(:vacation_request).should eq(mock_vacation_request) }
+    it { assigns(:vacation_request).should eq(mock_request) }
   end
 
   describe "POST create" do
@@ -68,7 +70,7 @@ describe VacationRequestsController do
     before(:each) do
       @section_vacation_requests = stub("vacation_requests", :<< => nil)
       @mock_section.stub!(:vacation_requests).and_return(@section_vacation_requests)
-      VacationRequest.stub!(:new).and_return(mock_vacation_request)
+      VacationRequest.stub!(:new).and_return(mock_request)
     end
 
     context "always" do
@@ -76,18 +78,18 @@ describe VacationRequestsController do
       before(:each) do
         VacationRequest.should_receive(:new).
           with("these" => :params).
-          and_return(mock_vacation_request)
+          and_return(mock_request)
         post :create, :section_id => @mock_section.id,
           :vacation_request => { :these => :params }
       end
 
-      it { assigns(:vacation_request).should eq(mock_vacation_request) }
+      it { assigns(:vacation_request).should eq(mock_request) }
     end
 
     context "with valid parameters" do
 
       before(:each) do
-        @section_vacation_requests.should_receive(:<<).with(mock_vacation_request).and_return(true)
+        @section_vacation_requests.should_receive(:<<).with(mock_request).and_return(true)
         post :create, :section_id => @mock_section.id
       end
 
@@ -97,7 +99,7 @@ describe VacationRequestsController do
     context "with invalid parameters" do
 
       before(:each) do
-        @section_vacation_requests.should_receive(:<<).with(mock_vacation_request).and_return(false)
+        @section_vacation_requests.should_receive(:<<).with(mock_request).and_return(false)
         post :create, :section_id => @mock_section.id
       end
 
@@ -108,20 +110,20 @@ describe VacationRequestsController do
   describe "GET edit" do
 
     before(:each) do
-      @mock_vacation_requests = mock("vacation_requests")
-      @mock_section.stub!(:vacation_requests).and_return(@mock_vacation_requests)
+      @mock_requests = mock("vacation_requests")
+      @mock_section.stub!(:vacation_requests).and_return(@mock_requests)
     end
 
     context "the requested vacation_request is found" do
 
       before(:each) do
-        @mock_vacation_requests.should_receive(:find).with(mock_vacation_request.id).
-          and_return(mock_vacation_request)
+        @mock_requests.should_receive(:find).with(mock_request.id).
+          and_return(mock_request)
         get :edit, :section_id => @mock_section.id,
-          :id => mock_vacation_request.id
+          :id => mock_request.id
       end
 
-      it { assigns(:vacation_request).should eq(mock_vacation_request) }
+      it { assigns(:vacation_request).should eq(mock_request) }
 
       it { should render_template(:edit) }
     end
@@ -129,7 +131,7 @@ describe VacationRequestsController do
     context "the requested vacation_request is not found" do
 
       before(:each) do
-        @mock_vacation_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
         get :edit, :section_id => @mock_section.id, :id => 1
       end
 
@@ -142,9 +144,9 @@ describe VacationRequestsController do
   describe "PUT update" do
 
     before(:each) do
-      @mock_vacation_requests = mock("vacation_requests")
+      @mock_requests = mock("vacation_requests")
       @mock_section.stub!(:vacation_requests).
-        and_return(@mock_vacation_requests)
+        and_return(@mock_requests)
     end
 
     context "the requested vacation_request is found" do
@@ -152,37 +154,37 @@ describe VacationRequestsController do
       context "always" do
 
         before(:each) do
-          mock_vacation_request.should_receive(:update_attributes).
+          mock_request.should_receive(:update_attributes).
             with("these" => :params)
-          @mock_vacation_requests.should_receive(:find).
-            with(mock_vacation_request.id).
-            and_return(mock_vacation_request)
+          @mock_requests.should_receive(:find).
+            with(mock_request.id).
+            and_return(mock_request)
           put :update, :section_id => @mock_section.id,
-            :id => mock_vacation_request.id, :vacation_request => { :these => :params }
+            :id => mock_request.id, :vacation_request => { :these => :params }
         end
 
-        it { assigns(:vacation_request).should eq(mock_vacation_request) }
+        it { assigns(:vacation_request).should eq(mock_request) }
       end
 
       context "with valid parameters" do
 
         before(:each) do
-          @mock_vacation_requests.stub!(:find).
-            and_return(mock_vacation_request(:update_attributes => true))
+          @mock_requests.stub!(:find).
+            and_return(mock_request(:update_attributes => true))
           put :update, :section_id => @mock_section.id,
-            :id => mock_vacation_request.id
+            :id => mock_request.id
         end
 
-        it { should redirect_to(section_vacation_request_path(@mock_section, mock_vacation_request)) }
+        it { should redirect_to(section_vacation_request_path(@mock_section, mock_request)) }
       end
 
       context "with invalid parameters" do
 
         before(:each) do
-          @mock_vacation_requests.stub!(:find).
-            and_return(mock_vacation_request(:update_attributes => false))
+          @mock_requests.stub!(:find).
+            and_return(mock_request(:update_attributes => false))
           put :update, :section_id => @mock_section.id,
-            :id => mock_vacation_request.id
+            :id => mock_request.id
         end
 
         it { should render_template(:edit) }
@@ -192,9 +194,9 @@ describe VacationRequestsController do
     context "the requested vacation_request is not found" do
 
       before(:each) do
-        @mock_vacation_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
         put :update, :section_id => @mock_section.id,
-          :id => mock_vacation_request.id
+          :id => mock_request.id
       end
 
       it { flash[:error].should == "Error: requested vacation_request not found" }
@@ -206,23 +208,23 @@ describe VacationRequestsController do
   describe "DELETE destroy" do
 
     before(:each) do
-      @mock_vacation_requests = mock("vacation_requests")
-      @mock_section.stub!(:vacation_requests).and_return(@mock_vacation_requests)
+      @mock_requests = mock("vacation_requests")
+      @mock_section.stub!(:vacation_requests).and_return(@mock_requests)
     end
 
     context "the requested vacation_request is found" do
 
       before(:each) do
-        @mock_vacation_requests.stub!(:find).with(mock_vacation_request.id).
-          and_return(mock_vacation_request)
+        @mock_requests.stub!(:find).with(mock_request.id).
+          and_return(mock_request)
       end
 
       context "and destroyed successfully" do
 
         before(:each) do
-          mock_vacation_request.should_receive(:destroy).and_return(true)
+          mock_request.should_receive(:destroy).and_return(true)
           delete :destroy, :section_id => @mock_section.id,
-            :id => mock_vacation_request.id
+            :id => mock_request.id
         end
 
         it { flash[:notice].should == "Successfully deleted vacation_request" }
@@ -233,9 +235,9 @@ describe VacationRequestsController do
       context "and not destroyed successfully" do
 
         before(:each) do
-          mock_vacation_request.should_receive(:destroy).and_return(false)
+          mock_request.should_receive(:destroy).and_return(false)
           delete :destroy, :section_id => @mock_section.id,
-            :id => mock_vacation_request.id
+            :id => mock_request.id
         end
 
         it { flash[:error].should == "Error: failed to delete vacation_request" }
@@ -247,9 +249,9 @@ describe VacationRequestsController do
     context "the requested vacation_request is not found" do
 
       before(:each) do
-        @mock_vacation_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
         delete :destroy, :section_id => @mock_section.id,
-          :id => mock_vacation_request.id
+          :id => mock_request.id
       end
 
       it { flash[:error].should == "Error: requested vacation_request not found" }

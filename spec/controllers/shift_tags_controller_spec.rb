@@ -3,7 +3,9 @@ require 'spec_helper'
 describe ShiftTagsController do
 
   def mock_shift_tag(stubs={})
-    @mock_shift_tag ||= mock_model(ShiftTag, stubs).as_null_object
+    (@mock_shift_tag ||= mock_model(ShiftTag).as_null_object).tap do |tag|
+      tag.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do

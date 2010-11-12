@@ -3,7 +3,9 @@ require 'spec_helper'
 describe SectionsController do
 
   def mock_section(stubs={})
-    @mock_section ||= mock_model(Section, stubs).as_null_object
+    (@mock_section ||= mock_model(Section).as_null_object).tap do |section|
+      section.stub(stubs) unless stubs.empty?
+    end
   end
 
   describe "GET index" do

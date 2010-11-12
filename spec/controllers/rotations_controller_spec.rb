@@ -3,7 +3,9 @@ require 'spec_helper'
 describe RotationsController do
 
   def mock_rotation(stubs={})
-    @mock_rotation ||= mock_model(Rotation, stubs).as_null_object
+    (@mock_rotation ||= mock_model(Rotation).as_null_object).tap do |rotation|
+      rotation.stub(stubs) unless stubs.empty?
+    end
   end
 
   before(:each) do
@@ -24,7 +26,7 @@ describe RotationsController do
   describe "GET new" do
 
     before(:each) do
-      Rotation.should_receive(:new).and_return(mock_rotation)
+      Rotation.stub!(:new).and_return(mock_rotation)
       get :new
     end
 

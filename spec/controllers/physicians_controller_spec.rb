@@ -3,7 +3,9 @@ require 'spec_helper'
 describe PhysiciansController do
 
   def mock_physician(stubs={})
-    @mock_physician ||= mock_model(Physician, stubs).as_null_object
+    (@mock_physician ||= stub_model(Physician)).tap do |physician|
+      physician.stub(stubs) unless stubs.empty?
+    end
   end
 
   describe "GET 'index'" do

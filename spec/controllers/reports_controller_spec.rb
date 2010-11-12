@@ -3,7 +3,9 @@ require 'spec_helper'
 describe ReportsController do
 
   def mock_section(stubs={})
-    @mock_section ||= stub_model(Section, stubs)
+    (@mock_section ||= stub_model(Section)).tap do |section|
+      section.stub(stubs) unless stubs.empty?
+    end
   end
 
   describe "GET shift_totals" do
