@@ -9,12 +9,12 @@
 %h4 Weekly limits for shift totals
 %ul
   %li
-    - if @weekly_shift_duration_rule.nil? or @weekly_shift_duration_rule.maximum.blank?
+    - unless @weekly_shift_duration_rule and @weekly_shift_duration_rule.maximum?
       No maximum
     - else
       = "Maximum: #{@weekly_shift_duration_rule.maximum}"
   %li
-    - if @weekly_shift_duration_rule.nil? or @weekly_shift_duration_rule.minimum.blank?
+    - unless @weekly_shift_duration_rule and @weekly_shift_duration_rule.minimum?
       No minimum
     - else
       = "Minimum: #{@weekly_shift_duration_rule.minimum}"
@@ -22,5 +22,5 @@
 %h4 Daily limits by category
 %ul
   - @daily_shift_count_rules.each do |rule|
-    - unless rule.maximum.nil?
+    - if rule.maximum?
       %li= "#{rule.shift_tag.title}: #{rule.maximum}"

@@ -56,28 +56,6 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   add_index "daily_shift_count_rules", ["section_id"], :name => "index_daily_shift_count_rules_on_section_id"
   add_index "daily_shift_count_rules", ["shift_tag_id"], :name => "index_daily_shift_count_rules_on_shift_tag_id", :unique => true
 
-  create_table "feedback_statuses", :force => true do |t|
-    t.string   "name",                          :null => false
-    t.boolean  "default",    :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "feedback_statuses", ["name"], :name => "index_feedback_statuses_on_name", :unique => true
-
-  create_table "feedback_tickets", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "request_url"
-    t.integer  "status_id"
-    t.text     "description", :null => false
-    t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "feedback_tickets", ["status_id"], :name => "index_feedback_tickets_on_status_id"
-  add_index "feedback_tickets", ["user_id"], :name => "index_feedback_tickets_on_user_id"
-
   create_table "help_questions", :force => true do |t|
     t.text     "title"
     t.text     "answer"

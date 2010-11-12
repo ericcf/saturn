@@ -1,9 +1,0 @@
-%h2 Feedback Statuses
-
-%p= link_to "Add Status", new_feedback_status_path
-
-%ul
-  - @feedback_statuses.each do |status|
-    %li
-      = link_to status.name, edit_feedback_status_path(status)
-      = status.default ? "*" : ""
