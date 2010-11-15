@@ -7,6 +7,7 @@ class CreateShifts < ActiveRecord::Migration
       t.decimal :duration, :null => false, :precision => 2, :scale => 1, :default => 0.5
       t.integer :position, :null => false, :default => 1
       t.string :phone
+      t.string :display_color
       t.date :retired_on
 
       t.timestamps

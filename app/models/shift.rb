@@ -4,8 +4,10 @@ class Shift < ActiveRecord::Base
   has_many :shift_tags, :through => :shift_tag_assignments
   belongs_to :section
 
-  validates_presence_of :title, :duration, :position, :section
+  validates :title, :duration, :position, :section, :presence => true
   validates_uniqueness_of :title, :scope => :section_id
+  validates :display_color, :format => { :with => %r{^#[0-9a-f]{3,6}$}i },
+    :allow_nil => true
 
   before_validation { clean_text_attributes :title, :description, :phone }
 
@@ -28,10 +30,6 @@ class Shift < ActiveRecord::Base
         shift_tags << section.shift_tags.find_or_create_by_title(title)
       end
     end
-  end
-
-  def display_color
-    shift_tags.map(&:display_color).compact.last
   end
 
   def retire

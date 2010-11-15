@@ -15,6 +15,7 @@ class CreateConferences < ActiveRecord::Migration
     end
 
     add_index :conferences, :external_uid, :unique => true
+    add_index :conferences, :starts_at
   end
 
   def self.down

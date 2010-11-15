@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   end
 
   add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"
+  add_index "assignments", ["position"], :name => "index_assignments_on_position"
   add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
   add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
 
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   end
 
   add_index "conferences", ["external_uid"], :name => "index_conferences_on_external_uid", :unique => true
+  add_index "conferences", ["starts_at"], :name => "index_conferences_on_starts_at"
 
   create_table "daily_shift_count_rules", :force => true do |t|
     t.integer  "section_id",   :null => false
@@ -160,9 +162,8 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   add_index "shift_tag_assignments", ["shift_tag_id"], :name => "index_shift_tag_assignments_on_shift_tag_id"
 
   create_table "shift_tags", :force => true do |t|
-    t.integer  "section_id",    :null => false
-    t.string   "title",         :null => false
-    t.string   "display_color"
+    t.integer  "section_id", :null => false
+    t.string   "title",      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -171,12 +172,13 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   add_index "shift_tags", ["section_id"], :name => "index_shift_tags_on_section_id"
 
   create_table "shifts", :force => true do |t|
-    t.integer  "section_id",                                                 :null => false
-    t.string   "title",                                                      :null => false
+    t.integer  "section_id",                                                   :null => false
+    t.string   "title",                                                        :null => false
     t.string   "description"
-    t.decimal  "duration",    :precision => 2, :scale => 1, :default => 0.5, :null => false
-    t.integer  "position",                                  :default => 1,   :null => false
+    t.decimal  "duration",      :precision => 2, :scale => 1, :default => 0.5, :null => false
+    t.integer  "position",                                    :default => 1,   :null => false
     t.string   "phone"
+    t.string   "display_color"
     t.date     "retired_on"
     t.datetime "created_at"
     t.datetime "updated_at"

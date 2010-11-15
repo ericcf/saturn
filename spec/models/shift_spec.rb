@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Shift do
 
   before(:each) do
-    mock_section = mock_model(Section)
-    Section.stub!(:find).with(mock_section.id, anything).
-      and_return(mock_section)
+    mock_section = stub_model(Section)
+    Section.stub!(:find)
+    Section.stub!(:find).with(mock_section.id, anything) { mock_section }
     @valid_attributes = {
       :section_id => mock_section.id,
       :title => "value for title",
@@ -54,6 +54,16 @@ describe Shift do
   it { should validate_presence_of(:position) }
 
   it { should validate_presence_of(:section) }
+
+  it { should allow_value("#0369bf").for(:display_color) }
+
+  it { should allow_value("#000").for(:display_color) }
+
+  it { should allow_value(nil).for(:display_color) }
+
+  it { should_not allow_value("ffffff").for(:display_color) }
+
+  it { should_not allow_value("#qwerty").for(:display_color) }
 
   # scopes
 
@@ -138,15 +148,6 @@ describe Shift do
         @mock_shift_tags.should_not_receive(:<<)
         @shift.tags = "Foo"
       end
-    end
-  end
-
-  describe "#display_color" do
-
-    it "returns the display color value of the last assigned tag" do
-      @shift.stub!(:shift_tags).
-        and_return([stub_model(ShiftTag, :display_color => "blue")])
-      @shift.display_color.should eq("blue")
     end
   end
 

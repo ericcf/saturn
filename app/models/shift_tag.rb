@@ -10,10 +10,6 @@ class ShiftTag < ActiveRecord::Base
 
   validates :section, :title, :presence => true
   validates_uniqueness_of :title, :scope => :section_id
-  validates_format_of :display_color, :with => /^[0-9a-fA-F]{6}$/,
-    :allow_nil => true
-
-  before_validation { clean_text_attributes :display_color }
 
   default_scope :order => :title, :include => :shifts
   scope :title_like, lambda { |term| where(["title like ?", "%#{term}%"]) }

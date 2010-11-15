@@ -8,19 +8,21 @@ describe SiteStatisticsController do
       @now = DateTime.now
       @assignment_count = 5
       Assignment.stub!(:count).and_return(@assignment_count)
-      Assignment.stub_chain(:order, :last, :updated_at).and_return(@now)
+      @mock_assignment = stub_model(Assignment)
+      Assignment.stub_chain("order.limit").and_return([@mock_assignment])
       @section_count = 6
       Section.stub!(:count).and_return(@section_count)
-      Section.stub_chain(:order, :last, :updated_at).and_return(@now)
+      @mock_section = stub_model(Section)
+      Section.stub!(:order).and_return([@mock_section])
       get :index
     end
 
     it { assigns(:assignment_count).should == @assignment_count }
 
-    it { assigns(:assignments_last_updated).should == @now }
+    it { assigns(:recent_assignments).should == [@mock_assignment] }
 
     it { assigns(:section_count).should == @section_count }
 
-    it { assigns(:sections_last_updated).should == @now }
+    it { assigns(:sections).should == [@mock_section] }
   end
 end

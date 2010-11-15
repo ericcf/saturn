@@ -43,10 +43,6 @@ describe ShiftTag do
 
   it { should validate_uniqueness_of(:title).scoped_to(:section_id) }
 
-  it { should allow_value("ffffff").for(:display_color) }
-
-  it { should_not allow_value("qwerty").for(:display_color) }
-
   # callbacks
 
   context "#destroy is called when assignments are associated" do
@@ -79,8 +75,4 @@ describe ShiftTag do
       end
     end
   end
-
-  # attribute cleanup
-
-  it { should clean_text_attribute(:display_color) }
 end

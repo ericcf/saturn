@@ -16,6 +16,7 @@ class CreateAssignments < ActiveRecord::Migration
     add_index :assignments, [:weekly_schedule_id, :shift_id]
     add_index :assignments, :weekly_schedule_id
     add_index :assignments, :physician_id
+    add_index :assignments, :position
   end
 
   def self.down

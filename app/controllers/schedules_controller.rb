@@ -32,15 +32,16 @@ class SchedulesController < ApplicationController
       @section.weekly_schedules.build(:date => start_date)
     @assignments = schedule.assignments.includes(:shift)
     @notes = @assignments.map(&:public_note_details).compact
+    @physicians_by_id = @section.members.includes(:names_alias).hash_by_id
     @view_mode = params[:view_mode]
     @schedule_presenter = case @view_mode.to_i
-                          when 0, 1
-                            WeeklySchedulePresenter.new(@section, @dates,
-      @assignments, { :col_type => :dates, :row_type => :shifts })
-                          when 2
-                            WeeklySchedulePresenter.new(@section, @dates,
-      @assignments, { :col_type => :dates, :row_type => :physicians })
-                          end
+      when 0, 1
+        WeeklySchedulePresenter.new(@section, @dates, @assignments,
+          @physicians_by_id, { :col_type => :dates, :row_type => :shifts })
+      when 2
+        WeeklySchedulePresenter.new(@section, @dates, @assignments,
+          @physicians_by_id, { :col_type => :dates, :row_type => :physicians })
+      end
 
     respond_to do |format|
       format.html
@@ -65,8 +66,12 @@ class SchedulesController < ApplicationController
     @assignments = @weekly_schedule.assignments
     @grouped_people = @section.members_by_group
     @people_names = {}
-    @grouped_people.each do |group_title, people|
-      people.each { |p| @people_names[p.id] = p.short_name }
+    @physicians_by_id = {}
+    @grouped_people.each do |group_title, physicians|
+      physicians.each do |physician| 
+        @people_names[physician.id] = physician.short_name
+        @physicians_by_id[physician.id] = physician
+      end
     end
   end
 

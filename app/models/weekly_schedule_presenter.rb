@@ -2,8 +2,9 @@ require 'tables'
 
 class WeeklySchedulePresenter
 
-  def initialize(section, dates, assignments, options={})
+  def initialize(section, dates, assignments, physicians_by_id, options={})
     @section, @dates, @assignments = section, dates, assignments
+    @physicians_by_id = physicians_by_id
     start_date = @dates.first
     @shifts = @section.shifts.active_as_of(start_date).includes(:shift_tags)
     @row_type, @col_type = options[:row_type], options[:col_type]
@@ -37,12 +38,10 @@ class WeeklySchedulePresenter
     when :dates
       case @row_type
       when :shifts
-        physicians = Physician.with_assignments(@assignments).
-          includes(:names_alias).hash_by_id
         @assignments.each do |assignment|
           index = [shift_index(assignment), date_index(assignment)]
           values[index] ||= []
-          values[index] << physicians[assignment.physician_id].short_name
+          values[index] << @physicians_by_id[assignment.physician_id].short_name
         end
       when :physicians
         @assignments.each do |assignment|

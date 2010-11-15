@@ -166,7 +166,7 @@ form fieldset.buttons
 
 // tables
 
-$oddRowBackgroundColor: #dedede
+$oddRowBackgroundColor: #e6ddda
 $tableCellBorderColor: #cccccc
 $hoverRowBackgroundColor: #4466ff
 $hoverColBackgroundColor: #c0d9d9
@@ -179,8 +179,11 @@ table
   border-top: 1px solid
   border-top-color: $tableCellBorderColor
   &.schedule
-    width: 900px
     float: left
+    th
+      width: 120px
+    td
+      overflow: hidden
 
 th
   text-align: left

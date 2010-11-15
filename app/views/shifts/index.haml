@@ -3,10 +3,12 @@
   = javascript_include_tag 'sections/section_shifts'
   = javascript_include_tag 'sections/shift'
   = javascript_include_tag 'sections/shift_tags'
+  = javascript_include_tag 'syronex-colorpicker', 'shared/color_picker'
 
 - content_for :stylesheets do
   = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
   = stylesheet_link_tag 'shifts'
+  = stylesheet_link_tag 'syronex-colorpicker'
 
 - content_for :content_menu do
   = render "schedules/section_menu"
@@ -33,6 +35,7 @@
         %th Duration
         %th Phone
         %th Notes
+        %th Display Color
         %th{ :colspan => 2 } Retire?
     %tbody
       - @current_shifts.each do |shift|
@@ -47,6 +50,7 @@
             %td.duration= shift_form.select :duration, durations
             %td.phone= shift_form.text_field :phone, :size => 15
             %td.description= shift_form.text_field :description
+            %td.display_color= shift_form.text_field :display_color, :class => "color_picker"
             %td= shift_form.check_box :retire
             %td.details.hidden= shift_form.hidden_field :position
   = section_form.buttons do

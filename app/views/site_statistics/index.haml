@@ -8,8 +8,8 @@
     %tr
       %td Assignments
       %td= @assignment_count
-      %td= @assignments_last_updated ? time_ago_in_words(@assignments_last_updated) : "never"
+      %td!= @recent_assignments.map { |a| "#{a.weekly_schedule.section.title}: #{time_ago_in_words(a.updated_at)}" }.join("<br/>")
     %tr
       %td Sections
       %td= @section_count
-      %td= @sections_last_updated ? time_ago_in_words(@sections_last_updated) : "never"
+      %td!= @sections.map { |s| "#{s.title}: #{time_ago_in_words(s.updated_at)}" }.join("<br/>")

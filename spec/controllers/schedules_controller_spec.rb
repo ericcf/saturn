@@ -103,7 +103,7 @@ describe SchedulesController do
     it "assigns public note details from assignments to @notes" do
       details = mock('note details')
       mock_physician = stub_model(Physician, :short_name => "E. Fudd")
-      Physician.stub_chain(:with_assignments, :includes, :hash_by_id).
+      mock_section.stub_chain("members.includes.hash_by_id").
         and_return({ mock_physician.id => mock_physician })
       assignment = stub_model(Assignment, :public_note_details => details,
         :physician_id => mock_physician.id)
@@ -114,7 +114,7 @@ describe SchedulesController do
 
     it "assigns weekly schedule presenter to @schedule_presenter" do
       mock_physician = stub_model(Physician, :short_name => "E. Fudd")
-      Physician.stub_chain(:with_assignments, :includes, :hash_by_id).
+      mock_section.stub_chain("members.includes.hash_by_id").
         and_return({ mock_physician.id => mock_physician })
       assignment = stub_model(Assignment, :physician_id => mock_physician.id)
       mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
@@ -123,7 +123,9 @@ describe SchedulesController do
         and_return(mock_schedule)
       mock_schedule_presenter = mock("presenter")
       WeeklySchedulePresenter.should_receive(:new).
-        with(mock_section, anything, [assignment], { :col_type => :dates, :row_type => :shifts }).
+        with(mock_section, instance_of(Array), [assignment],
+             { mock_physician.id => mock_physician },
+             { :col_type => :dates, :row_type => :shifts }).
         and_return(mock_schedule_presenter)
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:schedule_presenter).should eq(mock_schedule_presenter)

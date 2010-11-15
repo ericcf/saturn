@@ -144,8 +144,11 @@ table {
   border-top: 1px solid;
   border-top-color: #cccccc; }
   table.schedule {
-    width: 900px;
     float: left; }
+    table.schedule th {
+      width: 120px; }
+    table.schedule td {
+      overflow: hidden; }
 
 th {
   text-align: left;
@@ -165,9 +168,9 @@ tr {
   tr th {
     background-color: white; }
   tr.odd {
-    background-color: #dedede; }
+    background-color: #e6ddda; }
     tr.odd th {
-      background-color: #dedede; }
+      background-color: #e6ddda; }
   tr.hover {
     background-color: #4466ff; }
     tr.hover td, tr.hover td a {

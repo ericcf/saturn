@@ -3,7 +3,6 @@ class CreateShiftTags < ActiveRecord::Migration
     create_table :shift_tags do |t|
       t.integer :section_id, :null => false
       t.string :title, :null => false
-      t.string :display_color
 
       t.timestamps
     end

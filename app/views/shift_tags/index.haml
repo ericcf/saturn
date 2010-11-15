@@ -18,8 +18,6 @@
             = section_form.fields_for :shift_tags, shift_tag do |shift_tag_form|
               %td= shift_tag_form.text_field :title
               %td= shift_tag.shifts.map(&:title).join(", ")
-              - colors = options_for_select(color_options, shift_tag.display_color)
-              %td= shift_tag_form.select :display_color, colors, :prompt => "select color..."
               %td
                 - if shift_tag.shifts.size == 0
                   delete category?

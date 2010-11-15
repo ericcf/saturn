@@ -9,8 +9,10 @@ describe "shifts/_form" do
     render
   end
 
+  subject { rendered }
+
   it "renders a form for creating a shift" do
-    rendered.should have_selector("form",
+    should have_selector("form",
       :action => section_shift_path(@mock_section, @mock_shift),
       :method => "post"
     ) do |form|
@@ -19,9 +21,16 @@ describe "shifts/_form" do
   end
 
   it "renders a field for the title" do
-    rendered.should have_selector("form input",
+    should have_selector("form input",
       :type => "text",
       :name => "shift[title]"
+    )
+  end
+
+  it "renders a field for the display color" do
+    should have_selector("form input",
+      :type => "text",
+      :name => "shift[display_color]"
     )
   end
 end

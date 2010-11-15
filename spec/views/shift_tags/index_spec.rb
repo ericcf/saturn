@@ -5,8 +5,7 @@ describe "shift_tags/index" do
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
     @mock_shift = stub_model(Shift, :title => "AM Call")
-    @mock_shift_tag = stub_model(ShiftTag, :title => "Call",
-      :display_color => "abcdef")
+    @mock_shift_tag = stub_model(ShiftTag, :title => "Call")
     @mock_shift_tag.stub!(:shifts).and_return([@mock_shift])
     @mock_orphan_tag =  stub_model(ShiftTag, :title => "Baz", :shifts => [])
     assign(:shift_tags, [@mock_shift_tag, @mock_orphan_tag])
@@ -50,11 +49,6 @@ describe "shift_tags/index" do
 
   it "renders the shifts associated with each tag" do
     rendered.should have_selector("td", :content => @mock_shift.title)
-  end
-
-  it "renders the display_color select menu" do
-    rendered.should have_selector("form select",
-      :name => "section[shift_tags_attributes][0][display_color]")
   end
 
   it "renders a checkbox to remove tags from associated shifts" do
