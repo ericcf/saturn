@@ -1,7 +1,7 @@
 class CreateConferences < ActiveRecord::Migration
   def self.up
     create_table :conferences do |t|
-      t.string :title
+      t.string :title, :null => false
       t.string :presenter
       t.text :description
       t.string :external_uid
@@ -16,6 +16,7 @@ class CreateConferences < ActiveRecord::Migration
 
     add_index :conferences, :external_uid, :unique => true
     add_index :conferences, :starts_at
+    add_index :conferences, [:title, :starts_at, :ends_at], :unique => true
   end
 
   def self.down

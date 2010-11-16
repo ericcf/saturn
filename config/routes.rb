@@ -1,7 +1,6 @@
 Saturn::Application.routes.draw do
 
-  #scope SATURN_BASE_ROUTE_SCOPE do
-  resources :conferences
+  resources :conferences, :only => [:index, :show]
 
   resources :physicians, :only => :index do
     collection do
@@ -75,6 +74,4 @@ Saturn::Application.routes.draw do
 
   root :to => "physicians#search"
   match "/" => "physicians#search", :as => :home
-
-  #end
 end

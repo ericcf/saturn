@@ -1,0 +1,26 @@
+%p
+  %b Title:
+  = @conference.title
+
+%p
+  %b Description:
+  = @conference.description
+
+%p
+  %b External uid:
+  = @conference.external_uid
+
+%p
+  %b Starts at:
+  = @conference.starts_at
+
+%p
+  %b Ends at:
+  = @conference.ends_at
+
+%p
+  %b Categories:
+  = @conference.categories
+
+
+= link_to 'Back', conferences_path
