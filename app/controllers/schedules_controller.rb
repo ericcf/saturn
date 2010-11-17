@@ -65,14 +65,15 @@ class SchedulesController < ApplicationController
     authorize! :manage, @weekly_schedule
     @assignments = @weekly_schedule.assignments
     @grouped_people = @section.members_by_group
-    @people_names = {}
-    @physicians_by_id = {}
-    @grouped_people.each do |group_title, physicians|
-      physicians.each do |physician| 
-        @people_names[physician.id] = physician.short_name
-        @physicians_by_id[physician.id] = physician
-      end
+    @physicians_by_id = @section.members.hash_by_id
+    @people_names = @section.members.each_with_object({}) do |physician, hsh|
+      hsh[physician.id] = physician.short_name
     end
+    #@grouped_people.each do |group_title, physicians|
+    #  physicians.each do |physician| 
+    #    @people_names[physician.id] = physician.short_name
+    #  end
+    #end
   end
 
   def create_weekly_section

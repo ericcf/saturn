@@ -13,7 +13,12 @@ Saturn::Application.routes.draw do
   end
 
   resources :sections, :except => :show do
-    resources :memberships, :only => [:index, :new]
+    resources :memberships, :only => :index do
+      collection do
+        get "manage"
+        get "manage_new"
+      end
+    end
     resources :shift_tags, :only => [:index, :new, :create] do
       collection do
         get "search"

@@ -26,7 +26,7 @@ describe MembershipsController do
     it { assigns(:members_by_group).should eq(@mock_members_by_group) }
   end
 
-  describe "GET new" do
+  describe "GET manage_new" do
 
     before(:each) do
       RadDirectory::Group.stub!(:find_all_by_title).
@@ -34,9 +34,22 @@ describe MembershipsController do
       @mock_section.stub!(:memberships).and_return([])
       @mock_physician = stub_model(Physician, :in_group? => true)
       Physician.stub_chain(:current, :includes).and_return([@mock_physician])
-      get :new, :section_id => @mock_section.id
+      get :manage_new, :section_id => @mock_section.id
     end
 
     it { assigns(:physicians).should == ([@mock_physician]) }
+  end
+
+  describe "GET manage" do
+
+    before(:each) do
+      @mock_members_by_group = mock("members by group")
+      @mock_section.stub!(:members_by_group).and_return(@mock_members_by_group)
+      get :manage, :section_id => @mock_section.id
+    end
+
+    it { assigns(:members_by_group).should eq(@mock_members_by_group) }
+
+    it { should render_template("manage") }
   end
 end

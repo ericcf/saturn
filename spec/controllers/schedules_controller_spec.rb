@@ -21,74 +21,74 @@ describe SchedulesController do
   describe "GET weekly_call" do
 
     before(:each) do
-      WeeklySchedule.stub!(:published_with_date).and_return([])
-      Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      WeeklySchedule.stub!(:published_with_date) { [] }
+      Section.stub!(:find).with(mock_section.id) { mock_section }
     end
 
     it "assigns the start of the current week to @start_date" do
       date = Date.parse("Monday")
-      controller.should_receive(:monday_of_week_with).and_return(date)
+      controller.should_receive(:monday_of_week_with) { date }
       get :weekly_call
-      assigns[:start_date].should == date
+      assigns(:start_date).should eq(date)
     end
 
     it "assigns the week dates starting on @start_date to @dates" do
       dates = mock('dates')
-      controller.should_receive(:week_dates_beginning_with).and_return(dates)
+      controller.should_receive(:week_dates_beginning_with) { dates }
       get :weekly_call
-      assigns[:dates].should == dates
+      assigns(:dates).should eq(dates)
     end
 
     it "assigns all call shifts to @call_shifts" do
       mock_shift = mock_model(Shift)
-      Shift.stub_chain(:includes, :where).and_return([mock_shift])
+      Shift.stub_chain(:includes, :where) { [mock_shift] }
       get :weekly_call
-      assigns(:call_shifts).should == [mock_shift]
+      assigns(:call_shifts).should eq([mock_shift])
     end
 
     it "assigns ordered assignments this week to @call_assignments" do
       date = Date.today
       WeeklySchedule.delete_all; Shift.delete_all
       mock_assignment = stub_model(Assignment)
-      Assignment.stub!(:by_schedules_and_shifts).and_return([mock_assignment])
+      Assignment.stub!(:by_schedules_and_shifts) { [mock_assignment] }
       mock_physician = stub_model(Physician)
       Physician.stub_chain(:where, :includes, :hash_by_id).
         and_return({ mock_physician.id => mock_physician })
       get :weekly_call, :date => date
-      assigns[:call_assignments].should == [mock_assignment]
+      assigns(:call_assignments).should eq([mock_assignment])
     end
 
     it "assigns public note details from assignments to @notes" do
       details = mock('note details')
       mock_assignment = stub_model(Assignment, :public_note_details => details)
-      Assignment.stub!(:by_schedules_and_shifts).and_return([mock_assignment])
+      Assignment.stub!(:by_schedules_and_shifts) { [mock_assignment] }
       mock_physician = stub_model(Physician)
       Physician.stub_chain(:where, :includes, :hash_by_id).
         and_return({ mock_physician.id => mock_physician })
       get :weekly_call
-      assigns(:notes).should == [details]
+      assigns(:notes).should eq([details])
     end
   end
 
   describe "GET show_weekly_section" do
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id).and_return(mock_section)
-      mock_schedule.stub_chain(:assignments, :includes).and_return([])
+      Section.stub!(:find).with(mock_section.id) { mock_section }
+      mock_schedule.stub_chain(:assignments, :includes) { [] }
       mock_section.stub_chain(:weekly_schedules, :published, :find_by_date).
         and_return(mock_schedule)
     end
 
     it "assigns the week dates starting on @week_start_date to @dates" do
       dates = [mock('date')]
-      controller.should_receive(:week_dates_beginning_with).and_return(dates)
+      controller.should_receive(:week_dates_beginning_with) { dates }
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:dates).should eq(dates)
     end
 
     it "assigns the requested schedule section to @section" do
       get :show_weekly_section, :section_id => mock_section.id
-      assigns[:section].should == mock_section
+      assigns(:section).should eq(mock_section)
     end
 
     it "assigns weekly assignments to @assignments" do
@@ -109,7 +109,7 @@ describe SchedulesController do
         :physician_id => mock_physician.id)
       mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
       get :show_weekly_section, :section_id => mock_section.id
-      assigns(:notes).should == [details]
+      assigns(:notes).should eq([details])
     end
 
     it "assigns weekly schedule presenter to @schedule_presenter" do
@@ -143,35 +143,39 @@ describe SchedulesController do
 
   describe "GET edit_weekly_section" do
 
+    def get_edit_default_weekly_section
+      date = Date.today
+      get :edit_weekly_section, :section_id => mock_section.id,
+        :year => date.year, :month => date.month, :day => date.day
+    end
+
     before(:each) do
       @mock_section_shifts = mock("shifts", :active_as_of => nil)
       Section.stub!(:find).
         with(mock_section(:shifts => @mock_section_shifts).id).
         and_return(mock_section)
-      WeeklySchedule.stub!(:find).and_return(mock_schedule.as_null_object)
+      WeeklySchedule.stub!(:find) { mock_schedule.as_null_object }
       controller.should_receive(:authenticate_user!)
       controller.stub!(:authorize!)
     end
 
     it "assigns Monday before the requested date to @week_start_date" do
-      controller.should_receive(:monday_of_week_with).and_return(@monday)
+      controller.should_receive(:monday_of_week_with) { @monday }
       get :edit_weekly_section, :section_id => mock_section.id,
         :year => @monday.year, :month => @monday.month, :day => @monday.day
-      assigns[:week_start_date].should == @monday
+      assigns(:week_start_date).should eq(@monday)
     end
 
     it "assigns the days of the current week to @week_dates" do
       dates = mock('dates')
-      controller.should_receive(:week_dates_beginning_with).and_return(dates)
-      get :edit_weekly_section, :section_id => mock_section.id, :year => 2010,
-        :month => 1, :day => 1
-      assigns[:week_dates].should == dates
+      controller.should_receive(:week_dates_beginning_with) { dates }
+      get_edit_default_weekly_section
+      assigns(:week_dates).should eq(dates)
     end
 
     it "assigns the requested schedule section to @section" do
-      get :edit_weekly_section, :section_id => mock_section.id, :year => 2010,
-        :month => 1, :day => 1
-      assigns[:section].should == mock_section
+      get_edit_default_weekly_section
+      assigns(:section).should eq(mock_section)
     end
 
     it "assigns active section shifts to @shifts" do
@@ -192,7 +196,7 @@ describe SchedulesController do
         controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
-        assigns[:weekly_schedule].should == mock_schedule
+        assigns(:weekly_schedule).should eq(mock_schedule)
       end
     end
 
@@ -200,37 +204,54 @@ describe SchedulesController do
 
       it "assigns a new schedule to @weekly_schedule" do
         WeeklySchedule.stub!(:find_by_section_id_and_date)
-        WeeklySchedule.should_receive(:new).and_return(mock_schedule)
+        WeeklySchedule.should_receive(:new) { mock_schedule }
         controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
-        assigns[:weekly_schedule].should == mock_schedule
+        assigns(:weekly_schedule).should eq(mock_schedule)
       end
     end
 
     it "assigns weekly schedule assignments to @assignments" do
-      WeeklySchedule.stub!(:find_by_section_id_and_date).
-        and_return(mock_schedule)
+      WeeklySchedule.stub!(:find_by_section_id_and_date) { mock_schedule }
       assignment = stub_model(Assignment)
-      mock_schedule.should_receive(:assignments).and_return([assignment])
-      get :edit_weekly_section, :section_id => mock_section.id, :year => 2010,
-        :month => 1, :day => 1
-      assigns[:assignments].should == [assignment]
+      mock_schedule.should_receive(:assignments) { [assignment] }
+      get_edit_default_weekly_section
+      assigns(:assignments).should eq([assignment])
     end
 
     it "assigns grouped section members to @grouped_people" do
-      mock_groups = Array.new
-      mock_section.should_receive(:members_by_group).and_return(mock_groups)
-      get :edit_weekly_section, :section_id => mock_section.id, :year => 2010,
-        :month => 1, :day => 1
-      assigns[:grouped_people].should == mock_groups
+      mock_groups = Hash.new
+      mock_section.should_receive(:members_by_group) { mock_groups }
+      get_edit_default_weekly_section
+      assigns(:grouped_people).should eq(mock_groups)
+    end
+
+    it "assigns section members by id to @physicians_by_id" do
+      mock_physician = stub_model(Physician)
+      mock_members = []
+      mock_members.stub!(:hash_by_id) {{ mock_physician.id => mock_physician }}
+      mock_section.stub!(:members) { mock_members }
+      get_edit_default_weekly_section
+      assigns(:physicians_by_id).
+        should eq({ mock_physician.id => mock_physician })
+    end
+
+    it "assigns each physician's short_name by physician id to @people_names" do
+      mock_physician = stub_model(Physician, :short_name => "Short name")
+      mock_members = [mock_physician]
+      mock_members.stub!(:hash_by_id)
+      mock_section.stub!(:members) { mock_members }
+      get_edit_default_weekly_section
+      assigns(:people_names).
+        should eq({ mock_physician.id => mock_physician.short_name })
     end
   end
 
   describe "POST create_weekly_section" do
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      Section.stub!(:find).with(mock_section.id) { mock_section }
       controller.should_receive(:authenticate_user!)
       controller.stub!(:authorize!)
     end
@@ -244,13 +265,14 @@ describe SchedulesController do
         controller.should_receive(:authorize!).with(:manage, mock_schedule)
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:these => 'params'}
-        assigns[:weekly_schedule].should ==  mock_schedule
+        assigns(:weekly_schedule).should eq(mock_schedule)
       end
 
       it "redirects to the edit path" do
         date = Date.parse("Monday")
-        WeeklySchedule.stub!(:new).
-          and_return(mock_schedule(:save => true, :date => date))
+        WeeklySchedule.stub!(:new) {
+          mock_schedule(:save => true, :date => date)
+        }
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:date => date}
         response.should redirect_to(edit_weekly_section_schedule_path(
@@ -265,7 +287,7 @@ describe SchedulesController do
       before(:each) do
         mock_schedule(:save => false,
           :errors => mock("ActiveModel::Errors", :full_messages=>[]))
-        WeeklySchedule.stub!(:new).and_return(mock_schedule.as_null_object)
+        WeeklySchedule.stub!(:new) { mock_schedule.as_null_object }
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:date => Date.today.to_s}
       end
@@ -284,10 +306,9 @@ describe SchedulesController do
     before(:each) do
       controller.should_receive(:authenticate_user!)
       controller.stub!(:authorize!)
-      Section.stub!(:find).with(mock_section.id).and_return(mock_section)
+      Section.stub!(:find).with(mock_section.id) { mock_section }
       mock_schedule(:date => Date.today)
-      WeeklySchedule.stub!(:find).with(mock_schedule.id).
-        and_return(mock_schedule)
+      WeeklySchedule.stub!(:find).with(mock_schedule.id) { mock_schedule }
       controller.should_receive(:authorize!).with(:update, mock_schedule)
     end
 
@@ -308,9 +329,9 @@ describe SchedulesController do
           ]
       end
 
-      it { assigns[:section].should eq(mock_section) }
+      it { assigns(:section).should eq(mock_section) }
 
-      it { assigns[:weekly_schedule].should eq(mock_schedule) }
+      it { assigns(:weekly_schedule).should eq(mock_schedule) }
 
       it do
         should redirect_to(edit_weekly_section_schedule_path(
@@ -321,13 +342,13 @@ describe SchedulesController do
         ))
       end
 
-      it { flash[:notice].should == "Successfully updated schedule." }
+      it { flash[:notice].should eq("Successfully updated schedule.") }
     end
 
     context "with invalid params" do
 
       before(:each) do
-        mock_schedule.stub!(:update_attributes).and_return(false)
+        mock_schedule.stub!(:update_attributes) { false }
         put :update_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => { :id => mock_schedule.id }
       end

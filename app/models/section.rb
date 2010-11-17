@@ -29,9 +29,9 @@ class Section < ActiveRecord::Base
   # returns the members of this section grouped by SCHEDULE_GROUPS, i.e.:
   # { "Faculty" => [p1, p2], "Fellows" => [p3, p4], "Residents" => [p5, p6] }
   def members_by_group
+    physicians = members.includes(:names_alias, :memberships)
     grouped_people = {}
     RadDirectory::Group.find_all_by_title(SCHEDULE_GROUPS).each do |group|
-      physicians = members.includes(:names_alias, :memberships)
       grouped_people[group.title] = physicians.select do |physician|
         physician.in_group? group
       end

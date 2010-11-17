@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "memberships/new" do
+describe "memberships/manage_new" do
 
   before(:each) do
     @mock_section = assign(:section, mock_model(Section).as_null_object)

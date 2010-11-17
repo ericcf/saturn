@@ -1,25 +1,11 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%p= link_to "Add Members", new_section_membership_path(@section)
+%ul
+  %li!= nav_item "Edit Members", manage_section_memberships_path(@section), {}, :manage, SectionMembership
 
-- if @members_by_group
-  %h3 Select members to remove
-  = semantic_form_for @section do |section_form|
-    = hidden_field_tag "redirect_path", section_memberships_path(@section)
-    = section_form.buttons do
-      = section_form.commit_button
-      %li
-        or
-        = link_to "Cancel", section_memberships_path(@section)
-    - @members_by_group.each do |group_name, people|
-      - if people.size > 0
-        = section_form.inputs :name => group_name do
-          - people.each do |person|
-            = section_form.semantic_fields_for :memberships, person.section_memberships.where(:section_id => @section.id).first do |membership_form|
-              = membership_form.input :_destroy, :as => :boolean, :label => person.full_name
-    = section_form.buttons do
-      = section_form.commit_button
-      %li
-        or
-        = link_to "Cancel", section_memberships_path(@section)
+- @members_by_group.each do |group_name, people|
+  %h3= group_name unless people.blank?
+  %ul
+    - people.each do |person|
+      %li= person.full_name(:family_first)
