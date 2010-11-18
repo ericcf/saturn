@@ -1,0 +1,13 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3 Schedule Administrators
+
+= semantic_form_for @section, :url => section_admins_path(@section), :html => { :method => :put } do |form|
+  = form.inputs do
+    - @users.each do |user|
+      %li.boolean
+        %label
+          = check_box_tag "admin_ids[#{user.id}]", true, @section.administrators.include?(user)
+          = user.email
+  = form.buttons

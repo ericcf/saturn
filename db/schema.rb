@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101103183610) do
+ActiveRecord::Schema.define(:version => 20101118162437) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -141,6 +141,17 @@ ActiveRecord::Schema.define(:version => 20101103183610) do
   add_index "section_memberships", ["physician_id", "section_id"], :name => "index_section_memberships_on_physician_id_and_section_id", :unique => true
   add_index "section_memberships", ["physician_id"], :name => "index_section_memberships_on_physician_id"
   add_index "section_memberships", ["section_id"], :name => "index_section_memberships_on_section_id"
+
+  create_table "section_role_assignments", :force => true do |t|
+    t.integer  "section_id", :null => false
+    t.integer  "role_id",    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "section_role_assignments", ["role_id"], :name => "index_section_role_assignments_on_role_id"
+  add_index "section_role_assignments", ["section_id", "role_id"], :name => "index_section_role_assignments_on_section_id_and_role_id", :unique => true
+  add_index "section_role_assignments", ["section_id"], :name => "index_section_role_assignments_on_section_id"
 
   create_table "sections", :force => true do |t|
     t.string   "title",       :null => false

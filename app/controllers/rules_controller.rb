@@ -1,6 +1,6 @@
 class RulesController < ApplicationController
 
-  before_filter :find_section
+  include SectionResourceController
 
   def show
     @weekly_shift_duration_rule = @section.weekly_shift_duration_rule
@@ -22,13 +22,5 @@ class RulesController < ApplicationController
       return(redirect_to(section_rules_path(@section)))
     end
     render :edit
-  end
-
-  private
-
-  def find_section
-    section_id = params[:section_id]
-    return(redirect_to(sections_path)) unless section_id
-    @section = Section.find(section_id)
   end
 end

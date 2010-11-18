@@ -1,7 +1,7 @@
 class ShiftTagsController < ApplicationController
+  include SectionResourceController
 
   before_filter :authenticate_user!
-  before_filter :find_section
   before_filter :authorize_action
 
   def index
@@ -26,12 +26,6 @@ class ShiftTagsController < ApplicationController
   end
 
   private
-
-  def find_section
-    section_id = params[:section_id]
-    return(redirect_to(sections_path)) unless section_id
-    @section = Section.find(section_id)
-  end
 
   def authorize_action
     authorize! :manage, @section

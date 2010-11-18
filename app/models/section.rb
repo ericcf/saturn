@@ -17,6 +17,8 @@ class Section < ActiveRecord::Base
   accepts_nested_attributes_for :weekly_shift_duration_rule
   has_many :daily_shift_count_rules, :dependent => :destroy
   accepts_nested_attributes_for :daily_shift_count_rules
+  has_one :section_role_assignment, :dependent => :destroy
+  has_one :admin_role, :through => :section_role_assignment, :source => :role
 
   validates :title, :presence => true, :uniqueness => true
 
@@ -37,5 +39,29 @@ class Section < ActiveRecord::Base
       end
     end
     grouped_people
+  end
+
+  def create_admin_role
+    return admin_role unless admin_role.blank?
+    manage_section_permission = Deadbolt::Permission.
+      find_or_create_by_action_and_target_type("manage", "Section")
+    role = manage_section_permission.roles.
+      find_or_create_by_name("#{title} Administrator")
+    role.role_permissions.first.update_attributes(:target_id => id)
+    create_section_role_assignment(:role => role)
+    role
+  end
+
+  def administrators
+    return [] if admin_role.blank?
+    admin_role.users
+  end
+
+  def administrator_ids
+    administrators.map(&:id)
+  end
+
+  def administrator_ids=(ids)
+    create_admin_role.user_ids = ids
   end
 end

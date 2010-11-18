@@ -1,6 +1,5 @@
 class ReportsController < ApplicationController
-
-  before_filter :find_section
+  include SectionResourceController
 
   def shift_totals
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
@@ -68,12 +67,6 @@ class ReportsController < ApplicationController
   end
 
   private
-
-  def find_section
-    section_id = params[:section_id]
-    return(redirect_to(sections_path)) unless section_id
-    @section = Section.find(section_id)
-  end
 
   def find_physician
     physician_id = params[:physician_id]

@@ -27,6 +27,7 @@ Saturn::Application.routes.draw do
     resources :shifts, :except => [:show, :edit, :update]
     resource :rules, :only => [:show, :edit, :update]
     resources :vacation_requests
+    resource :admins, :only => [:show, :update]
   end
 
   controller :schedules do
@@ -78,5 +79,4 @@ Saturn::Application.routes.draw do
   end
 
   root :to => "physicians#search"
-  match "/" => "physicians#search", :as => :home
 end

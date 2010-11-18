@@ -1,6 +1,5 @@
 class VacationRequestsController < ApplicationController
-
-  before_filter :find_section
+  include SectionResourceController
 
   def index
     @vacation_requests = @section.vacation_requests
@@ -58,13 +57,5 @@ class VacationRequestsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested vacation_request not found"
     redirect_to section_vacation_requests_path(@section)
-  end
-
-  private
-
-  def find_section
-    section_id = params[:section_id]
-    return(redirect_to(sections_path)) unless section_id
-    @section = Section.find(section_id)
   end
 end
