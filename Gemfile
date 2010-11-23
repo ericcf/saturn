@@ -4,7 +4,7 @@ gem 'rails'
 
 gem 'mysql2'
 gem 'haml'
-gem 'haml-rails'
+gem 'jquery-rails'
 gem 'mongrel', '= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
@@ -34,6 +34,7 @@ gem 'capistrano'
 
 group :development, :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'haml-rails'
   gem 'rspec-rails'
   gem 'autotest'
   gem 'database_cleaner'
