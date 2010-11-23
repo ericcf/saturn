@@ -14,6 +14,7 @@ class PhysicianAliasesController < ApplicationController
       flash[:notice] = "Successfully created alias"
       return(redirect_to physicians_path)
     end
+    flash[:error] = "Unable to create alias: #{@physician_alias.errors.full_messages.join(", ")}"
     render :new
   end
 
@@ -28,6 +29,7 @@ class PhysicianAliasesController < ApplicationController
       flash[:notice] = "Successfully updated alias"
       return(redirect_to physicians_path)
     end
+    flash[:error] = "Unable to update alias: #{@physician_alias.errors.full_messages.join(", ")}"
     render :edit
   end
 

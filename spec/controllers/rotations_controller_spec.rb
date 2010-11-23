@@ -55,6 +55,8 @@ describe RotationsController do
       end
 
       it { should redirect_to(rotations_path) }
+
+      it { flash[:notice].should eq("Successfully created rotation") }
     end
 
     context "with invalid parameters" do
@@ -65,6 +67,8 @@ describe RotationsController do
       end
 
       it { should render_template(:new) }
+
+      it { flash[:error].should match(/Unable to create rotation/) }
     end
   end
 
@@ -121,6 +125,8 @@ describe RotationsController do
         end
 
         it { should redirect_to(rotations_path) }
+
+        it { flash[:notice].should eq("Successfully updated rotation") }
       end
 
       context "it does not update successfully" do
@@ -131,6 +137,8 @@ describe RotationsController do
         end
 
         it { should render_template(:edit) }
+
+        it { flash[:error].should match(/Unable to update rotation/) }
       end
     end
 

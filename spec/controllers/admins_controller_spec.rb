@@ -36,9 +36,28 @@ describe AdminsController do
         :admin_ids => { "1" => "true" }
     end
 
-    it "redirects to show" do
-      put :update, :section_id => @mock_section.id
-      response.should redirect_to(section_admins_path(@mock_section))
+    context "is successful" do
+
+      before(:each) do
+        @mock_section.stub!(:update_attributes) { true }
+        put :update, :section_id => @mock_section.id
+      end
+
+      it { should redirect_to(section_admins_path(@mock_section)) }
+
+      it { flash[:notice].should eq("Successfully updated admins") }
+    end
+
+    context "is not successful" do
+
+      before(:each) do
+        @mock_section.stub!(:update_attributes) { false }
+        put :update, :section_id => @mock_section.id
+      end
+
+      it { should redirect_to(section_admins_path(@mock_section)) }
+
+      it { flash[:error].should match(/Unable to update admins/) }
     end
   end
 end

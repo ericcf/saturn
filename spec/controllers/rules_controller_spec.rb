@@ -97,6 +97,8 @@ describe RulesController do
       end
 
       it { should redirect_to(section_rules_path(@mock_section)) }
+
+      it { flash[:notice].should eq("Successfully updated rules") }
     end
 
     context "is not successful" do
@@ -107,6 +109,8 @@ describe RulesController do
       end
 
       it { should render_template(:edit) }
+
+      it { flash[:error].should match(/Unable to update rules/) }
     end
 
     context "always" do

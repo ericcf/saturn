@@ -64,6 +64,8 @@ describe ShiftTagsController do
       end
 
       it { should redirect_to(section_shift_tags_path(@mock_section)) }
+
+      it { flash[:notice].should eq("Successfully created category") }
     end
 
     context "with invalid parameters" do

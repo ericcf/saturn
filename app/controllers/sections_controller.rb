@@ -19,6 +19,7 @@ class SectionsController < ApplicationController
       flash[:notice] = "Successfully created section"
       return(redirect_to(section_memberships_path(@section)))
     end
+    flash[:error] = "Unable to create section: #{@section.errors.full_messages.join(", ")}"
     render :new
   end
 

@@ -92,6 +92,8 @@ describe ShiftsController do
       end
 
       it { should redirect_to(section_shifts_path(@mock_section)) }
+
+      it { flash[:notice].should eq("Successfully created shift") }
     end
 
     context "with invalid parameters" do
@@ -102,6 +104,8 @@ describe ShiftsController do
       end
 
       it { should render_template(:new) }
+
+      it { flash[:error].should match(/Unable to create shift/) }
     end
   end
 

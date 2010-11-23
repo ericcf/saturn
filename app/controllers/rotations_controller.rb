@@ -15,8 +15,10 @@ class RotationsController < ApplicationController
     @rotation = Rotation.new(params[:rotation])
 
     if @rotation.save
+      flash[:notice] = "Successfully created rotation"
       return(redirect_to rotations_path)
     end
+    flash[:error] = "Unable to create rotation: #{@rotation.errors.full_messages.join(", ")}"
     render :new
   end
 
@@ -32,8 +34,10 @@ class RotationsController < ApplicationController
     @rotation = Rotation.find(params[:id])
 
     if @rotation.update_attributes(params[:rotation])
+      flash[:notice] = "Successfully updated rotation"
       return(redirect_to rotations_path)
     end
+    flash[:error] = "Unable to update rotation: #{@rotation.errors.full_messages.join(", ")}"
     render :edit
 
   rescue ActiveRecord::RecordNotFound

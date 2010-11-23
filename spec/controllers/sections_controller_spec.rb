@@ -73,6 +73,8 @@ describe SectionsController do
       end
 
       it { should render_template(:new) }
+
+      it { flash[:error].should match(/Unable to create section/) }
     end
   end
 

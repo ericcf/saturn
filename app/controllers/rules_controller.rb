@@ -19,8 +19,10 @@ class RulesController < ApplicationController
 
   def update
     if @section.update_attributes(params[:section])
+      flash[:notice] = "Successfully updated rules"
       return(redirect_to(section_rules_path(@section)))
     end
+    flash[:error] = "Unable to update rules: #{@section.errors.full_messages.join(", ")}"
     render :edit
   end
 end

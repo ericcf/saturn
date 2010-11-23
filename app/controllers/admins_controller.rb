@@ -12,7 +12,11 @@ class AdminsController < ApplicationController
   def update
     authorize! :manage, @section
     administrator_ids = params[:admin_ids] ? params[:admin_ids].keys : []
-    @section.update_attributes(:administrator_ids => administrator_ids)
+    if @section.update_attributes(:administrator_ids => administrator_ids)
+      flash[:notice] = "Successfully updated admins"
+    else
+      flash[:error] = "Unable to update admins: #{@section.errors.full_messages.join(", ")}"
+    end
     redirect_to section_admins_path(@section)
   end
 end

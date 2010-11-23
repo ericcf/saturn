@@ -18,8 +18,10 @@ class ShiftsController < ApplicationController
   def create
     @shift = Shift.new(params[:shift])
     if @section.shifts << @shift
+      flash[:notice] = "Successfully created shift"
       return(redirect_to section_shifts_path(@section))
     end
+    flash[:error] = "Unable to create shift: #{@shift.errors.full_messages.join(", ")}"
     render :new
   end
 

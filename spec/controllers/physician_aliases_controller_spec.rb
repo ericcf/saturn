@@ -66,6 +66,8 @@ describe PhysicianAliasesController do
       end
 
       it { should render_template(:new) }
+
+      it { flash[:error].should match(/Unable to create alias/) }
     end
   end
 
@@ -120,6 +122,8 @@ describe PhysicianAliasesController do
       end
 
       it { should render_template(:edit) }
+
+      it { flash[:error].should match(/Unable to update alias/) }
     end
   end
 end
