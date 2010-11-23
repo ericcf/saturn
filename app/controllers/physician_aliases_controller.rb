@@ -11,6 +11,7 @@ class PhysicianAliasesController < ApplicationController
     @physician_alias = @physician.build_names_alias(params[:physician_alias])
 
     if @physician_alias.save
+      flash[:notice] = "Successfully created alias"
       return(redirect_to physicians_path)
     end
     render :new
@@ -24,6 +25,7 @@ class PhysicianAliasesController < ApplicationController
     @physician_alias = @physician.names_alias
 
     if @physician_alias.update_attributes(params[:physician_alias])
+      flash[:notice] = "Successfully updated alias"
       return(redirect_to physicians_path)
     end
     render :edit

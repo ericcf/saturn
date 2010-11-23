@@ -52,6 +52,21 @@ describe WeeklySchedule do
       @schedule.published?.should be_true
     end
   end
+
+  describe "#include_date(:date)" do
+
+    it "returns schedules which include the specified date" do
+      WeeklySchedule.include_date(@schedule.date).should include(@schedule)
+      WeeklySchedule.include_date(@schedule.date + 6).should include(@schedule)
+    end
+
+    it "does not return schedules which do not include the specified date" do
+      WeeklySchedule.include_date(@schedule.date - 1).
+        should_not include(@schedule)
+      WeeklySchedule.include_date(@schedule.date + 7).
+        should_not include(@schedule)
+    end
+  end
   
   describe "#publish=(:value)" do
 

@@ -1,6 +1,16 @@
-%h2 On Call
+- content_for :javascripts do
+  = javascript_include_tag 'jquery/jquery-ui-1.8.4.custom.min'
+  = javascript_include_tag 'shared/date_selector'
 
-%h3= "Week of #{@start_date.to_s(:long)}"
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+
+%h3 Published Call Schedule
+%div.subheadline
+  %h3= "Week of #{@dates.first.to_s(:long)}"
+  %div.inline_form
+    = form_tag weekly_call_schedule_path, :method => :get do
+      = text_field_tag "date", @dates.first.to_s
 
 - mapped_assignments = @call_assignments.group_by {|a| [a.shift_id, a.date]}
 - shifts_by_section = @call_shifts.group_by {|s| s.section}

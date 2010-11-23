@@ -28,9 +28,9 @@
     %tr
       %th
         - if @view_mode == "2"
-          = link_to "shifts on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s)
+          = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => @dates.first.to_s)
         - else
-          = link_to "people on left", weekly_section_schedule_path(@section, :date => @dates.first.to_s, :view_mode => 2)
+          = link_to "View by Physician", weekly_section_schedule_path(@section, :date => @dates.first.to_s, :view_mode => 2)
       - @schedule_presenter.each_col_header do |col_header|
         %th= render :partial => "schedules/headers/html/#{col_header[:type]}", :object => col_header[:object]
   %tbody

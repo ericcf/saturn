@@ -16,7 +16,7 @@
   = render "section_menu"
 
 %div.subheadline
-  %h3= "Week of #{@week_start_date.to_s(:long)}"
+  %h3= "Editing Week of #{@week_start_date.to_s(:long)}"
   %div.inline_form
     = form_tag edit_weekly_section_schedule_path(@section), :method => :get do
       = text_field_tag "date", @week_dates.first.to_s

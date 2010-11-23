@@ -25,14 +25,7 @@ describe SchedulesController do
       Section.stub!(:find).with(mock_section.id) { mock_section }
     end
 
-    it "assigns the start of the current week to @start_date" do
-      date = Date.parse("Monday")
-      controller.should_receive(:monday_of_week_with) { date }
-      get :weekly_call
-      assigns(:start_date).should eq(date)
-    end
-
-    it "assigns the week dates starting on @start_date to @dates" do
+    it "assigns the week dates starting on Monday to @dates" do
       dates = mock('dates')
       controller.should_receive(:week_dates_beginning_with) { dates }
       get :weekly_call
@@ -156,7 +149,7 @@ describe SchedulesController do
         and_return(mock_section)
       WeeklySchedule.stub!(:find) { mock_schedule.as_null_object }
       controller.should_receive(:authenticate_user!)
-      controller.stub!(:authorize!)
+      controller.stub!(:authorize!).with(:update, mock_section)
     end
 
     it "assigns Monday before the requested date to @week_start_date" do
@@ -193,7 +186,6 @@ describe SchedulesController do
         WeeklySchedule.stub!(:find_by_section_id_and_date).
           with(mock_section.id, @monday).
           and_return(mock_schedule)
-        controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
         assigns(:weekly_schedule).should eq(mock_schedule)
@@ -205,7 +197,6 @@ describe SchedulesController do
       it "assigns a new schedule to @weekly_schedule" do
         WeeklySchedule.stub!(:find_by_section_id_and_date)
         WeeklySchedule.should_receive(:new) { mock_schedule }
-        controller.should_receive(:authorize!).with(:manage, mock_schedule)
         get :edit_weekly_section, :section_id => mock_section.id,
           :year => @monday.year, :month => @monday.month, :day => @monday.day
         assigns(:weekly_schedule).should eq(mock_schedule)
@@ -253,32 +244,39 @@ describe SchedulesController do
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
       controller.should_receive(:authenticate_user!)
-      controller.stub!(:authorize!)
+      controller.stub!(:authorize!).with(:update, mock_section)
     end
 
     context "with valid params" do
 
+      before(:each) do
+        @date = Date.parse("Monday")
+        WeeklySchedule.stub!(:new).
+          and_return(mock_schedule(:save => true, :date => @date))
+      end
+
       it "assigns a newly created WeeklySchedule as @weekly_schedule" do
-        WeeklySchedule.should_receive(:new).
+        WeeklySchedule.stub!(:new).
           with({'section_id' => mock_section.id, 'these' => 'params', 'assignments_attributes' => {}}).
-          and_return(mock_schedule(:save => true, :date => Date.today))
-        controller.should_receive(:authorize!).with(:manage, mock_schedule)
+          and_return(mock_schedule)
         post :create_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => {:these => 'params'}
         assigns(:weekly_schedule).should eq(mock_schedule)
       end
 
       it "redirects to the edit path" do
-        date = Date.parse("Monday")
-        WeeklySchedule.stub!(:new) {
-          mock_schedule(:save => true, :date => date)
-        }
         post :create_weekly_section, :section_id => mock_section.id,
-          :weekly_schedule => {:date => date}
+          :weekly_schedule => { :date => @date }
         response.should redirect_to(edit_weekly_section_schedule_path(
-          :section_id => mock_section.id, :year => date.year,
-          :month => date.month, :day => date.day
+          :section_id => mock_section.id, :year => @date.year,
+          :month => @date.month, :day => @date.day
         ))
+      end
+
+      it "assigns to flash" do
+        post :create_weekly_section, :section_id => mock_section.id,
+          :weekly_schedule => { :date => @date }
+        flash[:notice].should eq("Successfully created schedule")
       end
     end
 
@@ -309,7 +307,7 @@ describe SchedulesController do
       Section.stub!(:find).with(mock_section.id) { mock_section }
       mock_schedule(:date => Date.today)
       WeeklySchedule.stub!(:find).with(mock_schedule.id) { mock_schedule }
-      controller.should_receive(:authorize!).with(:update, mock_schedule)
+      controller.should_receive(:authorize!).with(:update, mock_section)
     end
 
     context "with valid params" do

@@ -54,6 +54,8 @@ describe PhysicianAliasesController do
       end
 
       it { should redirect_to(physicians_path) }
+
+      it { flash[:notice].should eq("Successfully created alias") }
     end
 
     context "with invalid parameters" do
@@ -104,6 +106,8 @@ describe PhysicianAliasesController do
       end
 
       it { should redirect_to(physicians_path) }
+
+      it { flash[:notice].should eq("Successfully updated alias") }
     end
 
     context "with invalid parameters" do

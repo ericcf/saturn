@@ -16,7 +16,7 @@
       %th Actions
   - @physicians.each do |physician|
     %tr{ :class => cycle("odd", "") }
-      %td= link_to physician.full_name, schedule_physician_path(physician), :title => "View Schedule"
+      %td= physician.full_name
       %td= physician.groups.select{|g| Section::SCHEDULE_GROUPS.include?(g.title)}.map(&:title).join(", ")
       %td= physician.sections.map(&:title).join(", ")
       %td= physician.short_name

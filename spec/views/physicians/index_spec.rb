@@ -17,10 +17,8 @@ describe "physicians/index" do
     assign(:physicians, [mock_physician])
     view.should_receive(:will_paginate).twice
     render
-    rendered.should have_selector("a",
-      :href => schedule_physician_path(mock_physician),
-      :content => mock_physician.full_name,
-      :title => "View Schedule"
+    rendered.should have_selector("td",
+      :content => mock_physician.full_name
     )
   end
 end

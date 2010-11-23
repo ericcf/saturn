@@ -13,36 +13,33 @@ describe "schedules/show_weekly_section.haml" do
     render
   end
 
-  it "renders a form for selecting a date" do
-    rendered.should have_selector("form",
+  subject { rendered }
+
+  it {
+    should have_selector("form",
       :action => weekly_section_schedule_path(@mock_section),
       :method => "get"
     )
-  end
+  }
 
-  it "renders a field for selecting a date" do
-    rendered.should have_selector("form input",
-      :type => "text",
-      :name => "date"
-    )
-  end
+  it { should have_selector("form input", :type => "text", :name => "date") }
 
-  it do
-    rendered.should have_selector("a",
+  it {
+    should have_selector("a",
       :href => weekly_section_schedule_path(@mock_section, :format => :xls, :date => @dates.first.to_s, :view_mode => nil),
       :content => "Download as Excel"
     )
-  end
+  }
 
-  it do
-    rendered.should have_selector("ul.notes li",
+  it {
+    should have_selector("ul.notes li",
       :content => "#{@note[:shift]} on #{@note[:day]}, #{@note[:initials]}: #{@note[:text]}"
     )
-  end
+  }
 
-  it do
-    rendered.should have_selector("table.schedule thead") do |table_head|
-      table_head.should have_selector("th a", :content => "people on left")
+  it {
+    should have_selector("table.schedule thead") do |table_head|
+      table_head.should have_selector("th a", :content => "View by Physician")
     end
-  end
+  }
 end

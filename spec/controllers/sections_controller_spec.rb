@@ -59,6 +59,8 @@ describe SectionsController do
       end
 
       it { should redirect_to(section_memberships_path(mock_section)) }
+
+      it { flash[:notice].should eq("Successfully created section") }
     end
 
     context "with invalid parameters" do
@@ -144,7 +146,9 @@ describe SectionsController do
             put :update, :id => mock_section.id
           end
 
-          it { should redirect_to(section_path(mock_section)) }
+          it { should redirect_to(section_memberships_path(mock_section)) }
+
+          it { flash[:notice].should eq("Successfully updated section") }
         end
 
         context "and a 'redirect_path' parameter" do

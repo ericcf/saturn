@@ -11,12 +11,15 @@ A Rails 3 application for managing physicians' rotation schedules.
 Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for authentication/authorization and [rad_directory](http://github.com/ericcf/rad_directory) as the source of physicians.
 
 ## Testing
-Run specs with:
+Run RSpec specs with:
     rake spec
 
 Start jasmine server with:
     rake jasmine
 Then open up localhost:8888 in a browser.
+
+Run Cucumber features with:
+    rake cucumber
 
 ## Features
 * Supports multiple sections

@@ -3,11 +3,10 @@ require 'spec_helper'
 describe "schedules/weekly_call" do
 
   before(:each) do
-    @today, @tomorrow = Date.today, Date.tomorrow
-    assign(:start_date, @today)
-    assign(:dates, [@today, @tomorrow])
-    view.should_receive(:short_date).with(@today).and_return(@today.to_s)
-    view.should_receive(:short_date).with(@tomorrow).and_return(@tomorrow.to_s)
+    today, tomorrow = Date.today, Date.tomorrow
+    @dates = assign(:dates, [today, tomorrow])
+    view.stub!(:short_date).with(today) { today.to_s }
+    view.stub!(:short_date).with(tomorrow) { tomorrow.to_s }
     mock_section = stub_model(Section, :title => "Section A")
     @call_shifts = assign(:call_shifts, [
       mock_model(Shift, :title => "Shift A", :section => mock_section),
@@ -16,10 +15,10 @@ describe "schedules/weekly_call" do
     assign(:call_assignments, [])
   end
 
-  it "renders @start_date" do
+  it "renders first of @dates" do
     render
     rendered.should have_selector("h3",
-      :content => "Week of #{@today.to_s(:long)}"
+      :content => "Week of #{@dates.first.to_s(:long)}"
     )
   end
 
@@ -27,8 +26,8 @@ describe "schedules/weekly_call" do
     render
     rendered.should have_selector("table") do |table|
       table.should have_selector("tr") do |tr|
-        tr.should have_selector("th", :content => @today.to_s)
-        tr.should have_selector("th", :content => @tomorrow.to_s)
+        tr.should have_selector("th", :content => @dates.first.to_s)
+        tr.should have_selector("th", :content => @dates.second.to_s)
       end
     end
   end
@@ -48,7 +47,7 @@ describe "schedules/weekly_call" do
       mock_model(Assignment,
                  :physician_id => mock_physician.id,
                  :shift_id => @call_shifts.first.id,
-                 :date => @today)
+                 :date => @dates.first)
     ])
     render
     rendered.should have_selector("table") do |table|

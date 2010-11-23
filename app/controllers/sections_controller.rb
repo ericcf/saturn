@@ -16,6 +16,7 @@ class SectionsController < ApplicationController
     authorize! :create, @section
 
     if @section.save
+      flash[:notice] = "Successfully created section"
       return(redirect_to(section_memberships_path(@section)))
     end
     render :new
@@ -35,7 +36,8 @@ class SectionsController < ApplicationController
     authorize! :update, @section
 
     if @section.update_attributes(params[:section])
-      redirect_to(params[:redirect_path] || section_path(@section))
+      flash[:notice] = "Successfully updated section"
+      redirect_to(params[:redirect_path] || section_memberships_path(@section))
     else
       flash[:error] = "Error: could not complete changes (#{@section.errors.full_messages.join(", ")})"
       render :edit

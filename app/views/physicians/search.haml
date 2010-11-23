@@ -5,7 +5,7 @@
     %ol
       %li
         = label_tag ""
-        = text_field_tag "query"
+        = text_field_tag "query", params[:query], :maxwidth => 255
         = submit_tag "Search Physicians", :class => "submit"
 
 - unless @query.blank?

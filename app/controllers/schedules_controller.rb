@@ -8,11 +8,11 @@ class SchedulesController < ApplicationController
     :create_weekly_section, :update_weekly_section]
 
   def weekly_call
-    @start_date = monday_of_week_with(params[:date])
-    @dates = week_dates_beginning_with(@start_date)
-    schedules = WeeklySchedule.published.find_all_by_date(@start_date)
+    start_date = monday_of_week_with(params[:date])
+    @dates = week_dates_beginning_with(start_date)
+    schedules = WeeklySchedule.published.find_all_by_date(start_date)
     @call_shifts = Shift.includes(:shift_tags).
-      where("shift_tags.title" => "Call")
+      where("shift_tags.title like ?", "%Call%")
     @call_assignments = Assignment.by_schedules_and_shifts(
       schedules,
       @call_shifts
@@ -62,18 +62,13 @@ class SchedulesController < ApplicationController
       :section_id => params[:section_id],
       :date => @week_start_date
     )
-    authorize! :manage, @weekly_schedule
+    authorize! :update, @section
     @assignments = @weekly_schedule.assignments
     @grouped_people = @section.members_by_group
     @physicians_by_id = @section.members.hash_by_id
     @people_names = @section.members.each_with_object({}) do |physician, hsh|
       hsh[physician.id] = physician.short_name
     end
-    #@grouped_people.each do |group_title, physicians|
-    #  physicians.each do |physician| 
-    #    @people_names[physician.id] = physician.short_name
-    #  end
-    #end
   end
 
   def create_weekly_section
@@ -82,9 +77,11 @@ class SchedulesController < ApplicationController
       :assignments_attributes => params[:assignments] || {}
     })
     @weekly_schedule = WeeklySchedule.new(schedule_attributes)
-    authorize! :manage, @weekly_schedule
+    @section = Section.find(params[:section_id])
+    authorize! :update, @section
     if @weekly_schedule.save
       date = @weekly_schedule.date
+      flash[:notice] = "Successfully created schedule"
       redirect_to edit_weekly_section_schedule_path(
         :section_id => params[:section_id],
         :year => date.year,
@@ -94,7 +91,6 @@ class SchedulesController < ApplicationController
     else
       @week_start_date = Date.parse(params[:weekly_schedule][:date])
       @week_dates = week_dates_beginning_with(@week_start_date)
-      @section = Section.find(params[:section_id])
       @grouped_people = @section.members_by_group
       @assignments = @weekly_schedule.assignments_including([:physician, :shift])
       flash[:error] = "There was an error creating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
@@ -109,7 +105,7 @@ class SchedulesController < ApplicationController
     }
     @section = Section.find(params[:section_id])
     @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])
-    authorize! :update, @weekly_schedule
+    authorize! :update, @section
 
     if @weekly_schedule.update_attributes(schedule_attributes)
       flash[:notice] = "Successfully updated schedule."

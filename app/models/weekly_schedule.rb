@@ -9,6 +9,10 @@ class WeeklySchedule < ActiveRecord::Base
 
   scope :published, lambda { where(["published_at is not null"]) }
 
+  scope :include_date, lambda { |date|
+    where("weekly_schedules.date <= ? and weekly_schedules.date >= ?", date, date - 6)
+  }
+
   def published?
     !published_at.nil?
   end
