@@ -9,9 +9,11 @@
     = formtastic_stylesheet_link_tag
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "print", :media => :print
+    = stylesheet_link_tag "jquery.jnotify.min"
     = yield :stylesheets
     = javascript_include_tag :defaults
     = yield :javascripts
+    = javascript_include_tag "jquery.jnotify.min"
     = javascript_include_tag "shared/flash"
 
   %body
