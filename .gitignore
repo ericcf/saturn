@@ -1,10 +1,11 @@
 .bundle
+.rspec
+.rvmrc
 db/*.sqlite3
 db/*seeds*
 log/*.log
 tmp/**/*
 autotest/*
-.rspec
 lib/legacy*
 lib/resident*
 coverage*

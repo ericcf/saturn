@@ -26,10 +26,6 @@ describe("shifts", function() {
     expect($("tbody").hasClass("ui-sortable")).toEqual(true);
   });
 
-  it("makes tbody unselectable", function() {
-    expect($("tbody").attr("unselectable")).toEqual("on");
-  });
-
   it("updates positions of shifts on sort update", function() {
     var MockShift = function(position) { this.position = position; };
     MockShift.prototype.setPosition = function(value) {

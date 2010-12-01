@@ -9,7 +9,7 @@ Scenario: View a published call schedule
     And "Lunch" in "The Diner" is tagged with "Call"
     And a weekly schedule for "The Diner" that begins on 2010-11-22 is published
     And "Jerry Seinfeld" is assigned to "Lunch" in "The Diner" on 2010-11-22
-   When I go to the weekly call schedule page
+   When I go to the weekly call schedule page for the week beginning 2010-11-22
    Then I should see "Published Call Schedule"
     And I should see "Mon 11/22"
     And I should see "The Diner"
