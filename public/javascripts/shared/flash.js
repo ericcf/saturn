@@ -5,6 +5,8 @@ $(function() {
     var type = null;
     if (flash.hasClass("error")) {
       type = "error";
+    } else if (flash.hasClass("alert")) {
+      type = "warning";
     }
     $.jnotify(message, type);
   }

@@ -35,14 +35,19 @@ gem 'capistrano'
 group :development, :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
   gem 'haml-rails'
+  gem 'launchy'
+  if RUBY_VERSION =~ /1.9/
+    gem 'ruby-debug19', :require => 'ruby-debug'
+  end
+end
+
+group :development, :test do
   gem 'rspec-rails'
   gem 'autotest'
   gem 'database_cleaner'
   gem 'selenium-client'
   gem 'cucumber-rails'
   gem 'cucumber'
-  #gem 'spork'
-  gem 'launchy'
   gem 'webrat'
   gem 'capybara'
   gem 'shoulda'
@@ -51,6 +56,5 @@ group :development, :test do
   gem 'jasmine'
   if RUBY_VERSION =~ /1.9/
     gem 'simplecov', '>= 0.3.5', :require => false
-    gem 'ruby-debug19', :require => 'ruby-debug'
   end
 end

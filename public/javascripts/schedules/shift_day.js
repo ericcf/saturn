@@ -126,7 +126,7 @@
     
     var onAssignmentDestroyed = function(event) {
       var assignment = $(event.target).data("assignment");
-      this.removePersonId(assignment.getPersonId());
+      obj.removePersonId(assignment.getPersonId());
     };
   };
 

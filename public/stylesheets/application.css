@@ -147,8 +147,6 @@ table {
     float: left; }
     table.schedule th {
       width: 120px; }
-    table.schedule td {
-      overflow: hidden; }
 
 th {
   text-align: left;
@@ -235,25 +233,6 @@ table .schedule_block {
 
 .tableNavList {
   border-bottom: none; }
-
-div#flash-wrapper {
-  position: absolute;
-  top: 18px;
-  left: 150px;
-  width: 500px;
-  margin: auto; }
-  div#flash-wrapper div.flash {
-    padding: 2px;
-    font-weight: bold;
-    border-top: none !important;
-    background-color: #ccbb99;
-    border: 2px solid beige; }
-    div#flash-wrapper div.flash.notice {
-      background-color: #99ff33;
-      border: 2px solid #eeeeee; }
-    div#flash-wrapper div.flash.error {
-      background-color: #ff9999;
-      border: 2px solid red; }
 
 .pagination {
   height: 2.5em; }
