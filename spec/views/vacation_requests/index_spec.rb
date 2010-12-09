@@ -4,21 +4,26 @@ describe "vacation_requests/index" do
   
   before(:each) do
     @mock_section = assign(:section, mock_model(Section))
-    @mock_request = mock_model(VacationRequest)
-    @mock_request.stub_chain(:requester, :short_name).and_return("E. Fudd")
+    @mock_request = mock_model(VacationRequest, :created_at => DateTime.now,
+      :start_date => Date.today, :end_date => Date.tomorrow,
+      :status => VacationRequest::STATUS_PENDING)
+    @mock_request.stub_chain("requester.short_name") { "E. Fudd" }
     assign(:vacation_requests, [@mock_request])
     should_render_partial("schedules/section_menu")
+    view.stub!(:can?)
     render
   end
 
-  it "renders a link to add a new request" do
-    rendered.should have_selector("a",
+  subject { rendered }
+
+  it {
+    should have_selector("a",
       :href => new_section_vacation_request_path(@mock_section),
       :content => "New Request"
     )
-  end
+  }
 
-  it "renders the list of requesters" do
-    rendered.should have_selector("table tr td", :content => "E. Fudd")
-  end
+  it { should have_selector("table tr td", :content => @mock_request.requester.short_name) }
+
+  it { should have_selector("table tr td", :content => @mock_request.status.capitalize) }
 end

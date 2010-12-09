@@ -1,0 +1,11 @@
+defaults: &defaults
+  from_email: saturn@northwestern.edu
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

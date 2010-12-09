@@ -41,6 +41,10 @@ module NavigationHelpers
       end
     when /manage new memberships page for \"([^"]+)\"/
       manage_new_section_memberships_path(find_section($1))
+    when /the vacation requests page for the \"([^"]+)\" section/
+      section_vacation_requests_path(find_section($1))
+    when /the new vacation request page for the \"([^"]+)\" section/
+      new_section_vacation_request_path(find_section($1))
 
     else
       begin

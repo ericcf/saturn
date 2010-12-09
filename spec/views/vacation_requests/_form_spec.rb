@@ -18,9 +18,9 @@ describe "vacation_requests/_form" do
     end
   end
 
-  it "renders a field for comments" do
-    rendered.should have_selector("form textarea",
-      :name => "vacation_request[comments]"
-    )
-  end
+  #it "renders a field for comments" do
+  #  rendered.should have_selector("form textarea",
+  #    :name => "vacation_request[comments]"
+  #  )
+  #end
 end

@@ -224,9 +224,12 @@ ActiveRecord::Schema.define(:version => 20101118162437) do
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 
   create_table "vacation_requests", :force => true do |t|
-    t.integer  "requester_id", :null => false
-    t.integer  "section_id",   :null => false
-    t.text     "dates",        :null => false
+    t.integer  "requester_id",                        :null => false
+    t.integer  "section_id",                          :null => false
+    t.integer  "shift_id",                            :null => false
+    t.string   "status",       :default => "pending", :null => false
+    t.date     "start_date",                          :null => false
+    t.date     "end_date"
     t.text     "comments"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -234,6 +237,7 @@ ActiveRecord::Schema.define(:version => 20101118162437) do
 
   add_index "vacation_requests", ["requester_id"], :name => "index_vacation_requests_on_requester_id"
   add_index "vacation_requests", ["section_id"], :name => "index_vacation_requests_on_section_id"
+  add_index "vacation_requests", ["status"], :name => "index_vacation_requests_on_status"
 
   create_table "weekly_schedules", :force => true do |t|
     t.integer  "section_id",   :null => false

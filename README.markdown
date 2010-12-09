@@ -12,14 +12,14 @@ Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for aut
 
 ## Testing
 Run RSpec specs with:
-    rake spec
+    rspec /path/to/saturn
 
 Start jasmine server with:
     rake jasmine
 Then open up localhost:8888 in a browser.
 
 Run Cucumber features with:
-    rake cucumber
+    cucumber
 
 ## Features
 * Supports multiple sections
@@ -28,11 +28,11 @@ Run Cucumber features with:
 * Exports section reports to Excel
 * Exports individual schedules to iCalendar
 * Allows for grouping shifts into "categories" (e.g. AM, PM, Clinical)
+* Basic manual vacation request management
 
 ## Todo
 * Sync with external calendars
 * Rule-based automated shift assignment
-* Vacation request management
 * Meeting request management
 * Resident rotation scheduling
 * E-mail notification

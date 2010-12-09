@@ -3,7 +3,10 @@ class CreateVacationRequests < ActiveRecord::Migration
     create_table :vacation_requests do |t|
       t.integer :requester_id, :null => false
       t.integer :section_id, :null => false
-      t.text :dates, :null => false
+      t.integer :shift_id, :null => false
+      t.string :status, :null => false, :default => "pending"
+      t.date :start_date, :null => false
+      t.date :end_date
       t.text :comments
 
       t.timestamps
@@ -11,6 +14,7 @@ class CreateVacationRequests < ActiveRecord::Migration
 
     add_index :vacation_requests, :requester_id
     add_index :vacation_requests, :section_id
+    add_index :vacation_requests, :status
   end
 
   def self.down

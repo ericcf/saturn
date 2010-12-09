@@ -57,27 +57,47 @@ describe VacationRequestsController do
 
   describe "GET new" do
 
-    before(:each) do
-      VacationRequest.should_receive(:new).and_return(mock_request)
-      get :new, :section_id => @mock_section.id
+    context "a vacation shift exists for the section" do
+
+      before(:each) do
+        mock_vacation_shift = stub_model(Shift)
+        @mock_section.stub!(:vacation_shift) { mock_vacation_shift }
+        VacationRequest.should_receive(:new).and_return(mock_request)
+        get :new, :section_id => @mock_section.id
+      end
+
+      it { assigns(:vacation_request).should eq(mock_request) }
     end
 
-    it { assigns(:vacation_request).should eq(mock_request) }
+    context "no vacation shift exists for the section" do
+      
+      before(:each) do
+        @mock_section.stub!(:vacation_shift)
+        get :new, :section_id => @mock_section.id
+      end
+
+      it { should redirect_to(section_vacation_requests_path(@mock_section)) }
+
+      it { flash[:error].should eq("Unable to add vacation requests at this time, please notify your administrator.") }
+    end
   end
 
   describe "POST create" do
 
     before(:each) do
       @section_vacation_requests = stub("vacation_requests", :<< => nil)
-      @mock_section.stub!(:vacation_requests).and_return(@section_vacation_requests)
+      @mock_section.stub!(:vacation_requests) { @section_vacation_requests }
+      @mock_section.stub!(:vacation_shift) 
       VacationRequest.stub!(:new).and_return(mock_request)
     end
 
     context "always" do
 
       before(:each) do
+        mock_shift = stub_model(Shift)
+        @mock_section.stub!(:vacation_shift) { mock_shift }
         VacationRequest.should_receive(:new).
-          with("these" => :params).
+          with("these" => :params, "shift" => mock_shift).
           and_return(mock_request)
         post :create, :section_id => @mock_section.id,
           :vacation_request => { :these => :params }
@@ -89,21 +109,33 @@ describe VacationRequestsController do
     context "with valid parameters" do
 
       before(:each) do
-        @section_vacation_requests.should_receive(:<<).with(mock_request).and_return(true)
-        post :create, :section_id => @mock_section.id
+        @section_vacation_requests.should_receive(:<<).with(mock_request).
+          and_return(true)
+        @mock_section.stub!(:administrators).
+          and_return([stub("admin", :email => "foo@bar.com")])
+        mock_notification = stub("notification")
+        mock_notification.should_receive(:deliver)
+        UserNotifications.should_receive(:new_vacation_request).
+          with(mock_request, @mock_section.administrators.map(&:email)).
+          and_return(mock_notification)
+        post :create, :section_id => @mock_section.id, :vacation_request => {}
       end
 
       it { should redirect_to(section_vacation_requests_path(@mock_section)) }
+
+      it { flash[:notice].should eq("Successfully submitted vacation request") }
     end
 
     context "with invalid parameters" do
 
       before(:each) do
         @section_vacation_requests.should_receive(:<<).with(mock_request).and_return(false)
-        post :create, :section_id => @mock_section.id
+        post :create, :section_id => @mock_section.id, :vacation_request => {}
       end
 
       it { should render_template(:new) }
+
+      it { flash[:error].should match(/Unable to submit vacation request:/) }
     end
   end
 
@@ -112,6 +144,8 @@ describe VacationRequestsController do
     before(:each) do
       @mock_requests = mock("vacation_requests")
       @mock_section.stub!(:vacation_requests).and_return(@mock_requests)
+      controller.should_receive(:authenticate_user!)
+      controller.should_receive(:authorize!).with(:manage, @mock_section)
     end
 
     context "the requested vacation_request is found" do
@@ -147,6 +181,8 @@ describe VacationRequestsController do
       @mock_requests = mock("vacation_requests")
       @mock_section.stub!(:vacation_requests).
         and_return(@mock_requests)
+      controller.should_receive(:authenticate_user!)
+      controller.should_receive(:authorize!).with(:manage, @mock_section)
     end
 
     context "the requested vacation_request is found" do
@@ -175,7 +211,9 @@ describe VacationRequestsController do
             :id => mock_request.id
         end
 
-        it { should redirect_to(section_vacation_request_path(@mock_section, mock_request)) }
+        it { should redirect_to(section_vacation_requests_path(@mock_section)) }
+
+        it { flash[:notice].should eq("Successfully updated vacation request") }
       end
 
       context "with invalid parameters" do
@@ -205,56 +243,36 @@ describe VacationRequestsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "POST 'approve'" do
 
     before(:each) do
       @mock_requests = mock("vacation_requests")
-      @mock_section.stub!(:vacation_requests).and_return(@mock_requests)
+      @mock_requests.stub!(:find).with(mock_request.id) { mock_request }
+      @mock_section.stub!(:vacation_requests) { @mock_requests }
+      controller.should_receive(:authenticate_user!)
+      controller.should_receive(:authorize!).with(:manage, @mock_section)
     end
 
-    context "the requested vacation_request is found" do
+    context "is successful" do
 
       before(:each) do
-        @mock_requests.stub!(:find).with(mock_request.id).
-          and_return(mock_request)
+        mock_request.should_receive(:approve) { true }
+        post :approve, :section_id => @mock_section.id, :id => mock_request.id
       end
 
-      context "and destroyed successfully" do
+      it { flash[:notice].should eq("Successfully approved vacation request") }
 
-        before(:each) do
-          mock_request.should_receive(:destroy).and_return(true)
-          delete :destroy, :section_id => @mock_section.id,
-            :id => mock_request.id
-        end
-
-        it { flash[:notice].should == "Successfully deleted vacation_request" }
-
-        it { should redirect_to(section_vacation_requests_path(@mock_section)) }
-      end
-
-      context "and not destroyed successfully" do
-
-        before(:each) do
-          mock_request.should_receive(:destroy).and_return(false)
-          delete :destroy, :section_id => @mock_section.id,
-            :id => mock_request.id
-        end
-
-        it { flash[:error].should == "Error: failed to delete vacation_request" }
-
-        it { should redirect_to(section_vacation_requests_path(@mock_section)) }
-      end
+      it { should redirect_to(section_vacation_requests_path(@mock_section)) }
     end
 
-    context "the requested vacation_request is not found" do
+    context "is not successful" do
 
       before(:each) do
-        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        delete :destroy, :section_id => @mock_section.id,
-          :id => mock_request.id
+        mock_request.stub!(:approve) { false }
+        post :approve, :section_id => @mock_section.id, :id => mock_request.id
       end
 
-      it { flash[:error].should == "Error: requested vacation_request not found" }
+      it { flash[:error].should match(/Unable to approve vacation request:/) }
 
       it { should redirect_to(section_vacation_requests_path(@mock_section)) }
     end

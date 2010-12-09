@@ -1,6 +1,8 @@
 class VacationRequestsController < ApplicationController
   include SectionResourceController
 
+  before_filter :authenticate_user!, :except => [:index, :show, :new, :create]
+
   def index
     @vacation_requests = @section.vacation_requests
   end
@@ -14,18 +16,30 @@ class VacationRequestsController < ApplicationController
   end
 
   def new
-    @vacation_request = VacationRequest.new
+    unless @section.vacation_shift.nil?
+      @vacation_request = VacationRequest.new
+    else
+      flash[:error] = "Unable to add vacation requests at this time, please notify your administrator."
+      redirect_to section_vacation_requests_path(@section)
+    end
   end
 
   def create
-    @vacation_request = VacationRequest.new(params[:vacation_request])
+    attributes = params[:vacation_request].merge({
+      :shift => @section.vacation_shift
+    })
+    @vacation_request = VacationRequest.new(attributes)
     if @section.vacation_requests << @vacation_request
+      UserNotifications.new_vacation_request(@vacation_request, @section.administrators.map(&:email)).deliver
+      flash[:notice] = "Successfully submitted vacation request"
       return(redirect_to section_vacation_requests_path(@section))
     end
+    flash[:error] = "Unable to submit vacation request: #{@vacation_request.errors.full_messages.join(", ")}"
     render :new
   end
 
   def edit
+    authorize! :manage, @section
     @vacation_request = @section.vacation_requests.find(params[:id])
 
   rescue ActiveRecord::RecordNotFound
@@ -34,9 +48,11 @@ class VacationRequestsController < ApplicationController
   end
 
   def update
+    authorize! :manage, @section
     @vacation_request = @section.vacation_requests.find(params[:id])
     if @vacation_request.update_attributes(params[:vacation_request])
-      return(redirect_to section_vacation_request_path(@section, @vacation_request))
+      flash[:notice] = "Successfully updated vacation request"
+      return(redirect_to section_vacation_requests_path(@section))
     end
     render :edit
 
@@ -45,17 +61,14 @@ class VacationRequestsController < ApplicationController
     redirect_to section_vacation_requests_path(@section)
   end
 
-  def destroy
+  def approve
+    authorize! :manage, @section
     @vacation_request = @section.vacation_requests.find(params[:id])
-    if @vacation_request.destroy
-      flash[:notice] = "Successfully deleted vacation_request"
+    if @vacation_request.approve
+      flash[:notice] = "Successfully approved vacation request"
     else
-      flash[:error] = "Error: failed to delete vacation_request"
+      flash[:error] = "Unable to approve vacation request: #{@vacation_request.errors.full_messages.join(", ")}"
     end
-    redirect_to section_vacation_requests_path(@section)
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested vacation_request not found"
     redirect_to section_vacation_requests_path(@section)
   end
 end

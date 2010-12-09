@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe Section do
 
-  before(:each) do
-    @valid_attributes = {
+  let(:valid_attributes) do
+    {
       :title => "Foo"
     }
-    @section = Section.create(:title => "Foo")
-    @section.should be_valid
   end
+  let(:section) { Section.create!(valid_attributes) }
 
   # database
 
@@ -40,7 +39,7 @@ describe Section do
 
   it { should validate_presence_of(:title) }
 
-  it { should validate_uniqueness_of(:title) }
+  it { @section = section; should validate_uniqueness_of(:title) }
 
   # attribute cleanup
 
@@ -61,7 +60,40 @@ describe Section do
       mock_permission.stub_chain("roles.find_or_create_by_name").
         and_return(mock_admin_role)
       mock_admin_role.stub_chain("role_permissions.first.update_attributes")
-      @section.create_admin_role.should eq(mock_admin_role)
+      section.create_admin_role.should eq(mock_admin_role)
+    end
+  end
+
+  describe ".vacation_shift" do
+
+    it "returns an associated shift with the title 'Vacation'" do
+      vacation_shift = section.shifts.create(:title => "Vacation")
+      section.vacation_shift.should eq(vacation_shift)
+    end
+  end
+
+  describe ".find_or_create_weekly_schedule_by_included_date(:date)" do
+
+    let(:mock_schedule) { stub_model(WeeklySchedule) }
+    let(:mock_schedules_assoc) { stub("schedules") }
+    let(:date) { Date.today }
+
+    before(:each) { section.stub!(:weekly_schedules) { mock_schedules_assoc } }
+
+    it "returns a weekly schedule that includes the date" do
+      mock_schedules_assoc.stub!(:include_date).with(date) { [mock_schedule] }
+      section.find_or_create_weekly_schedule_by_included_date(date).
+        should eq(mock_schedule)
+    end
+
+    it "returns a new weekly schedule when none include the date" do
+      monday_before_date = date.at_beginning_of_week
+      mock_schedules_assoc.should_receive(:create).
+        with(:date => monday_before_date).
+        and_return(mock_schedule)
+      mock_schedules_assoc.stub!(:include_date).with(date) { [] }
+      section.find_or_create_weekly_schedule_by_included_date(date).
+        should eq(mock_schedule)
     end
   end
 end

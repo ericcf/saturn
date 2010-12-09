@@ -52,12 +52,13 @@ describe Conference do
   describe "#occur_on(:date)" do
 
     it "returns conferences which occur on the specified date" do
+      today = Date.today
       conference = Conference.create(@valid_attributes.merge({
         :title => "Conference Today!",
-        :starts_at => DateTime.now,
-        :ends_at => DateTime.now
+        :starts_at => today.to_time,
+        :ends_at => today.to_time
       }))
-      Conference.occur_on(Date.today).should include(conference)
+      Conference.occur_on(today).should include(conference)
     end
   end
 end

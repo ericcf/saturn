@@ -15,7 +15,7 @@ require 'cucumber/web/tableish'
 
 require 'capybara/rails'
 require 'capybara/cucumber'
-Capybara.default_driver = :selenium
+#Capybara.default_driver = :selenium
 require 'capybara/session'
 #require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In

@@ -34,9 +34,9 @@ describe VacationRequestsController do
         should route_to(:controller => "vacation_requests", :action => "update", :section_id => "1", :id => "2") 
     end
 
-    it "recognizes and generates #destroy" do
-      { :delete => "/sections/1/vacation_requests/2" }.
-        should route_to(:controller => "vacation_requests", :action => "destroy", :section_id => "1", :id => "2") 
+    it "recognizes and generates #approve" do
+      { :post => "/sections/1/vacation_requests/2/approve" }.
+        should route_to(:controller => "vacation_requests", :action => "approve", :section_id => "1", :id => "2") 
     end
   end
 end

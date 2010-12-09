@@ -64,4 +64,13 @@ class Section < ActiveRecord::Base
   def administrator_ids=(ids)
     create_admin_role.user_ids = ids
   end
+
+  def vacation_shift
+    shifts.find_by_title("Vacation")
+  end
+
+  def find_or_create_weekly_schedule_by_included_date(date)
+    weekly_schedules.include_date(date).first ||
+      weekly_schedules.create(:date => date.at_beginning_of_week)
+  end
 end

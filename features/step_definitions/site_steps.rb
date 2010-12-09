@@ -31,7 +31,7 @@ Given /^a physician "([^ ]+) ([^"]+)"$/ do |given_name, family_name|
   physician.save!
 end
 
-Given /^a physician "([^ ]+) ([^"]+)", member of the "([^"]*)" section$/ do |given_name, family_name, section_title|
+Given /^a physician "([^ ]+) ([^"]+)" in the "([^"]*)" section$/ do |given_name, family_name, section_title|
   Given %{a physician "#{given_name} #{family_name}"}
     And %{a section "#{section_title}"}
   physician = Physician.find_by_given_name_and_family_name(given_name, family_name)
@@ -43,4 +43,11 @@ Given /^the alias "([^"]*)", "([^"]*)" for the physician "([^ ]+) ([^"]+)"$/ do 
   physician = Physician.find_by_given_name_and_family_name(given_name, family_name)
   PhysicianAlias.create!(:physician_id => physician.id, :initials => initials,
     :short_name => short_name)
+end
+
+Then /^I should have received an email at "([^"]+)" with the subject "([^"]+)"$/ do |to_address, subject|
+  assert !ActionMailer::Base.deliveries.empty?, "no emails were sent"
+  email = ActionMailer::Base.deliveries.last
+  assert email.to.include?(to_address), "the 'to' address didn't match #{to_address}"
+  assert_equal subject, email.subject, "the subject didn't match #{subject}"
 end

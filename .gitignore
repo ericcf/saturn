@@ -1,5 +1,6 @@
 .bundle
 .rspec
+.autotest
 .rvmrc
 db/*.sqlite3
 db/*seeds*

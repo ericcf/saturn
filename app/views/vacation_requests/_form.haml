@@ -1,12 +1,38 @@
+- content_for :stylesheets do
+  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
+
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%h3 Vacation Request
+:javascript
+  $(function() {
+      $("#vacation_request_start_date").hide();
+      $("<input type=\"text\" id=\"vacation_request_start_date_datepicker\"/>").
+      insertAfter("#vacation_request_start_date").
+      datepicker({
+        altField: "#vacation_request_start_date",
+        altFormat: "yy-mm-dd",
+        dateFormat: "DD, MM d, yy",
+        autoSize: true
+      });
+      $("#vacation_request_end_date").hide();
+      $("<input type=\"text\" id=\"vacation_request_end_date_datepicker\"/>").
+      insertAfter("#vacation_request_end_date").
+      datepicker({
+        altField: "#vacation_request_end_date",
+        altFormat: "yy-mm-dd",
+        dateFormat: "DD, MM d, yy",
+        autoSize: true
+      });
+  });
 
 %div.form-container
   = semantic_form_for [@section, @vacation_request] do |vacation_request_form|
     = vacation_request_form.inputs do
-      = vacation_request_form.input :comments, :input_html => { :rows => 5 }
+      = vacation_request_form.input :requester, :as => :select, :collection => @section.members
+      = vacation_request_form.input :start_date, :as => :string
+      = vacation_request_form.input :end_date, :as => :string
+      -#= vacation_request_form.input :comments, :input_html => { :rows => 5 }
     = vacation_request_form.buttons do
       = vacation_request_form.commit_button
       %li
