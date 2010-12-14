@@ -4,7 +4,7 @@
   = semantic_form_for [@physician, @physician_alias], :url => physician_physician_alias_path(@physician) do |alias_form|
     = alias_form.inputs :short_name, :initials
     = alias_form.buttons do
-      = alias_form.commit_button
+      = alias_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", physicians_path

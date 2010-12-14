@@ -2,7 +2,7 @@
   = render "schedules/section_menu"
 
 %ul
-  %li!= nav_item "Edit Members", manage_section_memberships_path(@section), {}, :update, @section
+  != nav_item "Edit Members", manage_section_memberships_path(@section), { :class => "button" }, :update, @section
 
 - @members_by_group.each do |group_name, people|
   %h3= group_name unless people.blank?

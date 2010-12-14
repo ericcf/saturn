@@ -8,7 +8,6 @@
   = javascript_include_tag 'shared/date_selector'
 
 - content_for :stylesheets do
-  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
   = stylesheet_link_tag 'edit_weekly_section'
 
 - content_for :content_menu do
@@ -42,7 +41,7 @@
     | Publish?
     = form.check_box :publish
     = form.buttons do
-      = form.commit_button
+      = form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", edit_weekly_section_schedule_path(@section)

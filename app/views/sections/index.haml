@@ -1,8 +1,9 @@
 %h2 Sections
 
 %ul
-  != nav_item "Add Section", new_section_path, {}, :create, Section
-
-%ul
   - @sections.each do |section|
     %li= link_to section.title, weekly_section_schedule_path(section)
+
+%ul
+  != nav_item "Add Section", new_section_path, { :class => "button" }, :create, Section
+

@@ -10,4 +10,7 @@
         %label
           = check_box_tag "admin_ids[#{user.id}]", true, @section.administrators.include?(user)
           = user.email
-  = form.buttons
+  = form.buttons do
+    = form.commit_button :button_html => { :class => "button" }
+    or
+    = link_to "Cancel", section_admins_path(@section)

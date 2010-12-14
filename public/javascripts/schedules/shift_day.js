@@ -132,7 +132,7 @@
 
   var ShiftDayControls = function(model) {
     var shiftDay = model;
-    var buttonElement = shiftDay.getAddPersonButton().button({
+    var buttonElement = shiftDay.getAddPersonButton().s_button({
       classes: ["ui-icon", "ui-icon-person"],
       title: "Assign a person",
       toggle: true

@@ -36,7 +36,8 @@
     };
   };
 
-  $.fn.button = function(options) {
+  // renamed from "button()" to avoid jQuery UI conflict
+  $.fn.s_button = function(options) {
     this.each(function() {
       var element = $(this);
       if (element.data("button")) return;

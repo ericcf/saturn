@@ -44,7 +44,7 @@ h2
 h3
   font-size: 16px
 
-p, h2, h3, h4, h5, h6
+p, h2, h3, h4, h5, h6, ul
   margin-bottom: 9px
 
 h4
@@ -56,6 +56,7 @@ h4
 // layout
 
 #logo
+  width: 150px
   float: left
   background: transparent
   a
@@ -66,12 +67,14 @@ div#header
   height: 18px
   background-color: $headerBackgroundColor
   div#top-menu
+    float: left
     width: 900px
     margin: auto
     ul
       list-style: none
       background: none
       float: right
+      margin: 0px
       li
         background: none
         float: left
@@ -93,7 +96,8 @@ div#personal-wrapper
   height: 18px
   background-color: white
   div#personal
-    width: 900px
+    float: left
+    width: 1050px
     margin: auto
     div
       background: none
@@ -140,18 +144,11 @@ div.form-container
 
 input
   height: $baseLineHeight
+  &[type='submit']
+    height: auto
 
-.commit input.create, .commit input.update, input.submit, #user_submit
-  height: 1.5 * $baseLineHeight
-  color: $oppositeTextColor
-  font-weight: bold !important
-  background-color: $baseOkayColor
-  cursor: pointer
-  border: none
-  -moz-border-radius: 5px
-  border-radius: 5px
-  padding: 0px 5px !important
-  text-transform: capitalize
+form input.button
+  padding: 0.4em 1em
 
 input, textarea
   border: 1px solid
@@ -319,3 +316,7 @@ $navActiveBorderBottomColor: white
 
 .ui-datepicker-trigger
   cursor: pointer
+
+// a hack here to allow the datepicker to show up
+#ui-datepicker-div.ui-helper-hidden-accessible
+  clip: auto

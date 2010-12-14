@@ -1,2 +1,4 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
+$(function() {
+  // make buttons look nice with jQuery UI
+  $("button, a.button, .button a, input.button, input[type='submit']").button();
+});

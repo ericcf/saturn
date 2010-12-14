@@ -3,9 +3,6 @@
   = javascript_include_tag 'shared/table'
   = javascript_include_tag 'report'
 
-- content_for :stylesheets do
-  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
-
 - content_for :content_menu do
   = render "schedules/section_menu"
 
@@ -23,9 +20,9 @@
     %div.inline_form
       = text_field_tag "end_date", @end_date.to_s
     %ol
-      = report_form.commit_button "Get Report"
+      = report_form.commit_button "Get Report", :button_html => { :class => "button" }
 
-%p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date)
+%p= link_to 'Download as Excel', section_shift_totals_path(@section, :format => :xls, :start_date => @start_date, :end_date => @end_date), { :class => "button" }
 
 %table.decimal_data
   %thead

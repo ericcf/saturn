@@ -6,7 +6,7 @@
       %li
         = label_tag ""
         = text_field_tag "query", params[:query], :maxwidth => 255
-        = submit_tag "Search Physicians", :class => "submit"
+        = submit_tag "Search Physicians", :class => "button"
 
 - unless @query.blank?
   %h3= "#{pluralize(@physicians.total_entries, "Result")} for '#{@query}'"

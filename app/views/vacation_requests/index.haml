@@ -3,7 +3,7 @@
 
 %h3 Vacation requests
 
-%p= link_to "New Request", new_section_vacation_request_path(@section)
+%p= link_to "New Request", new_section_vacation_request_path(@section), { :class => "button" }
 
 - unless @vacation_requests.blank?
   - is_section_admin = can? :manage, @section

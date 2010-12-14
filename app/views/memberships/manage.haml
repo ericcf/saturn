@@ -8,7 +8,7 @@
   = semantic_form_for @section do |section_form|
     = hidden_field_tag "redirect_path", section_memberships_path(@section)
     = section_form.buttons do
-      = section_form.commit_button
+      = section_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_memberships_path(@section)
@@ -19,7 +19,7 @@
             = section_form.semantic_fields_for :memberships, person.section_memberships.where(:section_id => @section.id).first do |membership_form|
               = membership_form.input :_destroy, :as => :boolean, :label => person.full_name
     = section_form.buttons do
-      = section_form.commit_button
+      = section_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_memberships_path(@section)

@@ -16,7 +16,7 @@ describe "physicians/search" do
     end
 
     it "renders a submit button" do
-      rendered.should have_selector("input.submit",
+      rendered.should have_selector("input.button",
         :value => "Search Physicians")
     end
   end

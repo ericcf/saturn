@@ -12,4 +12,7 @@
     = section_form.semantic_fields_for :daily_shift_count_rules, @daily_shift_count_rules do |rule|
       = rule.input :maximum, :label => rule.object.shift_tag.title, :as => :select, :collection => (0..5).to_a
       = rule.input :shift_tag_id, :as => :hidden
-  = section_form.buttons
+  = section_form.buttons do
+    = section_form.commit_button :button_html => { :class => "button" }
+    or
+    = link_to "Cancel", section_rules_path(@section)

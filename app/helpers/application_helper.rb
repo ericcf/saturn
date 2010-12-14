@@ -19,6 +19,7 @@ module ApplicationHelper
 
   private
 
+  # helps determine current tab
   def path_match?(path)
     if path == "/"
       return request.path == "/"

@@ -4,7 +4,7 @@
 %h3 Shift assignment rules
 
 %ul
-  %li!= nav_item "Edit Rules", edit_section_rules_path(@section), {}, :update, @section
+  != nav_item "Edit Rules", edit_section_rules_path(@section), { :class => "button" }, :update, @section
 
 %h4 Weekly limits for shift totals
 %ul

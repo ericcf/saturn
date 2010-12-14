@@ -1,13 +1,13 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%p= link_to "Add Category", new_section_shift_tag_path(@section)
+%p= link_to "Add Category", new_section_shift_tag_path(@section), { :class => "button" }
 
 - if @shift_tags.size > 0
   %div.form-container
     = semantic_form_for @section do |section_form|
       = section_form.buttons do
-        = section_form.commit_button
+        = section_form.commit_button :button_html => { :class => "button" }
         %li
           or
           = link_to "Cancel", section_shift_tags_path(@section)
@@ -26,7 +26,7 @@
                   remove category from shifts?
                   = shift_tag_form.check_box :clear_assignments
       = section_form.buttons do
-        = section_form.commit_button
+        = section_form.commit_button :button_html => { :class => "button" }
         %li
           or
           = link_to "Cancel", section_shift_tags_path(@section)

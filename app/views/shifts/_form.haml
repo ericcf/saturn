@@ -13,7 +13,7 @@
       = shift_form.input :title
       = shift_form.input :display_color, :input_html => { :class => "color_picker" }
     = shift_form.buttons do
-      = shift_form.commit_button
+      = shift_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_shifts_path(@section)

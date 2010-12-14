@@ -1,6 +1,3 @@
-- content_for :stylesheets do
-  = stylesheet_link_tag 'jquery/smoothness/jquery-ui-1.8.4.custom'
-
 - content_for :content_menu do
   = render "schedules/section_menu"
 
@@ -34,7 +31,7 @@
       = vacation_request_form.input :end_date, :as => :string
       -#= vacation_request_form.input :comments, :input_html => { :rows => 5 }
     = vacation_request_form.buttons do
-      = vacation_request_form.commit_button
+      = vacation_request_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_vacation_requests_path(@section)

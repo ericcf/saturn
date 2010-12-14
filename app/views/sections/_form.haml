@@ -4,7 +4,7 @@
   = semantic_form_for @section do |section_form|
     = section_form.inputs :title, :description
     = section_form.buttons do
-      = section_form.commit_button
+      = section_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", sections_path
