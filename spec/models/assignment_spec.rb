@@ -58,9 +58,9 @@ describe Assignment do
 
   # validations
 
-  it { should validate_presence_of(:shift) }
+  it { should validate_presence_of(:shift_id) }
 
-  it { should validate_presence_of(:physician) }
+  it { should validate_presence_of(:physician_id) }
 
   it { should validate_presence_of(:date) }
 

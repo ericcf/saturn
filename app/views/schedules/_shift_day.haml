@@ -1,4 +1,3 @@
 %td.shift_day{ :class => "date_#{shift_day} shift_id_#{shift_id}" }><
   %span.assignment_button
-  - (mapped_assignments[[shift_id, shift_day]] || []).each do |assignment|
-    = render :partial => "assignment", :object => assignment, :locals => { :shift_id => shift_id, :date => shift_day, :people_names => people_names }
+  = render :partial => "assignment", :collection => (mapped_assignments[[shift_id, shift_day]] || []), :locals => { :shift_id => shift_id, :date => shift_day, :people_names => people_names }

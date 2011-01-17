@@ -4,7 +4,9 @@ class Assignment < ActiveRecord::Base
   belongs_to :shift
   belongs_to :physician
 
-  validates :shift, :physician, :date, :presence => true
+  # NOT validating presence of shift and physician (for now) because it vastly
+  # slows down mass assignments
+  validates :shift_id, :physician_id, :date, :presence => true
   validates_numericality_of :position,
     :greater_than_or_equal_to => 1
   validates_uniqueness_of :physician_id,

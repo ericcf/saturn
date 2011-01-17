@@ -11,7 +11,9 @@ gem 'formtastic'
 
 gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
 # required by Rad Directory
-gem 'paperclip', :git => 'git://github.com/dwalters/paperclip.git', :branch => 'rails3'
+gem 'rack-cache', :require => 'rack/cache'
+gem 'dragonfly'
+gem 'friendly_id'
 # authentication/authorization
 gem 'deadbolt', :git => 'git://github.com/ericcf/deadbolt.git'
 gem 'devise'

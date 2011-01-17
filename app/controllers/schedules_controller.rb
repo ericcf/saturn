@@ -51,22 +51,22 @@ class SchedulesController < ApplicationController
 
   def edit_weekly_section
     date = params[:date] || [params[:year], params[:month], params[:day]].join("-")
-    @week_start_date = monday_of_week_with(date)
-    @week_dates = week_dates_beginning_with(@week_start_date)
+    week_start_date = monday_of_week_with(date)
+    @week_dates = week_dates_beginning_with(week_start_date)
     @section = Section.find(params[:section_id])
-    @shifts = @section.shifts.active_as_of(@week_start_date)
+    @shifts = @section.shifts.active_as_of(week_start_date)
     @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
       params[:section_id],
-      @week_start_date
+      week_start_date
     ) || WeeklySchedule.new(
       :section_id => params[:section_id],
-      :date => @week_start_date
+      :date => week_start_date
     )
     authorize! :update, @section
     @assignments = @weekly_schedule.assignments
     @grouped_people = @section.members_by_group
     @physicians_by_id = @section.members.hash_by_id
-    @people_names = @section.members.each_with_object({}) do |physician, hsh|
+    @people_names = @section.members.includes(:names_alias).each_with_object({}) do |physician, hsh|
       hsh[physician.id] = physician.short_name
     end
   end

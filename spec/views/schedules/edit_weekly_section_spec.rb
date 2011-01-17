@@ -4,10 +4,9 @@ describe "schedules/edit_weekly_section" do
 
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
-    assign(:week_start_date, Date.today)
     assign(:grouped_people, {})
     assign(:weekly_schedule, stub_model(WeeklySchedule))
-    assign(:week_dates, [])
+    assign(:week_dates, [Date.today])
     assign(:assignments, [])
     assign(:people_names, {})
     assign(:shifts, [])

@@ -152,11 +152,11 @@ describe SchedulesController do
       controller.stub!(:authorize!).with(:update, mock_section)
     end
 
-    it "assigns Monday before the requested date to @week_start_date" do
+    it "assigns Monday before the requested date to first @week_dates" do
       controller.should_receive(:monday_of_week_with) { @monday }
       get :edit_weekly_section, :section_id => mock_section.id,
         :year => @monday.year, :month => @monday.month, :day => @monday.day
-      assigns(:week_start_date).should eq(@monday)
+      assigns(:week_dates).first.should eq(@monday)
     end
 
     it "assigns the days of the current week to @week_dates" do
@@ -222,6 +222,7 @@ describe SchedulesController do
       mock_physician = stub_model(Physician)
       mock_members = []
       mock_members.stub!(:hash_by_id) {{ mock_physician.id => mock_physician }}
+      mock_members.stub!(:includes).with(:names_alias) { mock_members }
       mock_section.stub!(:members) { mock_members }
       get_edit_default_weekly_section
       assigns(:physicians_by_id).
@@ -232,6 +233,7 @@ describe SchedulesController do
       mock_physician = stub_model(Physician, :short_name => "Short name")
       mock_members = [mock_physician]
       mock_members.stub!(:hash_by_id)
+      mock_members.stub!(:includes).with(:names_alias) { mock_members }
       mock_section.stub!(:members) { mock_members }
       get_edit_default_weekly_section
       assigns(:people_names).
