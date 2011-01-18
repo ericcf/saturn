@@ -6,7 +6,9 @@ describe UserNotifications do
 
     before(:each) do
       @requester = stub_model(Physician, :full_name => "Dr. Nick")
-      @request = stub_model(VacationRequest, :requester => @requester)
+      @section = stub_model(Section, :title => "ER")
+      @request = stub_model(VacationRequest, :requester => @requester,
+        :section => @section)
       @recipients = ["a@foo.com", "b@foo.com"]
     end
 
@@ -17,8 +19,14 @@ describe UserNotifications do
       mail.to.should eq(@recipients)
     end
 
-    it "renders the body" do
-      mail.body.encoded.should match(/#{@requester.full_name} submitted a vacation request/)
+    it "renders the requester's name in the body" do
+      mail.body.encoded.
+        should match(/#{@requester.full_name} submitted a vacation request/)
+    end
+
+    it "renders a link to the section's vacation requests in the body" do
+      mail.body.encoded.
+        should match(/<a href="#{section_vacation_requests_url(@section)}">View all vacation requests for ER<\/a>/)
     end
   end
 

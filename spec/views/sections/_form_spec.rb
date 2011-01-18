@@ -25,13 +25,6 @@ describe "sections/_form" do
     rendered.should have_selector("input", :type => "text", :name => "section[title]", :value => mock_section.title)
   end
 
-  it "renders a label and field for the description" do
-    assign(:section, mock_section(:description => "Lorem ipsum..."))
-    render
-    rendered.should have_selector("label", :for => "section_description")
-    rendered.should have_selector("textarea", :name => "section[description]", :content => mock_section.description)
-  end
-
   it "renders a submit button" do
     assign(:section, mock_section)
     render
