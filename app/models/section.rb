@@ -22,7 +22,7 @@ class Section < ActiveRecord::Base
 
   validates :title, :presence => true, :uniqueness => true
 
-  before_validation { clean_text_attributes :title, :description }
+  before_validation { clean_text_attributes :title }
 
   def members
     Physician.where(:id => memberships.map(&:physician_id))

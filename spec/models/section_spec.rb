@@ -45,8 +45,6 @@ describe Section do
 
   it { should clean_text_attribute(:title) }
 
-  it { should clean_text_attribute(:description) }
-
   # methods
 
   describe ".create_admin_role" do

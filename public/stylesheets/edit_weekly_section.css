@@ -50,6 +50,9 @@ table.schedule {
       position: relative; }
       table.schedule tbody td.shift_day .assignment .details {
         display: none; }
+        table.schedule tbody td.shift_day .assignment .details .charcounter {
+          display: block;
+          font-size: smaller; }
       table.schedule tbody td.shift_day .assignment .button {
         width: 30px;
         height: 16px;

@@ -41,13 +41,13 @@
           = section_form.fields_for :shifts, shift do |shift_form|
             %td.control
               %label.handle &nbsp;
-            %td.title= shift_form.text_field :title
+            %td.title= shift_form.text_field :title, :maxlength => "255", :size => 30
             %td.tags
               = shift_form.text_field "tags", :size => 40
             - durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
             %td.duration= shift_form.select :duration, durations
-            %td.phone= shift_form.text_field :phone, :size => 15
-            %td.description= shift_form.text_field :description
+            %td.phone= shift_form.text_field :phone, :maxlength => "255", :size => 15
+            %td.description= shift_form.text_field :description, :maxlength => "255", :size => 30
             %td.display_color= shift_form.text_field :display_color, :class => "color_picker"
             %td= shift_form.check_box :retire
             %td.details.hidden= shift_form.hidden_field :position

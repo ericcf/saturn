@@ -2,7 +2,6 @@ class CreateSections < ActiveRecord::Migration
   def self.up
     create_table :sections do |t|
       t.string :title, :null => false
-      t.text :description
 
       t.timestamps
     end

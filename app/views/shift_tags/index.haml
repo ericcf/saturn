@@ -16,7 +16,7 @@
         - @shift_tags.each do |shift_tag|
           %tr{ :class => cycle("odd", "") }
             = section_form.fields_for :shift_tags, shift_tag do |shift_tag_form|
-              %td= shift_tag_form.text_field :title
+              %td= shift_tag_form.text_field :title, :maxlength => "255", :size => 30
               %td= shift_tag.shifts.map(&:title).join(", ")
               %td
                 - if shift_tag.shifts.size == 0

@@ -112,6 +112,7 @@
     var dialog_options = {
       autoOpen: false,
       draggable: false,
+      modal: true,
       close: function(event, ui) {
         assignment.removeHighlight();
       }

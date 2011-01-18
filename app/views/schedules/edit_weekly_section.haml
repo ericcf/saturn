@@ -6,6 +6,11 @@
   = javascript_include_tag 'schedules/assignment'
   = javascript_include_tag 'schedules/shift_day'
   = javascript_include_tag 'shared/date_selector'
+  = javascript_include_tag 'third_party/jquery.charcounter.js'
+  :javascript
+    $(function() {
+      $("textarea").charCounter(255);
+    });
 
 - content_for :stylesheets do
   = stylesheet_link_tag 'edit_weekly_section'
