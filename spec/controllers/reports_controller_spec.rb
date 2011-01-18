@@ -40,8 +40,7 @@ describe ReportsController do
     before(:each) do
       Section.stub!(:find).with(mock_section.id).and_return(mock_section)
       @mock_physician = mock_model(Physician)
-      mock_section.stub_chain(:memberships, :find_by_physician_id, :physician).
-        and_return(@mock_physician)
+      mock_section.stub_chain("members.find").and_return(@mock_physician)
       get :section_physician_shift_totals, :section_id => mock_section.id,
         :physician_id => @mock_physician.id
     end

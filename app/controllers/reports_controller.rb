@@ -71,6 +71,6 @@ class ReportsController < ApplicationController
   def find_physician
     physician_id = params[:physician_id]
     return(redirect_to(section_shift_totals_path(@section))) unless physician_id
-    @physician = @section.memberships.find_by_physician_id(physician_id).physician
+    @physician = @section.members.find(physician_id)
   end
 end

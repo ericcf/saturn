@@ -3,24 +3,46 @@
 
 :javascript
   $(function() {
-      $("#vacation_request_start_date").hide();
-      $("<input type=\"text\" id=\"vacation_request_start_date_datepicker\"/>").
-      insertAfter("#vacation_request_start_date").
-      datepicker({
-        altField: "#vacation_request_start_date",
-        altFormat: "yy-mm-dd",
-        dateFormat: "DD, MM d, yy",
-        autoSize: true
-      });
-      $("#vacation_request_end_date").hide();
-      $("<input type=\"text\" id=\"vacation_request_end_date_datepicker\"/>").
-      insertAfter("#vacation_request_end_date").
-      datepicker({
-        altField: "#vacation_request_end_date",
-        altFormat: "yy-mm-dd",
-        dateFormat: "DD, MM d, yy",
-        autoSize: true
-      });
+    var onSelected = function(selectedDate) {
+      var option = this.id == "vacation_request_start_date_datepicker" ? "minDate" : "maxDate";
+      instance = $( this ).data( "datepicker" );
+      date = $.datepicker.parseDate(
+        instance.settings.dateFormat ||
+        $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+      var dates = $("#vacation_request_start_date_datepicker, #vacation_request_end_date_datepicker").datepicker();
+      dates.not( this ).datepicker( "option", option, date );
+    };
+
+    $("#vacation_request_start_date").hide();
+    $("<input type=\"text\" id=\"vacation_request_start_date_datepicker\"/>").
+    insertAfter("#vacation_request_start_date").
+    datepicker({
+      numberOfMonths: 3,
+      minDate: new Date(),
+      altField: "#vacation_request_start_date",
+      altFormat: "yy-mm-dd",
+      dateFormat: "DD, MM d, yy",
+      autoSize: true,
+      onSelect: onSelected
+    });
+    var start_date = $("#vacation_request_start_date").val();
+    $("#vacation_request_start_date_datepicker").datepicker("setDate",
+      $.datepicker.parseDate("yy-mm-dd", start_date));
+    $("#vacation_request_end_date").hide();
+    $("<input type=\"text\" id=\"vacation_request_end_date_datepicker\"/>").
+    insertAfter("#vacation_request_end_date").
+    datepicker({
+      numberOfMonths: 3,
+      minDate: new Date(),
+      altField: "#vacation_request_end_date",
+      altFormat: "yy-mm-dd",
+      dateFormat: "DD, MM d, yy",
+      autoSize: true,
+      onSelect: onSelected
+    });
+    var end_date = $("#vacation_request_end_date").val();
+    $("#vacation_request_end_date_datepicker").datepicker("setDate",
+      $.datepicker.parseDate("yy-mm-dd", end_date));
   });
 
 %div.form-container
