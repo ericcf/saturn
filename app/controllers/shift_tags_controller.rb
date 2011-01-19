@@ -18,7 +18,7 @@ class ShiftTagsController < ApplicationController
       flash[:notice] = "Successfully created category"
       return(redirect_to section_shift_tags_path(@section))
     end
-    flash[:error] = "Error: could not create category (#{@shift_tag.errors.full_messages.join(", ")})"
+    flash.now[:error] = "Error: could not create category (#{@shift_tag.errors.full_messages.join(", ")})"
     render :new
   end
 

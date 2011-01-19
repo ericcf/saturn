@@ -18,7 +18,7 @@ class RotationsController < ApplicationController
       flash[:notice] = "Successfully created rotation"
       return(redirect_to rotations_path)
     end
-    flash[:error] = "Unable to create rotation: #{@rotation.errors.full_messages.join(", ")}"
+    flash.now[:error] = "Unable to create rotation: #{@rotation.errors.full_messages.join(", ")}"
     render :new
   end
 
@@ -37,7 +37,7 @@ class RotationsController < ApplicationController
       flash[:notice] = "Successfully updated rotation"
       return(redirect_to rotations_path)
     end
-    flash[:error] = "Unable to update rotation: #{@rotation.errors.full_messages.join(", ")}"
+    flash.now[:error] = "Unable to update rotation: #{@rotation.errors.full_messages.join(", ")}"
     render :edit
 
   rescue ActiveRecord::RecordNotFound

@@ -226,6 +226,8 @@ describe VacationRequestsController do
         end
 
         it { should render_template(:edit) }
+
+        it { flash[:error].should match(/Unable to update vacation request/) }
       end
     end
 

@@ -19,7 +19,7 @@ class SectionsController < ApplicationController
       flash[:notice] = "Successfully created section"
       return(redirect_to(section_memberships_path(@section)))
     end
-    flash[:error] = "Unable to create section: #{@section.errors.full_messages.join(", ")}"
+    flash.now[:error] = "Unable to create section: #{@section.errors.full_messages.join(", ")}"
     render :new
   end
 
@@ -40,7 +40,7 @@ class SectionsController < ApplicationController
       flash[:notice] = "Successfully updated section"
       redirect_to(params[:redirect_path] || section_memberships_path(@section))
     else
-      flash[:error] = "Error: could not complete changes (#{@section.errors.full_messages.join(", ")})"
+      flash.now[:error] = "Error: could not complete changes (#{@section.errors.full_messages.join(", ")})"
       render :edit
     end
 

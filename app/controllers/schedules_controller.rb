@@ -93,7 +93,7 @@ class SchedulesController < ApplicationController
       @week_dates = week_dates_beginning_with(@week_start_date)
       @grouped_people = @section.members_by_group
       @assignments = @weekly_schedule.assignments_including([:physician, :shift])
-      flash[:error] = "There was an error creating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
+      flash.now[:error] = "There was an error creating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
       render :edit_weekly_section
     end
   end

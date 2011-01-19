@@ -22,7 +22,7 @@ class RulesController < ApplicationController
       flash[:notice] = "Successfully updated rules"
       return(redirect_to(section_rules_path(@section)))
     end
-    flash[:error] = "Unable to update rules: #{@section.errors.full_messages.join(", ")}"
+    flash.now[:error] = "Unable to update rules: #{@section.errors.full_messages.join(", ")}"
     render :edit
   end
 end

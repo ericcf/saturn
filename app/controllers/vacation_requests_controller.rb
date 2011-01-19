@@ -34,7 +34,7 @@ class VacationRequestsController < ApplicationController
       flash[:notice] = "Successfully submitted vacation request"
       return(redirect_to section_vacation_requests_path(@section))
     end
-    flash[:error] = "Unable to submit vacation request: #{@vacation_request.errors.full_messages.join(", ")}"
+    flash.now[:error] = "Unable to submit vacation request: #{@vacation_request.errors.full_messages.join(", ")}"
     render :new
   end
 
@@ -54,6 +54,7 @@ class VacationRequestsController < ApplicationController
       flash[:notice] = "Successfully updated vacation request"
       return(redirect_to section_vacation_requests_path(@section))
     end
+    flash.now[:error] = "Unable to update vacation request: #{@vacation_request.errors.full_messages.join(", ")}"
     render :edit
 
   rescue ActiveRecord::RecordNotFound
