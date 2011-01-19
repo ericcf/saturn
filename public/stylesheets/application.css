@@ -141,7 +141,8 @@ table {
   border-top: 1px solid;
   border-top-color: #cccccc; }
   table.schedule {
-    float: left; }
+    float: left;
+    clear: left; }
     table.schedule th {
       width: 120px; }
 
@@ -232,13 +233,16 @@ table .schedule_block {
   border-bottom: none; }
 
 .pagination {
-  height: 2.5em; }
-  .pagination a, .pagination em, .pagination span {
+  float: left;
+  clear: both;
+  height: 2.5em;
+  margin: 1em 0; }
+  .pagination em, .pagination span.disabled {
     border: 1px solid #2f4462;
-    display: block;
-    float: left;
-    margin-right: 1px;
-    padding: 0.2em 0.5em; }
+    display: inline-block;
+    margin-right: 0.3em;
+    padding: 0.4em 1em;
+    font-size: 1.1em; }
   .pagination span.disabled {
     border-color: #c6c8cb;
     color: #c6c8cb; }

@@ -177,10 +177,9 @@ table
   border-top-color: $tableCellBorderColor
   &.schedule
     float: left
+    clear: left
     th
       width: 120px
-    //td
-      overflow: hidden
 
 th
   text-align: left
@@ -283,13 +282,16 @@ $navActiveBorderBottomColor: white
 // pagination
 
 .pagination
+  float: left
+  clear: both
   height: 2.5em
-  a, em, span
+  margin: 1em 0
+  em, span.disabled
     border: 1px solid $baseLinkColor
-    display: block
-    float: left
-    margin-right: 1px
-    padding: 0.2em 0.5em
+    display: inline-block
+    margin-right: 0.3em
+    padding: 0.4em 1em
+    font-size: 1.1em
   span.disabled
     border-color: $mediumTextColor
     color: $mediumTextColor

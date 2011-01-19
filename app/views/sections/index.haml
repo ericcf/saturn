@@ -4,6 +4,8 @@
   - @sections.each do |section|
     %li= link_to section.title, weekly_section_schedule_path(section)
 
+%br
+
 %ul
-  != nav_item "Add Section", new_section_path, { :class => "button" }, :create, Section
+  != nav_item "Add New Section", new_section_path, { :class => "button" }, :create, Section
 

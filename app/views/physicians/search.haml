@@ -13,7 +13,7 @@
 
 - unless @physicians.blank?
   = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"
-  %table
+  %table.schedule
     %thead
       %tr
         %th &nbsp;

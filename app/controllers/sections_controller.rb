@@ -3,7 +3,7 @@ class SectionsController < ApplicationController
   before_filter :authenticate_user!, :except => :index
 
   def index
-    @sections = Section.all
+    @sections = Section.order(:title)
   end
 
   def new

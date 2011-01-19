@@ -11,7 +11,7 @@ describe SectionsController do
   describe "GET index" do
 
     before(:each) do
-      Section.should_receive(:all).and_return([mock_section])
+      Section.should_receive(:order).with(:title).and_return([mock_section])
       get :index
     end
 

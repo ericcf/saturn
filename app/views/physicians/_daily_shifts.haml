@@ -1,1 +1,1 @@
-%td{ :class => daily_shifts[:date].today? ? "current-date" : "" }!= daily_shifts[:shifts].map(&:title).join("<br/>") || "&nbsp;"
+%td!= daily_shifts[:shifts].map(&:title).join("<br/>") || "&nbsp;"

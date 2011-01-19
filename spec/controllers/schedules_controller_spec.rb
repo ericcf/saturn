@@ -25,7 +25,7 @@ describe SchedulesController do
     end
 
     it "assigns the week dates starting on Monday to @dates" do
-      dates = mock('dates')
+      dates = []
       controller.should_receive(:week_dates_beginning_with) { dates }
       get :weekly_call
       assigns(:dates).should eq(dates)
@@ -46,7 +46,7 @@ describe SchedulesController do
       mock_physician = stub_model(Physician)
       Physician.stub_chain(:where, :includes, :hash_by_id).
         and_return({ mock_physician.id => mock_physician })
-      get :weekly_call, :date => date
+      get :weekly_call, :date => date.to_s
       assigns(:call_assignments).should eq([mock_assignment])
     end
 

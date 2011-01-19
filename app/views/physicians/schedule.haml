@@ -12,7 +12,7 @@
 %p.content_actions
   = link_to "Download as iCalendar", schedule_physician_path(@physician, :format => :ics, :date => @dates.first.to_s)
 
-%table
+%table.schedule
   %thead
     %tr
       %th

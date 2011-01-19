@@ -10,7 +10,7 @@
 
 - mapped_assignments = @call_assignments.group_by {|a| [a.shift_id, a.date]}
 - shifts_by_section = @call_shifts.group_by {|s| s.section}
-%table
+%table.schedule
   %thead
     %tr
       %th
@@ -28,7 +28,8 @@
             - if assignments_by_shift_and_date
               %td{ :class => date.today? ? "current-date" : "" }
                 - assignments_by_shift_and_date.each do |assignment|
-                  = @physicians_by_id[assignment.physician_id].short_name
+                  - physician = @physicians_by_id[assignment.physician_id]
+                  = link_to physician.short_name, schedule_physician_path(physician)
                   %br
             - else
               %td &nbsp;

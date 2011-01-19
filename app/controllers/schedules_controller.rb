@@ -8,9 +8,10 @@ class SchedulesController < ApplicationController
     :create_weekly_section, :update_weekly_section]
 
   def weekly_call
-    start_date = monday_of_week_with(params[:date])
+    start_date = params[:date].nil? ? Date.today : Date.parse(params[:date])
     @dates = week_dates_beginning_with(start_date)
-    schedules = WeeklySchedule.find_all_by_is_published_and_date(true, start_date)
+    schedules = WeeklySchedule.
+      find_all_by_is_published_and_date(true, @dates + [start_date.at_beginning_of_week])
     @call_shifts = Shift.includes(:shift_tags).
       where("shift_tags.title like ?", "%Call%")
     @call_assignments = Assignment.by_schedules_and_shifts(

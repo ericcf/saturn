@@ -23,9 +23,9 @@ class PhysiciansController < ApplicationController
   end
 
   def schedule
-    start_date = monday_of_week_with(params[:date])
+    start_date = params[:date].blank? ? Date.today : Date.parse(params[:date])
     @dates = week_dates_beginning_with(start_date)
-    @physician = Physician.find(params[:id])
+    find_physician
     @assignments = @physician.assignments.
       includes(:weekly_schedule, :shift).
       published.
@@ -42,5 +42,11 @@ class PhysiciansController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested physician not found"
     redirect_to physicians_path
+  end
+
+  private
+
+  def find_physician
+    @physician = Physician.find(params[:id])
   end
 end
