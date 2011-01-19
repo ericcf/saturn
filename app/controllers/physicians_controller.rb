@@ -26,9 +26,13 @@ class PhysiciansController < ApplicationController
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
     @physician = Physician.find(params[:id])
-    @assignments = @physician.assignments.published.where(:date => @dates).
-      includes(:weekly_schedule, :shift)
-    @assignments_by_section = @assignments.group_by{|a|a.weekly_schedule.section}
+    @assignments = @physician.assignments.
+      includes(:weekly_schedule, :shift).
+      published.
+      find_all_by_date(@dates)
+    @assignments_by_section = @assignments.group_by do |assignment|
+      assignment.weekly_schedule.section
+    end
 
     respond_to do |format|
       format.html

@@ -45,7 +45,7 @@ describe "schedules/edit_weekly_section" do
   it "renders a field for publishing" do
     rendered.should have_selector("form input",
       :type => "checkbox",
-      :name => "weekly_schedule[publish]"
+      :name => "weekly_schedule[is_published]"
     )
   end
 end

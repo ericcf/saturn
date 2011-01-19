@@ -7,8 +7,7 @@ describe WeeklySchedule do
       and_return(mock_section)
     @valid_attributes = {
       :section_id => mock_section.id,
-      :date => Date.today,
-      :published_at => Time.now
+      :date => Date.today
     }
     @schedule = WeeklySchedule.create(@valid_attributes)
     @schedule.should be_valid
@@ -16,14 +15,15 @@ describe WeeklySchedule do
 
   # database
   
-  it { should have_db_column(:section_id).
-    with_options(:null => false) }
+  it { should have_db_column(:section_id).with_options(:null => false) }
 
   it { should have_db_index(:section_id) }
 
   it { should have_db_column(:date).with_options(:null => false) }
 
   it { should have_db_index(:date) }
+
+  it { should have_db_column(:is_published).with_options(:null => false, :default => false) }
 
   it { should have_db_index([:section_id, :date]).unique(true) }
 
@@ -43,16 +43,6 @@ describe WeeklySchedule do
 
   # methods
   
-  describe "#published?" do
-
-    it "returns published_at!=nil" do
-      @schedule.published_at = nil
-      @schedule.published?.should be_false
-      @schedule.published_at = Date.today
-      @schedule.published?.should be_true
-    end
-  end
-
   describe "#include_date(:date)" do
 
     it "returns schedules which include the specified date" do
@@ -65,25 +55,6 @@ describe WeeklySchedule do
         should_not include(@schedule)
       WeeklySchedule.include_date(@schedule.date + 7).
         should_not include(@schedule)
-    end
-  end
-  
-  describe "#publish=(:value)" do
-
-    context "value is like true" do
-
-      it "sets published_at" do
-        @schedule.publish = "1"
-        @schedule.published_at.should_not be_nil
-      end
-    end
-
-    context "value is like false" do
-
-      it "sets published_at to nil" do
-        @schedule.publish = "0"
-        @schedule.published_at.should be_nil
-      end
     end
   end
 end

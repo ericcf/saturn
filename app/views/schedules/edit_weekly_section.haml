@@ -42,9 +42,8 @@
     = form.hidden_field :id
 
   %div.schedule_publishing
-    = @weekly_schedule.published? ? "Published: #{@weekly_schedule.published_at.to_s(:long)}" : "Unpublished"
-    | Publish?
-    = form.check_box :publish
+    = @weekly_schedule.is_published ? "Published" : "Unpublished | Publish?"
+    = form.check_box :is_published
     = form.buttons do
       = form.commit_button :button_html => { :class => "button" }
       %li

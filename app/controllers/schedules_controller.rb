@@ -10,7 +10,7 @@ class SchedulesController < ApplicationController
   def weekly_call
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
-    schedules = WeeklySchedule.published.find_all_by_date(start_date)
+    schedules = WeeklySchedule.find_all_by_is_published_and_date(true, start_date)
     @call_shifts = Shift.includes(:shift_tags).
       where("shift_tags.title like ?", "%Call%")
     @call_assignments = Assignment.by_schedules_and_shifts(
@@ -28,7 +28,8 @@ class SchedulesController < ApplicationController
     start_date = monday_of_week_with(params[:date])
     @dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])
-    schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
+    schedule = @section.weekly_schedules.
+      find_by_is_published_and_date(true, start_date) ||
       @section.weekly_schedules.build(:date => start_date)
     @assignments = schedule.assignments.includes(:shift)
     @notes = @assignments.map(&:public_note_details).compact
@@ -101,7 +102,7 @@ class SchedulesController < ApplicationController
   def update_weekly_section
     schedule_attributes = {
       :assignments_attributes => params[:assignments] || {},
-      :publish => params[:weekly_schedule][:publish] || 0
+      :is_published => params[:weekly_schedule][:is_published] || 0
     }
     @section = Section.find(params[:section_id])
     @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])

@@ -163,9 +163,9 @@ tr {
   tr th {
     background-color: white; }
   tr.odd {
-    background-color: #e6ddda; }
+    background-color: #e6eae1; }
     tr.odd th {
-      background-color: #e6ddda; }
+      background-color: #e6eae1; }
   tr.hover {
     background-color: #4466ff; }
     tr.hover td, tr.hover td a {
@@ -254,7 +254,7 @@ table .schedule_block {
     margin: 5px 5px 5px 0px; }
 
 .current-date, .highlight {
-  background-color: #e6ddda; }
+  background-color: #e6eae1; }
 
 .clickable {
   cursor: pointer; }

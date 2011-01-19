@@ -23,6 +23,6 @@ Scenario: Update and publish an existing weekly schedule
     And I press "Update Weekly schedule"
    Then I should see "Successfully updated schedule"
     And I should see "Unpublished"
-   When I check "weekly_schedule_publish"
+   When I check "weekly_schedule_is_published"
     And I press "Update Weekly schedule"
    Then I should see "Published"

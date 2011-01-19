@@ -50,8 +50,7 @@ end
 
 Given /^a weekly schedule for "([^"]*)" that begins on (\d{4}-\d{2}-\d{2})( is published)?$/ do |section_title, date, is_published|
   section = Section.find_by_title(section_title)
-  to_publish = is_published.nil? ? 0 : 1
-  section.weekly_schedules.create!(:date => Date.parse(date), :publish => to_publish)
+  section.weekly_schedules.create!(:date => Date.parse(date), :is_published => is_published ? true : false)
 end
 
 Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" on (\d{4}-\d{2}-\d{2})$/ do |given_name, family_name, shift_title, section_title, date|

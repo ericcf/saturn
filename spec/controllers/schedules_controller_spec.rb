@@ -21,7 +21,6 @@ describe SchedulesController do
   describe "GET weekly_call" do
 
     before(:each) do
-      WeeklySchedule.stub!(:published_with_date) { [] }
       Section.stub!(:find).with(mock_section.id) { mock_section }
     end
 
@@ -68,7 +67,7 @@ describe SchedulesController do
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
       mock_schedule.stub_chain(:assignments, :includes) { [] }
-      mock_section.stub_chain(:weekly_schedules, :published, :find_by_date).
+      mock_section.stub_chain("weekly_schedules.find_by_is_published_and_date").
         and_return(mock_schedule)
     end
 
@@ -320,7 +319,7 @@ describe SchedulesController do
             { "id" => "1", "_destroy" => "1" },
             { "id" => "2", "these" => "params" }
           ],
-          :publish => 0
+          :is_published => 0
         ).and_return(true)
         put :update_weekly_section, :section_id => mock_section.id,
           :weekly_schedule => { :id => mock_schedule.id }, :assignments => [

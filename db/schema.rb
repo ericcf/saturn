@@ -154,8 +154,7 @@ ActiveRecord::Schema.define(:version => 20110107172822) do
   add_index "section_role_assignments", ["section_id"], :name => "index_section_role_assignments_on_section_id"
 
   create_table "sections", :force => true do |t|
-    t.string   "title",       :null => false
-    t.text     "description"
+    t.string   "title",      :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -252,9 +251,9 @@ ActiveRecord::Schema.define(:version => 20110107172822) do
   add_index "vacation_requests", ["status"], :name => "index_vacation_requests_on_status"
 
   create_table "weekly_schedules", :force => true do |t|
-    t.integer  "section_id",   :null => false
-    t.date     "date",         :null => false
-    t.datetime "published_at"
+    t.integer  "section_id",                      :null => false
+    t.date     "date",                            :null => false
+    t.boolean  "is_published", :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

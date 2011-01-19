@@ -22,7 +22,7 @@ class Assignment < ActiveRecord::Base
     where("assignments.date >= ? and assignments.date <= ?", start_date, end_date)
   }
   scope :published, lambda {
-    joins(:weekly_schedule).where("weekly_schedules.published_at is not null")
+    joins(:weekly_schedule).where("weekly_schedules.is_published = 1")
   }
   default_scope order("assignments.position")
 

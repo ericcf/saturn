@@ -3,7 +3,7 @@ class CreateWeeklySchedules < ActiveRecord::Migration
     create_table :weekly_schedules do |t|
       t.integer :section_id, :null => false
       t.date :date, :null => false
-      t.datetime :published_at
+      t.boolean :is_published, :null => false, :default => false
 
       t.timestamps
     end
