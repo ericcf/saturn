@@ -9,7 +9,10 @@
   = javascript_include_tag 'third_party/jquery.charcounter.js'
   :javascript
     $(function() {
-      $("textarea").charCounter(255);
+      // apply char counter to all current and future textareas
+      $("textarea").live("focus", function() {
+        $(this).charCounter(255);
+      });
     });
 
 - content_for :stylesheets do
