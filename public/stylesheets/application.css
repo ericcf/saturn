@@ -128,8 +128,10 @@ input, textarea {
   border: 1px solid;
   border-color: #c4c7cb; }
 
-form fieldset.buttons li {
-  line-height: 27px; }
+form fieldset.buttons {
+  margin-top: 20px; }
+  form fieldset.buttons li {
+    line-height: 27px; }
 
 .inline_form {
   margin: 0 0.5em; }

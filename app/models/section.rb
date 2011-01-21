@@ -32,13 +32,12 @@ class Section < ActiveRecord::Base
   # { "Faculty" => [p1, p2], "Fellows" => [p3, p4], "Residents" => [p5, p6] }
   def members_by_group
     physicians = members.includes(:names_alias, :memberships)
-    grouped_people = {}
-    RadDirectory::Group.find_all_by_title(SCHEDULE_GROUPS).each do |group|
-      grouped_people[group.title] = physicians.select do |physician|
+    groups = RadDirectory::Group.find_all_by_title(SCHEDULE_GROUPS)
+    groups.each_with_object({}) do |group, grouped_members|
+      grouped_members[group.title] = physicians.select do |physician|
         physician.in_group? group
       end
     end
-    grouped_people
   end
 
   def create_admin_role

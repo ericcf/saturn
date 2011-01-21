@@ -1,10 +1,5 @@
 module NavigationHelpers
-  # Maps a name to a path. Used by the
-  #
-  #   When /^I go to (.+)$/ do |page_name|
-  #
-  # step definition in web_steps.rb
-  #
+  
   def path_to(page_name)
     case page_name
 
@@ -32,6 +27,12 @@ module NavigationHelpers
       weekly_section_schedule_path(find_section($1), :date => $2)
     when /the reports page for \"([^"]+)\"/
       section_shift_totals_path(find_section($1))
+    when /the shift totals search page for \"([^"]+)\"/
+      search_shift_totals_section_reports_path(find_section($1))
+    when /the shift totals report page for \"([^"]+)\"/
+      shift_totals_report_section_reports_path(find_section($1))
+    when /the totals by day page for the \"([^"]+)\" shift in \"([^"]+)\"/
+      totals_by_day_section_reports_path(find_section($2), find_shift($1))
     when /edit weekly schedule page for \"([^"]+)\"(?: on (\d{4})-(\d{2})-(\d{2}))?/
       section = find_section($1)
       if $2 && $3 && $4
@@ -62,6 +63,10 @@ module NavigationHelpers
 
   def find_section(title)
     Section.find_by_title(title)
+  end
+
+  def find_shift(title)
+    Shift.find_by_title(title)
   end
 end
 

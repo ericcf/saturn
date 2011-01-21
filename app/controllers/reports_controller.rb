@@ -52,6 +52,26 @@ class ReportsController < ApplicationController
     end
   end
 
+  def search_shift_totals
+    @shift_totals_report = ShiftTotalsReport.new
+  end
+
+  def shift_totals_report
+    @shift_totals_report = ShiftTotalsReport.new(params[:shift_totals_report])
+    @shift_totals_report.section = @section
+
+    unless @shift_totals_report.valid?
+      flash.now[:error] = "Unable to generate report: #{@shift_totals_report.errors.full_messages.join(", ")}"
+      render :search_shift_totals
+    end
+  end
+
+  def shift_totals_by_day
+    @shift_totals_report = ShiftTotalsReport.new(params[:shift_totals_report])
+    @shift_totals_report.section = @section
+    @shift = Shift.find(params[:shift_id])
+  end
+
   def section_physician_shift_totals
     find_physician
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month

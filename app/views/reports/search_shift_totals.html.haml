@@ -1,0 +1,45 @@
+- content_for :javascripts do
+  = javascript_include_tag "shared/checkboxes"
+  = javascript_include_tag "shared/date_span_selector"
+  :javascript
+    $(function() {
+      $("#shift_totals_report_start_date").date_span_selector("shift_totals_report_end_date");
+    });
+
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3 Report on Shift Totals for Published Schedules
+
+= semantic_form_for @shift_totals_report, :url => shift_totals_report_section_reports_path(@section), :html => { :method => :get } do |report_form|
+  = report_form.inputs "Date Range" do
+    = report_form.input :start_date, :label => "From"
+    = report_form.input :end_date, :label => "To"
+
+  %fieldset.inputs
+    %legend Shifts
+    %div{ :style => "margin-left: 25%;" }
+      = link_to "select all", "#", :class => "check_all_boxes"
+      |
+      = link_to "select none", "#", :class => "uncheck_all_boxes"
+      %br
+      %br
+      - per_column = 15
+      - section_shifts = @section.shifts.active_as_of(Date.today)
+      - 0.step(section_shifts.count, per_column) do |index|
+        %div{ :style => "float: left;" }
+          - (section_shifts[index, per_column]).each do |shift|
+            = check_box_tag "shift_totals_report[shift_ids][]", shift.id, @shift_totals_report.shift_ids.nil? || @shift_totals_report.shift_ids.include?(shift.id)
+            = label_tag "shift_totals_report[shift_ids][]", shift.title
+            %br
+
+  %fieldset.inputs
+    %legend Groups
+    %div{ :style => "margin-left: 25%;" }
+      - physician_groups.each do |group|
+        = check_box_tag "shift_totals_report[group_ids][]", group.id, @shift_totals_report.group_ids.nil? || @shift_totals_report.group_ids.include?(group.id)
+        = label_tag "shift_totals_report[group_ids][]", group.title
+        %br
+
+  = report_form.buttons do
+    = report_form.commit_button "Generate Report", :button_html => { :class => "button" }

@@ -1,12 +1,13 @@
 - content_for :javascripts do
   = javascript_include_tag 'shared/date_selector'
-  = javascript_include_tag 'shared/table'
   = javascript_include_tag 'report'
 
 - content_for :content_menu do
   = render "schedules/section_menu"
 
 %h3 Totals from Published Weekly Schedules
+
+%p= link_to "Reports Search", search_shift_totals_section_reports_path(@section)
 
 %div.subheadline
   = semantic_form_for @section, :url => section_shift_totals_path(@section), :html => { :method => :get } do |report_form|

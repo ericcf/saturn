@@ -1,0 +1,23 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3= "Daily Totals for #{@shift.title}, #{@shift_totals_report.start_date.strftime("#{@shift_totals_report.start_date.day} %B %Y")} - #{@shift_totals_report.end_date.strftime("#{@shift_totals_report.end_date.day} %B %Y")}"
+
+%p= link_to "Back to report", shift_totals_report_section_reports_path(@section, :shift_totals_report => params[:shift_totals_report])
+
+%table
+  %thead
+    %tr
+      %th
+      - @shift_totals_report.physicians_by_group.each do |group, physicians|
+        %th= group.title
+        = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :group_name => nil }
+    - totals_by_physician_id_and_day = @shift_totals_report.totals_by_physician_id_and_day(@shift.id)
+    - totals_by_group_id_and_day = @shift_totals_report.totals_by_group_id_and_day(@shift.id)
+    - {1=>"Monday", 2=>"Tuesday", 3=>"Wednesday", 4=>"Thursday", 5=>"Friday", 6=>"Saturday", 0=>"Sunday"}.each do |day, day_name|
+      %tr
+        %th= day_name
+        - @shift_totals_report.physicians_by_group.each do |group, physicians|
+          %td= totals_by_group_id_and_day[[group.id, day]]
+          - physicians.each do |physician|
+            %td= totals_by_physician_id_and_day[[physician.id, day]]

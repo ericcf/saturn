@@ -32,6 +32,15 @@ Saturn::Application.routes.draw do
       end
     end
     resource :admins, :only => [:show, :update]
+    resource :reports, :only => :index do
+      collection do
+        get "search_shift_totals"
+        get "shift_totals_report"
+        scope "shifts/:shift_id/" do
+          match "totals_by_day" => "reports#shift_totals_by_day"
+        end
+      end
+    end
   end
 
   controller :schedules do

@@ -1,0 +1,24 @@
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3= "Report for #{@shift_totals_report.start_date.strftime("#{@shift_totals_report.start_date.day} %B %Y")} - #{@shift_totals_report.end_date.strftime("#{@shift_totals_report.end_date.day} %B %Y")}"
+
+%p= link_to "Generate another report", search_shift_totals_section_reports_path(@section)
+
+%p Select a shift below to view totals by day of the week.
+
+%div.fixed-table-wrapper
+  %table
+    %thead
+      %tr
+        %th
+        - @shift_totals_report.physicians_by_group.each do |group, physicians|
+          %th= group.title
+          = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :group_name => nil }
+      - @shift_totals_report.shifts.each do |shift|
+        %tr
+          %th= link_to shift.title, totals_by_day_section_reports_path(@section, shift, :shift_totals_report => params[:shift_totals_report])
+          - @shift_totals_report.physicians_by_group.each do |group, physicians|
+            %td= @shift_totals_report.totals_by_group_id_and_shift_id[[group.id, shift.id]]
+            - physicians.each do |physician|
+              %td><= @shift_totals_report.totals_by_physician_id_and_shift_id[[physician.id, shift.id]]
