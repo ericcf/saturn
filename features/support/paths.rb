@@ -21,10 +21,10 @@ module NavigationHelpers
       new_section_path
     when /the edit section page for \"([^"]+)\"/
       edit_section_path(find_section($1))
-    when /the weekly call schedule page for the week beginning (\d{4}-\d{2}-\d{2})/
-      weekly_call_schedule_path(:date => $1)
-    when /the weekly section schedule page for \"([^"]+)\" on (\d{4}-\d{2}-\d{2})/
-      weekly_section_schedule_path(find_section($1), :date => $2)
+    when /the weekly call schedule page for the week beginning (\d{4})-(\d{2})-(\d{2})/
+      weekly_call_schedule_path(:date => { :year => $1, :month => $2, :day => $3 })
+    when /the weekly section schedule page for \"([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/
+      weekly_section_schedule_path(find_section($1), :date => { :year => $2, :month => $3, :day => $4 })
     when /the reports page for \"([^"]+)\"/
       section_shift_totals_path(find_section($1))
     when /the shift totals search page for \"([^"]+)\"/

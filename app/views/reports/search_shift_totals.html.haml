@@ -11,7 +11,7 @@
 
 %h3 Report on Shift Totals for Published Schedules
 
-= semantic_form_for @shift_totals_report, :url => shift_totals_report_section_reports_path(@section), :html => { :method => :get } do |report_form|
+= semantic_form_for @shift_totals_report, :url => shift_totals_report_section_reports_path(@section) do |report_form|
   = report_form.inputs "Date Range" do
     = report_form.input :start_date, :label => "From"
     = report_form.input :end_date, :label => "To"

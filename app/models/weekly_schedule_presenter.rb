@@ -28,7 +28,7 @@ class WeeklySchedulePresenter
     when :shifts
       @shifts.map { |s| { :object => s, :type => "shift" } }
     when :physicians
-      @section.members.map { |p| { :object => p, :type => "physician" } }
+      @section.members_by_group.values.flatten.map { |p| { :object => p, :type => "physician" } }
     end
   end
 
@@ -64,7 +64,7 @@ class WeeklySchedulePresenter
   end
 
   def physician_index(assignment)
-    @physician_ids ||= @section.members.map(&:id)
+    @physician_ids ||= @section.members_by_group.values.flatten.map(&:id)
     @physician_ids.find_index(assignment.physician_id)
   end
 end

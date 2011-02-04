@@ -11,6 +11,10 @@ module SectionHelper
   def find_or_create_section(section_title)
     Section.find_or_create_by_title(section_title)
   end
+
+  def find_or_create_group(group_title)
+    RadDirectory::Group.find_or_create_by_title(group_title)
+  end
 end
 
 World(SectionHelper)
@@ -19,9 +23,11 @@ Given /^a section "([^"]*)"$/ do |title|
   find_or_create_section(title)
 end
 
-Given /^a section "([^"]*)" with a member "([^ ]+) ([^"]+)"$/ do |section_title, given_name, family_name|
+Given /^a section "([^"]*)" with a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |section_title, group_title, given_name, family_name|
   physician = find_or_create_physician(given_name, family_name)
   section = find_or_create_section(section_title)
+  group = find_or_create_group(group_title)
+  group.members << physician unless group.members.include? physician
   section.memberships.create(:physician_id => physician.id)
 end
 

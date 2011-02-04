@@ -14,9 +14,9 @@ class DailyShiftCountRule < ActiveRecord::Base
     :allow_nil => true
   }
 
-  def process(assignments_by_physician)
+  def process(assignments_by_physician_id)
     group_over_maximum = []
-    assignments_by_physician.each do |physician, assignments|
+    assignments_by_physician_id.each do |physician_id, assignments|
       counts_by_date = assignments.each_with_object({}) do |assignment, hash|
         if shift_tag.shift_ids.include? assignment.shift_id
           hash[assignment.date] ||= 0
@@ -24,7 +24,7 @@ class DailyShiftCountRule < ActiveRecord::Base
         end
       end
       counts_by_date.each do |date, count|
-        group_over_maximum << [physician, count, date] if count > maximum
+        group_over_maximum << [physician_id, count, date] if count > maximum
       end
     end
     group_over_maximum

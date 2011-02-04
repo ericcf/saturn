@@ -20,10 +20,9 @@ describe "physicians/schedule" do
       :method => "get",
       :action => schedule_physician_path(@mock_physician)
     ) do |form|
-      form.should have_selector("input",
-        :type => "text",
-        :name => "date"
-      )
+      form.should have_selector("select", :name => "date[year]")
+      form.should have_selector("select", :name => "date[month]")
+      form.should have_selector("select", :name => "date[day]")
     end
   end
 end

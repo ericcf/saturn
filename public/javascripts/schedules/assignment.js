@@ -43,7 +43,7 @@
     };
 
     this.setDestroy = function(value) {
-      elem.find("input[name*=[_destroy]]").val(value);
+      elem.find("input[name*='[_destroy]']").val(value);
     };
 
     this.getPersonName = function() {
@@ -55,7 +55,7 @@
     };
 
     this.getId = function() {
-      return elem.find("input[name*=[id]]").val();
+      return elem.find("input[name*='[id]']").val();
     };
 
     this.getPosition = function() {
@@ -180,7 +180,7 @@
     this.make_view_from_assignment = function(shift_day, assignment) {
       var cloned_template = elem.children().clone();
       cloned_template.
-        find("[name*=[id]]").val(assignment.getId());
+        find("[name*='[id]']").val(assignment.getId());
       cloned_template.
         find(".person_name").text(assignment.getPersonName());
       cloned_template.

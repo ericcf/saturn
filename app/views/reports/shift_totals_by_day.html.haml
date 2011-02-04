@@ -3,8 +3,6 @@
 
 %h3= "Daily Totals for #{@shift.title}, #{@shift_totals_report.start_date.strftime("#{@shift_totals_report.start_date.day} %B %Y")} - #{@shift_totals_report.end_date.strftime("#{@shift_totals_report.end_date.day} %B %Y")}"
 
-%p= link_to "Back to report", shift_totals_report_section_reports_path(@section, :shift_totals_report => params[:shift_totals_report])
-
 %table
   %thead
     %tr

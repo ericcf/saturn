@@ -36,8 +36,10 @@ class Shift < ActiveRecord::Base
   end
 
   def retire=(value)
-    if value.to_i == 1
+    if value.to_i == 1 && retired_on.nil?
       self[:retired_on] = Date.today
+    elsif value.to_i == 0
+      self[:retired_on] = nil
     end
   end
 end

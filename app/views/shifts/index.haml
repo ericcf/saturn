@@ -51,18 +51,25 @@
             %td.display_color= shift_form.text_field :display_color, :class => "color_picker"
             %td= shift_form.check_box :retire
             %td.details.hidden= shift_form.hidden_field :position
+
+  %br
+  - if @retired_shifts.size > 0
+    %h3 Retired Shifts
+    %table#retired_shifts
+      %thead
+        %tr
+          %th Shift
+          %th Un-retire?
+      %tbody
+        - @retired_shifts.each do |shift|
+          %tr
+            %td= shift.title
+            %td
+              = section_form.fields_for :shifts, shift do |shift_form|
+                = shift_form.check_box :retire, {}, "0", "1"
+
   = section_form.buttons do
     = section_form.commit_button :button_html => { :class => "button" }
     %li
       or
       = link_to "Cancel", section_shifts_path(@section)
-
-  - if @retired_shifts.size > 0
-    %h3 Retired Shifts
-    %table#retired_shifts
-      %tbody
-        - @retired_shifts.each do |shift|
-          %tr
-            %td
-              %label.handle &nbsp;
-            %td= shift.title

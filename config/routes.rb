@@ -13,6 +13,7 @@ Saturn::Application.routes.draw do
   end
 
   resources :sections, :except => :show do
+    resource :weekly_schedules
     resources :memberships, :only => :index do
       collection do
         get "manage"
@@ -35,7 +36,7 @@ Saturn::Application.routes.draw do
     resource :reports, :only => :index do
       collection do
         get "search_shift_totals"
-        get "shift_totals_report"
+        post "shift_totals_report"
         scope "shifts/:shift_id/" do
           match "totals_by_day" => "reports#shift_totals_by_day"
         end

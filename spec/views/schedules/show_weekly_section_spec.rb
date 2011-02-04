@@ -22,11 +22,14 @@ describe "schedules/show_weekly_section.haml" do
     )
   }
 
-  it { should have_selector("form input", :type => "text", :name => "date") }
+  it { should have_selector("form select", :name => "date[year]") }
+  it { should have_selector("form select", :name => "date[month]") }
+  it { should have_selector("form select", :name => "date[day]") }
 
   it {
+    date = @dates.first
     should have_selector("a",
-      :href => weekly_section_schedule_path(@mock_section, :format => :xls, :date => @dates.first.to_s, :view_mode => nil),
+      :href => weekly_section_schedule_path(@mock_section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => nil),
       :content => "Download as Excel"
     )
   }

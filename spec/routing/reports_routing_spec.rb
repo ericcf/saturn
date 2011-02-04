@@ -15,7 +15,7 @@ describe ReportsController do
     end
 
     it "recognizes and generates #shift_totals_report" do
-      { :get => "/sections/1/reports/shift_totals_report" }.
+      { :post => "/sections/1/reports/shift_totals_report" }.
         should route_to(:controller => "reports", :action => "shift_totals_report", :section_id => "1") 
     end
 

@@ -4,7 +4,7 @@ Feature: View schedules
   Should be able to view schedules that display assignments
 
 Scenario: View a published call schedule
-  Given a section "The Diner" with a member "Jerry Seinfeld"
+  Given a section "The Diner" with a "Faculty" member "Jerry Seinfeld"
     And a shift "Lunch" in the "The Diner" section
     And "Lunch" in "The Diner" is tagged with "Call"
     And a weekly schedule for "The Diner" that begins on 2010-11-22 is published
@@ -17,7 +17,7 @@ Scenario: View a published call schedule
     And I should see "J. Seinfeld"
 
 Scenario: View a published weekly section schedule by shift and physician, as html and xls
-  Given a section "Disney World" with a member "Donald Duck"
+  Given a section "Disney World" with a "Faculty" member "Donald Duck"
     And a shift "Singing" in the "Disney World" section
     And a weekly schedule for "Disney World" that begins on 2010-11-22 is published
     And "Donald Duck" is assigned to "Singing" in "Disney World" on 2010-11-22

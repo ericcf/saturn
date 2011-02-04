@@ -8,7 +8,7 @@ class SchedulesController < ApplicationController
     :create_weekly_section, :update_weekly_section]
 
   def weekly_call
-    start_date = params[:date].nil? ? Date.today : Date.parse(params[:date])
+    start_date = params[:date].nil? ? Date.today.at_beginning_of_week : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     @dates = week_dates_beginning_with(start_date)
     schedules = WeeklySchedule.
       find_all_by_is_published_and_date(true, @dates + [start_date.at_beginning_of_week])
@@ -26,7 +26,8 @@ class SchedulesController < ApplicationController
   end
 
   def show_weekly_section
-    start_date = monday_of_week_with(params[:date])
+    request_date = params[:date].nil? ? nil : "#{params[:date][:year]}-#{params[:date][:month]}-#{params[:date][:day]}"
+    start_date = monday_of_week_with(request_date)
     @dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])
     schedule = @section.weekly_schedules.

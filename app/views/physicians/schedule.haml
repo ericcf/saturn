@@ -1,13 +1,12 @@
-- content_for :javascripts do
-  = javascript_include_tag 'shared/date_selector'
-
 %h2= @physician.full_name
 
-%div.subheadline
-  %h3= "Week of #{@dates.first.to_s(:long)}"
-  %div.inline_form
-    = form_tag schedule_physician_path(@physician), :method => :get do
-      = text_field_tag "date", @dates.first.to_s
+%h3= "Week of #{@dates.first.to_s(:long)}"
+= form_tag schedule_physician_path(@physician), :method => :get do
+  = select_year(@dates.first)
+  = select_month(@dates.first)
+  = select_day(@dates.first)
+  = submit_tag "Jump to date"
+%p= link_to "view today", schedule_physician_path(@physician)
 
 %p.content_actions
   = link_to "Download as iCalendar", schedule_physician_path(@physician, :format => :ics, :date => @dates.first.to_s)

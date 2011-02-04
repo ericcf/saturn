@@ -1,20 +1,21 @@
-- content_for :javascripts do
-  = javascript_include_tag 'shared/date_selector'
-
 - content_for :stylesheets do
   = stylesheet_link_tag 'schedule'
 
 - content_for :content_menu do
   = render "section_menu"
 
-%h3 Published Schedule
-%div.subheadline
-  %h3= "Week of #{@dates.first.to_s(:long)}"
-  %div.inline_form
-    = form_tag weekly_section_schedule_path(@section), :method => :get do
-      = text_field_tag "date", @dates.first.to_s
+- date = @dates.first
 
-%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => @dates.first.to_s, :view_mode => @view_mode)
+%h3 Published Schedule
+%h3= "Week of #{@dates.first.to_s(:long)}"
+= form_tag weekly_section_schedule_path(@section), :method => :get do
+  = select_year(@dates.first)
+  = select_month(@dates.first)
+  = select_day(@dates.first)
+  = submit_tag "Jump to date"
+%p= link_to "view today", weekly_section_schedule_path(@section)
+
+%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
 
 %ul.notes
   - @notes.each do |note|
@@ -25,9 +26,9 @@
     %tr
       %th
         - if @view_mode == "2"
-          = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => @dates.first.to_s)
+          = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day })
         - else
-          = link_to "View by Physician", weekly_section_schedule_path(@section, :date => @dates.first.to_s, :view_mode => 2)
+          = link_to "View by Physician", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => 2)
       - @schedule_presenter.each_col_header do |col_header|
         %th= render :partial => "schedules/headers/html/#{col_header[:type]}", :object => col_header[:object]
   %tbody

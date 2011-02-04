@@ -13,6 +13,7 @@
         %th Requester
         %th Submitted
         %th Dates
+        %th Comments
         %th Status
         - if is_section_admin
           %th Actions
@@ -27,6 +28,7 @@
           = start.strftime("#{start.day} %b %Y")
           - unless (end_date = vacation_request.end_date).nil?
             = end_date.strftime(" - #{end_date.day} %b %Y")
+        %td= vacation_request.comments
         %td= vacation_request.status.capitalize
         - if is_section_admin
-          %td= button_to "Approve", { :action => "approve", :id => vacation_request.id }
+          %td= button_to("Approve", { :action => "approve", :id => vacation_request.id }) if vacation_request.status == "pending"

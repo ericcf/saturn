@@ -1,0 +1,5 @@
+%ul
+  - @weekly_schedules.reverse.each do |schedule|
+    %li
+      = link_to schedule.date, edit_section_weekly_schedules_path(@section)
+      = schedule.is_published ? "published" : "unpublished"

@@ -26,6 +26,10 @@ class Assignment < ActiveRecord::Base
   }
   default_scope order("assignments.position")
 
+  def physician_name
+    physician.present? ? physician.short_name : "Na"
+  end
+
   def public_note_details
     public_note.blank? ? nil : {
       :shift => shift.title,

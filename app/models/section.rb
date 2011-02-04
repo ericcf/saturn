@@ -25,7 +25,11 @@ class Section < ActiveRecord::Base
   before_validation { clean_text_attributes :title }
 
   def members
-    Physician.where(:id => memberships.map(&:physician_id))
+    Physician.where(:id => member_ids)
+  end
+
+  def member_ids
+    memberships.map(&:physician_id)
   end
 
   # returns the members of this section grouped by SCHEDULE_GROUPS, i.e.:

@@ -13,20 +13,22 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
   }
   validate :maximum_greater_than_or_equal_to_minimum?
 
-  def process(assignments_by_physician)
-    group_below_minimum = {}
-    group_above_maximum = {}
-    assignments_by_physician.each do |physician, assignments|
+  def process(assignments_by_physician_id)
+    offenders = { :below_minimum => [], :above_maximum => [] }
+    assignments_by_physician_id.each do |physician_id, assignments|
       duration = assignments.map { |a| a.fixed_duration }.sum
-      group_below_minimum[physician] = duration if duration < minimum
-      group_above_maximum[physician] = duration if duration > maximum
+      summary = { :physician_id => physician_id, :duration => duration }
+      offenders[:below_minimum] << summary if duration < minimum
+      offenders[:above_maximum] << summary if duration > maximum
     end
-    section.members.each do |member|
-      unless assignments_by_physician.keys.include?(member)
-        group_below_minimum[member] = 0.0 if minimum > 0.0
+    assigned_physician_ids = assignments_by_physician_id.keys
+    section.member_ids.each do |physician_id|
+      unless assigned_physician_ids.include?(physician_id)
+        summary = { :physician_id => physician_id, :duration => BigDecimal.new('0.0') }
+        offenders[:below_minimum] << summary if minimum > 0.0
       end
     end
-    return group_below_minimum, group_above_maximum
+    offenders
   end
 
   private

@@ -23,7 +23,7 @@ class PhysiciansController < ApplicationController
   end
 
   def schedule
-    start_date = params[:date].blank? ? Date.today : Date.parse(params[:date])
+    start_date = params[:date].blank? ? Date.today : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     @dates = week_dates_beginning_with(start_date)
     find_physician
     @assignments = @physician.assignments.

@@ -1,14 +1,11 @@
-- content_for :javascripts do
-  = javascript_include_tag 'shared/date_selector'
-
 %h2 Educational Conferences
 
-%div.subheadline
-  %h3= "#{@date.today? ? "Today" : @date.strftime("%A, %B #{@date.day}, %Y")}"
-  %div.inline_form
-    = form_tag conferences_path, :method => :get do
-      = text_field_tag "date", @date
-
+= form_tag conferences_path, :method => :get do
+  = select_year(@date)
+  = select_month(@date)
+  = select_day(@date)
+  = submit_tag "Jump to date"
+%p= link_to "view today", conferences_path
 
 %table
   %tr 

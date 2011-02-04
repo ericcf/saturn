@@ -22,7 +22,7 @@ describe "reports/search_shift_totals.html.haml" do
   it "displays a form which submits to shift_totals_report" do
     rendered.should have_selector("form",
       :action => shift_totals_report_section_reports_path(mock_section),
-      :method => "get")
+      :method => "post")
   end
 
   it "displays a label and text field for the start_date" do

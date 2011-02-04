@@ -65,16 +65,17 @@ describe WeeklyShiftDurationRule do
 
   # methods
 
-  describe ".process(:assignments_by_physician)" do
+  describe ".process(:assignments_by_physician_id)" do
 
     context "a minimum is defined" do
 
       it "returns physicians without assignments" do
         @rule.update_attribute(:minimum, 1.0)
         mock_physician = stub_model(Physician)
-        @rule.section.stub!(:members).and_return([mock_physician])
-        group_below_minimum, group_above_maximum = @rule.process({})
-        group_below_minimum.keys.should include(mock_physician)
+        @rule.section.stub!(:member_ids).and_return([mock_physician.id])
+        output = @rule.process({})
+        output[:below_minimum].map{ |o| o[:physician_id] }.
+          should include(mock_physician.id)
       end
     end
 
@@ -83,10 +84,11 @@ describe WeeklyShiftDurationRule do
       mock_physician = stub_model(Physician)
       mock_assignment = stub_model(Assignment, :fixed_duration => 1.0)
       @rule.section.stub!(:members) { [] }
-      group_below_minimum, group_above_maximum = @rule.process({
-        mock_physician => [mock_assignment]
+      output = @rule.process({
+        mock_physician.id => [mock_assignment]
       })
-      group_below_minimum.should include(mock_physician)
+      output[:below_minimum].map{ |o| o[:physician_id] }.
+        should include(mock_physician.id)
     end
 
     it "returns physicians above the maximum" do
@@ -94,10 +96,11 @@ describe WeeklyShiftDurationRule do
       mock_physician = stub_model(Physician)
       mock_assignment = stub_model(Assignment, :fixed_duration => 2.0)
       @rule.section.stub!(:members) { [] }
-      group_below_minimum, group_above_maximum = @rule.process({
-        mock_physician => [mock_assignment]
+      output = @rule.process({
+        mock_physician.id => [mock_assignment]
       })
-      group_above_maximum.should include(mock_physician)
+      output[:above_maximum].map{ |o| o[:physician_id] }.
+        should include(mock_physician.id)
     end
   end
 end

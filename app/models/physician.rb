@@ -22,7 +22,7 @@ RadDirectory::Person.class_eval do
 
   def short_name
     return names_alias.short_name if names_alias && names_alias.short_name
-    ["#{given_name.split("").first}.", family_name].compact.join(" ")
+    ["#{given_name[0, 1]}.", family_name].compact.join(" ")
   end
 end
 

@@ -1,7 +1,7 @@
 class VacationRequest < ActiveRecord::Base
 
   attr_accessible :requester, :requester_id, :section, :section_id, :shift,
-    :shift_id, :status, :start_date, :end_date
+    :shift_id, :status, :start_date, :end_date, :comments
 
   STATUS_PENDING = "pending"
   STATUS_REJECTED = "rejected"

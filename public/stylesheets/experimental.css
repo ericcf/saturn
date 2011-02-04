@@ -1,0 +1,120 @@
+div.column {
+  float: left;
+}
+
+div#left-schedule-column, div#right-schedule-column {
+  padding-top: 96px;
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+div#center-schedule-column {
+  width: 862px;
+}
+
+div#center-schedule-column h3, div#center-schedule-column h4 {
+  float: left;
+}
+
+div#center-schedule-column h4 {
+  clear: left;
+}
+
+div.schedule-wrapper {
+  position: absolute;
+  overflow-y: scroll;
+  top: 206px;
+  bottom: 5px;
+  border-top: 3px solid gray;
+  border-bottom: 3px solid gray;
+}
+
+p#controls {
+  float: right;
+}
+
+div.schedule table {
+  border: none;
+}
+
+div.schedule table td {
+  vertical-align: top;
+}
+
+div#physician-groups a {
+  display: block;
+  text-decoration: none;
+}
+
+div.schedule-headers {
+  position: absolute;
+  top: 188px;
+}
+
+div.column-header {
+  text-align: center;
+  display: inline-block;
+  width: 117px;
+  font-weight: bold;
+  padding-left: 5px;
+  border-left: 1px solid gray;
+}
+
+div.column-header:last-child {
+  border-right: 1px solid gray;
+}
+
+span.shift-title {
+  font-weight: bold;
+}
+
+.shiftDay {
+  width: 118px;
+  min-height: 32px;
+}
+.shiftDay button {
+  float: right;
+  width: 16px;
+}
+.assignment {
+  cursor: pointer;
+  width: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.assignment-indicators {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px;
+}
+.note-indicator {
+  background-repeat: no-repeat;
+  width: 16px;
+  display: block;
+  height: 16px;
+  float: left;
+}
+.priNote {
+  background-image: url("../images/pri-note.gif");
+}
+.pubNote {
+  background-image: url("../images/pub-note.gif");
+}
+.pnpNote {
+  background-image: url("../images/pnp-note.gif");
+}
+.duration-indicator {
+  width: 16px;
+}
+
+#rules-conflicts {
+  position: absolute;
+  top: 270px;
+  bottom: 5px;
+  overflow-y: scroll;
+  border-top: 3px solid gray;
+  border-bottom: 3px solid gray;
+  padding-left: 5px;
+}

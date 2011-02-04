@@ -46,7 +46,7 @@ describe SchedulesController do
       mock_physician = stub_model(Physician)
       Physician.stub_chain(:where, :includes, :hash_by_id).
         and_return({ mock_physician.id => mock_physician })
-      get :weekly_call, :date => date.to_s
+      get :weekly_call, :date => { :year => date.year, :month => date.month, :day => date.day }
       assigns(:call_assignments).should eq([mock_assignment])
     end
 
