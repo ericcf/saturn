@@ -92,18 +92,6 @@ describe SchedulesController do
       assigns(:assignments).should eq([mock_assignment])
     end
 
-    it "assigns public note details from assignments to @notes" do
-      details = mock('note details')
-      mock_physician = stub_model(Physician, :short_name => "E. Fudd")
-      mock_section.stub_chain("members.includes.hash_by_id").
-        and_return({ mock_physician.id => mock_physician })
-      assignment = stub_model(Assignment, :public_note_details => details,
-        :physician_id => mock_physician.id)
-      mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
-      get :show_weekly_section, :section_id => mock_section.id
-      assigns(:notes).should eq([details])
-    end
-
     it "assigns weekly schedule presenter to @schedule_presenter" do
       mock_physician = stub_model(Physician, :short_name => "E. Fudd")
       mock_section.stub_chain("members.includes.hash_by_id").

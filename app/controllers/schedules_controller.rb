@@ -34,7 +34,6 @@ class SchedulesController < ApplicationController
       find_by_is_published_and_date(true, start_date) ||
       @section.weekly_schedules.build(:date => start_date)
     @assignments = schedule.assignments.includes(:shift)
-    @notes = @assignments.map(&:public_note_details).compact
     @physicians_by_id = @section.members.includes(:names_alias).hash_by_id
     @view_mode = params[:view_mode]
     @schedule_presenter = case @view_mode.to_i

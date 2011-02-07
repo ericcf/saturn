@@ -5,8 +5,6 @@ describe "schedules/show_weekly_section.haml" do
   before(:each) do
     @mock_section = assign(:section, stub_model(Section))
     @dates = assign(:dates, [Date.today])
-    @note = { :shift => "Shift", :day => "Mon", :initials => "AB", :text => "Foo" }
-    assign(:notes, [@note])
     assign(:schedule_presenter, stub("presenter", :each_col_header => nil, :each_row => nil))
     should_render_partial("section_menu")
     should_render_partial("rules_conflicts")
@@ -31,12 +29,6 @@ describe "schedules/show_weekly_section.haml" do
     should have_selector("a",
       :href => weekly_section_schedule_path(@mock_section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => nil),
       :content => "Download as Excel"
-    )
-  }
-
-  it {
-    should have_selector("ul.notes li",
-      :content => "#{@note[:shift]} on #{@note[:day]}, #{@note[:initials]}: #{@note[:text]}"
     )
   }
 

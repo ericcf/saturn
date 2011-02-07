@@ -17,10 +17,6 @@
 
 %p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
 
-%ul.notes
-  - @notes.each do |note|
-    %li= "#{note[:shift]} on #{note[:day]}, #{note[:initials]}: #{note[:text]}"
-
 %table.schedule
   %thead
     %tr

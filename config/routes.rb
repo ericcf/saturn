@@ -85,8 +85,6 @@ Saturn::Application.routes.draw do
     end
   end
 
-  resources :help_questions, :except => :show
-
   match "admin", :to => "admin#index", :via => "get"
   scope "/admin" do
     resources :site_statistics, :only => :index
