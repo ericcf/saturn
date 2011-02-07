@@ -12,32 +12,23 @@ class RulesConflictSummary
 
   def to_json
     [
-      "[",
-      [
-        duration_rule_json,
-        count_rules_json
-      ].join(","),
-      "]"
-    ].join("")
+      "\"rules_conflicts\":",
+        "[",
+        [
+          duration_rule_json,
+          count_rules_json
+        ].compact.join(","),
+        "]",
+    ].join("") if !duration_rule.nil? || !count_rules.blank?
   end
 
   def duration_rule_json
-    [
-      "{",
-        "\"title\":\"Below weekly minimum (#{duration_rule.minimum})\",",
-        "\"conflict_by_offender_id\":",
-          physician_ids_under_weekly_duration_min.to_json,
-      "},",
-      "{",
-        "\"title\":\"Above weekly maximum (#{duration_rule.maximum})\",",
-        "\"conflict_by_offender_id\":",
-          physician_ids_over_weekly_duration_max.to_json,
-      "}"
-    ].join("") if duration_rule
+    duration_rule.process(assignments_by_physician_id)
+    duration_rule.to_json if duration_rule
   end
 
   def count_rules_json
-    count_rules.map do |rule|
+    json = count_rules.map do |rule|
       [
       "{",
         "\"title\":\"Above daily maximum for #{rule.shift_tag.title} (#{rule.maximum})\",",
@@ -46,6 +37,7 @@ class RulesConflictSummary
       "}"
       ].join("") if rule.maximum
     end.compact.join(",")
+    json == "" ? nil : json
   end
 
   def assignments_by_physician_id

@@ -32,21 +32,23 @@ class WeeklySchedule < ActiveRecord::Base
       :weekly_schedule => self,
       :assignments => assignments
     )
-    static_attributes_json = options[:only_delta_attributes] ? "" : [
+    static_attributes_json = options[:only_delta_attributes] ? nil : [
       date_json,
       section.members_json,
       dates_json
-    ].join(",") + ","
+    ].join(",")
     [
       "{",
         "\"weekly_schedule\":",
           "{",
+            [
             static_attributes_json,
             last_update_json,
-            id ? "\"id\":#{id}," : nil,
-            "\"is_published\":#{is_published},",
-            "\"shift_weeks\":[#{shift_weeks_json(assignments)}],",
-            "\"rules_conflicts\":#{rules_conflicts.to_json}",
+            rules_conflicts.to_json,
+            id ? "\"id\":#{id}" : nil,
+            "\"is_published\":#{is_published}",
+            "\"shift_weeks\":[#{shift_weeks_json(assignments)}]",
+            ].compact.join(","),
           "}",
       "}"
     ].join("")
@@ -102,7 +104,7 @@ class WeeklySchedule < ActiveRecord::Base
   end
 
   def last_update_json
-    return "" unless last_update
+    return nil unless last_update
     [
       "\"last_update\":",
         "{",
@@ -112,7 +114,7 @@ class WeeklySchedule < ActiveRecord::Base
           "\"hour\":#{last_update.hour},",
           "\"minute\":#{last_update.min}",
         "}"
-    ].join("") + ","
+    ].join("")
   end
 
   def last_update
