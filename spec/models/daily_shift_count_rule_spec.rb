@@ -59,7 +59,7 @@ describe DailyShiftCountRule do
 
     it "returns physicians over the daily maximum count in the tag" do
       shift_id = 0
-      date = Date.today
+      date = Date.civil(2011, 1, 1)
       mock_shift_tag = stub_model(ShiftTag)
       mock_shift_tag.stub(:shift_ids).and_return([shift_id])
       @rule.update_attribute(:maximum, 0)
@@ -67,8 +67,13 @@ describe DailyShiftCountRule do
       mock_physician = stub_model(Physician)
       mock_assignment = stub_model(Assignment, :shift_id => shift_id,
         :date => date)
-      @rule.process({ mock_physician => [mock_assignment] }).
-        should eq([[mock_physician, 1, date]])
+      @rule.process({ mock_physician.id => [mock_assignment] }).
+        should eq([
+          {
+            :physician_id => mock_physician.id,
+            :description => "1 on Sat 1/1"
+          }
+        ])
     end
   end
 end

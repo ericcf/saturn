@@ -48,7 +48,12 @@ div#physician-groups a {
 
 div.schedule-headers {
   position: absolute;
-  top: 188px;
+  top: 170px;
+}
+
+div.schedule-headers span#holiday-title {
+  color: #6e8e41;
+  font-weight: normal;
 }
 
 div.column-header {

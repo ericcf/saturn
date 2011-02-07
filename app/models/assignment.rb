@@ -49,6 +49,23 @@ class Assignment < ActiveRecord::Base
     event.summary shift.title
   end
 
+  def to_json
+    [
+    "{",
+      "\"assignment\":{",
+        "\"date\":\"#{date}\",",
+        "\"duration\":#{duration || "null"},",
+        "\"id\":#{id},",
+        "\"position\":#{position},",
+        "\"private_note\":#{"\"#{private_note}\"" || "null"},",
+        "\"public_note\":#{"\"#{public_note}\"" || "null"},",
+        "\"shift_id\":#{shift_id},",
+        "\"physician_id\":#{physician_id}",
+      "}",
+    "}"
+    ].join("")
+  end
+
   private
 
   def filter_attributes

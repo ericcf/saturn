@@ -44,6 +44,16 @@ class Section < ActiveRecord::Base
     end
   end
 
+  def members_json
+    return [
+      "\"physicians\":[",
+        members.includes(:names_alias).map do |physician|
+          physician.to_json
+        end.join(","),
+      "]"
+    ].join("")
+  end
+
   def create_admin_role
     return admin_role unless admin_role.blank?
     manage_section_permission = Deadbolt::Permission.

@@ -24,6 +24,17 @@ RadDirectory::Person.class_eval do
     return names_alias.short_name if names_alias && names_alias.short_name
     ["#{given_name[0, 1]}.", family_name].compact.join(" ")
   end
+
+  def to_json
+    [
+      "{\"physician\":",
+        "{",
+          "\"id\":#{id},",
+          "\"short_name\":\"#{short_name}\"",
+        "}",
+      "}"
+    ].join("")
+  end
 end
 
 class Physician < RadDirectory::Person

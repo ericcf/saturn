@@ -2,14 +2,19 @@ var weeklySchedule = function(attributes) {
     var self = this;
     var skipSaves = false;
     var mapping = {
+        "dates": {
+            create: function(options) {
+                return new scheduleDate(options.data);
+            }
+        },
         "shift_weeks": {
             create: function(options) {
-                  return new shiftWeek(options.data, self);
+                return new shiftWeek(options.data, self);
             }
         },
         "rules_conflicts": {
             create: function(options) {
-                  return new ruleConflicts(options.data, self);
+                return new ruleConflicts(options.data, self);
             }
         }
     };
@@ -99,8 +104,8 @@ var weeklySchedule = function(attributes) {
 
     this.findPhysician = function(physicianId) {
             for (var j = 0; j < self.physicians().length; j++) {
-                if (self.physicians()[j].id() == physicianId) {
-                    return self.physicians()[j];
+                if (self.physicians()[j].physician.id() == physicianId) {
+                    return self.physicians()[j].physician;
                 }
             }
     };

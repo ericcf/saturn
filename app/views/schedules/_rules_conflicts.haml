@@ -3,24 +3,24 @@
   - count_rules = @section.daily_shift_count_rules
   - unless duration_rule.blank? && count_rules.blank?
     %h3 Rules Conflicts
-    - assignments_by_physician = @assignments.group_by { |a| physicians_by_id[a.physician_id] }
+    - assignments_by_physician_id = @assignments.group_by(&:physician_id)
     - if duration_rule
-      - under, over = duration_rule.process(assignments_by_physician)
+      - offenders = duration_rule.process(assignments_by_physician_id)
       - if duration_rule.minimum
         %h4= "Below weekly minimum (#{duration_rule.minimum})"
         %ul
-          - under.each do |physician, duration|
-            %li= "#{physician.short_name} (#{duration})"
+          - offenders[:below_minimum].each do |summary|
+            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"
       - if duration_rule.maximum
         %h4= "Above weekly maximum (#{duration_rule.maximum})"
         %ul
-          - over.each do |physician, duration|
-            %li= "#{physician.short_name} (#{duration})"
+          - offenders[:above_maximum].each do |summary|
+            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"
 
     - count_rules.each do |count_rule|
       - if count_rule.maximum
-        - over = count_rule.process(assignments_by_physician)
+        - over = count_rule.process(assignments_by_physician_id)
         %h4= "Above daily maximum for #{count_rule.shift_tag.title}"
         %ul
-          - over.each do |physician, total, date|
-            %li= "#{physician.short_name} (#{total} on #{short_date date})"
+          - over.each do |summary|
+            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"

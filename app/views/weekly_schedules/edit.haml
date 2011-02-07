@@ -1,5 +1,5 @@
 - content_for :javascripts do
-  = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest.debug", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings"
+  = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings"
   :javascript
     var viewModel;
 
@@ -58,16 +58,19 @@
   %ul
     - @physicians_by_group.each do |group|
       - if group["physicians"].size > 0
-        %li= link_to group["group_title"], "##{group["group_title"]}"
+        %li><= link_to group["group_title"], "##{group["group_title"]}"
   - @physicians_by_group.each do |group|
     %div{ :id => group["group_title"] }
       %ul
         - group["physicians"].each do |physician|
-          %li
+          %li><
             %a.ui-corner-all.ui-state-default{ :href => "#", :"data-bind" => "click: function() { assignPhysician(#{physician["id"]}); $('#physician-groups').dialog('close'); return false; }" }= physician["short_name"]
 
 %script#dateColHeader{ :type => "text/html" }
-  %div.column-header{ :"data-bind" => "text: $data" }
+  %div.column-header
+    %span#holiday-title{ :"data-bind" => "text: holiday_title" }
+    %br
+    %span{ :"data-bind" => "text: shortDate" }
 
 %script#assignment{ :type => "text/html" }
   %div.ui-corner-all.ui-state-default.assignment{ :"data-bind" => "assignmentMousing: {}, assignmentDragging: {}, click: function() { viewModel.editingAssignment(this); inEditMode(true); }, css: { 'ui-state-highlight': inEditMode }" }
@@ -124,11 +127,11 @@
 %script#ruleConflict{ :type => "text/html" }
   %tr
     %td{ :"data-bind" => "text: viewModel.physicianName(physician_id())" }
-    %td{ :"data-bind" => "text: duration" }
+    %td{ :"data-bind" => "text: description" }
 
 %script#ruleConflicts{ :type => "text/html" }
   %h4{ :"data-bind" => "text: title" }
-  %table{ :"data-bind" => "template: { name: 'ruleConflict', foreach: duration_by_offender_id }" }
+  %table{ :"data-bind" => "template: { name: 'ruleConflict', foreach: conflict_by_offender_id }" }
 
 %script#rulesConflicts{ :type => "text/html" }
   {{if rules_conflicts().length > 0}}

@@ -17,14 +17,14 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
     offenders = { :below_minimum => [], :above_maximum => [] }
     assignments_by_physician_id.each do |physician_id, assignments|
       duration = assignments.map { |a| a.fixed_duration }.sum
-      summary = { :physician_id => physician_id, :duration => duration }
+      summary = { :physician_id => physician_id, :description => duration }
       offenders[:below_minimum] << summary if duration < minimum
       offenders[:above_maximum] << summary if duration > maximum
     end
     assigned_physician_ids = assignments_by_physician_id.keys
     section.member_ids.each do |physician_id|
       unless assigned_physician_ids.include?(physician_id)
-        summary = { :physician_id => physician_id, :duration => BigDecimal.new('0.0') }
+        summary = { :physician_id => physician_id, :description => BigDecimal.new('0.0') }
         offenders[:below_minimum] << summary if minimum > 0.0
       end
     end

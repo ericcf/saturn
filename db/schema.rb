@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110107172822) do
+ActiveRecord::Schema.define(:version => 20110204220827) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(:version => 20110107172822) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "holidays", :force => true do |t|
+    t.string "title", :null => false
+    t.date   "date",  :null => false
+  end
+
+  add_index "holidays", ["date"], :name => "index_holidays_on_date"
 
   create_table "permissions", :force => true do |t|
     t.string   "action",      :null => false

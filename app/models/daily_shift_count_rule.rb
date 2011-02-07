@@ -24,7 +24,8 @@ class DailyShiftCountRule < ActiveRecord::Base
         end
       end
       counts_by_date.each do |date, count|
-        group_over_maximum << [physician_id, count, date] if count > maximum
+        summary = { :physician_id => physician_id, :description => "#{count} on #{date.strftime("%a #{date.month}/#{date.day}")}" }
+        group_over_maximum << summary if count > maximum
       end
     end
     group_over_maximum

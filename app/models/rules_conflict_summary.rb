@@ -1,7 +1,7 @@
 class RulesConflictSummary
   extend ActiveModel::Naming
 
-  attr_accessor :section, :weekly_schedule
+  attr_accessor :section, :weekly_schedule, :assignments
 
   def initialize(attributes = {})
     return unless attributes.respond_to?(:each)
@@ -14,7 +14,8 @@ class RulesConflictSummary
     [
       "[",
       [
-        duration_rule_json
+        duration_rule_json,
+        count_rules_json
       ].join(","),
       "]"
     ].join("")
@@ -24,15 +25,31 @@ class RulesConflictSummary
     [
       "{",
         "\"title\":\"Below weekly minimum (#{duration_rule.minimum})\",",
-        "\"duration_by_offender_id\":",
+        "\"conflict_by_offender_id\":",
           physician_ids_under_weekly_duration_min.to_json,
       "},",
       "{",
         "\"title\":\"Above weekly maximum (#{duration_rule.maximum})\",",
-        "\"duration_by_offender_id\":",
+        "\"conflict_by_offender_id\":",
           physician_ids_over_weekly_duration_max.to_json,
       "}"
     ].join("") if duration_rule
+  end
+
+  def count_rules_json
+    count_rules.map do |rule|
+      [
+      "{",
+        "\"title\":\"Above daily maximum for #{rule.shift_tag.title} (#{rule.maximum})\",",
+        "\"conflict_by_offender_id\":",
+          physician_ids_over_daily_count_max(rule).to_json,
+      "}"
+      ].join("") if rule.maximum
+    end.compact.join(",")
+  end
+
+  def assignments_by_physician_id
+    @assignments_by_physician_id ||= assignments.group_by { |a| a.physician_id }
   end
 
   def duration_rule
@@ -51,16 +68,14 @@ class RulesConflictSummary
     weekly_offenders[:above_maximum]
   end
 
-  def physician_ids_by_passed_daily_count_max
+  def physician_ids_over_daily_count_max(rule)
+    rule.process(assignments_by_physician_id)
   end
 
   private
 
   def weekly_offenders
     return @weekly_offenders if @weekly_offenders
-    assignments_by_physician_id = weekly_schedule.read_only_assignments.
-      includes(:shift).
-      group_by { |a| a.physician_id }
     @weekly_offenders = duration_rule.process(assignments_by_physician_id)
   end
 end
