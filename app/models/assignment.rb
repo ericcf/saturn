@@ -10,7 +10,8 @@ class Assignment < ActiveRecord::Base
   validates_numericality_of :position,
     :greater_than_or_equal_to => 1
   validates_uniqueness_of :physician_id,
-    :scope => [:weekly_schedule_id, :shift_id, :date]
+    :scope => [:weekly_schedule_id, :shift_id, :date],
+    :message => "Duplicate assignments not allowed"
 
   before_validation :filter_attributes
 

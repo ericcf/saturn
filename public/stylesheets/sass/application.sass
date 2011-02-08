@@ -53,6 +53,12 @@ h4
 .button
   height: 27px
 
+.left
+  float: left
+
+.right
+  float: right
+
 // layout
 
 #logo
@@ -170,6 +176,12 @@ $hoverRowBackgroundColor: #4466ff
 $hoverColBackgroundColor: #c0d9d9
 $hoverRowTextColor: white
 
+div.schedule-wrapper
+  position: absolute
+  top: 250px
+  bottom: 0px
+  overflow-y: scroll
+
 table
   border-collapse: collapse
   border-left: 1px solid
@@ -179,7 +191,7 @@ table
   &.schedule
     float: left
     clear: left
-    th
+    td, th
       width: 120px
 
 th

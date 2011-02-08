@@ -85,6 +85,7 @@
 %script#shiftWeekRow{ :type => "text/html" }
   %div
     %span.shift-title{ :"data-bind" => "text: shift_title" }
+    %input{ :"data-bind" => "value: shift_note" }
     %table
       %tbody
         %tr{ :"data-bind" => 'template: { name: "shiftDayCell", foreach: shift_days }' }
@@ -110,6 +111,7 @@
     |
     status:
     %span{ :"data-bind" => "text: is_published() ? 'published' : 'unpublished'" }
+    %span.flash.error{ :"data-bind" => "text: error_messages, showFlash: {}" }
 
   %p#controls
     %input#is-published{ :type => "checkbox", :"data-bind" => "checked: is_published" }

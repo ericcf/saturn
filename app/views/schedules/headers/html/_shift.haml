@@ -1,2 +1,2 @@
-= image_tag('phone.jpg', :title => shift.phone) if shift.phone
 %span{ :style => "color:#{shift.display_color}" }><= shift.title
+= image_tag('phone.jpg', :title => shift.phone, :class => "right") if shift.phone

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110208172141) do
+ActiveRecord::Schema.define(:version => 20110208192502) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -197,6 +197,14 @@ ActiveRecord::Schema.define(:version => 20110208172141) do
 
   add_index "shift_tags", ["section_id", "title"], :name => "index_shift_tags_on_section_id_and_title", :unique => true
   add_index "shift_tags", ["section_id"], :name => "index_shift_tags_on_section_id"
+
+  create_table "shift_week_notes", :force => true do |t|
+    t.integer "shift_id",           :null => false
+    t.integer "weekly_schedule_id", :null => false
+    t.string  "text",               :null => false
+  end
+
+  add_index "shift_week_notes", ["shift_id", "weekly_schedule_id"], :name => "index_shift_week_notes_on_shift_id_and_weekly_schedule_id", :unique => true
 
   create_table "shifts", :force => true do |t|
     t.integer  "section_id",                                                   :null => false

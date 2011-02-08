@@ -27,11 +27,13 @@
           = link_to "View by Physician", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => 2)
       - @schedule_presenter.each_col_header do |col_header|
         %th= render :partial => "schedules/headers/html/#{col_header[:type]}", :object => col_header[:object]
-  %tbody
-    - @schedule_presenter.each_row do |row|
-      %tr{ :class => cycle("odd", "") }
-        %th= render :partial => "schedules/headers/html/#{row.header[:type]}", :object => row.header[:object]
-        - row.each_value do |value|
-          %td!= value && value.join("<br/>")
+%div.schedule-wrapper
+  %table.schedule
+    %tbody
+      - @schedule_presenter.each_row do |row|
+        %tr{ :class => cycle("odd", "") }
+          %th= render :partial => "schedules/headers/html/#{row.header[:type]}", :object => row.header[:object]
+          - row.each_value do |value|
+            %td!= value && value.join("<br/>")
 
 %div#rules-conflicts= render "rules_conflicts", :physicians_by_id => @physicians_by_id

@@ -19,6 +19,8 @@ var weeklySchedule = function(attributes) {
         }
     };
 
+    this.rules_conflicts = ko.observableArray([]);
+
     this.last_update = {
         year: ko.observable(undefined),
         month: ko.observable(undefined),
@@ -53,9 +55,6 @@ var weeklySchedule = function(attributes) {
         while (shiftDay = this.selectedShiftDays.pop()) {
             var newAssignment = new assignment({ "assignment": {
                 "physician_id": physicianId,
-                "public_note": "",
-                "private_note": "",
-                "duration": null,
                 "date": null,
                 "shift_id": null,
                 "id": null

@@ -65,6 +65,15 @@ $(function() {
         }
     };
 
+    ko.bindingHandlers.showFlash = {
+        init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
+            $.fn.showFlashMessage();
+        },
+        update: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
+            $.fn.showFlashMessage();
+        }
+    };
+
     ko.bindingHandlers.shiftDayMousing = {
         init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
             $(element)

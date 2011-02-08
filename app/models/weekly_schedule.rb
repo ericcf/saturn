@@ -2,6 +2,8 @@ class WeeklySchedule < ActiveRecord::Base
 
   has_many :assignments, :dependent => :destroy
   accepts_nested_attributes_for :assignments, :allow_destroy => true
+  has_many :shift_week_notes, :dependent => :destroy
+  accepts_nested_attributes_for :shift_week_notes, :allow_destroy => true
   belongs_to :section
 
   validates_presence_of :section, :date
@@ -48,6 +50,7 @@ class WeeklySchedule < ActiveRecord::Base
             id ? "\"id\":#{id}" : nil,
             "\"is_published\":#{is_published}",
             "\"shift_weeks\":[#{shift_weeks_json(assignments)}]",
+            "\"error_messages\":\"#{errors.values.flatten.join(", ")}\"",
             ].compact.join(","),
           "}",
       "}"
@@ -83,10 +86,15 @@ class WeeklySchedule < ActiveRecord::Base
       hsh[[assignment.shift_id, assignment.date]] ||= []
       hsh[[assignment.shift_id, assignment.date]] << assignment
     end
+    notes_by_shift_id = shift_week_notes.each_with_object({}) do |note, hsh|
+      hsh[note.shift_id] = note
+    end
     section.shifts.select("id, title").active_as_of(date).map do |shift|
       [
       "{",
+        "\"shift_id\":#{shift.id},",
         "\"shift_title\":\"#{shift.title}\",",
+        "\"shift_note\":\"#{(notes_by_shift_id[shift.id] || ShiftWeekNote.new).text}\",",
         "\"shift_days\":[#{dates.map do |day|
           [
           "{",

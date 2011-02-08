@@ -66,30 +66,7 @@ var assignment = function(attributes, schedule) {
     };
 
     this.save = function() {
-        if (skipSaves) return;
-        var postUrl = location.href.replace("/edit", ".json");
-        schedule.ajaxStatus("sending");
-        ko.utils.postJson(postUrl,
-            schedule.serialize({ assignments: [self.serialize()] }),
-            {
-                "submitter": function(form) {
-                    $.ajax({
-                        type: "POST",
-                        url: postUrl,
-                        data: $(form).serialize(),
-                        success: function(data) {
-                            skipSaves = true;
-                            ko.mapping.updateFromJS(schedule, data.weekly_schedule);
-                            skipSaves = false;
-                            schedule.ajaxStatus("complete");
-                        },
-                        dataType: "json",
-                        error: function(x, t, e) {
-                            alert(t);
-                        }
-                    })
-                }
-            });
+        schedule.save({ assignments: [self.serialize()] });
     }
 
     schedule.editingAssignment.subscribe(function(newAssignment) {

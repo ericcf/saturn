@@ -48,11 +48,12 @@ class WeeklySchedulesController < ApplicationController
     )
     schedule_attributes = {
       :assignments_attributes => schedule_params["assignments"] || [],
+      :shift_week_notes_attributes => schedule_params["shift_week_notes_attributes"] || [],
       :is_published => schedule_params["is_published"] || 0
     }
     @weekly_schedule.update_attributes(schedule_attributes)
     # used to provide an accurate last update date
-    @weekly_schedule.touch
+    @weekly_schedule.touch unless @weekly_schedule.errors.any?
     render :json => @weekly_schedule.to_json(:only_delta_attributes => true)
   end
 end

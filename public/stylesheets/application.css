@@ -39,6 +39,12 @@ h4 {
 .button {
   height: 27px; }
 
+.left {
+  float: left; }
+
+.right {
+  float: right; }
+
 #logo {
   width: 150px;
   float: left;
@@ -136,6 +142,12 @@ form fieldset.buttons {
 .inline_form {
   margin: 0 0.5em; }
 
+div.schedule-wrapper {
+  position: absolute;
+  top: 250px;
+  bottom: 0px;
+  overflow-y: scroll; }
+
 table {
   border-collapse: collapse;
   border-left: 1px solid;
@@ -145,7 +157,7 @@ table {
   table.schedule {
     float: left;
     clear: left; }
-    table.schedule th {
+    table.schedule td, table.schedule th {
       width: 120px; }
 
 th {

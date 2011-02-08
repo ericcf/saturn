@@ -49,7 +49,9 @@ class WeeklySchedulePresenter
         @assignments.each do |assignment|
           index = [physician_index(assignment), date_index(assignment)]
           values[index] ||= []
-          values[index] << assignment.shift.title
+          data = assignment.shift.title
+          data += " <img src='/images/pub-note.gif' title='#{assignment.public_note}' />" if assignment.public_note.present?
+          values[index] << data
         end
       end
     end

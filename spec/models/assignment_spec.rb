@@ -67,7 +67,8 @@ describe Assignment do
   it { should validate_numericality_of(:position) }
 
   it { should validate_uniqueness_of(:physician_id).
-    scoped_to(:weekly_schedule_id, :shift_id, :date) }
+    scoped_to(:weekly_schedule_id, :shift_id, :date).
+    with_message(/Duplicate assignments not allowed/) }
 
   [-1, 0].each do |value|
     it "does not allow #{value} for position" do
