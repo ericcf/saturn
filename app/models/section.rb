@@ -13,6 +13,7 @@ class Section < ActiveRecord::Base
   has_many :shifts, :dependent => :destroy
   accepts_nested_attributes_for :shifts
   has_many :vacation_requests, :dependent => :destroy
+  has_many :meeting_requests, :dependent => :destroy
   has_one :weekly_shift_duration_rule, :dependent => :destroy
   accepts_nested_attributes_for :weekly_shift_duration_rule
   has_many :daily_shift_count_rules, :dependent => :destroy
@@ -80,6 +81,10 @@ class Section < ActiveRecord::Base
 
   def vacation_shift
     shifts.find_by_title("Vacation")
+  end
+
+  def meeting_shift
+    shifts.find_by_title("Meeting")
   end
 
   def find_or_create_weekly_schedule_by_included_date(date)

@@ -32,6 +32,11 @@ Saturn::Application.routes.draw do
         post "approve"
       end
     end
+    resources :meeting_requests, :except => :destroy do
+      member do
+        post "approve"
+      end
+    end
     resource :admins, :only => [:show, :update]
     resource :reports, :only => :index do
       collection do

@@ -27,6 +27,8 @@ describe Section do
 
   it { should have_many(:vacation_requests).dependent(:destroy) }
 
+  it { should have_many(:meeting_requests).dependent(:destroy) }
+
   it { should have_one(:weekly_shift_duration_rule).dependent(:destroy) }
 
   it { should have_many(:daily_shift_count_rules).dependent(:destroy) }

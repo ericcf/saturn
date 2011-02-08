@@ -62,7 +62,7 @@ class ReportsController < ApplicationController
 
     unless @shift_totals_report.valid?
       flash.now[:error] = "Unable to generate report: #{@shift_totals_report.errors.full_messages.join(", ")}"
-      render :search_shift_totals
+      return(render :search_shift_totals)
     end
 
     respond_to do |format|
