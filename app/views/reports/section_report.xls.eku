@@ -1,10 +1,6 @@
 # initialize
 sheet1 = xls.create_worksheet
 
-# formats
-bold = Spreadsheet::Format.new(:weight => :bold)
-sheet1.column(0).default_format = bold
-
 widest_shift_title = @shifts.map{|s|s.title.size}.max
 sheet1.column(0).width = widest_shift_title + 1
 
@@ -12,8 +8,8 @@ sheet1[0, 0] = @section.title
 sheet1[1, 0] = "#{@start_date.to_s(:long)} to #{@end_date.to_s(:long)}"
 
 row = 3
-sheet1.row(3).default_format = bold
-sheet1[row, 0] = "Shifts"
+sheet1.column(0).default_format = Spreadsheet::Format.new(:horizontal_align => :left, :weight => :bold)
+sheet1.row(row).default_format = Spreadsheet::Format.new(:horizontal_align => :right, :weight => :bold)
 col = 1
 @physicians_by_group.each do |group_name, physicians|
   sheet1[row, col] = group_name + ":"
@@ -42,8 +38,8 @@ row += 1
 end
 
 row += 1
-sheet1.row(row).default_format = bold
 sheet1[row, col] = "Categories"
+sheet1.row(row).default_format = Spreadsheet::Format.new(:horizontal_align => :right, :weight => :bold)
 col += 1
 @physicians_by_group.each do |group_name, physicians|
   sheet1[row, col] = group_name + ":"

@@ -19,6 +19,10 @@
   %fieldset.inputs
     %legend Shifts
     %div{ :style => "margin-left: 25%;" }
+      = check_box_tag "shift_totals_report[hide_empty_shifts]", 1, true
+      = label_tag "shift_totals_report[hide_empty_shifts]", "Hide unpopulated shifts?"
+      %br
+      %br
       = link_to "select all", "#", :class => "check_all_boxes"
       |
       = link_to "select none", "#", :class => "uncheck_all_boxes"

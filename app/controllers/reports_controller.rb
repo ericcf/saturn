@@ -64,6 +64,11 @@ class ReportsController < ApplicationController
       flash.now[:error] = "Unable to generate report: #{@shift_totals_report.errors.full_messages.join(", ")}"
       render :search_shift_totals
     end
+
+    respond_to do |format|
+      format.html
+      format.xls { render :xls => @shift_totals_report, :layout => false }
+    end
   end
 
   def shift_totals_by_day

@@ -5,6 +5,14 @@
 
 %p= link_to "Generate another report", search_shift_totals_section_reports_path(@section)
 
+= semantic_form_for @shift_totals_report, :url => shift_totals_report_section_reports_path(@section, :format => :xls) do |report_form|
+  = report_form.input :start_date, :as => :hidden, :wrapper_html => { :style => "display:none;" }
+  = report_form.input :end_date, :as => :hidden, :wrapper_html => { :style => "display:none;" }
+  = report_form.input :hide_empty_shifts, :as => :boolean, :wrapper_html => { :style => "display:none;" }
+  = report_form.input :shift_ids, :as => :check_boxes, :collection => @shift_totals_report.shift_ids, :wrapper_html => { :style => "display:none;" }
+  = report_form.input :group_ids, :as => :check_boxes, :collection => @shift_totals_report.group_ids, :wrapper_html => { :style => "display:none;" }
+  = report_form.commit_button :label => "Download Excel"
+
 %p Select a shift below to view totals by day of the week.
 
 %div.fixed-table-wrapper

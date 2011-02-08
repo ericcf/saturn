@@ -1,0 +1,43 @@
+sheet1 = xls.create_worksheet
+
+def row; @row end
+def next_row; @row += 1 end
+def reset_row; @row = 0 end
+def col; @col end
+def next_col; @col += 1 end
+def reset_col; @col = 0 end
+
+reset_row; reset_col
+
+widest_shift_title = @shift_totals_report.shifts.map{ |s| s.title.size }.max
+sheet1.column(col).width = widest_shift_title + 1
+
+sheet1[row, col] = @section.title
+sheet1[next_row, col] = "Report for #{@shift_totals_report.start_date.strftime("#{@shift_totals_report.start_date.day} %B %Y")} - #{@shift_totals_report.end_date.strftime("#{@shift_totals_report.end_date.day} %B %Y")}"
+
+next_row
+
+@shift_totals_report.physicians_by_group.each do |group, physicians|
+  sheet1[row, next_col] = group.title
+  sheet1.column(col).width = group.title.size + 1
+
+  physicians.each do |physician|
+    sheet1[row, next_col] = physician.initials
+    sheet1.column(col).width = 4
+  end
+end
+
+reset_col
+
+@shift_totals_report.shifts.each do |shift|
+  sheet1[next_row, col] = shift.title
+
+  @shift_totals_report.physicians_by_group.each do |group, physicians|
+    sheet1[row, next_col] = @shift_totals_report.totals_by_group_id_and_shift_id[[group.id, shift.id]]
+
+    physicians.each do |physician|
+      sheet1[row, next_col] = @shift_totals_report.totals_by_physician_id_and_shift_id[[physician.id, shift.id]]
+    end
+  end
+  reset_col
+end

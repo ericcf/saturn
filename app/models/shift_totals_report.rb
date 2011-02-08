@@ -3,7 +3,7 @@ class ShiftTotalsReport
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_reader :start_date, :end_date, :shift_ids, :group_ids
+  attr_reader :start_date, :end_date, :shift_ids, :group_ids, :hide_empty_shifts
   attr_accessor :section
 
   validates :start_date, :end_date, :presence => true
@@ -42,8 +42,17 @@ class ShiftTotalsReport
     end
   end
 
+  def hide_empty_shifts=(value)
+    @hide_empty_shifts = [1, "1", true, "true"].include?(value)
+  end
+
   def shifts
-    @shifts ||= Shift.where(:id => shift_ids).select("id, title")
+    return @shifts if @shifts
+    if hide_empty_shifts
+      @shifts = Shift.where(:id => published_assignments.map(&:shift_id).uniq)
+    else
+      @shifts = Shift.where(:id => shift_ids).select("id, title")
+    end
   end
 
   def groups
@@ -55,8 +64,11 @@ class ShiftTotalsReport
   end
 
   def published_assignments
-    @published_assignments ||= section.assignments.published.
-      date_in_range(start_date, end_date).includes(:shift)
+    @published_assignments ||= section.assignments.
+      published.
+      date_in_range(start_date, end_date).
+      includes(:shift).
+      where(:physician_id => physicians_by_group.values.flatten.map(&:id))
   end
 
   # returns a hash mapping physicians to groups, excluding empty groups, i.e.
