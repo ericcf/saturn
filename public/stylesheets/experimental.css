@@ -1,36 +1,16 @@
-div.column {
+.left {
   float: left;
-}
-
-div#left-schedule-column, div#right-schedule-column {
-  padding-top: 96px;
-  padding-left: 15px;
-  padding-right: 5px;
-}
-
-div#center-schedule-column {
-  width: 862px;
-}
-
-div#center-schedule-column h3, div#center-schedule-column h4 {
-  float: left;
-}
-
-div#center-schedule-column h4 {
-  clear: left;
 }
 
 div.schedule-wrapper {
   position: absolute;
+  overflow-x: hidden;
   overflow-y: scroll;
-  top: 206px;
+  top: 226px;
   bottom: 5px;
+  left: 143px;
   border-top: 3px solid gray;
   border-bottom: 3px solid gray;
-}
-
-p#controls {
-  float: right;
 }
 
 div.schedule table {
@@ -47,13 +27,15 @@ div#physician-groups a {
 }
 
 div.schedule-headers {
-  position: absolute;
-  top: 170px;
+  display: inline-block;
+  border-top: 1px solid gray;
+  border-right: 1px solid gray;
 }
 
-div.schedule-headers span#holiday-title {
+div.holiday-title {
   color: #6e8e41;
   font-weight: normal;
+  height: 36px;
 }
 
 div.column-header {
@@ -65,8 +47,12 @@ div.column-header {
   border-left: 1px solid gray;
 }
 
-div.column-header:last-child {
-  border-right: 1px solid gray;
+div.prepended-column-header {
+  border-left: none;
+}
+
+div.appended-column-header {
+  border-left: none;
 }
 
 span.shift-title {
@@ -84,7 +70,6 @@ span.shift-title {
 .assignment {
   cursor: pointer;
   width: 100px;
-  position: relative;
   overflow: hidden;
 }
 
@@ -114,12 +99,17 @@ span.shift-title {
   width: 16px;
 }
 
+#rules-conflicts-wrapper {
+  position: absolute;
+  left: 1038px;
+  height: 500px;
+  top: 244px;
+  width: 200px;
+}
+
 #rules-conflicts {
   position: absolute;
-  top: 270px;
-  bottom: 5px;
-  overflow-y: scroll;
-  border-top: 3px solid gray;
-  border-bottom: 3px solid gray;
-  padding-left: 5px;
+  top: 30px;
+  bottom: 0px;
+  overflow-y: auto;
 }

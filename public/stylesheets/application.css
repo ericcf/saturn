@@ -144,9 +144,11 @@ form fieldset.buttons {
 
 div.schedule-wrapper {
   position: absolute;
-  top: 250px;
+  top: 260px;
   bottom: 0px;
-  overflow-y: scroll; }
+  left: 18px;
+  overflow-y: auto;
+  overflow-x: hidden; }
 
 table {
   border-collapse: collapse;
@@ -159,6 +161,8 @@ table {
     clear: left; }
     table.schedule td, table.schedule th {
       width: 120px; }
+  table.wide-schedule {
+    width: 1001px; }
 
 th {
   text-align: left;

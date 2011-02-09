@@ -17,7 +17,7 @@
 
 %p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
 
-%table.schedule
+%table.schedule.wide-schedule
   %thead
     %tr
       %th
@@ -28,7 +28,7 @@
       - @schedule_presenter.each_col_header do |col_header|
         %th= render :partial => "schedules/headers/html/#{col_header[:type]}", :object => col_header[:object]
 %div.schedule-wrapper
-  %table.schedule
+  %table.schedule.wide-schedule
     %tbody
       - @schedule_presenter.each_row do |row|
         %tr{ :class => cycle("odd", "") }

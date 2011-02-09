@@ -1,5 +1,5 @@
 - content_for :javascripts do
-  = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings"
+  = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings"
   :javascript
     var viewModel;
 
@@ -68,8 +68,7 @@
 
 %script#dateColHeader{ :type => "text/html" }
   %div.column-header
-    %span#holiday-title{ :"data-bind" => "text: holiday_title" }
-    %br
+    %div.holiday-title{ :"data-bind" => "text: holiday_title" }
     %span{ :"data-bind" => "text: shortDate" }
 
 %script#assignment{ :type => "text/html" }
@@ -83,7 +82,7 @@
   %td.shiftDay.ui-widget-content{ :"data-bind" => "assignmentDrop: {}, shiftDayMousing: {}, shiftDayDropping: {}, click: function() { viewModel.toggleSelectedShiftDay(this); }, css: { 'ui-state-highlight': selected }, template: { name: 'assignment', foreach: assignments }" }
 
 %script#shiftWeekRow{ :type => "text/html" }
-  %div
+  %div.shift-week
     %span.shift-title{ :"data-bind" => "text: shift_title" }
     %input{ :"data-bind" => "value: shift_note" }
     %table
@@ -94,37 +93,47 @@
 
 
 %script#previousLink{ :type => "text/html" }
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
   %a{ :href => "${ '#' + viewModel.previousWeekDate() }", :"data-bind" => "click: function() { loadWeeklySchedule(viewModel.previousWeekDate(), function(data) { viewModel.updateFromJS(data) }); return true }" } &laquo; previous week
-%div#left-schedule-column.column{ :"data-bind" => "template: { name: 'previousLink' }" }
-  -# placeholder text
-  &laquo; previous week
 
-%div#center-schedule-column.column
+%script#nextLink{ :type => "text/html" }
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
+  %a{ :href => "${ '#' + viewModel.nextWeekDate() }", :"data-bind" => "click: function() { loadWeeklySchedule(viewModel.nextWeekDate(), function(data) { viewModel.updateFromJS(data) }); return true }" } next week &raquo;
+
+%div
   %h3
     Editing the week of
     %span{ :"data-bind" => "text: longDate" }
     %input#date-selector{ :type => "text", :value => " jump to date...", :"data-bind" => "dateSelectorUI: {}" }
       
-  %h4
+  %h4.left
     last saved:
     %span{ :"data-bind" => "text: longLastUpdate" }
     |
     status:
     %span{ :"data-bind" => "text: is_published() ? 'published' : 'unpublished'" }
+    |&nbsp;
     %span.flash.error{ :"data-bind" => "text: error_messages, showFlash: {}" }
 
-  %p#controls
+  %p.inline-control
     %input#is-published{ :type => "checkbox", :"data-bind" => "checked: is_published" }
     %label{ :for => "is-published" }
       %span.ui-button-text{ :"data-bind" => "text: publishAction" }
         
+  %div.column-header.prepended-column-header{ :"data-bind" => "template: { name: 'previousLink' }" }
+    -# placeholder text
+    &laquo; previous week
+
   %div.schedule-headers{ :"data-bind" => 'template: { name: "dateColHeader", foreach: dates }' }
     
-  %div.schedule-wrapper
-    %div.schedule{ :"data-bind" => 'template: { name: "shiftWeekRow", foreach: shift_weeks }' }
+  %div.column-header.appended-column-header{ :"data-bind" => "template: { name: 'nextLink' }" }
+    -# placeholder text
+    next week &raquo;
 
-%script#nextLink{ :type => "text/html" }
-  %a{ :href => "${ '#' + viewModel.nextWeekDate() }", :"data-bind" => "click: function() { loadWeeklySchedule(viewModel.nextWeekDate(), function(data) { viewModel.updateFromJS(data) }); return true }" } next week &raquo;
+%div.schedule-wrapper
+  %div.schedule{ :"data-bind" => 'template: { name: "shiftWeekRow", foreach: shift_weeks }' }
 
 %script#ruleConflict{ :type => "text/html" }
   %tr
@@ -141,10 +150,4 @@
   %div#rules-conflicts{ :"data-bind" => "template: { name: 'ruleConflicts', foreach: rules_conflicts }" }
   {{/if}}
 
-%div#right-schedule-column.column
-  %div{ :"data-bind" => "template: { name: 'nextLink' }" }
-    -# placeholder text
-    next week &raquo;
-
-  %p &nbsp;
-  %div{ :"data-bind" => "template: { name: 'rulesConflicts' }" }
+%div#rules-conflicts-wrapper{ :"data-bind" => "template: { name: 'rulesConflicts' }" }

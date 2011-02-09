@@ -3,8 +3,9 @@
 
 $(function() {
     var currentlyDragging = null;
+    var currentlyReceiving = null;
 
-    $("input#is-published").button();
+    $("#is-published").button();
 
     function setIsHighlighted(elem, value) {
         if (currentlyDragging == null) {
@@ -29,13 +30,6 @@ $(function() {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
             var value = valueAccessor();
             $(element).attr("href", "#" + ko.utils.unwrapObservable(value));
-        }
-    };
-
-    ko.bindingHandlers.elementId = {
-        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            var value = valueAccessor();
-            $(element).attr("id", ko.utils.unwrapObservable(value));
         }
     };
 
@@ -86,7 +80,7 @@ $(function() {
                     }
                 })
                 .click(function() {
-                    $("div#physician-groups").dialog("open");
+                    $("#physician-groups").dialog("open");
                 });
         }
     };
@@ -94,37 +88,62 @@ $(function() {
     ko.bindingHandlers.shiftDayDropping = {
         init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
             $(element)
-                .bind("drop", function(event, ui) {
-                    ui.draggable.hide();
+                .bind("drop", function(event, element) {
+                    $(element).hide();
                     shiftDay.addAssignment(currentlyDragging);
                     currentlyDragging.save();
                     if (shiftDay.assignments.indexOf(currentlyDragging) == -1) {
-                        ui.draggable.remove();
+                        $(element).remove();
                     }
                     currentlyDragging = null;
                 })
-                .droppable({
-                    accept: "div.assignment",
-                    hoverClass: "ui-state-highlight",
-                    activeClass: "ui-state-active"
+                .bind("dropover", function(event) {
+                    currentlyReceiving = shiftDay;
+                    $(element).addClass("ui-state-highlight");
+                })
+                .bind("dropout", function(event) {
+                    if (currentlyReceiving == shiftDay) {
+                        currentlyReceiving = null;
+                    }
+                    $(element).removeClass("ui-state-highlight");
                 });
         }
     };
 
     ko.bindingHandlers.assignmentDragging = {
         init: function(element, valueAccessor, allBindingsAccessor, assignment) {
+            var lastReceiver = null;
             $(element)
                 .bind("drag", function(event) {
                     currentlyDragging = assignment;
+                    $(this).hide();
+                    var receiver = document.elementFromPoint(event.clientX, event.clientY);
+                    if ($(receiver).hasClass("shiftDay")) {
+                        $(receiver).trigger("dropover");
+                    }
+                    $(this).show();
+                    if (lastReceiver != null && lastReceiver != receiver) {
+                        $(lastReceiver).trigger("dropout");
+                    }
+                    lastReceiver = receiver;
                 })
-                .bind("dragstop", function() {
+                .bind("dragstop", function(event) {
+                    $(this).hide();
+                    var receiver = document.elementFromPoint(event.clientX, event.clientY);
+                    if ($(receiver).hasClass("shiftDay")) {
+                        $(receiver).trigger("drop", element);
+                    } else {
+                        $(this).show();
+                    }
                     currentlyDragging = null;
                     if (viewModel.editingAssignment() == assignment) {
                         assignment.inEditMode(false);
                     }
                 })
                 .draggable({
-                    revert: "invalid",
+                    revert: function(wookiee) {
+                        return currentlyReceiving == null;
+                    },
                     start: function(event, ui) {
                         $(this).data("ignore-click", true);
                         setIsActive(element, true);
@@ -164,7 +183,7 @@ $(function() {
                         return;
                     }
                     event.stopPropagation();
-                    $("div#assignment-details")
+                    $("#assignment-details")
                         .dialog("option", "title", assignment.physician_name()())
                         .dialog('open');
                 });
