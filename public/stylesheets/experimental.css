@@ -26,14 +26,14 @@ div#physician-groups a {
   text-decoration: none;
 }
 
-div.schedule-headers {
+.schedule-headers {
   display: -moz-inline-box;
   display: inline-block;
   border-top: 1px solid gray;
   border-right: 1px solid gray;
 }
-* html .schedule-headers { display:inline; }  /* for IE 6 */
-* + html .schedule-headers { display:inline; }  /* for IE 7 */
+* html div.schedule-headers { display:inline; }  /* for IE 6 */
+* + html div.schedule-headers { display:inline; }  /* for IE 7 */
 
 div.holiday-title {
   color: #6e8e41;
