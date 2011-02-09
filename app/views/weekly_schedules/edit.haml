@@ -1,5 +1,5 @@
 - content_for :javascripts do
-  = javascript_include_tag "http://www.json.org/json2.js"
+  = javascript_include_tag "json2"
   = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "schedule_editor"
   :javascript
     var viewModel;
