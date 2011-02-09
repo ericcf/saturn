@@ -52,8 +52,12 @@ class WeeklySchedulesController < ApplicationController
       :is_published => schedule_params["is_published"] || 0
     }
     @weekly_schedule.update_attributes(schedule_attributes)
-    # used to provide an accurate last update date
-    @weekly_schedule.touch unless @weekly_schedule.errors.any?
+    unless @weekly_schedule.errors.any?
+      # used to provide an accurate last update date
+      @weekly_schedule.touch
+      # ensures that relations are fresh for serialization
+      @weekly_schedule = WeeklySchedule.find(@weekly_schedule.id)
+    end
     render :json => @weekly_schedule.to_json(:only_delta_attributes => true)
   end
 end

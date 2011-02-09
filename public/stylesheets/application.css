@@ -144,18 +144,17 @@ form fieldset.buttons {
 
 div.schedule-wrapper {
   position: absolute;
-  top: 260px;
-  bottom: 0px;
+  top: 251px;
+  bottom: 5px;
   left: 18px;
   overflow-y: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  border-bottom: 1px solid #cccccc; }
 
 table {
   border-collapse: collapse;
-  border-left: 1px solid;
-  border-left-color: #cccccc;
-  border-top: 1px solid;
-  border-top-color: #cccccc; }
+  border-left: 1px solid #cccccc;
+  border-top: 1px solid #cccccc; }
   table.schedule {
     float: left;
     clear: left; }

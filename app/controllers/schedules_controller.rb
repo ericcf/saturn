@@ -34,15 +34,23 @@ class SchedulesController < ApplicationController
       find_by_is_published_and_date(true, start_date) ||
       @section.weekly_schedules.build(:date => start_date)
     @assignments = schedule.assignments.includes(:shift)
-    @physicians_by_id = @section.members.includes(:names_alias).hash_by_id
+    @physician_names_by_id = @section.members.includes(:names_alias).each_with_object({}) do |physician, hsh|
+      hsh[physician.id] = physician.short_name
+    end
     @view_mode = params[:view_mode]
     @schedule_presenter = case @view_mode.to_i
       when 0, 1
-        WeeklySchedulePresenter.new(@section, @dates, @assignments,
-          @physicians_by_id, { :col_type => :dates, :row_type => :shifts })
+        WeeklySchedulePresenter.new(:section => @section, :dates => @dates,
+          :assignments => @assignments, :weekly_schedule => schedule,
+          :physician_names_by_id => @physician_names_by_id,
+          :options => { :col_type => :dates, :row_type => :shifts }
+        )
       when 2
-        WeeklySchedulePresenter.new(@section, @dates, @assignments,
-          @physicians_by_id, { :col_type => :dates, :row_type => :physicians })
+        WeeklySchedulePresenter.new(:section => @section, :dates => @dates,
+          :assignments => @assignments, :weekly_schedule => schedule,
+          :physician_names_by_id => @physician_names_by_id,
+          :options => { :col_type => :dates, :row_type => :physicians }
+        )
       end
 
     respond_to do |format|

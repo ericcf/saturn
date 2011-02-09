@@ -11,5 +11,5 @@
       != nav_item "Members", section_memberships_path(@section)
       != nav_item "Shifts", section_shifts_path(@section), {}, :update, @section
       != nav_item "Shift Categories", section_shift_tags_path(@section), {}, :update, @section
-      != nav_item "Reports", section_shift_totals_path(@section)
+      != nav_item "Reports", section_shift_totals_path(@section), {}, nil, nil, /sections\/\d+\/reports/
       != nav_item "Administrators", section_admins_path(@section), {}, :manage, @section

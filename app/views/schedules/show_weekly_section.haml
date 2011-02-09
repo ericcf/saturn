@@ -36,4 +36,4 @@
           - row.each_value do |value|
             %td!= value && value.join("<br/>")
 
-%div#rules-conflicts= render "rules_conflicts", :physicians_by_id => @physicians_by_id
+%div#rules-conflicts= render "rules_conflicts", :physician_names_by_id => @physician_names_by_id

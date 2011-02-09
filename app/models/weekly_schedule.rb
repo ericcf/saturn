@@ -90,11 +90,12 @@ class WeeklySchedule < ActiveRecord::Base
       hsh[note.shift_id] = note
     end
     section.shifts.select("id, title").active_as_of(date).map do |shift|
+      shift_week_note = notes_by_shift_id[shift.id] || ShiftWeekNote.new(:shift_id => shift.id)
       [
       "{",
         "\"shift_id\":#{shift.id},",
         "\"shift_title\":\"#{shift.title}\",",
-        "\"shift_note\":\"#{(notes_by_shift_id[shift.id] || ShiftWeekNote.new).text}\",",
+        shift_week_note.to_json + ",",
         "\"shift_days\":[#{dates.map do |day|
           [
           "{",

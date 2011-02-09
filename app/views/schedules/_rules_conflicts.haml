@@ -10,12 +10,12 @@
         %h4= "Below weekly minimum (#{duration_rule.minimum})"
         %ul
           - offenders[:below_minimum].each do |summary|
-            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"
+            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"
       - if duration_rule.maximum
         %h4= "Above weekly maximum (#{duration_rule.maximum})"
         %ul
           - offenders[:above_maximum].each do |summary|
-            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"
+            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"
 
     - count_rules.each do |count_rule|
       - if count_rule.maximum
@@ -23,4 +23,4 @@
         %h4= "Above daily maximum for #{count_rule.shift_tag.title}"
         %ul
           - over.each do |summary|
-            %li= "#{@physicians_by_id[summary[:physician_id]].short_name} (#{summary[:description]})"
+            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"

@@ -84,7 +84,7 @@
 %script#shiftWeekRow{ :type => "text/html" }
   %div.shift-week
     %span.shift-title{ :"data-bind" => "text: shift_title" }
-    %input{ :"data-bind" => "value: shift_note" }
+    %input.shift-week-note{ :"data-bind" => "value: shift_week_note.text" }
     %table
       %tbody
         %tr{ :"data-bind" => 'template: { name: "shiftDayCell", foreach: shift_days }' }

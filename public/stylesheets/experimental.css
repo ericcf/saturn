@@ -59,6 +59,16 @@ span.shift-title {
   font-weight: bold;
 }
 
+input.shift-week-note {
+  position: absolute;
+  height: 16px;
+  background-color: #f9f9f9;
+  left: 180px;
+  width: 620px;
+  padding-left: 0.5em;
+  color: #aaa;
+}
+
 .shiftDay {
   width: 118px;
   min-height: 32px;
