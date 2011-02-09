@@ -1,6 +1,6 @@
 # Saturn
 
-A Rails 3 application for managing physicians' rotation schedules.
+A Rails 3 application for managing physicians' rotation schedules, specifically targeting academic medical institutions.
 
 ## Installation
 1. git clone git://github.com/ericcf/saturn.git
@@ -8,7 +8,7 @@ A Rails 3 application for managing physicians' rotation schedules.
 3. set up your database.yml file and database(s) as necessary
 
 ## Dependencies
-Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for authentication/authorization and [rad_directory](http://github.com/ericcf/rad_directory) as the source of physicians.
+Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for authentication/authorization and [rad_directory](http://github.com/ericcf/rad_directory) as the source of physicians. On the client side, it uses jQuery and jQuery UI, in addition to Knockout.
 
 ## Testing
 Run RSpec specs with:
@@ -25,17 +25,17 @@ Run Cucumber features with:
 * Supports multiple sections
 * Supports multiple types of users (currently Faculty, Fellows, Residents)
 * Provides drag-n-drop shift assignments
+* Schedule editing and publishing is built with Ajax and requires no page refreshing
 * Exports section reports to Excel
 * Exports individual schedules to iCalendar
 * Allows for grouping shifts into "categories" (e.g. AM, PM, Clinical)
-* Basic manual vacation request management
+* Basic manual vacation and meeting request management
 
 ## Todo
 * Sync with external calendars
 * Rule-based automated shift assignment
-* Meeting request management
 * Resident rotation scheduling
 * E-mail notification
 
 ## Copyright
-Copyright (c) 2010 Eric Carty-Fickes, released under MIT licence
+Copyright (c) 2011 Eric Carty-Fickes, released under MIT licence

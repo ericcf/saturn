@@ -1,11 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails'
-
-gem 'mysql2'
 gem 'haml'
-gem 'jquery-rails'
-gem 'mongrel', '= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
 
@@ -33,14 +29,14 @@ gem 'icalendar'
 
 # Deployment
 gem 'capistrano'
+gem 'exception_notification', :git => 'git://github.com/rails/exception_notification', :require => 'exception_notifier'
 
 group :development, :test do
+  gem 'mysql2'
+  gem 'mongrel', '= 1.2.0.pre2'
   gem 'sqlite3-ruby', :require => 'sqlite3'
   gem 'haml-rails'
   gem 'launchy'
-  if RUBY_VERSION =~ /1.9/
-    gem 'ruby-debug19', :require => 'ruby-debug'
-  end
   gem 'rspec-rails'
   gem 'autotest-standalone'
   gem 'autotest-growl'
@@ -55,6 +51,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'jasmine'
   if RUBY_VERSION =~ /1.9/
+    gem 'ruby-debug19', :require => 'ruby-debug'
     gem 'simplecov', '>= 0.3.5', :require => false
   end
 end

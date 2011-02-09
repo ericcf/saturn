@@ -35,12 +35,17 @@ module Saturn
     # config.i18n.default_locale = :de
 
     # JavaScript files you want as :defaults (application.js is always included).
-    # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery.min jquery-ui.min rails)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    config.middleware.use ::ExceptionNotifier,
+      :email_prefix => "Saturn Errors: ",
+      :sender_address => %w{"Saturn Admin" <saturn@northwestern.edu>},
+      :exception_recipients => %w{ericcf@northwestern.edu} if Rails.env.production?
   end
 end

@@ -13,38 +13,44 @@ GIT
   specs:
     rad_directory (0.0.8)
 
+GIT
+  remote: git://github.com/rails/exception_notification
+  revision: 192a49a02d63d28b23ed41cebadfedd490929cf1
+  specs:
+    exception_notification (1.0.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    actionmailer (3.0.3)
-      actionpack (= 3.0.3)
-      mail (~> 2.2.9)
-    actionpack (3.0.3)
-      activemodel (= 3.0.3)
-      activesupport (= 3.0.3)
+    actionmailer (3.0.4)
+      actionpack (= 3.0.4)
+      mail (~> 2.2.15)
+    actionpack (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
       builder (~> 2.1.2)
       erubis (~> 2.6.6)
       i18n (~> 0.4)
       rack (~> 1.2.1)
       rack-mount (~> 0.6.13)
-      rack-test (~> 0.5.6)
+      rack-test (~> 0.5.7)
       tzinfo (~> 0.3.23)
-    activemodel (3.0.3)
-      activesupport (= 3.0.3)
+    activemodel (3.0.4)
+      activesupport (= 3.0.4)
       builder (~> 2.1.2)
       i18n (~> 0.4)
-    activerecord (3.0.3)
-      activemodel (= 3.0.3)
-      activesupport (= 3.0.3)
+    activerecord (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
       arel (~> 2.0.2)
       tzinfo (~> 0.3.23)
-    activeresource (3.0.3)
-      activemodel (= 3.0.3)
-      activesupport (= 3.0.3)
-    activesupport (3.0.3)
+    activeresource (3.0.4)
+      activemodel (= 3.0.4)
+      activesupport (= 3.0.4)
+    activesupport (3.0.4)
     archive-tar-minitar (0.5.2)
-    arel (2.0.7)
+    arel (2.0.8)
     autotest-growl (0.2.9)
     autotest-standalone (4.5.5)
     babosa (0.2.2)
@@ -81,7 +87,7 @@ GEM
       cucumber (>= 0.8.0)
     culerity (0.2.15)
     daemons (1.0.10)
-    database_cleaner (0.6.2)
+    database_cleaner (0.6.3)
     devise (1.1.5)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -123,9 +129,6 @@ GEM
       rspec (>= 1.1.5)
       selenium-client (>= 1.2.17)
       selenium-rc (>= 2.1.0)
-    jquery-rails (0.2.7)
-      rails (~> 3.0)
-      thor (~> 0.14.4)
     json (1.4.6)
     json_pure (1.5.1)
     launchy (0.3.7)
@@ -159,17 +162,17 @@ GEM
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
-    rails (3.0.3)
-      actionmailer (= 3.0.3)
-      actionpack (= 3.0.3)
-      activerecord (= 3.0.3)
-      activeresource (= 3.0.3)
-      activesupport (= 3.0.3)
+    rails (3.0.4)
+      actionmailer (= 3.0.4)
+      actionpack (= 3.0.4)
+      activerecord (= 3.0.4)
+      activeresource (= 3.0.4)
+      activesupport (= 3.0.4)
       bundler (~> 1.0)
-      railties (= 3.0.3)
-    railties (3.0.3)
-      actionpack (= 3.0.3)
-      activesupport (= 3.0.3)
+      railties (= 3.0.4)
+    railties (3.0.4)
+      actionpack (= 3.0.4)
+      activesupport (= 3.0.4)
       rake (>= 0.8.7)
       thor (~> 0.14.4)
     rake (0.8.7)
@@ -207,9 +210,9 @@ GEM
       json_pure
       rubyzip
     shoulda (2.11.3)
-    simplecov (0.3.9)
-      simplecov-html (>= 0.3.7)
-    simplecov-html (0.3.9)
+    simplecov (0.4.0)
+      simplecov-html (~> 0.4.0)
+    simplecov-html (0.4.0)
     spreadsheet (0.6.5.1)
       ruby-ole (>= 1.0)
     sqlite3 (1.3.3)
@@ -247,6 +250,7 @@ DEPENDENCIES
   devise
   dragonfly
   ekuseru
+  exception_notification!
   factory_girl
   factory_girl_rails
   formtastic
@@ -255,7 +259,6 @@ DEPENDENCIES
   haml-rails
   icalendar
   jasmine
-  jquery-rails
   launchy
   mongrel (= 1.2.0.pre2)
   mysql2
