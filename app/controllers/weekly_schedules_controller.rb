@@ -13,13 +13,7 @@ class WeeklySchedulesController < ApplicationController
   def edit
     authorize! :update, @section
     respond_to do |format|
-      format.html do
-        @physicians_by_group = []
-        @section.members_by_group.each do |group_title, physicians|
-          @physicians_by_group << { "group_title" => group_title, "physicians" => physicians.map { |p| { "id" => p.id, "short_name" => p.short_name } } }
-        end
-      end
-
+      format.html
       format.json do
         start_date = monday_of_week_with(params[:date])
         @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(

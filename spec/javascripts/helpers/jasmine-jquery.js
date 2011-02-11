@@ -8,11 +8,15 @@ var loadFixtures = function() {
 
 var setFixtures = function(html) {
   jasmine.getFixtures().set(html);
-}
+};
 
 var sandbox = function(attributes) {
   return jasmine.getFixtures().sandbox(attributes);
 };
+
+var spyOnEvent = function(selector, eventName) {
+  jasmine.JQuery.events.spyOn(selector, eventName);
+}
 
 jasmine.getFixtures = function() {
   return jasmine.currentFixtures_ = jasmine.currentFixtures_ || new jasmine.Fixtures();
@@ -21,6 +25,7 @@ jasmine.getFixtures = function() {
 jasmine.Fixtures = function() {
   this.containerId = 'jasmine-fixtures';
   this.fixturesCache_ = {};
+  this.fixturesPath = 'spec/javascripts/fixtures';
 };
 
 jasmine.Fixtures.prototype.set = function(html) {
@@ -70,14 +75,16 @@ jasmine.Fixtures.prototype.getFixtureHtml_ = function(url) {
   return this.fixturesCache_[url];
 };
 
-jasmine.Fixtures.prototype.loadFixtureIntoCache_ = function(url) {
+jasmine.Fixtures.prototype.loadFixtureIntoCache_ = function(relativeUrl) {
   var self = this;
+  var url = this.fixturesPath.match('/$') ? this.fixturesPath + relativeUrl : this.fixturesPath + '/' + relativeUrl;
   $.ajax({
     async: false, // must be synchronous to guarantee that no tests are run before fixture is loaded
+    cache: false,
     dataType: 'html',
     url: url,
     success: function(data) {
-      self.fixturesCache_[url] = data;
+      self.fixturesCache_[relativeUrl] = data;
     }
   });
 };
@@ -97,6 +104,33 @@ jasmine.JQuery.elementToString = function(element) {
   return $('<div />').append(element.clone()).html();
 };
 
+jasmine.JQuery.matchersClass = {};
+
+(function(namespace) {
+  var data = {
+    spiedEvents: {},
+    handlers:    []
+  };
+
+  namespace.events = {
+    spyOn: function(selector, eventName) {
+      var handler = function(e) {
+        data.spiedEvents[[selector, eventName]] = e;
+      };
+      $(selector).bind(eventName, handler);
+      data.handlers.push(handler);
+    },
+
+    wasTriggered: function(selector, eventName) {
+      return !!(data.spiedEvents[[selector, eventName]]);
+    },
+
+    cleanUp: function() {
+      data.spiedEvents = {};
+      data.handlers    = [];
+    }
+  }
+})(jasmine.JQuery);
 
 (function(){
   var jQueryMatchers = {
@@ -141,7 +175,11 @@ jasmine.JQuery.elementToString = function(element) {
     },
 
     toHaveText: function(text) {
-      return this.actual.text() == text;
+      if (text && jQuery.isFunction(text.test)) {
+        return text.test(this.actual.text());
+      } else {
+        return this.actual.text() == text;
+      }
     },
 
     toHaveValue: function(value) {
@@ -158,7 +196,11 @@ jasmine.JQuery.elementToString = function(element) {
 
     toContain: function(selector) {
       return this.actual.find(selector).size() > 0;
-    }
+    },
+
+		toBeDisabled: function(selector){
+			return this.actual.attr("disabled") == true;
+		}
   };
 
   var hasProperty = function(actualValue, expectedValue) {
@@ -171,7 +213,7 @@ jasmine.JQuery.elementToString = function(element) {
   var bindMatcher = function(methodName) {
     var builtInMatcher = jasmine.Matchers.prototype[methodName];
 
-    jasmine.Matchers.prototype[methodName] = function() {
+    jasmine.JQuery.matchersClass[methodName] = function() {
       if (this.actual instanceof jQuery) {
         var result = jQueryMatchers[methodName].apply(this, arguments);
         this.actual = jasmine.JQuery.elementToString(this.actual);
@@ -191,7 +233,22 @@ jasmine.JQuery.elementToString = function(element) {
   }
 })();
 
+beforeEach(function() {
+  this.addMatchers(jasmine.JQuery.matchersClass);
+  this.addMatchers({
+    toHaveBeenTriggeredOn: function(selector) {
+      this.message = function() {
+        return [
+          "Expected event " + this.actual + " to have been triggered on" + selector,
+          "Expected event " + this.actual + " not to have been triggered on" + selector
+        ];
+      };
+      return jasmine.JQuery.events.wasTriggered(selector, this.actual);
+    }
+  })
+});
 
 afterEach(function() {
   jasmine.getFixtures().cleanUp();
+  jasmine.JQuery.events.cleanUp();
 });

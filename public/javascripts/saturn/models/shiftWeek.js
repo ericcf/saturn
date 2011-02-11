@@ -1,31 +1,25 @@
-var shiftWeek = function(attributes, viewModel) {
+var shiftWeek = function(attributes) {
     var self = this;
-    var schedule = viewModel;
+    var schedule = undefined;
     var mapping = {
         "shift_days": {
             create: function(options) {
-                return new shiftDay(options.data, schedule);
+                return new shiftDay(options.data);
             }
         }
     };
 
-    ko.mapping.fromJS(attributes, mapping, this);
+    this.shift_week_note = {
+        text: ko.observable(undefined),
+        shift_id: ko.observable(undefined)
+    };
 
-    if (this.shift_week_note.text() == "") {
-        this.shift_week_note.text("add note...");
-    }
-
-    var lastNote = this.shift_week_note.text();
-    this.shift_week_note.text.subscribe(function(newNote) {
-        if (newNote == "add note..." || newNote == lastNote) {
-            return;
+    this.setSchedule = function(model) {
+        schedule = model;
+        for (var i = 0; i < this.shift_days().length; i++) {
+            this.shift_days()[i].setSchedule(schedule);
         }
-        lastNote = newNote;
-        self.save();
-        if (newNote == "") {
-            self.shift_week_note.text("add note...");
-        }
-    });
+    };
 
     this.serialize = function() {
         var serialized = {
@@ -42,4 +36,22 @@ var shiftWeek = function(attributes, viewModel) {
     this.save = function() {
         schedule.save({ shift_week_notes_attributes: [self.serialize()] });
     };
-}
+
+    ko.mapping.fromJS(attributes, mapping, this);
+
+    if (this.shift_week_note.text() == "") {
+        this.shift_week_note.text("add note...");
+    }
+    var lastNote;
+    this.shift_week_note.text.subscribe(function(newNote) {
+        if (newNote == "add note..." || newNote == lastNote) {
+            lastNote = newNote;
+            return;
+        }
+        lastNote = newNote;
+        self.save();
+        if (newNote == "") {
+            self.shift_week_note.text("add note...");
+        }
+    });
+};

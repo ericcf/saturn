@@ -1,0 +1,22 @@
+<script id="directoryListing" type="text/html">
+    <ul>
+        {{each groups()}}
+            {{if physicians().length > 0}}
+                <li><a href="#${title}" data-bind="text: title"></a></li>
+            {{/if}}
+        {{/each}}
+    </ul>
+    {{each groups()}}
+        {{if physicians().length > 0}}
+            <div id="${title}">
+                <ul>
+                    {{each(i, physician) physicians()}}
+                        <li>
+                            <a class="physician-name ui-corner-all ui-state-default" href="#" data-bind="click: function() { assignPhysician(physician.id) }, text: physician.short_name"></a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+    {{/each}}
+</script>

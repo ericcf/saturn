@@ -7,35 +7,42 @@ $(function() {
 
     $("#is-published").button();
 
-    function setIsHighlighted(elem, value) {
-        if (currentlyDragging == null) {
-            if (value) {
-                $(elem).addClass("ui-state-highlight");
-            } else {
-                $(elem).removeClass("ui-state-highlight");
-            }
-        }
+    function openDetailsDialog(options) {
+        $("#assignment-details")
+            .dialog("option", "title", options.title)                   
+            .dialog('open');
     }
 
-    function setIsActive(elem, value) {
-        if (value == true) {
-            setIsHighlighted(elem, false);
-            $(elem).addClass("ui-state-active");
-        } else {
-            $(elem).removeClass("ui-state-active");
-        }
+    function openDirectoryDialog() {
+        $("#physician-groups")
+            .dialog({
+                autoOpen: false,
+                title: "Select a physician to assign",
+                close: function(event, ui) {
+                    viewModel.deselectShiftDays();
+                }
+            })
+            .tabs()
+            .dialog("open")
+            .find("a.physician-name")
+                .hover(function() {
+                    $(this).addClass("ui-state-hover");
+                }, function() {
+                    $(this).removeClass("ui-state-hover");
+                })
+                .click(function() {
+                    $("#physician-groups").dialog("close");
+                });
     }
 
-    ko.bindingHandlers.anchorHref = {
+    ko.bindingHandlers.ajaxLifecycle = {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            var value = valueAccessor();
-            $(element).attr("href", "#" + ko.utils.unwrapObservable(value));
-        }
-    };
-
-    ko.bindingHandlers.tabsUI = {
-        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            $(element).tabs();
+            $(element).ajaxSend(function() {
+                viewModel.ajaxStatus("sending");
+            });
+            $(element).ajaxComplete(function() {
+                viewModel.ajaxStatus("complete");
+            });
         }
     };
 
@@ -68,34 +75,22 @@ $(function() {
         }
     };
 
-    ko.bindingHandlers.shiftDayMousing = {
-        init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
-            $(element)
-                .bind("mouseover", function() {
-                    setIsHighlighted(element, true);
-                })
-                .bind("mouseout", function() {
-                    if (!shiftDay.selected()) {
-                        setIsHighlighted(element, false);
-                    }
-                })
-                .click(function() {
-                    $("#physician-groups").dialog("open");
-                });
+    ko.bindingHandlers.openDirectoryDialog = {
+        update: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
+            var value = valueAccessor();
+            var shiftDayIsSelected = ko.utils.unwrapObservable(value);
+            if (shiftDayIsSelected == true) {
+                openDirectoryDialog();
+            }
         }
     };
-    
+
     ko.bindingHandlers.shiftDayDropping = {
         init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
             $(element)
-                .bind("drop", function(event, element) {
-                    $(element).hide();
-                    shiftDay.addAssignment(currentlyDragging);
-                    currentlyDragging.save();
-                    if (shiftDay.assignments.indexOf(currentlyDragging) == -1) {
-                        $(element).remove();
-                    }
-                    currentlyDragging = null;
+                .bind("drop", function(event, assignmentElement) {
+                    assignmentElement.style.display = "none";
+                    viewModel.assignmentDroppedOn(shiftDay);
                 })
                 .bind("dropover", function(event) {
                     currentlyReceiving = shiftDay;
@@ -115,7 +110,7 @@ $(function() {
             var lastReceiver = null;
             $(element)
                 .bind("drag", function(event) {
-                    currentlyDragging = assignment;
+                    viewModel.startDragging(assignment);
                     $(this).hide();
                     var receiver = document.elementFromPoint(event.clientX, event.clientY);
                     if ($(receiver).hasClass("shiftDay")) {
@@ -128,14 +123,14 @@ $(function() {
                     lastReceiver = receiver;
                 })
                 .bind("dragstop", function(event) {
-                    $(this).hide();
+                    $(this).remove();
                     var receiver = document.elementFromPoint(event.clientX, event.clientY);
                     if ($(receiver).hasClass("shiftDay")) {
                         $(receiver).trigger("drop", element);
                     } else {
                         $(this).show();
                     }
-                    currentlyDragging = null;
+                    viewModel.stopDragging(assignment);
                     if (viewModel.editingAssignment() == assignment) {
                         assignment.inEditMode(false);
                     }
@@ -146,13 +141,6 @@ $(function() {
                     },
                     start: function(event, ui) {
                         $(this).data("ignore-click", true);
-                        setIsActive(element, true);
-                        assignmentDrag = true;
-                    },
-                    stop: function() {
-                        setIsActive(element, false);
-                        setIsHighlighted(element, false);
-                        assignmentDrag = false;
                     },
                     // the dragging assignment appears above other assignments
                     stack: "div.assignment"
@@ -160,51 +148,49 @@ $(function() {
         }
     };
 
-    ko.bindingHandlers.assignmentMousing = {
-        init: function(element, valueAccessor, allBindingsAccessor, assignment) {
-            $(element)
-                .bind("mouseleave", function(event) {
-                    if (!assignment.inEditMode()) {
-                        setIsHighlighted(element, false);
-                    }
-                })
-                .bind("mouseover", function(event) {
-                    if (currentlyDragging == null) {
-                        setIsHighlighted(element, true);
-                    }
-                    if (viewModel.selectedShiftDays().length == 0) {
-                        event.stopPropagation();
-                        setIsHighlighted("td.shiftDay.ui-state-highlight", false);
-                    }
-                })
-                .click(function(event) {
-                    if ($(this).data("ignore-click") != undefined) {
-                        $(this).removeData("ignore-click");
-                        return;
-                    }
-                    event.stopPropagation();
-                    $("#assignment-details")
-                        .dialog("option", "title", assignment.physician_name()())
-                        .dialog('open');
-                });
+    ko.bindingHandlers.openDetailsDialog = {
+        update: function(element, valueAccessor, allBindingsAccessor, assignment) {
+            var value = valueAccessor();
+            var assignmentIsInEditMode = ko.utils.unwrapObservable(value);
+            if (assignmentIsInEditMode == true) {
+                openDetailsDialog({ title: assignment.physician_name });
+            }
         }
     };
 
-    ko.bindingHandlers.physicianGroupsDialog = {
+    ko.bindingHandlers.mouseover = {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            $(element)
-                .dialog({
-                    autoOpen: false,
-                    title: "Select a physician to assign",
-                    close: function(event, ui) {
-                        viewModel.deselectShiftDays();
-                    }
-                })
-                .find("a").hover(function() {
-                    $(this).addClass("ui-state-hover")
-                }, function() {
-                    $(this).removeClass("ui-state-hover")
-                });
+            var callback = valueAccessor();
+            $(element).mouseover(function(event) {
+                callback(event);
+            });
+        }
+    };
+
+    ko.bindingHandlers.mouseout = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var callback = valueAccessor();
+            $(element).mouseout(function(event) {
+                callback(event);
+            });
+        }
+    };
+
+    ko.bindingHandlers.focus = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var callback = valueAccessor();
+            $(element).focus(function(event) {
+                callback(event);
+            });
+        }
+    };
+
+    ko.bindingHandlers.blur = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var callback = valueAccessor();
+            $(element).blur(function(event) {
+                callback(event);
+            });
         }
     };
 
@@ -214,7 +200,7 @@ $(function() {
                 .dialog({
                     autoOpen: false,
                     close: function(event, ui) {
-                        viewModel.editingAssignment().inEditMode(false);
+                        viewModel.stopEditing();
                     },
                     buttons: {
                         "Ok": function() { $(this).dialog("close") },

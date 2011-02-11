@@ -2349,19 +2349,429 @@ ko.exportSymbol('ko.jqueryTmplTemplateEngine', ko.jqueryTmplTemplateEngine);
 // (c) 2010 Steven Sanderson, Roy Jacobs - http://knockoutjs.com/
 // License: Ms-Pl (http://www.opensource.org/licenses/ms-pl.html)
 
-ko.exportSymbol=function(n,s){for(var j=n.split("."),t=window,o=0;o<j.length-1;o++)t=t[j[o]];t[j[j.length-1]]=s};ko.exportProperty=function(n,s,j){n[s]=j};
-(function(){function n(a){if(a&&typeof a==="object"&&a.constructor==(new Date).constructor)return"date";return typeof a}function s(a,c,b){w||(z=[]);w++;a=j(a,c,b);w--;return a}function j(a,c,b,d,f,p){var h=ko.utils.unwrapObservable(c)instanceof Array;if(ko.mapping.isMapped(a))b=ko.utils.unwrapObservable(a)[q];d=d||new A;if(d.get(c))return a;f=f||"";if(h){p=[];var g=function(e){return e};if(b[f]&&b[f].key)g=b[f].key;if(!ko.isObservable(a)){a=ko.observableArray([]);a.mappedRemove=function(e){var i=
-typeof e=="function"?e:function(k){return k===g(e)};return a.remove(function(k){return i(g(k))})};a.mappedRemoveAll=function(e){var i=v(e,g);return a.remove(function(k){return ko.utils.arrayIndexOf(i,g(k))!=-1})};a.mappedDestroy=function(e){var i=typeof e=="function"?e:function(k){return k===g(e)};return a.destroy(function(k){return i(g(k))})};a.mappedDestroyAll=function(e){var i=v(e,g);return a.destroy(function(k){return ko.utils.arrayIndexOf(i,g(k))!=-1})};a.mappedIndexOf=function(e){var i=v(a(),
-g);e=g(e);return ko.utils.arrayIndexOf(i,e)}}h=v(ko.utils.unwrapObservable(a),g).sort();var r=v(c,g).sort();h=ko.utils.compareArrays(h,r);r=[];for(var x=0,C=h.length;x<C;x++){var u=h[x];switch(u.status){case "added":var l=o(ko.utils.unwrapObservable(c),u.value,g),m=ko.utils.unwrapObservable(j(undefined,l,b,d,f,a));l=ko.utils.arrayIndexOf(ko.utils.unwrapObservable(c),l);r[l]=m;break;case "retained":l=o(ko.utils.unwrapObservable(c),u.value,g);m=o(a,u.value,g);j(m,l,b,d,f,a);l=ko.utils.arrayIndexOf(ko.utils.unwrapObservable(c),
-l);r[l]=m;break;case "deleted":m=o(a,u.value,g);a.remove(m)}p.push({event:u.status,item:m})}a(r);b[f]&&b[f].arrayChanged&&ko.utils.arrayForEach(p,function(e){b[f].arrayChanged(e.event,e.item)})}else if(n(c)=="object"&&c!==null&&c!==undefined){if(!a)if(b[f]&&b[f].create instanceof Function){D();m=b[f].create({data:c,parent:p});ko.dependentObservable=y;return m}else a={};d.save(c,a);B(c,function(e){var i=d.get(c[e]);a[e]=i?i:j(a[e],c[e],b,d,e,a)})}else switch(n(c)){case "function":a=c;break;default:if(ko.isWriteableObservable(a))a(ko.utils.unwrapObservable(c));
-else a=ko.observable(ko.utils.unwrapObservable(c))}return a}function t(a,c){var b;if(c)b=c(a);b||(b=a);return ko.utils.unwrapObservable(b)}function o(a,c,b){a=ko.utils.arrayFilter(ko.utils.unwrapObservable(a),function(d){return t(d,b)==c});if(a.length!=1)throw Error("When calling ko.update*, the key '"+c+"' was not found or not unique!");return a[0]}function v(a,c){return ko.utils.arrayMap(ko.utils.unwrapObservable(a),function(b){return c?t(b,c):b})}function B(a,c){if(a instanceof Array)for(var b=
-0;b<a.length;b++)c(b);else for(b in a)c(b)}function A(){var a=[],c=[];this.save=function(b,d){var f=ko.utils.arrayIndexOf(a,b);if(f>=0)c[f]=d;else{a.push(b);c.push(d)}};this.get=function(b){b=ko.utils.arrayIndexOf(a,b);return b>=0?c[b]:undefined}}ko.mapping={};var q="__ko_mapping__",w=0,y=ko.dependentObservable,z;ko.mapping.fromJS=function(a,c,b){if(arguments.length==0)throw Error("When calling ko.fromJS, pass the object you want to convert.");var d=c;d=d||{};if(d.create instanceof Function||d.key instanceof
-Function||d.arrayChanged instanceof Function)d={"":d};c=d;d=s(b,a,c);d[q]=d[q]||{};d[q]=c;return d};ko.mapping.fromJSON=function(a,c){var b=ko.utils.parseJson(a);return ko.mapping.fromJS(b,c)};ko.mapping.isMapped=function(a){return(a=ko.utils.unwrapObservable(a))&&a[q]};ko.mapping.updateFromJS=function(a,c){if(arguments.length<2)throw Error("When calling ko.updateFromJS, pass: the object to update and the object you want to update from.");if(!a)throw Error("The object is undefined.");if(!a[q])throw Error("The object you are trying to update was not created by a 'fromJS' or 'fromJSON' mapping.");
-return s(a,c,a[q])};ko.mapping.updateFromJSON=function(a,c,b){c=ko.utils.parseJson(c);return ko.mapping.updateFromJS(a,c,b)};ko.mapping.toJS=function(a,c){if(arguments.length==0)throw Error("When calling ko.mapping.toJS, pass the object you want to convert.");c=c||{};c.ignore=c.ignore||[];if(!(c.ignore instanceof Array))c.ignore=[c.ignore];c.ignore.push(q);return ko.mapping.visitModel(a,function(b){return ko.utils.unwrapObservable(b)},c)};ko.mapping.toJSON=function(a,c){var b=ko.mapping.toJS(a);return ko.utils.stringifyJson(b,
-c)};var D=function(){ko.dependentObservable=function(a,c,b){b=b||{};b.deferEvaluation=true;a=new y(a,c,b);a.__ko_proto__=y;z.push(a);return a}};ko.mapping.visitModel=function(a,c,b){b=b||{};b.visitedObjects=b.visitedObjects||new A;var d,f=ko.utils.unwrapObservable(a);if(n(f)=="object"&&f!==null&&f!==undefined){c(a,b.parentName);d=f instanceof Array?[]:{}}else return c(a,b.parentName);b.visitedObjects.save(a,d);var p=b.parentName;B(f,function(h){if(!(b.ignore&&ko.utils.arrayIndexOf(b.ignore,h)!=-1)){var g=
-f[h];b.parentName=p||"";if(f instanceof Array){if(p)b.parentName+="["+h+"]"}else{if(p)b.parentName+=".";b.parentName+=h}switch(n(ko.utils.unwrapObservable(g))){case "object":case "undefined":var r=b.visitedObjects.get(g);d[h]=r!==undefined?r:ko.mapping.visitModel(g,c,b);break;default:d[h]=c(g,b.parentName)}}});return d};ko.exportSymbol("ko.mapping",ko.mapping);ko.exportSymbol("ko.mapping.fromJS",ko.mapping.fromJS);ko.exportSymbol("ko.mapping.fromJSON",ko.mapping.fromJSON);ko.exportSymbol("ko.mapping.isMapped",
-ko.mapping.isMapped);ko.exportSymbol("ko.mapping.toJS",ko.mapping.toJS);ko.exportSymbol("ko.mapping.toJSON",ko.mapping.toJSON);ko.exportSymbol("ko.mapping.updateFromJS",ko.mapping.updateFromJS);ko.exportSymbol("ko.mapping.updateFromJSON",ko.mapping.updateFromJSON);ko.exportSymbol("ko.mapping.visitModel",ko.mapping.visitModel)})();
+// Google Closure Compiler helpers (used only to make the minified file smaller)
+ko.exportSymbol = function (publicPath, object) {
+	var tokens = publicPath.split(".");
+	var target = window;
+	for (var i = 0; i < tokens.length - 1; i++)
+	target = target[tokens[i]];
+	target[tokens[tokens.length - 1]] = object;
+};
+ko.exportProperty = function (owner, publicName, object) {
+	owner[publicName] = object;
+};
 
+(function () {
+	ko.mapping = {};
+
+	var mappingProperty = "__ko_mapping__";
+	var recursionDepth = 0;
+	var realKoDependentObservable = ko.dependentObservable;
+	var deferredObservables;
+
+	ko.mapping.fromJS = function (jsObject, options, target) {
+		if (arguments.length == 0) throw new Error("When calling ko.fromJS, pass the object you want to convert.");
+
+		options = fillOptions(options);
+		var result = performMapping(target, jsObject, options);
+		result[mappingProperty] = result[mappingProperty] || {};
+		result[mappingProperty] = options;
+		return result;
+	};
+
+	ko.mapping.fromJSON = function (jsonString, options) {
+		var parsed = ko.utils.parseJson(jsonString);
+		return ko.mapping.fromJS(parsed, options);
+	};
+	
+	ko.mapping.isMapped = function(viewModel) {
+		var unwrapped = ko.utils.unwrapObservable(viewModel);
+		return unwrapped && unwrapped[mappingProperty];
+	}
+
+	ko.mapping.updateFromJS = function (viewModel, jsObject) {
+		if (arguments.length < 2) throw new Error("When calling ko.updateFromJS, pass: the object to update and the object you want to update from.");
+		if (!viewModel) throw new Error("The object is undefined.");
+		
+		if (!viewModel[mappingProperty]) throw new Error("The object you are trying to update was not created by a 'fromJS' or 'fromJSON' mapping.");
+		return performMapping(viewModel, jsObject, viewModel[mappingProperty]);
+	};
+
+	ko.mapping.updateFromJSON = function (viewModel, jsonString, options) {
+		var parsed = ko.utils.parseJson(jsonString);
+		return ko.mapping.updateFromJS(viewModel, parsed, options);
+	};
+
+	ko.mapping.toJS = function (rootObject, options) {
+		if (arguments.length == 0) throw new Error("When calling ko.mapping.toJS, pass the object you want to convert.");
+		
+		options = options || {};
+		options.ignore = options.ignore || [];
+		if (!(options.ignore instanceof Array)) {
+			options.ignore = [options.ignore];
+		}
+		
+		options.ignore.push(mappingProperty);
+
+		// We just unwrap everything at every level in the object graph
+		return ko.mapping.visitModel(rootObject, function (x) {
+			return ko.utils.unwrapObservable(x);
+		}, options);
+	};
+
+	ko.mapping.toJSON = function (rootObject, options) {
+		var plainJavaScriptObject = ko.mapping.toJS(rootObject);
+		return ko.utils.stringifyJson(plainJavaScriptObject, options);
+	};
+
+	function getType(x) {
+		if ((x) && (typeof(x) === "object") && (x.constructor == (new Date).constructor)) return "date";
+		return typeof x;
+	}
+
+	function fillOptions(options) {
+		options = options || {};
+
+		// Is there only a root-level mapping present?
+		if ((options.create instanceof Function) || (options.key instanceof Function) || (options.arrayChanged instanceof Function)) {
+			options = {
+				"": options
+			};
+		}
+
+		return options;
+	}
+
+	var proxyDependentObservable = function () {
+		ko.dependentObservable = function() {
+			var options = arguments[2] || {};
+			options.deferEvaluation = true;
+			
+			var realDependentObservable = new realKoDependentObservable(arguments[0], arguments[1], options);
+			realDependentObservable.__ko_proto__ = realKoDependentObservable;
+			deferredObservables.push(realDependentObservable);
+			return realDependentObservable;
+		}
+	}
+
+	var unproxyDependentObservable = function () {
+		ko.dependentObservable = realKoDependentObservable;
+	}
+
+	function performMapping(mappedRootObject, rootObject, options) {
+		if (!recursionDepth) {
+			deferredObservables = [];
+		}
+		
+		recursionDepth++;
+		var result = updateViewModel(mappedRootObject, rootObject, options);
+		recursionDepth--;
+
+		return result;
+	}
+
+	function updateViewModel(mappedRootObject, rootObject, options, visitedObjects, parentName, parent) {
+		var isArray = ko.utils.unwrapObservable(rootObject) instanceof Array;
+		
+		// If this object was already mapped previously, take the options from there
+		if (ko.mapping.isMapped(mappedRootObject)) {
+			options = ko.utils.unwrapObservable(mappedRootObject)[mappingProperty];
+		}
+		
+		var hasCreateCallback = function () {
+			return options[parentName] && options[parentName].create instanceof Function;
+		}
+
+		visitedObjects = visitedObjects || new objectLookup();
+		if (visitedObjects.get(rootObject)) return mappedRootObject;
+
+		parentName = parentName || "";
+
+		if (!isArray) {
+
+			// For atomic types, do a direct update on the observable
+			if (!canHaveProperties(rootObject)) {
+				switch (getType(rootObject)) {
+				case "function":
+					mappedRootObject = rootObject;
+					break;
+				default:
+					if (ko.isWriteableObservable(mappedRootObject)) {
+						mappedRootObject(ko.utils.unwrapObservable(rootObject));
+					} else {
+						mappedRootObject = ko.observable(ko.utils.unwrapObservable(rootObject));
+					}
+					break;
+				}
+
+			} else {
+				if (!mappedRootObject) {
+					if (hasCreateCallback()) {
+						proxyDependentObservable();
+						var result = options[parentName].create({
+							data: rootObject,
+							parent: parent
+						});
+						unproxyDependentObservable();
+						return result;
+					} else {
+						mappedRootObject = {};
+					}
+				}
+
+				visitedObjects.save(rootObject, mappedRootObject);
+
+				// For non-atomic types, visit all properties and update recursively
+				visitPropertiesOrArrayEntries(rootObject, function (indexer) {
+					var mappedProperty;
+
+					var prevMappedProperty = visitedObjects.get(rootObject[indexer]);
+					if (prevMappedProperty) {
+						// In case we are adding an already mapped property, fill it with the previously mapped property value to prevent recursion.
+						mappedRootObject[indexer] = prevMappedProperty;
+					} else {
+						// If this is a property that was generated by fromJS, we should use the options specified there
+						mappedRootObject[indexer] = updateViewModel(mappedRootObject[indexer], rootObject[indexer], options, visitedObjects, indexer, mappedRootObject);
+					}
+				});
+			}
+		} else {
+			var changes = [];
+
+			var keyCallback = function (x) {
+				return x;
+			}
+			if (options[parentName] && options[parentName].key) {
+				keyCallback = options[parentName].key;
+			}
+			
+			if (!ko.isObservable(mappedRootObject)) {
+				mappedRootObject = ko.observableArray([]);
+				
+				mappedRootObject.mappedRemove = function(valueOrPredicate) {
+					var predicate = typeof valueOrPredicate == "function" ? valueOrPredicate : function (value) { return value === keyCallback(valueOrPredicate); };
+					return mappedRootObject.remove(function(item) {
+						return predicate(keyCallback(item));
+					});
+				}
+
+				mappedRootObject.mappedRemoveAll = function(arrayOfValues) {
+					var arrayOfKeys = filterArrayByKey(arrayOfValues, keyCallback);
+					return mappedRootObject.remove(function(item) {
+						return ko.utils.arrayIndexOf(arrayOfKeys, keyCallback(item)) != -1;
+					});
+				}
+
+				mappedRootObject.mappedDestroy = function(valueOrPredicate) {
+					var predicate = typeof valueOrPredicate == "function" ? valueOrPredicate : function (value) { return value === keyCallback(valueOrPredicate); };
+					return mappedRootObject.destroy(function(item) {
+						return predicate(keyCallback(item));
+					});
+				}
+
+				mappedRootObject.mappedDestroyAll = function(arrayOfValues) {
+					var arrayOfKeys = filterArrayByKey(arrayOfValues, keyCallback);
+					return mappedRootObject.destroy(function(item) {
+						return ko.utils.arrayIndexOf(arrayOfKeys, keyCallback(item)) != -1;
+					});
+				}
+
+				mappedRootObject.mappedIndexOf = function(item) {
+					var keys = filterArrayByKey(mappedRootObject(), keyCallback);
+					var key = keyCallback(item);
+					return ko.utils.arrayIndexOf(keys, key);
+				}
+			}
+
+			var currentArrayKeys = filterArrayByKey(ko.utils.unwrapObservable(mappedRootObject), keyCallback).sort();
+			var prevArrayKeys = filterArrayByKey(rootObject, keyCallback).sort();
+			var editScript = ko.utils.compareArrays(currentArrayKeys, prevArrayKeys);
+
+			var newContents = [];
+			for (var i = 0, j = editScript.length; i < j; i++) {
+				var key = editScript[i];
+				switch (key.status) {
+				case "added":
+					var item = getItemByKey(ko.utils.unwrapObservable(rootObject), key.value, keyCallback);
+					var mappedItem = ko.utils.unwrapObservable(updateViewModel(undefined, item, options, visitedObjects, parentName, mappedRootObject));
+					
+					var index = ko.utils.arrayIndexOf(ko.utils.unwrapObservable(rootObject), item);
+					newContents[index] = mappedItem;
+					break;
+				case "retained":
+					var item = getItemByKey(ko.utils.unwrapObservable(rootObject), key.value, keyCallback);
+					var mappedItem = getItemByKey(mappedRootObject, key.value, keyCallback);
+					updateViewModel(mappedItem, item, options, visitedObjects, parentName, mappedRootObject);
+					
+					var index = ko.utils.arrayIndexOf(ko.utils.unwrapObservable(rootObject), item);
+					newContents[index] = mappedItem;
+					break;
+				case "deleted":
+					var mappedItem = getItemByKey(mappedRootObject, key.value, keyCallback);
+					mappedRootObject.remove(mappedItem);
+					break;
+				}
+
+				changes.push({
+					event: key.status,
+					item: mappedItem
+				});
+			}
+			
+			mappedRootObject(newContents);
+
+			if (options[parentName] && options[parentName].arrayChanged) {
+				ko.utils.arrayForEach(changes, function (change) {
+					options[parentName].arrayChanged(change.event, change.item);
+				});
+			}
+		}
+
+		return mappedRootObject;
+	}
+
+	function mapKey(item, callback) {
+		var mappedItem;
+		if (callback) mappedItem = callback(item);
+		if (!mappedItem) mappedItem = item;
+
+		return ko.utils.unwrapObservable(mappedItem);
+	}
+
+	function getItemByKey(array, key, callback) {
+		var filtered = ko.utils.arrayFilter(ko.utils.unwrapObservable(array), function (item) {
+			return mapKey(item, callback) == key;
+		});
+
+		if (filtered.length != 1) throw new Error("When calling ko.update*, the key '" + key + "' was not found or not unique!");
+
+		return filtered[0];
+	}
+
+	function filterArrayByKey(array, callback) {
+		return ko.utils.arrayMap(ko.utils.unwrapObservable(array), function (item) {
+			if (callback) {
+				return mapKey(item, callback);
+			} else {
+				return item;
+			}
+		});
+	}
+
+	function compareArrays(prevArray, currentArray, mapKeyCallback, callback, callbackTarget) {
+		var currentArrayKeys = filterArrayByKey(currentArray, mapKeyCallback).sort();
+		var prevArrayKeys = filterArrayByKey(prevArray, mapKeyCallback).sort();
+		var editScript = ko.utils.compareArrays(prevArrayKeys, currentArrayKeys);
+
+		for (var i = 0, j = editScript.length; i < j; i++) {
+			var key = editScript[i];
+			switch (key.status) {
+			case "added":
+				var item = getItemByKey(ko.utils.unwrapObservable(currentArray), key.value, mapKeyCallback);
+				callback("added", item);
+				break;
+			case "retained":
+				var item = getItemByKey(currentArray, key.value, mapKeyCallback);
+				callback("retained", item);
+				break;
+			case "deleted":
+				var item = getItemByKey(ko.utils.unwrapObservable(prevArray), key.value, mapKeyCallback);
+				callback("deleted", item);
+				break;
+			}
+		}
+	}
+
+	function visitPropertiesOrArrayEntries(rootObject, visitorCallback) {
+		if (rootObject instanceof Array) {
+			for (var i = 0; i < rootObject.length; i++)
+			visitorCallback(i);
+		} else {
+			for (var propertyName in rootObject)
+			visitorCallback(propertyName);
+		}
+	};
+
+	function canHaveProperties(object) {
+		return (getType(object) == "object") && (object !== null) && (object !== undefined);
+	}
+
+	ko.mapping.visitModel = function(rootObject, callback, options) {
+		options = options || {};
+		options.visitedObjects = options.visitedObjects || new objectLookup();
+
+		var mappedRootObject;
+		var unwrappedRootObject = ko.utils.unwrapObservable(rootObject);
+		if (!canHaveProperties(unwrappedRootObject)) {
+			return callback(rootObject, options.parentName);
+		} else {
+			// Only do a callback, but ignore the results
+			callback(rootObject, options.parentName);
+			mappedRootObject = unwrappedRootObject instanceof Array ? [] : {};
+		}
+
+		options.visitedObjects.save(rootObject, mappedRootObject);
+
+		var parentName = options.parentName;
+		visitPropertiesOrArrayEntries(unwrappedRootObject, function(indexer) {
+			if (options.ignore && ko.utils.arrayIndexOf(options.ignore, indexer) != -1) return;
+			
+			var propertyValue = unwrappedRootObject[indexer];
+
+			options.parentName = parentName || "";
+			if (unwrappedRootObject instanceof Array) {
+				if (parentName) {
+					options.parentName += "[" + indexer + "]";
+				}
+			} else {
+				if (parentName) {
+					options.parentName += ".";
+				}
+				options.parentName += indexer;
+			}
+
+			var outputProperty;
+			switch (getType(ko.utils.unwrapObservable(propertyValue))) {
+				case "object":
+				case "undefined":
+					var previouslyMappedValue = options.visitedObjects.get(propertyValue);
+					mappedRootObject[indexer] = (previouslyMappedValue !== undefined) ? previouslyMappedValue : ko.mapping.visitModel(propertyValue, callback, options);
+					break;
+				default:
+					mappedRootObject[indexer] = callback(propertyValue, options.parentName);
+			}
+		});
+
+		return mappedRootObject;
+	}
+
+	function objectLookup() {
+		var keys = [];
+		var values = [];
+		this.save = function (key, value) {
+			var existingIndex = ko.utils.arrayIndexOf(keys, key);
+			if (existingIndex >= 0) values[existingIndex] = value;
+			else {
+				keys.push(key);
+				values.push(value);
+			}
+		};
+		this.get = function (key) {
+			var existingIndex = ko.utils.arrayIndexOf(keys, key);
+			return (existingIndex >= 0) ? values[existingIndex] : undefined;
+		};
+	};
+
+	ko.exportSymbol('ko.mapping', ko.mapping);
+	ko.exportSymbol('ko.mapping.fromJS', ko.mapping.fromJS);
+	ko.exportSymbol('ko.mapping.fromJSON', ko.mapping.fromJSON);
+	ko.exportSymbol('ko.mapping.isMapped', ko.mapping.isMapped);
+	ko.exportSymbol('ko.mapping.toJS', ko.mapping.toJS);
+	ko.exportSymbol('ko.mapping.toJSON', ko.mapping.toJSON);
+	ko.exportSymbol('ko.mapping.updateFromJS', ko.mapping.updateFromJS);
+	ko.exportSymbol('ko.mapping.updateFromJSON', ko.mapping.updateFromJSON);
+	ko.exportSymbol('ko.mapping.visitModel', ko.mapping.visitModel);
+})();
 
 var scheduleDate = function(attributes) {
     ko.mapping.fromJS(attributes, {}, this);
@@ -2375,35 +2785,20 @@ var scheduleDate = function(attributes) {
 };
 
 
-var assignment = function(attributes, schedule) {
-    var schedule = schedule;
+var assignment = function(attributes) {
+    var schedule = undefined;
     var skipSaves = false;
     var self = this;
 
     this.public_note = ko.observable("");
     this.private_note = ko.observable("");
     this.duration = ko.observable(null);
-
-    this._destroy = false;
-    this.destroy = function() {
-        this._destroy = true;
-        self.save();
-    };
-
-    ko.mapping.fromJS(attributes.assignment, {}, this);
-    var physicianName = undefined;
-    this.physician_name = function() {
-        if (physicianName == undefined) {
-            var physician = schedule.findPhysician(self.physician_id());
-            if (physician != undefined) {
-                physicianName = physician.short_name;
-            }
-        }
-        return physicianName;
-    };
-
     this.inEditMode = ko.observable(false);
-
+    this.inDraggingMode = ko.observable(false);
+    this.inHoveringMode = ko.observable(false);
+    this.hasModifiedDuration = ko.dependentObservable(function() {
+        return this.duration() != undefined && this.duration() != "Select one...";
+    }, this);
     this.noteType = ko.dependentObservable(function() {
         if (self.public_note() && self.private_note())
             return "public-private";
@@ -2412,6 +2807,15 @@ var assignment = function(attributes, schedule) {
         else if (self.private_note())
             return "private";
     }, self);
+    this.destroyed = ko.observable(false);
+    this.physician_name;
+
+    this.destroy = function() {
+        this.destroyed(true);
+        this.save();
+    };
+
+    ko.mapping.fromJS(attributes.assignment, {}, this);
 
     this.public_note.subscribe(function(newNote) {
         self.save();
@@ -2420,6 +2824,13 @@ var assignment = function(attributes, schedule) {
     this.private_note.subscribe(function(newNote) {
         self.save();
     });
+
+    this.startEditing = function() {
+        if (schedule == undefined) {
+            return;
+        }
+        schedule.startEditing(this);
+    };
 
     var lastDuration = this.duration();
     this.duration.subscribe(function(newDuration) {
@@ -2438,73 +2849,99 @@ var assignment = function(attributes, schedule) {
             public_note: self.public_note(),
             private_note: self.private_note(),
             duration: self.duration() == undefined ? null : self.duration(),
-            _destroy: self._destroy
+            _destroy: self.destroyed()
         }
     };
 
     this.save = function() {
-        schedule.save({ assignments: [self.serialize()] });
-    }
-
-    schedule.editingAssignment.subscribe(function(newAssignment) {
-        if (newAssignment != self) {
-            self.inEditMode(false);
+        if (schedule == undefined) {
+            return;
         }
-    });
+        schedule.save({ assignments: [self.serialize()] });
+    };
+
+    this.setSchedule = function(model) {
+        schedule = model;
+        schedule.editingAssignment.subscribe(function(newAssignment) {
+            if (newAssignment != self) {
+                self.inEditMode(false);
+            }
+        });
+        var physician = schedule.findPhysician(this.physician_id());
+        if (physician != undefined) {
+            this.physician_name = physician.short_name();
+        }
+    };
 }
 
 
-var shiftDay = function(attributes, viewModel) {
-    var schedule = viewModel;
+var shiftDay = function(attributes) {
+    var schedule = undefined;
     var mapping = {
         "assignments": {
             create: function(options) {
-                return new assignment(options.data, schedule);
+                return new assignment(options.data);
             },
             key: function(data) {
                 return ko.utils.unwrapObservable(data.id);
             }
         }
     };
-    ko.mapping.fromJS(attributes, mapping, this);
 
-    this.selected = ko.observable(false);
+    this.assignments = ko.observableArray([]);
+    this.inSelectedMode = ko.observable(false);
+    this.inHoverMode = ko.observable(false);
+
+    this.toggleSelected = function() {
+        if (schedule == undefined) {
+            return;
+        }
+        schedule.toggleSelectedShiftDay(this);
+    };
+
+    this.setSchedule = function(model) {
+        schedule = model;
+        for (var i = 0; i < this.assignments().length; i++) {
+            this.assignments()[i].setSchedule(schedule);
+        }
+    };
 
     var self = this;
     this.addAssignment = function(assignment) {
         if (self.assignments.indexOf(assignment) != -1) {
             self.assignments.remove(assignment);
             self.assignments.push(assignment);
-            assignment.inEditMode(false);
             return;
         }
         self.assignments.push(assignment);
         assignment.date(self.date());
         assignment.shift_id(self.shift_id());
     }
+
+    ko.mapping.fromJS(attributes, mapping, this);
 }
 
 
-var shiftWeek = function(attributes, viewModel) {
+var shiftWeek = function(attributes) {
     var self = this;
-    var schedule = viewModel;
+    var schedule = undefined;
     var mapping = {
         "shift_days": {
             create: function(options) {
-                return new shiftDay(options.data, schedule);
+                return new shiftDay(options.data);
             }
         }
     };
 
-    ko.mapping.fromJS(attributes, mapping, this);
+    this.shift_week_note = {
+        text: ko.observable(undefined),
+        shift_id: ko.observable(undefined)
+    };
 
-    if (this.shift_week_note.text() == "") {
-        this.shift_week_note.text("add note...");
-    }
-
-    var lastNote = this.shift_week_note.text();
+    var lastNote;
     this.shift_week_note.text.subscribe(function(newNote) {
-        if (newNote == "add note..." || newNote == lastNote) {
+        if (newNote == "add note..." || newNote == lastNote || lastNote == undefined) {
+            lastNote = newNote;
             return;
         }
         lastNote = newNote;
@@ -2513,6 +2950,13 @@ var shiftWeek = function(attributes, viewModel) {
             self.shift_week_note.text("add note...");
         }
     });
+
+    this.setSchedule = function(model) {
+        schedule = model;
+        for (var i = 0; i < this.shift_days().length; i++) {
+            this.shift_days()[i].setSchedule(schedule);
+        }
+    };
 
     this.serialize = function() {
         var serialized = {
@@ -2529,12 +2973,18 @@ var shiftWeek = function(attributes, viewModel) {
     this.save = function() {
         schedule.save({ shift_week_notes_attributes: [self.serialize()] });
     };
+
+    ko.mapping.fromJS(attributes, mapping, this);
 }
 
 
-var ruleConflicts = function(attributes, schedule) {
-    var schedule = schedule;
+var ruleConflicts = function(attributes) {
+    var schedule;
     var self = this;
+
+    this.setSchedule = function(model) {
+        schedule = model;
+    }
 
     ko.mapping.fromJS(attributes, {}, this);
 };
@@ -2551,12 +3001,16 @@ var weeklySchedule = function(attributes) {
         },
         "shift_weeks": {
             create: function(options) {
-                return new shiftWeek(options.data, self);
+                var newShiftWeek = new shiftWeek(options.data);
+                newShiftWeek.setSchedule(self);
+                return newShiftWeek;
             }
         },
         "rules_conflicts": {
             create: function(options) {
-                return new ruleConflicts(options.data, self);
+                var newRuleConflicts = new ruleConflicts(options.data);
+                newRuleConflicts.setSchedule(self);
+                return newRuleConflicts;
             }
         }
     };
@@ -2570,24 +3024,77 @@ var weeklySchedule = function(attributes) {
         hour: ko.observable(undefined),
         minute: ko.observable(undefined)
     };
-
     this.editingAssignment = ko.observable(undefined);
-
+    this.draggingAssignment = undefined;
     this.selectedShiftDays = ko.observableArray([]);
+    this.date = {
+        year: ko.observable((new Date()).getFullYear()),
+        month: ko.observable((new Date()).getMonth()+1),
+        day: ko.observable((new Date()).getDate())
+    };
+    this.longDate = ko.dependentObservable(function() {
+        return jQuery.datepicker.formatDate('MM d, yy', new Date(this.date.year(), this.date.month()-1, this.date.day()));
+    }, this);
+    this.longLastUpdate = ko.dependentObservable(function() {
+        if (this.last_update.year() == undefined) return "never";
+        var dateObj = new Date(this.last_update.year(), this.last_update.month()-1, this.last_update.day(), this.last_update.hour(), this.last_update.minute());
+        var minutesPad = dateObj.getMinutes() < 10 ? "0" : "";
+        return jQuery.datepicker.formatDate("" + dateObj.getHours() + ':' + minutesPad + dateObj.getMinutes() + ' MM d, yy ', dateObj);
+    }, this);
+    this.ajaxStatus = ko.observable(undefined);
+    this.is_published = ko.observable(undefined);
+    this.publishAction = ko.dependentObservable(function() {
+        return this.is_published() ? "Unpublish" : "Publish";
+    }, this);
 
     this.toggleSelectedShiftDay = function(shiftDay) {
+        if (this.editingAssignment() != undefined || this.draggingAssignment != undefined) {
+            return;
+        }
         if (this.selectedShiftDays.remove(shiftDay).length > 0) {
-            shiftDay.selected(false);
+            shiftDay.inSelectedMode(false);
         } else {
             this.selectedShiftDays.push(shiftDay);
-            shiftDay.selected(true);
+            shiftDay.inSelectedMode(true);
         }
     };
 
     this.deselectShiftDays = function() {
         var shiftDay;
         while (shiftDay = this.selectedShiftDays.pop()) {
-            shiftDay.selected(false);
+            shiftDay.inSelectedMode(false);
+        }
+    };
+
+    this.startEditing = function(assignment) {
+        if (this.selectedShiftDays().length > 0) {
+            return;
+        }
+        this.editingAssignment(assignment);
+        assignment.inEditMode(true);
+    };
+
+    this.stopEditing = function() {
+        if (this.editingAssignment() != undefined) {
+            this.editingAssignment().inEditMode(false);
+            this.editingAssignment(undefined);
+        }
+    };
+
+    this.startDragging = function(assignment) {
+        assignment.inDraggingMode(true);
+        this.draggingAssignment = assignment;
+    };
+
+    this.stopDragging = function(assignment) {
+        assignment.inDraggingMode(false);
+        this.draggingAssignment = undefined;
+    };
+
+    this.assignmentDroppedOn = function(shiftDay) {
+        if (this.draggingAssignment != undefined) {
+            shiftDay.addAssignment(this.draggingAssignment);
+            this.draggingAssignment.save();
         }
     };
 
@@ -2600,12 +3107,13 @@ var weeklySchedule = function(attributes) {
                 "date": null,
                 "shift_id": null,
                 "id": null
-            } }, self);
+            } });
+            newAssignment.setSchedule(this);
             shiftDay.addAssignment(newAssignment);
-            shiftDay.selected(false);
+            shiftDay.inSelectedMode(false);
             newAssignments.push(newAssignment);
         }
-        self.saveAssignments(newAssignments);
+        this.saveAssignments(newAssignments);
     };
 
     this.saveAssignments = function(assignments) {
@@ -2615,21 +3123,6 @@ var weeklySchedule = function(attributes) {
         }
         self.save({ assignments: serializedAssignments });
     };  
-
-    this.physicians = ko.observableArray([]);
-
-    ko.mapping.fromJS(attributes.weekly_schedule, mapping, this);
-
-    this.longDate = ko.dependentObservable(function() {
-        return jQuery.datepicker.formatDate('MM d, yy', new Date(this.date.year(), this.date.month()-1, this.date.day()));
-    }, this);
-
-    this.longLastUpdate = ko.dependentObservable(function() {
-        if (this.last_update.year() == undefined) return "never";
-        var dateObj = new Date(this.last_update.year(), this.last_update.month()-1, this.last_update.day(), this.last_update.hour(), this.last_update.minute());
-        var minutesPad = dateObj.getMinutes() < 10 ? "0" : "";
-        return jQuery.datepicker.formatDate("" + dateObj.getHours() + ':' + minutesPad + dateObj.getMinutes() + ' MM d, yy ', dateObj);
-    }, this);
 
     this.previousWeekDate = function() {
       var lastWeek = new Date(this.date.year(), this.date.month()-1, this.date.day());
@@ -2644,11 +3137,14 @@ var weeklySchedule = function(attributes) {
     };
 
     this.findPhysician = function(physicianId) {
-            for (var j = 0; j < self.physicians().length; j++) {
-                if (self.physicians()[j].physician.id() == physicianId) {
-                    return self.physicians()[j].physician;
+        for (var i = 0; i < self.groups().length; i++) {
+            var physicians = self.groups()[i].physicians();
+            for (var j = 0; j < physicians.length; j++) {
+                if (physicians[j].physician.id() == physicianId) {
+                    return physicians[j].physician;
                 }
             }
+        }
     };
 
     var physicianNames = {};
@@ -2664,14 +3160,12 @@ var weeklySchedule = function(attributes) {
         return physicianNames[physicianId];
     };
 
-    this.ajaxStatus = ko.observable(null);
-
-    this.publishAction = ko.dependentObservable(function() {
-        return this.is_published() ? "Unpublish" : "Publish";
-    }, this);
-
-    var lastIsPublished = this.is_published();
+    var lastIsPublished;
     this.is_published.subscribe(function(newValue) {
+        if (lastIsPublished == undefined) {
+            lastIsPublished = newValue;
+            return;
+        }
         if (newValue != lastIsPublished) {
             lastIsPublished = newValue;
             self.save();
@@ -2703,7 +3197,6 @@ var weeklySchedule = function(attributes) {
     this.save = function(optionalParams) {
         if (skipSaves) return;
         var postUrl = location.href.replace("/edit", ".json");
-        self.ajaxStatus("sending");
         ko.utils.postJson(postUrl,
             self.serialize(optionalParams),
             {
@@ -2712,12 +3205,13 @@ var weeklySchedule = function(attributes) {
                         skipSaves = true;
                         self.updateFromJS(data);
                         skipSaves = false;
-                        self.ajaxStatus("complete");
                     }, "json")
                 }
             }
         )
     };
+
+    ko.mapping.fromJS(attributes.weekly_schedule, mapping, this);
 };
 
 
@@ -2730,35 +3224,42 @@ $(function() {
 
     $("#is-published").button();
 
-    function setIsHighlighted(elem, value) {
-        if (currentlyDragging == null) {
-            if (value) {
-                $(elem).addClass("ui-state-highlight");
-            } else {
-                $(elem).removeClass("ui-state-highlight");
-            }
-        }
+    function openDetailsDialog(options) {
+        $("#assignment-details")
+            .dialog("option", "title", options.title)                   
+            .dialog('open');
     }
 
-    function setIsActive(elem, value) {
-        if (value == true) {
-            setIsHighlighted(elem, false);
-            $(elem).addClass("ui-state-active");
-        } else {
-            $(elem).removeClass("ui-state-active");
-        }
+    function openDirectoryDialog() {
+        $("#physician-groups")
+            .dialog({
+                autoOpen: false,
+                title: "Select a physician to assign",
+                close: function(event, ui) {
+                    viewModel.deselectShiftDays();
+                }
+            })
+            .tabs()
+            .dialog("open")
+            .find("a.physician-name")
+                .hover(function() {
+                    $(this).addClass("ui-state-hover");
+                }, function() {
+                    $(this).removeClass("ui-state-hover");
+                })
+                .click(function() {
+                    $("#physician-groups").dialog("close");
+                });
     }
 
-    ko.bindingHandlers.anchorHref = {
+    ko.bindingHandlers.ajaxLifecycle = {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            var value = valueAccessor();
-            $(element).attr("href", "#" + ko.utils.unwrapObservable(value));
-        }
-    };
-
-    ko.bindingHandlers.tabsUI = {
-        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            $(element).tabs();
+            $(element).ajaxSend(function() {
+                viewModel.ajaxStatus("sending");
+            });
+            $(element).ajaxComplete(function() {
+                viewModel.ajaxStatus("complete");
+            });
         }
     };
 
@@ -2791,34 +3292,22 @@ $(function() {
         }
     };
 
-    ko.bindingHandlers.shiftDayMousing = {
-        init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
-            $(element)
-                .bind("mouseover", function() {
-                    setIsHighlighted(element, true);
-                })
-                .bind("mouseout", function() {
-                    if (!shiftDay.selected()) {
-                        setIsHighlighted(element, false);
-                    }
-                })
-                .click(function() {
-                    $("#physician-groups").dialog("open");
-                });
+    ko.bindingHandlers.openDirectoryDialog = {
+        update: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
+            var value = valueAccessor();
+            var shiftDayIsSelected = ko.utils.unwrapObservable(value);
+            if (shiftDayIsSelected == true) {
+                openDirectoryDialog();
+            }
         }
     };
-    
+
     ko.bindingHandlers.shiftDayDropping = {
         init: function(element, valueAccessor, allBindingsAccessor, shiftDay) {
             $(element)
-                .bind("drop", function(event, element) {
-                    $(element).hide();
-                    shiftDay.addAssignment(currentlyDragging);
-                    currentlyDragging.save();
-                    if (shiftDay.assignments.indexOf(currentlyDragging) == -1) {
-                        $(element).remove();
-                    }
-                    currentlyDragging = null;
+                .bind("drop", function(event, assignmentElement) {
+                    $(assignmentElement).hide();
+                    viewModel.assignmentDroppedOn(shiftDay);
                 })
                 .bind("dropover", function(event) {
                     currentlyReceiving = shiftDay;
@@ -2838,7 +3327,7 @@ $(function() {
             var lastReceiver = null;
             $(element)
                 .bind("drag", function(event) {
-                    currentlyDragging = assignment;
+                    viewModel.startDragging(assignment);
                     $(this).hide();
                     var receiver = document.elementFromPoint(event.clientX, event.clientY);
                     if ($(receiver).hasClass("shiftDay")) {
@@ -2858,7 +3347,7 @@ $(function() {
                     } else {
                         $(this).show();
                     }
-                    currentlyDragging = null;
+                    viewModel.stopDragging(assignment);
                     if (viewModel.editingAssignment() == assignment) {
                         assignment.inEditMode(false);
                     }
@@ -2869,13 +3358,6 @@ $(function() {
                     },
                     start: function(event, ui) {
                         $(this).data("ignore-click", true);
-                        setIsActive(element, true);
-                        assignmentDrag = true;
-                    },
-                    stop: function() {
-                        setIsActive(element, false);
-                        setIsHighlighted(element, false);
-                        assignmentDrag = false;
                     },
                     // the dragging assignment appears above other assignments
                     stack: "div.assignment"
@@ -2883,23 +3365,34 @@ $(function() {
         }
     };
 
-    ko.bindingHandlers.assignmentMousing = {
-        init: function(element, valueAccessor, allBindingsAccessor, assignment) {
-            $(element)
-                .bind("mouseleave", function(event) {
-                    if (!assignment.inEditMode()) {
-                        setIsHighlighted(element, false);
-                    }
-                })
-                .bind("mouseover", function(event) {
-                    if (currentlyDragging == null) {
-                        setIsHighlighted(element, true);
-                    }
-                    if (viewModel.selectedShiftDays().length == 0) {
-                        event.stopPropagation();
-                        setIsHighlighted("td.shiftDay.ui-state-highlight", false);
-                    }
-                })
+    ko.bindingHandlers.openDetailsDialog = {
+        update: function(element, valueAccessor, allBindingsAccessor, assignment) {
+            var value = valueAccessor();
+            var assignmentIsInEditMode = ko.utils.unwrapObservable(value);
+            if (assignmentIsInEditMode == true) {
+                openDetailsDialog({ title: assignment.physician_name });
+            }
+        }
+    };
+
+    ko.bindingHandlers.mouseover = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var callback = valueAccessor();
+            $(element).mouseover(function(event) {
+                callback(event);
+            });
+        }
+    };
+
+    ko.bindingHandlers.mouseout = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var callback = valueAccessor();
+            $(element).mouseout(function(event) {
+                callback(event);
+            });
+        }
+    };
+/*
                 .click(function(event) {
                     if ($(this).data("ignore-click") != undefined) {
                         $(this).removeData("ignore-click");
@@ -2910,10 +3403,8 @@ $(function() {
                         .dialog("option", "title", assignment.physician_name()())
                         .dialog('open');
                 });
-        }
-    };
-
-    ko.bindingHandlers.physicianGroupsDialog = {
+*/
+    /*ko.bindingHandlers.physicianGroupsDialog = {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
             $(element)
                 .dialog({
@@ -2929,7 +3420,7 @@ $(function() {
                     $(this).removeClass("ui-state-hover")
                 });
         }
-    };
+    };*/
 
     ko.bindingHandlers.assignmentDetailsDialog = {
         init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
@@ -2937,7 +3428,7 @@ $(function() {
                 .dialog({
                     autoOpen: false,
                     close: function(event, ui) {
-                        viewModel.editingAssignment().inEditMode(false);
+                        viewModel.stopEditing();
                     },
                     buttons: {
                         "Ok": function() { $(this).dialog("close") },

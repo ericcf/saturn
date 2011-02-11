@@ -45,8 +45,27 @@ class Section < ActiveRecord::Base
     end
   end
 
+  def members_by_group_json
+    [
+      "\"groups\":[",
+        members_by_group.map do |group_title, physicians|
+          [
+          "{",
+            "\"title\":\"#{group_title}\",",
+            "\"physicians\":[",
+              physicians.map do |physician|
+                physician.to_json
+              end.join(","),
+            "]",
+          "}"
+          ].join("")
+        end.join(","),
+      "]"
+    ].join("")
+  end
+
   def members_json
-    return [
+    [
       "\"physicians\":[",
         members.includes(:names_alias).map do |physician|
           physician.to_json

@@ -5,12 +5,16 @@
 div.schedule-wrapper {
   position: absolute;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   top: 226px;
   bottom: 5px;
   left: 143px;
   border-top: 3px solid gray;
   border-bottom: 3px solid gray;
+}
+
+div.schedule {
+  width: 862px;
 }
 
 div.schedule table {
@@ -35,7 +39,7 @@ div#physician-groups a {
 * html div.schedule-headers { display:inline; }  /* for IE 6 */
 * + html div.schedule-headers { display:inline; }  /* for IE 7 */
 
-div.holiday-title {
+div.date-label {
   color: #6e8e41;
   font-weight: normal;
   height: 36px;
@@ -81,6 +85,7 @@ input.shift-week-note {
   width: 16px;
 }
 .assignment {
+  position: relative;
   cursor: pointer;
   width: 100px;
   overflow: hidden;

@@ -34,9 +34,10 @@ class WeeklySchedule < ActiveRecord::Base
       :weekly_schedule => self,
       :assignments => assignments
     )
+    static_attributes_json = nil
     static_attributes_json = options[:only_delta_attributes] ? nil : [
       date_json,
-      section.members_json,
+      section.members_by_group_json,
       dates_json
     ].join(",")
     [

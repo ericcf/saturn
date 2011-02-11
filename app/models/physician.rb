@@ -21,8 +21,8 @@ RadDirectory::Person.class_eval do
   end
 
   def short_name
-    return names_alias.short_name if names_alias && names_alias.short_name
-    ["#{given_name[0, 1]}.", family_name].compact.join(" ")
+    names_alias && names_alias.short_name ||
+    "#{given_name[0, 1]}. #{family_name}".strip
   end
 
   def to_json

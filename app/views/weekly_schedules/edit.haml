@@ -1,7 +1,23 @@
 - content_for :javascripts do
   = javascript_include_tag "json2"
-  = javascript_include_tag "jquery.tmpl", "knockout-1.1.2.debug", "knockout.mapping-latest", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "schedule_editor"
+  = javascript_include_tag "jquery.tmpl", "third_party/knockout-1.1.2.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "cache/schedule_editing"
   :javascript
+    $.each([
+        "_directoryListing.htm",
+        "_assignmentDetails.htm",
+        "_dateColHeader.htm",
+        "_assignment.htm",
+        "_shiftDayCell.htm",
+        "_shiftWeekRow.htm"
+      ], function(index, template) {
+        $.ajax({
+          url: "/javascripts/saturn/templates/" + template,
+          async: false,
+          success: function(template) {
+            $("head").append(template);
+          }
+        });
+    });
     var viewModel;
 
     function loadWeeklySchedule(date, callback) {
@@ -47,51 +63,9 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%script#assignmentDetails{ :type => "text/html" }
-  %label Public note
-  %textarea.public_note{ :"data-bind" => "value: public_note" }
-  %label Private note
-  %textarea.private_note{ :"data-bind" => "value: private_note" }
-  %label Alternate duration
-  %select{ :"data-bind" => "options: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0], optionsCaption: 'Select one...', value: duration" }
-
-%div#physician-groups{ :style => "display:none;", :"data-bind" => "tabsUI: {}, physicianGroupsDialog: {}" }
-  %ul
-    - @physicians_by_group.each do |group|
-      - if group["physicians"].size > 0
-        %li><= link_to group["group_title"], "##{group["group_title"]}"
-  - @physicians_by_group.each do |group|
-    %div{ :id => group["group_title"] }
-      %ul
-        - group["physicians"].each do |physician|
-          %li><
-            %a.ui-corner-all.ui-state-default{ :href => "#", :"data-bind" => "click: function() { assignPhysician(#{physician["id"]}); $('#physician-groups').dialog('close'); return false; }" }= physician["short_name"]
-
-%script#dateColHeader{ :type => "text/html" }
-  %div.column-header
-    %div.holiday-title{ :"data-bind" => "text: holiday_title" }
-    %span{ :"data-bind" => "text: shortDate" }
-
-%script#assignment{ :type => "text/html" }
-  %div.ui-corner-all.ui-state-default.assignment{ :"data-bind" => "assignmentMousing: {}, assignmentDragging: {}, click: function() { viewModel.editingAssignment(this); inEditMode(true); }, css: { 'ui-state-highlight': inEditMode }" }
-    %span{ :"data-bind" => "text: physician_name()" }
-    %div.assignment-indicators
-      %span.note-indicator(data-bind="css: { pnpNote: noteType() == 'public-private', pubNote: noteType() == 'public', priNote: noteType() == 'private' }")
-      %span.duration-indicator{ :"data-bind" => 'css: { "ui-icon ui-icon-clock": !(duration() == undefined || duration() == "Select one...")  }' }
-
-%script#shiftDayCell{ :type => "text/html" }
-  %td.shiftDay.ui-widget-content{ :"data-bind" => "assignmentDrop: {}, shiftDayMousing: {}, shiftDayDropping: {}, click: function() { viewModel.toggleSelectedShiftDay(this); }, css: { 'ui-state-highlight': selected }, template: { name: 'assignment', foreach: assignments }" }
-
-%script#shiftWeekRow{ :type => "text/html" }
-  %div.shift-week
-    %span.shift-title{ :"data-bind" => "text: shift_title" }
-    %input.shift-week-note{ :"data-bind" => "value: shift_week_note.text" }
-    %table
-      %tbody
-        %tr{ :"data-bind" => 'template: { name: "shiftDayCell", foreach: shift_days }' }
+%div#physician-groups{ :style => "display:none;", :"data-bind" => "template: { name: 'directoryListing' }" }
 
 %div#assignment-details{ :style => "display: none;", :"data-bind" => "template: { name: 'assignmentDetails', data: editingAssignment }, assignmentDetailsDialog: {}" }
-
 
 %script#previousLink{ :type => "text/html" }
   %div.placeholder &nbsp;
@@ -134,7 +108,7 @@
     next week &raquo;
 
 %div.schedule-wrapper
-  %div.schedule{ :"data-bind" => 'template: { name: "shiftWeekRow", foreach: shift_weeks }' }
+  %div.schedule{ :"data-bind" => 'ajaxLifecycle: {}, template: { name: "shiftWeekRow", foreach: shift_weeks }' }
 
 %script#ruleConflict{ :type => "text/html" }
   %tr

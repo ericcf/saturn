@@ -13,10 +13,11 @@
 src_files:
   - public/javascripts/jquery.min.js
   - public/javascripts/jquery-ui.min.js
+  - public/javascripts/jquery.tmpl.js
+  - public/javascripts/third_party/*.js
   - public/javascripts/report.js
-  - public/javascripts/schedules/*.js
-  - public/javascripts/sections/*.js
-  - public/javascripts/shared/*.js
+  - public/javascripts/saturn/bindings.js
+  - public/javascripts/saturn/models/*.js
 
 # stylesheets
 #
@@ -56,7 +57,7 @@ helpers:
 #   - **/*[sS]pec.js
 #
 spec_files:
-  - **/*[sS]pec.js
+  - saturn/*[sS]pec.js
 
 # src_dir
 #

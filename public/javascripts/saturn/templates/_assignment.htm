@@ -1,0 +1,9 @@
+<script id="assignment" type="text/html">
+    <div class="ui-corner-all ui-state-default assignment" data-bind="openDetailsDialog: inEditMode, assignmentDragging: {}, click: function() { startEditing() }, mouseover: function(event) { inHoveringMode(true); event.stopPropagation() }, mouseout: function() { inHoveringMode(false) }, css: { 'ui-state-highlight': inEditMode, 'ui-state-active': inDraggingMode, 'ui-state-hover': inHoveringMode }, visible: destroyed() == false">
+        <span data-bind="text: physician_name"></span>
+        <div class="assignment-indicators">
+            <span class="note-indicator" data-bind="css: { pnpNote: noteType() == 'public-private', pubNote: noteType() == 'public', priNote: noteType() == 'private' }"></span>
+            <span class="duration-indicator" data-bind="css: { 'ui-icon ui-icon-clock': hasModifiedDuration() }"></span>
+        </div>
+    </div>
+</script>
