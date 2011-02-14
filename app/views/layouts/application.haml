@@ -2,8 +2,7 @@
 %html
   %head
     %title
-      = controller.controller_name
-      = controller.action_name
+      = "Saturn - #{content_for?(:page_title) ? yield(:page_title) : "Scheduling"}"
 
     = csrf_meta_tag
     = formtastic_stylesheet_link_tag

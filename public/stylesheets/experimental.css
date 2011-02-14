@@ -11,10 +11,11 @@ div.schedule-wrapper {
   left: 140px;
   border-top: 3px solid gray;
   border-bottom: 3px solid gray;
+  width: 877px;
 }
 
 div.schedule {
-  width: 862px;
+  width: 877px;
 }
 
 div.schedule table {

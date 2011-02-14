@@ -17,6 +17,10 @@ module ApplicationHelper
     ].compact.join(" ")
   end
 
+  def page_title(text)
+    content_for(:page_title) { text }
+  end
+
   private
 
   # helps determine current tab
