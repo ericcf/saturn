@@ -11,7 +11,7 @@
         "_shiftWeekRow.htm"
       ], function(index, template) {
         $.ajax({
-          url: "/javascripts/saturn/templates/" + template,
+          url: "#{root_url + "javascripts/saturn/templates/"}" + template,
           async: false,
           success: function(template) {
             $("head").append(template);

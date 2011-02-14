@@ -17,10 +17,10 @@ class WeeklySchedulesController < ApplicationController
       format.json do
         start_date = monday_of_week_with(params[:date])
         @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
-          params[:section_id],
+          @section.id,
           start_date
         ) || WeeklySchedule.new(
-          :section_id => params[:section_id],
+          :section_id => @section.id,
           :date => start_date
         )
         render :json => @weekly_schedule.to_json
@@ -34,10 +34,10 @@ class WeeklySchedulesController < ApplicationController
     schedule_params = ActiveSupport::JSON.decode(params[:weekly_schedule])
     start_date = schedule_params["date"]
     @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
-      params[:section_id],
+      @section.id,
       start_date
     ) || WeeklySchedule.new(
-      :section_id => params[:section_id],
+      :section_id => @section.id,
       :date => start_date
     )
     schedule_attributes = {

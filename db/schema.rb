@@ -170,9 +170,8 @@ ActiveRecord::Schema.define(:version => 20110208192502) do
   add_index "section_role_assignments", ["section_id"], :name => "index_section_role_assignments_on_section_id"
 
   create_table "sections", :force => true do |t|
-    t.string   "title",      :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "title",       :null => false
+    t.string "cached_slug"
   end
 
   add_index "sections", ["title"], :name => "index_sections_on_title", :unique => true

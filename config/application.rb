@@ -42,10 +42,5 @@ module Saturn
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-
-    config.middleware.use ::ExceptionNotifier,
-      :email_prefix => "Saturn Errors: ",
-      :sender_address => %w{"Saturn Admin" <saturn@northwestern.edu>},
-      :exception_recipients => %w{ericcf@northwestern.edu} if Rails.env.production?
   end
 end

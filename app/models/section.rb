@@ -2,6 +2,8 @@ class Section < ActiveRecord::Base
 
   SCHEDULE_GROUPS = %w[Faculty Fellows Residents]
 
+  has_friendly_id :title, :use_slug => true
+
   has_many :shift_tags, :dependent => :destroy
   accepts_nested_attributes_for :shift_tags, :allow_destroy => true
   has_many :memberships,
