@@ -13,7 +13,7 @@
   = select_month(@dates.first)
   = select_day(@dates.first)
   = submit_tag "Jump to date"
-%p= link_to "view today", weekly_section_schedule_path(@section)
+  %p= link_to "view today", weekly_section_schedule_path(@section)
 
 %p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
 

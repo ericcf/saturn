@@ -144,6 +144,7 @@ form fieldset.buttons {
 
 div.schedule-wrapper {
   position: absolute;
+  width: 1001px;
   top: 251px;
   bottom: 5px;
   left: 18px;
@@ -161,7 +162,7 @@ table {
     table.schedule td, table.schedule th {
       width: 120px; }
   table.wide-schedule {
-    width: 1001px; }
+    width: 986px; }
 
 th {
   text-align: left;
@@ -266,6 +267,38 @@ table .schedule_block {
   .pagination em {
     background-color: #2f4462;
     color: #f2ece9; }
+
+.note {
+  position: relative;
+  float: right;
+  height: 16px; }
+  .note .note-text {
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: -999em;
+    position: absolute;
+    padding: 4px 5px;
+    background: #6e8e41;
+    color: #f2ece9; }
+  .note:hover .note-text {
+    position: absolute;
+    left: 4em;
+    top: 0em;
+    z-index: 99;
+    margin-left: 0;
+    width: 110px; }
+
+tr:last-child .note .note-text {
+  top: -2em; }
+tr:last-child .note:hover .note-text {
+  left: 4em;
+  top: -2em; }
+
+td .note:hover .note-text {
+  left: 20px; }
+
+td:last-child .note:hover .note-text {
+  left: -120px; }
 
 .subheadline {
   height: 36px; }

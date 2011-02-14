@@ -4,6 +4,7 @@
 
 $baseLineHeight: 18px
 $baseTextColor: #6e6f72
+$altColor: #6E8E41
 $mediumTextColor: #c6c8cb
 $oppositeTextColor: #f2ece9
 $baseHeaderColor: #333333
@@ -178,6 +179,7 @@ $hoverRowTextColor: white
 
 div.schedule-wrapper
   position: absolute
+  width: 1001px
   top: 251px
   bottom: 5px
   left: 18px
@@ -195,7 +197,7 @@ table
     td, th
       width: 120px
   &.wide-schedule
-    width: 1001px
+    width: 986px
 
 th
   text-align: left
@@ -314,6 +316,43 @@ $navActiveBorderBottomColor: white
   em
     background-color: $baseLinkColor
     color: $oppositeTextColor
+
+// notes
+
+.note
+  position: relative
+  float: right
+  height: 16px
+  .note-text
+    font-size: 12px
+    font-weight: bold
+    margin-left: -999em
+    position: absolute
+    padding: 4px 5px
+    background: $altColor
+    color: $oppositeTextColor
+  &:hover .note-text
+    position: absolute
+    left: 4em
+    top: 0em
+    z-index: 99
+    margin-left: 0
+    width: 110px
+
+// fix visibility of notes in the last table row
+tr:last-child
+  .note .note-text
+    top: -2em
+  .note:hover .note-text
+    left: 4em
+    top: -2em
+
+td .note:hover .note-text
+  left: 20px
+
+// fix visibility of notes in the last table cell
+td:last-child .note:hover .note-text
+  left: -120px
 
 // misc
 

@@ -1,67 +1,42 @@
-/* line 1, sass/print.sass */
 body {
   background: white;
-  font-size: 11pt;
-}
+  font-size: 11pt; }
 
-/* line 5, sass/print.sass */
 table {
-  border-collapse: collapse;
-}
+  width: 100%;
+  border-collapse: collapse; }
+  table td, table th {
+    width: 12%;
+    font-size: 9pt;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: left; }
+    table td a, table td img, table th a, table th img {
+      display: none; }
 
-/* line 8, sass/print.sass */
-th {
-  text-align: left;
-}
-
-/* line 11, sass/print.sass */
-th img {
-  display: none;
-}
-
-/* line 14, sass/print.sass */
-th, td {
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-/* line 18, sass/print.sass */
 fieldset.buttons {
-  display: none;
-}
+  display: none; }
 
-/* line 21, sass/print.sass */
-#top-menu {
-  display: none;
-}
+form, .inline_form, .content_actions {
+  display: none; }
 
-/* line 24, sass/print.sass */
+#top-menu, #personal {
+  display: none; }
+
 .navcontainer {
-  display: none;
-}
+  display: none; }
 
-/* line 27, sass/print.sass */
 #main {
   width: auto;
-  margin: 0 5%;
+  margin: 0;
   padding: 0;
   border: 0;
   float: none !important;
   color: black;
-  background: transparent;
-}
+  background: transparent; }
 
-/* line 36, sass/print.sass */
-.inline_form, .content_actions {
-  display: none;
-}
+.note {
+  color: #cccccc; }
 
-/* line 40, sass/print.sass */
-th .date_value {
-  display: none;
-}
-
-/* line 42, sass/print.sass */
 .assignment .details {
-  display: none;
-}
+  display: none; }

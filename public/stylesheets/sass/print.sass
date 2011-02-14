@@ -3,22 +3,24 @@ body
   font-size: 11pt
 
 table
+  width: 100%
   border-collapse: collapse
-
-th
-  text-align: left
-
-th img
-  display: none
-
-th, td
-  border-right: 1px solid black
-  border-bottom: 1px solid black
+  td, th
+    width: 12%
+    font-size: 9pt
+    border-right: 1px solid black
+    border-bottom: 1px solid black
+    text-align: left
+    a, img
+      display: none
 
 fieldset.buttons
   display: none
 
-#top-menu
+form, .inline_form, .content_actions
+  display: none
+
+#top-menu, #personal
   display: none
 
 .navcontainer
@@ -26,18 +28,16 @@ fieldset.buttons
 
 #main
   width: auto
-  margin: 0 5%
+  margin: 0
   padding: 0
   border: 0
   float: none !important
   color: black
   background: transparent
 
-.inline_form, .content_actions
-  display: none
+.note
+  color: #ccc
 
 // schedules
-th .date_value
-  display: none
 .assignment .details
   display: none

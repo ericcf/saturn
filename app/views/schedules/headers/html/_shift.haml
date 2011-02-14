@@ -1,3 +1,7 @@
 %span{ :style => "color:#{shift[:color]}" }><= shift[:title]
-= image_tag('phone.jpg', :title => shift[:phone], :class => "right") if shift[:phone]
-= image_tag('pub-note.gif', :title => shift[:note], :class => "right") if shift[:note]
+%span.note
+  = image_tag('phone.jpg', :alt => shift[:phone], :class => "right") if shift[:phone]
+  %span.note-text= shift[:phone]
+%span.note
+  = image_tag('pub-note.gif', :alt => shift[:note], :class => "right") if shift[:note]
+  %span.note-text= shift[:note]
