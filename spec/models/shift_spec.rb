@@ -41,6 +41,8 @@ describe Shift do
 
   it { should have_many(:shift_tags).through(:shift_tag_assignments) }
 
+  it { should have_many(:shift_week_notes).dependent(:destroy) }
+
   it { should belong_to(:section) }
 
   # validations

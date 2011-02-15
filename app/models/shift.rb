@@ -2,6 +2,7 @@ class Shift < ActiveRecord::Base
 
   has_many :shift_tag_assignments, :dependent => :destroy
   has_many :shift_tags, :through => :shift_tag_assignments
+  has_many :shift_week_notes, :dependent => :destroy
   belongs_to :section
 
   validates :title, :duration, :position, :section, :presence => true

@@ -11,7 +11,8 @@ class WeeklySchedulePresenter
     attributes.each do |name, value|
       send("#{name}=", value)
     end
-    @shifts = section.shifts.active_as_of(dates.first).includes(:shift_tags)
+    @shifts = section.shifts.active_as_of(dates.first).
+      includes(:shift_tags, :shift_week_notes)
     @tabular_data = Tables::TabularStore.new(
       :row_headers => headers(@options[:row_type]),
       :col_headers => headers(@options[:col_type]),
@@ -31,7 +32,7 @@ class WeeklySchedulePresenter
       dates.map { |d| { :object => d, :type => "date" } }
     when :shifts
       shifts.map do |s|
-        note = (ShiftWeekNote.find_by_shift_id_and_weekly_schedule_id(s.id, weekly_schedule.id) || ShiftWeekNote.new)
+        note = s.shift_week_notes.find_by_weekly_schedule_id(weekly_schedule.id) || ShiftWeekNote.new
         {
           :object => {
             :title => s.title,

@@ -119,9 +119,9 @@ input.shift-week-note {
 #rules-conflicts-wrapper {
   position: absolute;
   left: 1038px;
-  height: 500px;
   top: 244px;
-  width: 200px;
+  width: 250px;
+  bottom: 5px;
 }
 
 #rules-conflicts {
