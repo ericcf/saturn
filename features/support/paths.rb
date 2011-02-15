@@ -5,10 +5,12 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    # users
     when /login/
       new_user_session_path
     when /logout/
       destroy_user_session_path
+    # administration
     when /physicians page/
       physicians_path
     when /new physician alias page for \"([^ ]+) ([^"]+)\"/
@@ -21,10 +23,20 @@ module NavigationHelpers
       new_section_path
     when /the edit section page for \"([^"]+)\"/
       edit_section_path(find_section($1))
+    # schedules
     when /the weekly call schedule page for the week beginning (\d{4})-(\d{2})-(\d{2})/
       weekly_call_schedule_path(:date => { :year => $1, :month => $2, :day => $3 })
     when /the weekly section schedule page for \"([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/
       weekly_section_schedule_path(find_section($1), :date => { :year => $2, :month => $3, :day => $4 })
+    when /the vacation requests page for the \"([^"]+)\" section/
+      section_vacation_requests_path(find_section($1))
+    when /the new vacation request page for the \"([^"]+)\" section/
+      new_section_vacation_request_path(find_section($1))
+    # personal
+    when /the personal dashboard for \"([^ ]+) ([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/
+      physician = Physician.find_by_given_name_and_family_name($1, $2)
+      schedule_physician_path(physician, :date => { :year => $3, :month => $4, :day => $5 })
+    # reports
     when /the reports page for \"([^"]+)\"/
       section_shift_totals_path(find_section($1))
     when /the shift totals search page for \"([^"]+)\"/
@@ -40,12 +52,9 @@ module NavigationHelpers
       else
         edit_weekly_section_schedule_path(section)
       end
+    # section management
     when /manage new memberships page for \"([^"]+)\"/
       manage_new_section_memberships_path(find_section($1))
-    when /the vacation requests page for the \"([^"]+)\" section/
-      section_vacation_requests_path(find_section($1))
-    when /the new vacation request page for the \"([^"]+)\" section/
-      new_section_vacation_request_path(find_section($1))
 
     else
       begin

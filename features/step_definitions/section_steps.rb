@@ -60,7 +60,7 @@ Given /^a weekly schedule for "([^"]*)" that begins on (\d{4}-\d{2}-\d{2})( is p
 end
 
 Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" on (\d{4}-\d{2}-\d{2})$/ do |given_name, family_name, shift_title, section_title, date|
-  physician = Physician.find_by_given_name_and_family_name(given_name, family_name)
+  physician = find_or_create_physician(given_name, family_name)
   section = Section.find_by_title(section_title)
   shift = section.shifts.find_by_title(shift_title)
   assignment_date = Date.parse(date)
