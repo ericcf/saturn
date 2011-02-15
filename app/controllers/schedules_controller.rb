@@ -66,10 +66,10 @@ class SchedulesController < ApplicationController
     @section = Section.find(params[:section_id])
     @shifts = @section.shifts.active_as_of(week_start_date)
     @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
-      params[:section_id],
+      @section.id,
       week_start_date
     ) || WeeklySchedule.new(
-      :section_id => params[:section_id],
+      :section_id => @section.id,
       :date => week_start_date
     )
     authorize! :update, @section
@@ -82,18 +82,18 @@ class SchedulesController < ApplicationController
   end
 
   def create_weekly_section
+    @section = Section.find(params[:section_id])
     schedule_attributes = params[:weekly_schedule].merge({
-      :section_id => params[:section_id],
+      :section_id => @section.id,
       :assignments_attributes => params[:assignments] || {}
     })
     @weekly_schedule = WeeklySchedule.new(schedule_attributes)
-    @section = Section.find(params[:section_id])
     authorize! :update, @section
     if @weekly_schedule.save
       date = @weekly_schedule.date
       flash[:notice] = "Successfully created schedule"
       redirect_to edit_weekly_section_schedule_path(
-        :section_id => params[:section_id],
+        :section_id => @section.id,
         :year => date.year,
         :month => date.month,
         :day => date.day

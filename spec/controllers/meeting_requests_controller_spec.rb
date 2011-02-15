@@ -23,38 +23,6 @@ describe MeetingRequestsController do
     it { assigns(:meeting_requests).should eq([mock_request]) }
   end
 
-  describe "GET show" do
-
-    before(:each) do
-      @mock_requests = mock("meeting_requests")
-      @mock_section.stub!(:meeting_requests).and_return(@mock_requests)
-    end
-
-    context "the requested meeting_request is found" do
-
-      before(:each) do
-        @mock_requests.should_receive(:find).with(mock_request.id).
-          and_return(mock_request)
-        get :show, :section_id => @mock_section.id,
-          :id => mock_request.id
-      end
-
-      it { assigns(:meeting_request).should eq(mock_request) }
-    end
-
-    context "the requested meeting_request is not found" do
-
-      before(:each) do
-        @mock_requests.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        get :show, :section_id => @mock_section.id, :id => 1
-      end
-
-      it { flash[:error].should == "Error: requested meeting_request not found" }
-
-      it { should redirect_to(section_meeting_requests_path) }
-    end
-  end
-
   describe "GET new" do
 
     context "a meeting shift exists for the section" do

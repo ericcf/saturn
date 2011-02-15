@@ -1,0 +1,41 @@
+- page_title "#{@section.title} weekly schedule"
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'schedule'
+
+- content_for :content_menu do
+  = render "section_menu.html"
+
+- date = @dates.first
+
+%h3 Published Schedule
+%h3= "Week of #{@dates.first.to_s(:long)}"
+= form_tag weekly_section_schedule_path(@section), :method => :get do
+  = select_year(@dates.first)
+  = select_month(@dates.first)
+  = select_day(@dates.first)
+  = submit_tag "Jump to date"
+  %p= link_to "view today", weekly_section_schedule_path(@section)
+
+%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
+
+%table.schedule.wide-schedule
+  %thead
+    %tr
+      %th
+        - if @view_mode == "2"
+          = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day })
+        - else
+          = link_to "View by Physician", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => 2)
+      - @schedule_presenter.each_col_header do |col_header|
+        %th= render :partial => "schedules/headers/html/#{col_header[:type]}.html", :object => col_header[:object]
+%div.schedule-wrapper
+  %table.schedule.wide-schedule
+    %tbody
+      - @schedule_presenter.each_row do |row|
+        %tr{ :class => cycle("odd", "") }
+          %th= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
+          - row.each_value do |value|
+            %td!= value && value.join("<br/>")
+
+%div#rules-conflicts= render "rules_conflicts.html", :physician_names_by_id => @physician_names_by_id

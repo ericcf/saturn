@@ -1,18 +1,10 @@
 class VacationRequestsController < ApplicationController
   include SectionResourceController
 
-  before_filter :authenticate_user!, :except => [:index, :show, :new, :create]
+  before_filter :authenticate_user!, :except => [:index, :new, :create]
 
   def index
     @vacation_requests = @section.vacation_requests
-  end
-
-  def show
-    @vacation_request = @section.vacation_requests.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested vacation_request not found"
-    redirect_to section_vacation_requests_path
   end
 
   def new

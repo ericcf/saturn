@@ -1,0 +1,4 @@
+- people = grouped_people[group]
+- unless people.blank?
+  %div.group{ :id => "groups-#{group.downcase}" }><
+    = render :partial => 'person.html', :collection => people

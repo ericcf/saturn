@@ -9,11 +9,6 @@ describe VacationRequestsController do
         should route_to(:controller => "vacation_requests", :action => "index", :section_id => "1") 
     end
 
-    it "recognizes and generates #show" do
-      { :get => "/sections/1/vacation_requests/2" }.
-        should route_to(:controller => "vacation_requests", :action => "show", :section_id => "1", :id => "2") 
-    end
-
     it "recognizes and generates #new" do
       { :get => "/sections/1/vacation_requests/new" }.
         should route_to(:controller => "vacation_requests", :action => "new", :section_id => "1") 

@@ -24,7 +24,7 @@
         %th
         - @shift_totals_report.physicians_by_group.each do |group, physicians|
           %th= group.title
-          = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :group_name => nil }
+          = render :partial => "/reports/headers/physician.html", :collection => physicians, :locals => { :group_name => nil }
     %tbody
       - @shift_totals_report.shifts.each do |shift|
         %tr{ :class => cycle("odd", "", :name => "row") }

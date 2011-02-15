@@ -27,12 +27,12 @@ Saturn::Application.routes.draw do
     end
     resources :shifts, :except => [:show, :edit, :update]
     resource :rules, :only => [:show, :edit, :update]
-    resources :vacation_requests, :except => :destroy do
+    resources :vacation_requests, :except => [:show, :destroy] do
       member do
         post "approve"
       end
     end
-    resources :meeting_requests, :except => :destroy do
+    resources :meeting_requests, :except => [:show, :destroy] do
       member do
         post "approve"
       end

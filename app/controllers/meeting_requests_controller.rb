@@ -1,18 +1,10 @@
 class MeetingRequestsController < ApplicationController
   include SectionResourceController
 
-  before_filter :authenticate_user!, :except => [:index, :show, :new, :create]
+  before_filter :authenticate_user!, :except => [:index, :new, :create]
 
   def index
     @meeting_requests = @section.meeting_requests
-  end
-
-  def show
-    @meeting_request = @section.meeting_requests.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    flash[:error] = "Error: requested meeting_request not found"
-    redirect_to section_meeting_requests_path
   end
 
   def new

@@ -1,0 +1,3 @@
+%tr.shift{ :id => "shift_#{shift.id}" }><
+  %th.shift_label><= shift.title
+  = render :partial => 'shift_day.html', :collection => @week_dates, :locals => { :shift_id => shift.id, :mapped_assignments => mapped_assignments, :people_names => people_names }

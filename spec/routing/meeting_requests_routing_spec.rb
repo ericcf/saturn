@@ -9,11 +9,6 @@ describe MeetingRequestsController do
         should route_to(:controller => "meeting_requests", :action => "index", :section_id => "1") 
     end
 
-    it "recognizes and generates #show" do
-      { :get => "/sections/1/meeting_requests/2" }.
-        should route_to(:controller => "meeting_requests", :action => "show", :section_id => "1", :id => "2") 
-    end
-
     it "recognizes and generates #new" do
       { :get => "/sections/1/meeting_requests/new" }.
         should route_to(:controller => "meeting_requests", :action => "new", :section_id => "1") 

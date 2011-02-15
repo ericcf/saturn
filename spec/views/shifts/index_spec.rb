@@ -15,7 +15,7 @@ describe "shifts/index" do
     @mock_retired_shift.stub!(:tags).and_return("PM")
     assign(:current_shifts, [@mock_current_shift])
     assign(:retired_shifts, [@mock_retired_shift])
-    should_render_partial("schedules/section_menu")
+    should_render_partial("schedules/section_menu.html")
     render
   end
 

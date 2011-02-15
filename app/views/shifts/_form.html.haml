@@ -1,0 +1,19 @@
+- content_for :javascripts do
+  = javascript_include_tag 'syronex-colorpicker', 'shared/color_picker'
+
+- content_for :stylesheets do
+  = stylesheet_link_tag 'syronex-colorpicker'
+
+- content_for :content_menu do
+  = render "schedules/section_menu.html"
+
+%div.form-container
+  = semantic_form_for [@section, @shift] do |shift_form|
+    = shift_form.inputs do
+      = shift_form.input :title
+      = shift_form.input :display_color, :input_html => { :class => "color_picker" }
+    = shift_form.buttons do
+      = shift_form.commit_button :button_html => { :class => "button" }
+      %li
+        or
+        = link_to "Cancel", section_shifts_path(@section)
