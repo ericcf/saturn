@@ -60,6 +60,12 @@ describe PhysiciansController do
       before(:each) do
         Physician.should_receive(:find).with(mock_physician.id).
           and_return(mock_physician)
+        @mock_schedule = stub_model(PhysicianSchedule)
+        PhysicianSchedule.should_receive(:new).with(
+          :physician => mock_physician,
+          :start_date => Date.today.at_beginning_of_week,
+          :number_of_days => 28
+        ).and_return(@mock_schedule)
       end
 
       context "any format" do
@@ -70,7 +76,7 @@ describe PhysiciansController do
 
         it { assigns(:physician).should == mock_physician }
 
-        it { assigns(:dates).should include(Date.today) }
+        it { assigns(:schedule).should == @mock_schedule }
       end
 
       context "the format is ics" do
@@ -79,7 +85,7 @@ describe PhysiciansController do
           get :schedule, :id => mock_physician.id, :format => "ics"
         end
 
-        it { response.content_type.should == "text/calendar" }
+        it { response.content_type.should == Mime::ICS }
       end
     end
 

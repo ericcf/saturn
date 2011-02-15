@@ -2,23 +2,30 @@ require 'spec_helper'
 
 describe "physicians/schedule.html" do
 
+  let(:mock_physician) { stub_model(Physician, :full_name => "Foo Bar") }
+
+  let(:mock_schedule) { stub_model(PhysicianSchedule, :dates => [Date.today]) }
+
   before(:each) do
-    @mock_physician = assign(:physician, stub_model(Physician, :full_name => "Foo Bar"))
-    @dates = assign(:dates, [Date.today])
+    assign(:physician, mock_physician)
+    mock_schedule.stub!(:assignments_for_section_and_date)
+    assign(:schedule, mock_schedule)
     render
   end
 
-  it { rendered.should have_selector("h2", :content => @mock_physician.full_name) }
+  subject { rendered }
+
+  it { should have_selector("h2", :content => mock_physician.full_name) }
 
   it do
-    rendered.should have_selector("h3",
-      :content => "Week of #{@dates.first.to_s(:long)}")
+    should have_selector("h3",
+      :content => "Week of #{mock_schedule.dates.first.to_s(:long)}")
   end
 
   it do
-    rendered.should have_selector("form",
+    should have_selector("form",
       :method => "get",
-      :action => schedule_physician_path(@mock_physician)
+      :action => schedule_physician_path(mock_physician)
     ) do |form|
       form.should have_selector("select", :name => "date[year]")
       form.should have_selector("select", :name => "date[month]")

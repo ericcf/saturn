@@ -8,7 +8,7 @@ RadDirectory::Person.class_eval do
     :dependent => :destroy
 
   def sections
-    Section.where(:id => section_memberships.map(&:section_id))
+    ::Section.find(section_memberships.map(&:section_id))
   end
 
   def published_shifts_on_date(date)

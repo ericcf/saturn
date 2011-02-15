@@ -23,16 +23,9 @@ class PhysiciansController < ApplicationController
   end
 
   def schedule
-    start_date = params[:date].blank? ? Date.today : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
-    @dates = week_dates_beginning_with(start_date)
+    start_date = params[:date].blank? ? Date.today.at_beginning_of_week : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     find_physician
-    @assignments = @physician.assignments.
-      includes(:weekly_schedule, :shift).
-      published.
-      find_all_by_date(@dates)
-    @assignments_by_section = @assignments.group_by do |assignment|
-      assignment.weekly_schedule.section
-    end
+    @schedule = PhysicianSchedule.new(:physician => @physician, :start_date => start_date, :number_of_days => 28)
 
     respond_to do |format|
       format.html

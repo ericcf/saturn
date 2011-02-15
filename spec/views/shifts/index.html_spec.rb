@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "shifts/index" do
+describe "shifts/index.html" do
   
   before(:each) do
     Section.delete_all

@@ -2,31 +2,36 @@
 
 %h2= @physician.full_name
 
-%h3= "Week of #{@dates.first.to_s(:long)}"
+%h3= "Week of #{@schedule.dates.first.to_s(:long)}"
 = form_tag schedule_physician_path(@physician), :method => :get do
-  = select_year(@dates.first)
-  = select_month(@dates.first)
-  = select_day(@dates.first)
+  = select_year(@schedule.dates.first)
+  = select_month(@schedule.dates.first)
+  = select_day(@schedule.dates.first)
   = submit_tag "Jump to date"
 %p= link_to "view today", schedule_physician_path(@physician)
 
 %p.content_actions
-  - date = @dates.first
+  - date = @schedule.dates.first
   = link_to "Download or subscribe to iCalendar", schedule_physician_path(@physician, :format => :ics, :date => { :year => date.year, :month => date.month, :day => date.day })
 
 %table.schedule
   %thead
     %tr
       %th
-      - @dates.each do |date|
-        %th{ :class => date == Date.today ? "current-date" : "" }= short_date(date)
-    - @physician.sections.each do |section|
+      - %w{ Mon Tue Wed Thu Fri Sat Sun }.each do |day|
+        %th= day
+  - @schedule.dates.each_slice(7) do |dates|
+    %thead
       %tr
-        %th= link_to section.title, weekly_section_schedule_path(section)
-        - section_assignments = @assignments_by_section[section] || []
-        - assignments_by_date = section_assignments.group_by(&:date)
-        - @dates.each do |date|
-          - unless assignments_by_date[date].blank?
-            %td{ :class => date == Date.today ? "current-date" : "" }!= assignments_by_date[date].map{|a|a.shift.title}.join("<br/>")
-          - else
-            %td &nbsp;
+        %th
+        - dates.each do |date|
+          %th{ :class => date == Date.today ? "current-date" : "" }= short_date(date, [:without_day])
+      - @physician.sections.each do |section|
+        %tr
+          %th= link_to section.title, weekly_section_schedule_path(section)
+          - dates.each do |date|
+            - assignments = @schedule.assignments_for_section_and_date(section, date)
+            - unless assignments.blank?
+              %td{ :class => date == Date.today ? "current-date" : "" }!= assignments.map{|a|a.shift.title}.join("<br/>")
+            - else
+              %td &nbsp;

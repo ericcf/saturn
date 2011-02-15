@@ -30,12 +30,12 @@ Run Cucumber features with:
 * Exports individual schedules to iCalendar
 * Allows for grouping shifts into "categories" (e.g. AM, PM, Clinical)
 * Basic manual vacation and meeting request management
+* Syncronizes with external calendars via iCalendar feed
 
 ## Todo
-* Sync with external calendars
 * Rule-based automated shift assignment
 * Resident rotation scheduling
-* E-mail notification
+* E-mail notification with customized subscription
 
 ## Copyright
 Copyright (c) 2011 Eric Carty-Fickes, released under MIT licence
