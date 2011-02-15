@@ -36,7 +36,7 @@ class PhysiciansController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.ics { render :ics => "personal_schedule.ics", :layout => false }
+      format.ics { render :ics => "schedule.ics", :layout => false }
     end
 
   rescue ActiveRecord::RecordNotFound

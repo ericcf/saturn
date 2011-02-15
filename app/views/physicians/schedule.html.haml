@@ -11,7 +11,8 @@
 %p= link_to "view today", schedule_physician_path(@physician)
 
 %p.content_actions
-  = link_to "Download as iCalendar", schedule_physician_path(@physician, :format => :ics, :date => @dates.first.to_s)
+  - date = @dates.first
+  = link_to "Download or subscribe to iCalendar", schedule_physician_path(@physician, :format => :ics, :date => { :year => date.year, :month => date.month, :day => date.day })
 
 %table.schedule
   %thead
