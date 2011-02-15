@@ -291,7 +291,6 @@ table .schedule_block {
 tr:last-child .note .note-text {
   top: -2em; }
 tr:last-child .note:hover .note-text {
-  left: 4em;
   top: -2em; }
 
 td .note:hover .note-text {

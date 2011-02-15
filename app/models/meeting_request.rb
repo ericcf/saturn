@@ -26,6 +26,10 @@ class MeetingRequest < ActiveRecord::Base
     update_attribute(:status, STATUS_APPROVED)
   end
 
+  def section_title
+    section.title
+  end
+
   private
 
   def end_date_on_or_after_start_date

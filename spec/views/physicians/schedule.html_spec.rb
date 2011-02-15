@@ -19,7 +19,7 @@ describe "physicians/schedule.html" do
 
   it do
     should have_selector("h3",
-      :content => "Week of #{mock_schedule.dates.first.to_s(:long)}")
+      :content => "Published Schedule #{mock_schedule.dates.first.to_s(:long)} - #{mock_schedule.dates.last.to_s(:long)}")
   end
 
   it do

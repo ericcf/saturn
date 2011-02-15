@@ -65,7 +65,7 @@ class WeeklySchedulePresenter
           index = [physician_index(assignment), date_index(assignment)]
           values[index] ||= []
           data = assignment.shift.title
-          data += " <img src='/images/pub-note.gif' title='#{assignment.public_note}' />" if assignment.public_note.present?
+          data += " <span class='note'><img src='/images/pub-note.gif' alt='#{assignment.public_note}' /><span class='note-text'>#{assignment.public_note}</span></span>" if assignment.public_note.present?
           values[index] << data
         end
       end
