@@ -48,7 +48,7 @@ $(function() {
             stepMonths: 2,
             showButtonPanel: true,
             onSelect: function(dateText, inst) {
-                $(element).val(" select date...");
+                $(this).val(" select date...");
                 loadWeeklySchedule(dateText, function(data) {
                     viewModel.updateFromJS(data);
                 });

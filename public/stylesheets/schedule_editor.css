@@ -1,0 +1,114 @@
+#schedule-wrapper {
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 229px;
+  bottom: 8px;
+  left: 140px;
+  border-bottom: 1px solid #333333;
+  width: 877px; }
+
+#schedule {
+  width: 861px; }
+
+.physician-name {
+  display: block;
+  text-decoration: none; }
+
+.drop-shadow {
+  -webkit-box-shadow: -3px 2px 5px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: -3px 2px 5px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: -3px 2px 5px 0 rgba(0, 0, 0, 0.5); }
+
+.schedule-headers {
+  border-top: 1px solid #333333;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  float: left;
+  background-color: #e6eae1; }
+
+.schedule-column-header {
+  float: left;
+  text-align: center;
+  width: 122px;
+  font-weight: bold;
+  border-left: 1px solid #333333; }
+
+.prepended-column-header {
+  clear: left;
+  border-left: none; }
+
+.appended-column-header {
+  border-left: none; }
+
+.shift-title {
+  font-weight: bold;
+  padding-left: 0.5em; }
+
+.shift-week {
+  background-color: #919397;
+  color: #fefefe;
+  margin-bottom: 9px; }
+
+.shift-week-note {
+  position: absolute;
+  height: 16px;
+  background-color: #f2ece9;
+  left: 180px;
+  width: 620px;
+  padding-left: 0.5em;
+  color: #6e6f72; }
+
+.schedule-grid {
+  border: none; }
+
+.shiftDay {
+  vertical-align: top;
+  width: 118px;
+  min-height: 36px;
+  padding-bottom: 2px; }
+
+.assignment {
+  position: relative;
+  cursor: pointer;
+  width: 100px;
+  overflow: hidden;
+  padding-left: 2px; }
+
+.assignment-indicators {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 32px; }
+
+.note-indicator {
+  background-repeat: no-repeat;
+  width: 16px;
+  display: block;
+  height: 16px;
+  float: left; }
+
+.priNote {
+  background-image: url("../images/pri-note.gif"); }
+
+.pubNote {
+  background-image: url("../images/pub-note.gif"); }
+
+.pnpNote {
+  background-image: url("../images/pnp-note.gif"); }
+
+.duration-indicator {
+  width: 16px; }
+
+#rules-conflicts-wrapper {
+  position: absolute;
+  left: 1038px;
+  top: 244px;
+  width: 250px;
+  bottom: 5px; }
+
+#rules-conflicts {
+  position: absolute;
+  top: 30px;
+  bottom: 0;
+  overflow-y: auto; }

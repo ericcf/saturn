@@ -2,7 +2,7 @@
     <div class="shift-week">
         <span class="shift-title" data-bind="text: shift_title"></span>
         <input class="shift-week-note" data-bind="value: shift_week_note.text, focus: function(event) { event.target.value = event.target.value.replace(/^add note\.\.\.$/, '') }, blur: function(event) { event.target.value = event.target.value.replace(/^$/, 'add note...') }" />
-        <table>
+        <table class="schedule-grid">
             <tbody>
                 <tr data-bind="template: { name: 'shiftDayCell', foreach: shift_days }"></tr>
             </tbody>

@@ -1,10 +1,12 @@
 <script id="directoryGroupTitle" type="text/html">
-    <li><a href="#${title}" data-bind="text: title"></a></li>
+    {{if physicians().length > 0}}
+        <li><a href="#${title}" data-bind="text: title"></a></li>
+    {{/if}}
 </script>
 
 <script id="directoryPhysician" type="text/html">
     <li>
-        <a class="physician-name ui-corner-all ui-state-default" href="#" data-bind="click: function() { assignPhysician(physician.id) }, text: physician.short_name"></a>
+        <a class="physician-name ui-corner-all ui-state-default" href="#" data-bind="click: function() { viewModel.assignPhysician(physician.id) }, text: physician.short_name"></a>
     </li>
 </script>
 

@@ -60,7 +60,7 @@
     });
 
 - content_for :stylesheets do
-  = stylesheet_link_tag "experimental"
+  = stylesheet_link_tag "schedule_editor"
 
 - content_for :content_menu do
   = render "schedules/section_menu"
@@ -99,18 +99,18 @@
     %label{ :for => "is-published" }
       %span.ui-button-text{ :"data-bind" => "text: publishAction" }
         
-  %div.column-header.prepended-column-header{ :"data-bind" => "template: { name: 'previousLink' }" }
+  %div.schedule-column-header.prepended-column-header{ :"data-bind" => "template: { name: 'previousLink' }" }
     -# placeholder text
     &laquo; previous week
 
-  %div.schedule-headers{ :"data-bind" => 'template: { name: "dateColHeader", foreach: dates }' }
+  %div.schedule-headers.drop-shadow{ :"data-bind" => 'template: { name: "dateColHeader", foreach: dates }' }
     
-  %div.column-header.appended-column-header{ :"data-bind" => "template: { name: 'nextLink' }" }
+  %div.schedule-column-header.appended-column-header{ :"data-bind" => "template: { name: 'nextLink' }" }
     -# placeholder text
     next week &raquo;
 
-%div.schedule-wrapper
-  %div.schedule{ :"data-bind" => 'ajaxLifecycle: {}, template: { name: "shiftWeekRow", foreach: shift_weeks }' }
+%div#schedule-wrapper.drop-shadow
+  %div#schedule{ :"data-bind" => 'ajaxLifecycle: {}, template: { name: "shiftWeekRow", foreach: shift_weeks }' }
 
 %script#ruleConflict{ :type => "text/html" }
   %tr
