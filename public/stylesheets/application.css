@@ -159,6 +159,9 @@ table {
   table.schedule {
     float: left;
     clear: left; }
+    table.schedule thead th {
+      text-align: center;
+      vertical-align: bottom; }
     table.schedule td, table.schedule th {
       width: 120px; }
   table.wide-schedule {
@@ -308,6 +311,11 @@ td:last-child .note:hover .note-text {
 
 .current-date, .highlight {
   background-color: #e6eae1; }
+
+.date-label {
+  color: #6e8e41;
+  font-weight: normal;
+  height: 36px; }
 
 .clickable {
   cursor: pointer; }

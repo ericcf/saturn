@@ -14,7 +14,7 @@ class WeeklySchedule < ActiveRecord::Base
   }
 
   def read_only_assignments
-    assignments.select("date, duration, id, position, private_note, public_note, shift_id, physician_id, updated_at")
+    @read_only_assignments ||= assignments.select("date, duration, id, position, private_note, public_note, shift_id, physician_id, updated_at").includes(:shift)
   end
 
   def dates
@@ -27,13 +27,16 @@ class WeeklySchedule < ActiveRecord::Base
     end
   end
 
+  def rules_conflicts
+    @rules_conflicts ||= RulesConflictSummary.new(
+      :section => section,
+      :weekly_schedule => self,
+      :assignments => read_only_assignments
+    )
+  end
+
   def to_json(options = {})
     options[:only_delta_attributes] ||= false
-    assignments = read_only_assignments.includes(:shift)
-    rules_conflicts = RulesConflictSummary.new(:section => section,
-      :weekly_schedule => self,
-      :assignments => assignments
-    )
     static_attributes_json = nil
     static_attributes_json = options[:only_delta_attributes] ? nil : [
       date_json,
@@ -50,7 +53,7 @@ class WeeklySchedule < ActiveRecord::Base
             rules_conflicts.to_json,
             id ? "\"id\":#{id}" : nil,
             "\"is_published\":#{is_published}",
-            "\"shift_weeks\":[#{shift_weeks_json(assignments)}]",
+            "\"shift_weeks\":[#{shift_weeks_json}]",
             "\"error_messages\":\"#{errors.values.flatten.join(", ")}\"",
             ].compact.join(","),
           "}",
@@ -82,8 +85,8 @@ class WeeklySchedule < ActiveRecord::Base
     end.join(",")}]"
   end
   
-  def shift_weeks_json(assignments)
-    assignments_by_shift_id_and_date = assignments.each_with_object({}) do |assignment, hsh|
+  def shift_weeks_json
+    assignments_by_shift_id_and_date = read_only_assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift_id, assignment.date]] ||= []
       hsh[[assignment.shift_id, assignment.date]] << assignment
     end

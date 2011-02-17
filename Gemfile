@@ -15,6 +15,9 @@ gem 'deadbolt', :git => 'git://github.com/ericcf/deadbolt.git'
 gem 'devise'
 gem 'cancan'
 
+# Gmail interaction
+gem 'tlsmail'
+
 # Excel export
 gem 'ekuseru'
 

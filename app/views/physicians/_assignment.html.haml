@@ -1,0 +1,5 @@
+= assignment.shift.title
+- if assignment.public_note.present?
+  %span.note
+    = image_tag "pub-note.gif", :alt => assignment.public_note
+    %span.note-text= assignment.public_note

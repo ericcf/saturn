@@ -17,6 +17,11 @@ class PhysicianSchedule
     @dates ||= (@start_date..@start_date+@number_of_days-1).to_a
   end
 
+  def holiday_on(date)
+    @holidays ||= Holiday.where(:date => dates).group_by(&:date)
+    (@holidays[date] || [Holiday.new]).first.title
+  end
+
   def assignments
     @assignments ||= physician.assignments.
       includes(:weekly_schedule, :shift).

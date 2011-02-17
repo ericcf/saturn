@@ -13,6 +13,14 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
   }
   validate :maximum_greater_than_or_equal_to_minimum?
 
+  def minimum_summary
+    "Below weekly minimum (#{minimum})"
+  end
+
+  def maximum_summary
+    "Above weekly maximum (#{maximum})"
+  end
+
   def process(assignments_by_physician_id)
     @offenders = { :below_minimum => [], :above_maximum => [] }
     assignments_by_physician_id.each do |physician_id, assignments|
@@ -48,7 +56,7 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
   def minimum_offenders_to_json
     [
     "{",
-      "\"title\":\"Below weekly minimum (#{minimum})\",",
+      "\"title\":\"#{minimum_summary}\",",
       "\"conflict_by_offender_id\":",
         @offenders[:below_minimum].to_json,
     "}"
@@ -58,7 +66,7 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
   def maximum_offenders_to_json
     [
     "{",
-      "\"title\":\"Above weekly maximum (#{maximum})\",",
+      "\"title\":\"#{maximum_summary}\",",
       "\"conflict_by_offender_id\":",
         @offenders[:above_maximum].to_json,
     "}"

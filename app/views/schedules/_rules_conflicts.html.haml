@@ -1,26 +1,22 @@
 - unless @assignments.blank?
-  - duration_rule = @section.weekly_shift_duration_rule
-  - count_rules = @section.daily_shift_count_rules
+  - conflicts_summaries = schedule.rules_conflicts
+  - duration_rule = conflicts_summaries.duration_rule
+  - count_rules = conflicts_summaries.count_rules
   - unless duration_rule.blank? && count_rules.blank?
     %h3 Rules Conflicts
-    - assignments_by_physician_id = @assignments.group_by(&:physician_id)
     - if duration_rule
-      - offenders = duration_rule.process(assignments_by_physician_id)
+      - conflicts = conflicts_summaries.weekly_conflicts
       - if duration_rule.minimum
-        %h4= "Below weekly minimum (#{duration_rule.minimum})"
+        %h4= duration_rule.minimum_summary
         %ul
-          - offenders[:below_minimum].each do |summary|
-            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"
+          = render :partial => "rule_conflict_summary", :collection => conflicts[:below_minimum], :as => :summary, :locals => { :physician_names_by_id => physician_names_by_id }
       - if duration_rule.maximum
-        %h4= "Above weekly maximum (#{duration_rule.maximum})"
+        %h4= duration_rule.maximum_summary
         %ul
-          - offenders[:above_maximum].each do |summary|
-            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"
+          = render :partial => "rule_conflict_summary", :collection => conflicts[:above_maximum], :as => :summary, :locals => { :physician_names_by_id => physician_names_by_id }
 
     - count_rules.each do |count_rule|
       - if count_rule.maximum
-        - over = count_rule.process(assignments_by_physician_id)
-        %h4= "Above daily maximum for #{count_rule.shift_tag.title}"
+        %h4= count_rule.summary
         %ul
-          - over.each do |summary|
-            %li= "#{@physician_names_by_id[summary[:physician_id]]} (#{summary[:description]})"
+          = render :partial => "rule_conflict_summary", :collection => conflicts_summaries.physician_ids_over_daily_count_max(count_rule), :as => :summary, :locals => { :physician_names_by_id => physician_names_by_id }

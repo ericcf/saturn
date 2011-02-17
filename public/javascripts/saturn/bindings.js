@@ -7,6 +7,55 @@ $(function() {
 
     $("#is-published").button();
 
+    $("#physician-groups")
+        .dialog({
+            autoOpen: false,
+            title: "Select a physician to assign",
+            open: function(event, ui) {
+            },
+            close: function(event, ui) {
+                viewModel.deselectShiftDays();
+            }
+        })
+        .delegate("a.physician-name", "hover", function() {
+            $(this).toggleClass("ui-state-hover");
+        })
+        .delegate("a.physician-name", "click", function() {
+            $("#physician-groups").dialog("close");
+        });
+
+    $("#assignment-details")
+        .dialog({
+            autoOpen: false,
+            close: function(event, ui) {
+                viewModel.stopEditing();
+            },
+            buttons: {
+                "Ok": function() { $(this).dialog("close") },
+                "Delete assignment": function() {
+                    viewModel.editingAssignment().destroy();
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    $("#date-selector")
+        .datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            numberOfMonths: 3,
+            stepMonths: 2,
+            showButtonPanel: true,
+            onSelect: function(dateText, inst) {
+                $(element).val(" select date...");
+                loadWeeklySchedule(dateText, function(data) {
+                    viewModel.updateFromJS(data);
+                });
+                location.hash = "#" + dateText;
+            }
+        });
+
     function openDetailsDialog(options) {
         $("#assignment-details")
             .dialog("option", "title", options.title)                   
@@ -14,25 +63,15 @@ $(function() {
     }
 
     function openDirectoryDialog() {
-        $("#physician-groups")
-            .dialog({
-                autoOpen: false,
-                title: "Select a physician to assign",
-                close: function(event, ui) {
-                    viewModel.deselectShiftDays();
-                }
-            })
-            .tabs()
-            .dialog("open")
-            .find("a.physician-name")
-                .hover(function() {
-                    $(this).addClass("ui-state-hover");
-                }, function() {
-                    $(this).removeClass("ui-state-hover");
-                })
-                .click(function() {
-                    $("#physician-groups").dialog("close");
-                });
+                $("#physician-groups").tabs("destroy");
+                $("#physician-groups").tabs();
+        if ($("#physician-groups").dialog("isOpen")) return;
+        $("#physician-groups").dialog("open");
+    }
+
+    function closeDirectoryDialog() {
+        if (!$("#physician-groups").dialog("isOpen")) return;
+        $("#physician-groups").dialog("close");
     }
 
     ko.bindingHandlers.ajaxLifecycle = {
@@ -42,26 +81,6 @@ $(function() {
             });
             $(element).ajaxComplete(function() {
                 viewModel.ajaxStatus("complete");
-            });
-        }
-    };
-
-    ko.bindingHandlers.dateSelectorUI = {
-        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            $(element).datepicker({
-                dateFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                numberOfMonths: 3,
-                stepMonths: 2,
-                showButtonPanel: true,
-                onSelect: function(dateText, inst) {
-                    $(element).val(" jump to date...");
-                    loadWeeklySchedule(dateText, function(data) {
-                        viewModel.updateFromJS(data);
-                    });
-                    location.hash = "#" + dateText;
-                }
             });
         }
     };
@@ -80,6 +99,18 @@ $(function() {
             var value = valueAccessor();
             var shiftDayIsSelected = ko.utils.unwrapObservable(value);
             if (shiftDayIsSelected == true) {
+                openDirectoryDialog();
+            }
+        }
+    };
+
+    ko.bindingHandlers.directoryDialogVisibility = {
+        update: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            var value = valueAccessor();
+            var selectedShiftDays = ko.utils.unwrapObservable(value);
+            if (selectedShiftDays.length == 0) {
+                closeDirectoryDialog();
+            } else {
                 openDirectoryDialog();
             }
         }
@@ -191,25 +222,6 @@ $(function() {
             $(element).blur(function(event) {
                 callback(event);
             });
-        }
-    };
-
-    ko.bindingHandlers.assignmentDetailsDialog = {
-        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
-            $(element)
-                .dialog({
-                    autoOpen: false,
-                    close: function(event, ui) {
-                        viewModel.stopEditing();
-                    },
-                    buttons: {
-                        "Ok": function() { $(this).dialog("close") },
-                        "Delete assignment": function() {
-                            viewModel.editingAssignment().destroy();
-                            $(this).dialog("close");
-                        }
-                    }
-                });
         }
     };
 });

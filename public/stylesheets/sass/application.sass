@@ -194,6 +194,9 @@ table
   &.schedule
     float: left
     clear: left
+    thead th
+      text-align: center
+      vertical-align: bottom
     td, th
       width: 120px
   &.wide-schedule
@@ -364,6 +367,11 @@ td:last-child .note:hover .note-text
 
 .current-date, .highlight
   background-color: $highlightColor
+
+.date-label
+  color: $altColor
+  font-weight: normal
+  height: 36px
 
 .clickable
   cursor: pointer

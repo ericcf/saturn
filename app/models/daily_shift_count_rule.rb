@@ -14,6 +14,10 @@ class DailyShiftCountRule < ActiveRecord::Base
     :allow_nil => true
   }
 
+  def summary
+    "Above daily maximum for #{shift_tag.title} (#{maximum})"
+  end
+
   def process(assignments_by_physician_id)
     group_over_maximum = []
     assignments_by_physician_id.each do |physician_id, assignments|
@@ -29,5 +33,15 @@ class DailyShiftCountRule < ActiveRecord::Base
       end
     end
     group_over_maximum
+  end
+
+  def to_json(assignments_by_physician_id)
+    [
+    "{",
+      "\"title\":\"#{summary}\",",
+      "\"conflict_by_offender_id\":",
+        process(assignments_by_physician_id).to_json,
+    "}"
+    ].join("") if maximum
   end
 end

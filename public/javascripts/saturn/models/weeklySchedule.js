@@ -68,6 +68,7 @@ var weeklySchedule = function(attributes) {
     };
 
     this.deselectShiftDays = function() {
+        if (this.selectedShiftDays().length == 0) return;
         var shiftDay;
         while (shiftDay = this.selectedShiftDays.pop()) {
             shiftDay.inSelectedMode(false);

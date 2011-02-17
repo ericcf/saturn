@@ -65,9 +65,9 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%div#physician-groups{ :style => "display:none;", :"data-bind" => "template: { name: 'directoryListing' }" }
+%div#physician-groups{ :style => "display:none;", :"data-bind" => "template: { name: 'directoryListing' }, directoryDialogVisibility: selectedShiftDays" }
 
-%div#assignment-details{ :style => "display: none;", :"data-bind" => "template: { name: 'assignmentDetails', data: editingAssignment }, assignmentDetailsDialog: {}" }
+%div#assignment-details{ :style => "display: none;", :"data-bind" => "template: { name: 'assignmentDetails', data: editingAssignment }" }
 
 %script#previousLink{ :type => "text/html" }
   %div.placeholder &nbsp;
@@ -83,7 +83,7 @@
   %h3
     Editing the week of
     %span{ :"data-bind" => "text: longDate" }
-    %input#date-selector{ :type => "text", :value => " jump to date...", :"data-bind" => "dateSelectorUI: {}" }
+    %input#date-selector{ :type => "text", :value => " select date..." }
       
   %h4.left
     last saved:

@@ -37,12 +37,6 @@ div#physician-groups a {
   float: left;
 }
 
-div.date-label {
-  color: #6e8e41;
-  font-weight: normal;
-  height: 36px;
-}
-
 div.column-header {
   float: left;
   text-align: center;

@@ -23,19 +23,12 @@ class RulesConflictSummary
   end
 
   def duration_rule_json
-    duration_rule.process(assignments_by_physician_id)
-    duration_rule.to_json if duration_rule
+    weekly_conflicts && duration_rule.to_json
   end
 
   def count_rules_json
     json = count_rules.map do |rule|
-      [
-      "{",
-        "\"title\":\"Above daily maximum for #{rule.shift_tag.title} (#{rule.maximum})\",",
-        "\"conflict_by_offender_id\":",
-          physician_ids_over_daily_count_max(rule).to_json,
-      "}"
-      ].join("") if rule.maximum
+      rule.to_json(assignments_by_physician_id)
     end.compact.join(",")
     json == "" ? nil : json
   end
@@ -52,22 +45,12 @@ class RulesConflictSummary
     @count_rules ||= section.daily_shift_count_rules
   end
 
-  def physician_ids_under_weekly_duration_min
-    weekly_offenders[:below_minimum]
-  end
-
-  def physician_ids_over_weekly_duration_max
-    weekly_offenders[:above_maximum]
-  end
-
   def physician_ids_over_daily_count_max(rule)
     rule.process(assignments_by_physician_id)
   end
 
-  private
-
-  def weekly_offenders
-    return @weekly_offenders if @weekly_offenders
-    @weekly_offenders = duration_rule.process(assignments_by_physician_id)
+  def weekly_conflicts
+    return @weekly_conflicts if @weekly_conflicts
+    @weekly_conflicts = duration_rule && duration_rule.process(assignments_by_physician_id)
   end
 end
