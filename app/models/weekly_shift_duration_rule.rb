@@ -21,7 +21,7 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
     "Above weekly maximum (#{maximum})"
   end
 
-  def process(assignments_by_physician_id)
+  def process(assignments_by_physician_id, ordered_physician_ids = [])
     @offenders = { :below_minimum => [], :above_maximum => [] }
     assignments_by_physician_id.each do |physician_id, assignments|
       duration = assignments.map { |a| a.fixed_duration }.sum
@@ -42,7 +42,16 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
         end
       end
     end
+    sort_summaries! @offenders[:below_minimum], ordered_physician_ids
+    sort_summaries! @offenders[:above_maximum], ordered_physician_ids
     @offenders
+  end
+
+  def sort_summaries!(conflict_summaries, ordered_physician_ids)
+    conflict_summaries.sort! do |x, y|
+      ordered_physician_ids.index(x[:physician_id]) <=>
+        ordered_physician_ids.index(y[:physician_id])
+    end
   end
 
   def to_json

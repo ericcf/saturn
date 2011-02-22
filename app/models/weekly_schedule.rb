@@ -31,7 +31,8 @@ class WeeklySchedule < ActiveRecord::Base
     @rules_conflicts ||= RulesConflictSummary.new(
       :section => section,
       :weekly_schedule => self,
-      :assignments => read_only_assignments
+      :assignments => read_only_assignments,
+      :ordered_physician_ids => section.members.order(:family_name).map(&:id)
     )
   end
 

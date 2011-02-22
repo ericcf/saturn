@@ -2,6 +2,7 @@ class RulesConflictSummary
   extend ActiveModel::Naming
 
   attr_accessor :section, :weekly_schedule, :assignments
+  attr_writer :ordered_physician_ids
 
   def initialize(attributes = {})
     return unless attributes.respond_to?(:each)
@@ -51,6 +52,7 @@ class RulesConflictSummary
 
   def weekly_conflicts
     return @weekly_conflicts if @weekly_conflicts
-    @weekly_conflicts = duration_rule && duration_rule.process(assignments_by_physician_id)
+    @weekly_conflicts = duration_rule &&
+      duration_rule.process(assignments_by_physician_id, @ordered_physician_ids)
   end
 end
