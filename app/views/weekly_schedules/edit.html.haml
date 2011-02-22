@@ -1,7 +1,7 @@
 - page_title "Editing weekly schedule for #{@section.title}"
 
 - content_for :javascripts do
-  = javascript_include_tag "json2", "jquery.tmpl", "third_party/knockout-1.2.0pre.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/ruleConflicts", "saturn/models/shiftWeek", "saturn/models/shiftDay", "saturn/models/assignment", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "schedule_editor"
+  = javascript_include_tag "json2", "jquery.tmpl", "third_party/knockout-1.2.0pre.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/ruleConflicts", "saturn/models/shiftWeek", "saturn/models/shiftDay", "saturn/models/assignment", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "cache/schedule_editor"
   :javascript
     var viewModel = new weeklySchedule();
 

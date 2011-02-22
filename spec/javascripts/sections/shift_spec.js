@@ -3,7 +3,7 @@ describe("Shift", function() {
   var shift;
 
   beforeEach(function() {
-    loadFixtures("__spec__/sections/shift.html");
+    loadFixtures("sections/shift.html");
     $("tr.shift").shift();
     shift = $("tr.shift").data("shift");
   });

@@ -84,7 +84,7 @@ end
 
 Then /^I should be able to view the edit weekly schedule page for "([^"]*)"$/ do |section_title|
   Given %{I go to edit weekly schedule page for "#{section_title}"}
-  Then %{I should see "Editing Week of "}
+  Then %{I should see "Editing the week of "}
 end
 
 Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)" on (\d{4}-\d{2}-\d{2})$/ do |given_name, family_name, shift_title, section_title, date|

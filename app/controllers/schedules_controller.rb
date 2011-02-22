@@ -4,9 +4,6 @@ class SchedulesController < ApplicationController
 
   include DateHelpers
 
-  before_filter :authenticate_user!, :only => [:edit_weekly_section,
-    :create_weekly_section, :update_weekly_section]
-
   def weekly_call
     start_date = params[:date].nil? ? Date.today.at_beginning_of_week : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     @dates = week_dates_beginning_with(start_date)
@@ -57,77 +54,5 @@ class SchedulesController < ApplicationController
       format.html
       format.xls { render :xls => @schedule_presenter, :template => "schedules/weekly_section_schedule.xls", :layout => false }
     end
-  end
-
-  def edit_weekly_section
-    date = params[:date] || [params[:year], params[:month], params[:day]].join("-")
-    week_start_date = monday_of_week_with(date)
-    @week_dates = week_dates_beginning_with(week_start_date)
-    @section = Section.find(params[:section_id])
-    @shifts = @section.shifts.active_as_of(week_start_date)
-    @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
-      @section.id,
-      week_start_date
-    ) || WeeklySchedule.new(
-      :section_id => @section.id,
-      :date => week_start_date
-    )
-    authorize! :update, @section
-    @assignments = @weekly_schedule.assignments
-    @grouped_people = @section.members_by_group
-    @physicians_by_id = @section.members.hash_by_id
-    @people_names = @section.members.includes(:names_alias).each_with_object({}) do |physician, hsh|
-      hsh[physician.id] = physician.short_name
-    end
-  end
-
-  def create_weekly_section
-    @section = Section.find(params[:section_id])
-    schedule_attributes = params[:weekly_schedule].merge({
-      :section_id => @section.id,
-      :assignments_attributes => params[:assignments] || {}
-    })
-    @weekly_schedule = WeeklySchedule.new(schedule_attributes)
-    authorize! :update, @section
-    if @weekly_schedule.save
-      date = @weekly_schedule.date
-      flash[:notice] = "Successfully created schedule"
-      redirect_to edit_weekly_section_schedule_path(
-        :section_id => @section.id,
-        :year => date.year,
-        :month => date.month,
-        :day => date.day
-      )
-    else
-      @week_start_date = Date.parse(params[:weekly_schedule][:date])
-      @week_dates = week_dates_beginning_with(@week_start_date)
-      @grouped_people = @section.members_by_group
-      @assignments = @weekly_schedule.assignments_including([:physician, :shift])
-      flash.now[:error] = "There was an error creating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
-      render :edit_weekly_section
-    end
-  end
-
-  def update_weekly_section
-    schedule_attributes = {
-      :assignments_attributes => params[:assignments] || {},
-      :is_published => params[:weekly_schedule][:is_published] || 0
-    }
-    @section = Section.find(params[:section_id])
-    @weekly_schedule = WeeklySchedule.find(params[:weekly_schedule][:id])
-    authorize! :update, @section
-
-    if @weekly_schedule.update_attributes(schedule_attributes)
-      flash[:notice] = "Successfully updated schedule."
-    else
-      flash[:error] = "There was an error updating the schedule: #{@weekly_schedule.errors.full_messages.join(", ")}"
-    end
-    date = @weekly_schedule.date
-    redirect_to edit_weekly_section_schedule_path(
-      :section_id => @section.id,
-      :year => date.year,
-      :month => date.month,
-      :day => date.day
-    )
   end
 end

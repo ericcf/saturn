@@ -1,3 +1,0 @@
-%td.shift_day{ :class => "date_#{shift_day} shift_id_#{shift_id}" }><
-  %span.assignment_button
-  = render :partial => "assignment.html", :collection => (mapped_assignments[[shift_id, shift_day]] || []), :locals => { :shift_id => shift_id, :date => shift_day, :people_names => people_names }

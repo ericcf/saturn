@@ -7,20 +7,20 @@
     // public
 
     this.getTitle = function() {
-      return elem.find("[name*=[label]]").val();
+      return elem.find("[name*='[label]']").val();
     };
 
     this.setTitle = function(value) {
-      elem.find("[name*=[label]]").val(value);
+      elem.find("[name*='[label]']").val(value);
       return obj;
     };
 
     this.getPosition = function() {
-      return elem.find("[name*=[position]]").val();
+      return elem.find("[name*='[position]']").val();
     };
 
     this.setPosition = function(value) {
-      elem.find("[name*=[position]]").val(value);
+      elem.find("[name*='[position]']").val(value);
       return obj;
     };
 

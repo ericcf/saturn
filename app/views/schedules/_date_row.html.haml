@@ -1,5 +1,0 @@
-%tr
-  %td.date
-    %span.date_value= date_row
-    %span.date_string= short_date(date_row)
-  = render :partial => 'day_shift.html', :locals => { :date => date_row, :mapped_assignments => mapped_assignments }, :collection => @shifts

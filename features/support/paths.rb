@@ -45,12 +45,12 @@ module NavigationHelpers
       shift_totals_report_section_reports_path(find_section($1))
     when /the totals by day page for the \"([^"]+)\" shift in \"([^"]+)\"/
       totals_by_day_section_reports_path(find_section($2), find_shift($1))
-    when /edit weekly schedule page for \"([^"]+)\"(?: on (\d{4})-(\d{2})-(\d{2}))?/
+    when /edit weekly schedule page for \"([^"]+)\"(?: on (\d{4}-\d{2}-\d{2}))?/
       section = find_section($1)
-      if $2 && $3 && $4
-        edit_weekly_section_schedule_path(section, :year => $2, :month => $3, :day => $4)
+      if $2
+        edit_section_weekly_schedules_path(section, :anchor => $2)
       else
-        edit_weekly_section_schedule_path(section)
+        edit_section_weekly_schedules_path(section)
       end
     # section management
     when /manage new memberships page for \"([^"]+)\"/
