@@ -2,10 +2,16 @@ require 'spec_helper'
 
 describe "schedules/show_weekly_section.html" do
 
+  let(:mock_section) { stub_model(Section) }
+  let(:dates) { [Date.today] }
+  let(:mock_presenter) do
+    stub_model(WeeklySchedulePresenter, :weekly_schedule => stub_model(WeeklySchedule), :each_col_header => nil, :each_row => nil)
+  end
+
   before(:each) do
-    @mock_section = assign(:section, stub_model(Section))
-    @dates = assign(:dates, [Date.today])
-    assign(:schedule_presenter, stub("presenter", :each_col_header => nil, :each_row => nil))
+    assign(:section, mock_section)
+    assign(:dates, dates)
+    assign(:schedule_presenter, mock_presenter)
     should_render_partial("section_menu.html")
     should_render_partial("rules_conflicts.html")
     render
@@ -15,7 +21,7 @@ describe "schedules/show_weekly_section.html" do
 
   it {
     should have_selector("form",
-      :action => weekly_section_schedule_path(@mock_section),
+      :action => weekly_section_schedule_path(mock_section),
       :method => "get"
     )
   }
@@ -25,9 +31,9 @@ describe "schedules/show_weekly_section.html" do
   it { should have_selector("form select", :name => "date[day]") }
 
   it {
-    date = @dates.first
+    date = dates.first
     should have_selector("a",
-      :href => weekly_section_schedule_path(@mock_section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => nil),
+      :href => weekly_section_schedule_path(mock_section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => nil),
       :content => "Download as Excel"
     )
   }

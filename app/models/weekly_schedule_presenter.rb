@@ -4,26 +4,31 @@ class WeeklySchedulePresenter
 
   attr_accessor :section, :dates, :assignments, :weekly_schedule, :physician_names_by_id
   attr_writer :options
-  attr_reader :shifts
 
   def initialize(attributes = {})
     return unless attributes.respond_to?(:each)
     attributes.each do |name, value|
       send("#{name}=", value)
     end
-    @shifts = section.shifts.active_as_of(dates.first).
+  end
+
+  def shifts
+    @shifts ||= section.shifts.active_as_of(dates.first).
       includes(:shift_tags, :shift_week_notes)
-    @tabular_data = Tables::TabularStore.new(
+  end
+
+  private
+
+  def tabular_data
+    @tabular_data ||= Tables::TabularStore.new(
       :row_headers => headers(@options[:row_type]),
       :col_headers => headers(@options[:col_type]),
       :values => indexed_values
     )
   end
 
-  private
-
   def method_missing(sym, *args, &block)
-    @tabular_data.send sym, *args, &block
+    tabular_data.send sym, *args, &block
   end
 
   def headers(type)

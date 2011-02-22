@@ -1,8 +1,16 @@
 var assignment = function(attributes) {
+    // private attributes
+
     var schedule = undefined;
     var skipSaves = false;
     var self = this;
 
+    // public attributes
+
+    this.id = ko.observable(undefined);
+    this.physician_id = ko.observable(undefined);
+    this.shift_id = ko.observable(undefined);
+    this.date = ko.observable(undefined);
     this.public_note = ko.observable("");
     this.private_note = ko.observable("");
     this.duration = ko.observable(null);
@@ -21,14 +29,18 @@ var assignment = function(attributes) {
             return "private";
     }, self);
     this.destroyed = ko.observable(false);
-    this.physician_name;
+    this.physician_name = "";
+
+    // public methods
 
     this.destroy = function() {
         this.destroyed(true);
         this.save();
     };
 
-    ko.mapping.fromJS(attributes.assignment, {}, this);
+    ko.mapping.fromJS(attributes, {}, this);
+
+    // subscriptions
 
     this.public_note.subscribe(function(newNote) {
         self.save();

@@ -1,4 +1,6 @@
 var weeklySchedule = function(attributes) {
+    // private
+
     var self = this;
     var skipSaves = false;
     var mapping = {
@@ -12,6 +14,9 @@ var weeklySchedule = function(attributes) {
                 var newShiftWeek = new shiftWeek(options.data);
                 newShiftWeek.setSchedule(self);
                 return newShiftWeek;
+            },
+            key: function(data) {
+                return ko.utils.unwrapObservable(data.shift_id);
             }
         },
         "rules_conflicts": {
@@ -22,8 +27,12 @@ var weeklySchedule = function(attributes) {
             }
         }
     };
+    var baseUrl = location.href.split("#")[0];
+    if (attributes == undefined) {
+        attributes = { weekly_schedule: {} };
+    }
 
-    this.rules_conflicts = ko.observableArray([]);
+    // observables
 
     this.last_update = {
         year: ko.observable(undefined),
@@ -32,47 +41,66 @@ var weeklySchedule = function(attributes) {
         hour: ko.observable(undefined),
         minute: ko.observable(undefined)
     };
-    this.editingAssignment = ko.observable(undefined);
-    this.draggingAssignment = undefined;
-    this.selectedShiftDays = ko.observableArray([]);
     this.date = {
         year: ko.observable((new Date()).getFullYear()),
         month: ko.observable((new Date()).getMonth()+1),
         day: ko.observable((new Date()).getDate())
     };
+    this.is_published = ko.observable(undefined);
+    this.rules_conflicts = ko.observableArray([]);
+    this.ajaxStatus = ko.observable(undefined);
+    this.editingAssignment = ko.observable(undefined);
+    this.draggingAssignment = ko.observable(undefined);
+    this.selectedShiftDays = ko.observableArray([]);
+
+    // dependent observables
+
     this.longDate = ko.dependentObservable(function() {
-        return jQuery.datepicker.formatDate('MM d, yy', new Date(this.date.year(), this.date.month()-1, this.date.day()));
+        var dateObj = new Date(this.date.year(),
+            this.date.month()-1,
+            this.date.day()
+        );
+        return jQuery.datepicker.formatDate('MM d, yy', dateObj);
     }, this);
+
     this.longLastUpdate = ko.dependentObservable(function() {
         if (this.last_update.year() == undefined) return "never";
-        var dateObj = new Date(this.last_update.year(), this.last_update.month()-1, this.last_update.day(), this.last_update.hour(), this.last_update.minute());
+        var dateObj = new Date(this.last_update.year(),
+            this.last_update.month()-1,
+            this.last_update.day(),
+            this.last_update.hour(),
+            this.last_update.minute()
+        );
         var minutesPad = dateObj.getMinutes() < 10 ? "0" : "";
-        return jQuery.datepicker.formatDate("" + dateObj.getHours() + ':' + minutesPad + dateObj.getMinutes() + ' MM d, yy ', dateObj);
+        var dateFormat = 'yy MM d, ' + dateObj.getHours() + ':' + minutesPad +
+            dateObj.getMinutes();
+        return jQuery.datepicker.formatDate(dateFormat, dateObj);
     }, this);
-    this.ajaxStatus = ko.observable(undefined);
-    this.is_published = ko.observable(undefined);
+
     this.publishAction = ko.dependentObservable(function() {
         return this.is_published() ? "Unpublish" : "Publish";
     }, this);
 
-    this.toggleSelectedShiftDay = function(shiftDay) {
-        if (this.editingAssignment() != undefined || this.draggingAssignment != undefined) {
-            return;
-        }
-        if (this.selectedShiftDays.remove(shiftDay).length > 0) {
-            shiftDay.inSelectedMode(false);
-        } else {
-            this.selectedShiftDays.push(shiftDay);
-            shiftDay.inSelectedMode(true);
-        }
+    // public methods
+
+    this.previousWeekDate = function() {
+        var lastWeek = new Date(this.date.year(),
+            this.date.month()-1,
+            this.date.day()
+        );
+        lastWeek.setDate(lastWeek.getDate()-7);
+        return "" + lastWeek.getFullYear() + "-" + (lastWeek.getMonth()+1) +
+            "-" + lastWeek.getDate();
     };
 
-    this.deselectShiftDays = function() {
-        if (this.selectedShiftDays().length == 0) return;
-        var shiftDay;
-        while (shiftDay = this.selectedShiftDays.pop()) {
-            shiftDay.inSelectedMode(false);
-        }
+    this.nextWeekDate = function() {
+        var nextWeek = new Date(this.date.year(),
+            this.date.month()-1,
+            this.date.day()
+        );
+        nextWeek.setDate(nextWeek.getDate()+7);
+        return "" + nextWeek.getFullYear() + "-" + (nextWeek.getMonth()+1) +
+            "-" + nextWeek.getDate();
     };
 
     this.startEditing = function(assignment) {
@@ -90,20 +118,33 @@ var weeklySchedule = function(attributes) {
         }
     };
 
+    this.toggleSelectedShiftDay = function(shiftDay) {
+        if (this.editingAssignment() != undefined ||
+            this.draggingAssignment() != undefined) {
+            return;
+        }
+        if (this.selectedShiftDays.remove(shiftDay).length > 0) {
+            shiftDay.inSelectedMode(false);
+        } else {
+            this.selectedShiftDays.push(shiftDay);
+            shiftDay.inSelectedMode(true);
+        }
+    };
+
     this.startDragging = function(assignment) {
         assignment.inDraggingMode(true);
-        this.draggingAssignment = assignment;
+        this.draggingAssignment(assignment);
     };
 
     this.stopDragging = function(assignment) {
         assignment.inDraggingMode(false);
-        this.draggingAssignment = undefined;
+        this.draggingAssignment(undefined);
     };
 
     this.assignmentDroppedOn = function(shiftDay) {
-        if (this.draggingAssignment != undefined) {
-            shiftDay.addAssignment(this.draggingAssignment);
-            this.draggingAssignment.save();
+        if (this.draggingAssignment() != undefined) {
+            shiftDay.addAssignment(this.draggingAssignment());
+            this.draggingAssignment().save();
         }
     };
 
@@ -111,18 +152,21 @@ var weeklySchedule = function(attributes) {
         var shiftDay;
         var newAssignments = [];
         while (shiftDay = this.selectedShiftDays.pop()) {
-            var newAssignment = new assignment({ "assignment": {
-                "physician_id": physicianId,
-                "date": null,
-                "shift_id": null,
-                "id": null
-            } });
+            var newAssignment = new assignment({ "physician_id": physicianId });
             newAssignment.setSchedule(this);
             shiftDay.addAssignment(newAssignment);
             shiftDay.inSelectedMode(false);
             newAssignments.push(newAssignment);
         }
         this.saveAssignments(newAssignments);
+    };
+
+    this.deselectShiftDays = function() {
+        if (this.selectedShiftDays().length == 0) return;
+        var shiftDay;
+        while (shiftDay = this.selectedShiftDays.pop()) {
+            shiftDay.inSelectedMode(false);
+        }
     };
 
     this.saveAssignments = function(assignments) {
@@ -132,18 +176,6 @@ var weeklySchedule = function(attributes) {
         }
         self.save({ assignments: serializedAssignments });
     };  
-
-    this.previousWeekDate = function() {
-      var lastWeek = new Date(this.date.year(), this.date.month()-1, this.date.day());
-      lastWeek.setDate(lastWeek.getDate()-7);
-      return "" + lastWeek.getFullYear() + "-" + (lastWeek.getMonth()+1) + "-" + lastWeek.getDate();
-    };
-
-    this.nextWeekDate = function() {
-      var nextWeek = new Date(this.date.year(), this.date.month()-1, this.date.day());
-      nextWeek.setDate(nextWeek.getDate()+7);
-      return "" + nextWeek.getFullYear() + "-" + (nextWeek.getMonth()+1) + "-" + nextWeek.getDate();
-    };
 
     this.findPhysician = function(physicianId) {
         for (var i = 0; i < self.groups().length; i++) {
@@ -169,17 +201,15 @@ var weeklySchedule = function(attributes) {
         return physicianNames[physicianId];
     };
 
-    var lastIsPublished;
-    this.is_published.subscribe(function(newValue) {
-        if (lastIsPublished == undefined) {
-            lastIsPublished = newValue;
-            return;
-        }
-        if (newValue != lastIsPublished) {
-            lastIsPublished = newValue;
-            self.save();
-        }
-    });
+    this.refresh = function() {
+        var locationDate = location.hash.split("#")[1];
+        $.ajax({
+            async: false,
+            url: baseUrl + ".json?date=" + locationDate,
+            dataType: "json",
+            success: self.updateFromJS
+        });
+    };
 
     this.serialize = function(optionalParams) {
         var serialized = {
@@ -219,6 +249,20 @@ var weeklySchedule = function(attributes) {
             }
         )
     };
+
+    // subscriptions
+    
+    var lastIsPublished;
+    this.is_published.subscribe(function(newValue) {
+        if (lastIsPublished == undefined) {
+            lastIsPublished = newValue;
+            return;
+        }
+        if (newValue != lastIsPublished) {
+            lastIsPublished = newValue;
+            self.save();
+        }
+    });
 
     ko.mapping.fromJS(attributes.weekly_schedule, mapping, this);
 };

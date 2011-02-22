@@ -5,7 +5,11 @@ $(function() {
     var currentlyDragging = null;
     var currentlyReceiving = null;
 
-    $("#is-published").button();
+    ko.bindingHandlers.button = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            $(element).button();
+        }
+    };
 
     $("#physician-groups")
         .dialog({
@@ -39,22 +43,24 @@ $(function() {
             }
         });
 
-    $("#date-selector")
-        .datepicker({
-            dateFormat: 'yy-mm-dd',
-            changeMonth: true,
-            changeYear: true,
-            numberOfMonths: 3,
-            stepMonths: 2,
-            showButtonPanel: true,
-            onSelect: function(dateText, inst) {
-                $(this).val(" select date...");
-                loadWeeklySchedule(dateText, function(data) {
-                    viewModel.updateFromJS(data);
+    ko.bindingHandlers.dateSelector = {
+        init: function(element, valueAccessor, allBindingsAccessor, viewModel) {
+            $(element)
+                .datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    numberOfMonths: 3,
+                    stepMonths: 2,
+                    showButtonPanel: true,
+                    onSelect: function(dateText, inst) {
+                        $(this).val(" select date...");
+                        location.hash = "#" + dateText;
+                        location.reload();
+                    }
                 });
-                location.hash = "#" + dateText;
-            }
-        });
+        }
+    };
 
     function openDetailsDialog(options) {
         $("#assignment-details")
@@ -139,27 +145,34 @@ $(function() {
     ko.bindingHandlers.assignmentDragging = {
         init: function(element, valueAccessor, allBindingsAccessor, assignment) {
             var lastReceiver = null;
+            function getReceiver(dragging, event) {
+                $(dragging).hide();
+                var receiverElem = document.elementFromPoint(event.clientX, event.clientY);
+                var receiver = $(receiverElem);
+                if (!receiver.hasClass("shiftDay")) {
+                    receiver = receiver.parents(".shiftDay");
+                }
+                $(dragging).show();
+                return receiver;
+            }
+
             $(element)
                 .bind("drag", function(event) {
                     viewModel.startDragging(assignment);
-                    $(this).hide();
-                    var receiver = document.elementFromPoint(event.clientX, event.clientY);
-                    if ($(receiver).hasClass("shiftDay")) {
-                        $(receiver).trigger("dropover");
+                    var receiver = getReceiver(this, event);
+                    if (receiver.hasClass("shiftDay")) {
+                        receiver.trigger("dropover");
                     }
-                    $(this).show();
-                    if (lastReceiver != null && lastReceiver != receiver) {
-                        $(lastReceiver).trigger("dropout");
+                    if (lastReceiver != null && lastReceiver[0] != receiver[0]) {
+                        lastReceiver.trigger("dropout");
                     }
                     lastReceiver = receiver;
                 })
                 .bind("dragstop", function(event) {
-                    $(this).remove();
-                    var receiver = document.elementFromPoint(event.clientX, event.clientY);
+                    var receiver = getReceiver(this, event);
                     if ($(receiver).hasClass("shiftDay")) {
+                        $(this).remove();
                         $(receiver).trigger("drop", element);
-                    } else {
-                        $(this).show();
                     }
                     viewModel.stopDragging(assignment);
                     if (viewModel.editingAssignment() == assignment) {

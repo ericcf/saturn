@@ -1,62 +1,32 @@
 - page_title "Editing weekly schedule for #{@section.title}"
 
 - content_for :javascripts do
-  = javascript_include_tag "json2"
-  = javascript_include_tag "jquery.tmpl", "third_party/knockout-1.1.2.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/assignment", "saturn/models/shiftDay", "saturn/models/shiftWeek", "saturn/models/ruleConflicts", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "cache/schedule_editing"
+  = javascript_include_tag "json2", "jquery.tmpl", "third_party/knockout-1.2.0pre.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/ruleConflicts", "saturn/models/shiftWeek", "saturn/models/shiftDay", "saturn/models/assignment", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "schedule_editor"
   :javascript
-    $.each([
-        "_directoryListing.htm",
-        "_assignmentDetails.htm",
-        "_dateColHeader.htm",
-        "_assignment.htm",
-        "_shiftDayCell.htm",
-        "_shiftWeekRow.htm"
-      ], function(index, template) {
-        $.ajax({
-          url: "#{root_url + "javascripts/saturn/templates/"}" + template,
-          async: false,
-          success: function(template) {
-            $("head").append(template);
-          }
-        });
-    });
-    var viewModel;
+    var viewModel = new weeklySchedule();
 
-    function loadWeeklySchedule(date, callback) {
-      var baseUrl = location.href.split("#")[0];
+    $.each([
+      "_directoryListing.htm",
+      "_assignmentDetails.htm",
+      "_assignment.htm",
+      "_shiftDayCell.htm",
+      "_shiftWeekRow.htm",
+      "_dateColHeader.htm",
+      "_weeklySchedule.htm",
+      "_rulesConflicts.htm"
+    ], function(index, template) {
       $.ajax({
+        url: "#{root_url + "javascripts/saturn/templates/"}" + template,
         async: false,
-        url: baseUrl + ".json?date=" + date,
-        dataType: "json",
-        success: callback,
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-          alert("error loading schedule: " + textStatus);
+        success: function(template) {
+          $("head").append(template);
         }
       });
-    }
+    });
 
     $(function() {
-      loadWeeklySchedule(location.hash.split("#")[1], function(data) {
-        viewModel = new weeklySchedule(data);
-      });
+      viewModel.refresh();
       ko.applyBindings(viewModel);
-
-      var lastScroll;
-      function captureScroll() {
-        lastScroll = $("div.schedule-wrapper").scrollTop();
-      }
-
-      function resetScroll() {
-        $("div.schedule-wrapper").scrollTop(lastScroll);
-      }
-
-      viewModel.ajaxStatus.subscribe(function(newStatus) {
-        if (newStatus == "sending") {
-          captureScroll();
-        } else if (newStatus == "complete") {
-          resetScroll();
-        }
-      });
     });
 
 - content_for :stylesheets do
@@ -69,62 +39,8 @@
 
 %div#assignment-details{ :style => "display: none;", :"data-bind" => "template: { name: 'assignmentDetails', data: editingAssignment }" }
 
-%script#previousLink{ :type => "text/html" }
-  %div.placeholder &nbsp;
-  %div.placeholder &nbsp;
-  %a{ :href => "${ '#' + viewModel.previousWeekDate() }", :"data-bind" => "click: function() { loadWeeklySchedule(viewModel.previousWeekDate(), function(data) { viewModel.updateFromJS(data) }); return true }" } &laquo; previous week
-
-%script#nextLink{ :type => "text/html" }
-  %div.placeholder &nbsp;
-  %div.placeholder &nbsp;
-  %a{ :href => "${ '#' + viewModel.nextWeekDate() }", :"data-bind" => "click: function() { loadWeeklySchedule(viewModel.nextWeekDate(), function(data) { viewModel.updateFromJS(data) }); return true }" } next week &raquo;
-
-%div
-  %h3
-    Editing the week of
-    %span{ :"data-bind" => "text: longDate" }
-    %input#date-selector{ :type => "text", :value => " select date..." }
-      
-  %h4.left
-    last saved:
-    %span{ :"data-bind" => "text: longLastUpdate" }
-    |
-    status:
-    %span{ :"data-bind" => "text: is_published() ? 'published' : 'unpublished'" }
-    |&nbsp;
-    %span.flash.error{ :"data-bind" => "text: error_messages, showFlash: {}" }
-
-  %p.inline-control
-    %input#is-published{ :type => "checkbox", :"data-bind" => "checked: is_published" }
-    %label{ :for => "is-published" }
-      %span.ui-button-text{ :"data-bind" => "text: publishAction" }
-        
-  %div.schedule-column-header.prepended-column-header{ :"data-bind" => "template: { name: 'previousLink' }" }
-    -# placeholder text
-    &laquo; previous week
-
-  %div.schedule-headers.drop-shadow{ :"data-bind" => 'template: { name: "dateColHeader", foreach: dates }' }
-    
-  %div.schedule-column-header.appended-column-header{ :"data-bind" => "template: { name: 'nextLink' }" }
-    -# placeholder text
-    next week &raquo;
-
-%div#schedule-wrapper.drop-shadow
+%div{ :"data-bind" => "template: { name: 'weeklySchedule' }" }
+%div#schedule-wrapper.main-ui
   %div#schedule{ :"data-bind" => 'ajaxLifecycle: {}, template: { name: "shiftWeekRow", foreach: shift_weeks }' }
-
-%script#ruleConflict{ :type => "text/html" }
-  %tr
-    %td{ :"data-bind" => "text: viewModel.physicianName(physician_id())" }
-    %td{ :"data-bind" => "text: description" }
-
-%script#ruleConflicts{ :type => "text/html" }
-  %h4{ :"data-bind" => "text: title" }
-  %table{ :"data-bind" => "template: { name: 'ruleConflict', foreach: conflict_by_offender_id }" }
-
-%script#rulesConflicts{ :type => "text/html" }
-  {{if rules_conflicts().length > 0}}
-  %h3 Rules conflicts
-  %div#rules-conflicts{ :"data-bind" => "template: { name: 'ruleConflicts', foreach: rules_conflicts }" }
-  {{/if}}
 
 %div#rules-conflicts-wrapper{ :"data-bind" => "template: { name: 'rulesConflicts' }" }

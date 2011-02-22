@@ -6,7 +6,7 @@ var shiftDay = function(attributes) {
                 return new assignment(options.data);
             },
             key: function(data) {
-                return ko.utils.unwrapObservable(data.id);
+                return ko.utils.unwrapObservable(data.date) + ko.utils.unwrapObservable(data.physician_id) + ko.utils.unwrapObservable(data.shift_id);
             }
         }
     };

@@ -5,6 +5,9 @@ var shiftWeek = function(attributes) {
         "shift_days": {
             create: function(options) {
                 return new shiftDay(options.data);
+            },
+            key: function(data) {
+                return ko.utils.unwrapObservable(data.date);
             }
         }
     };
@@ -19,6 +22,13 @@ var shiftWeek = function(attributes) {
         for (var i = 0; i < this.shift_days().length; i++) {
             this.shift_days()[i].setSchedule(schedule);
         }
+    };
+
+    this.removeShiftDays = function() {
+        this.shift_days.remove(function(shiftDay) {
+            shiftDay.assignments.removeAll();
+            return true;
+        });
     };
 
     this.serialize = function() {
@@ -42,10 +52,13 @@ var shiftWeek = function(attributes) {
     if (this.shift_week_note.text() == "") {
         this.shift_week_note.text("add note...");
     }
-    var lastNote;
+    var lastNote = this.shift_week_note.text();
     this.shift_week_note.text.subscribe(function(newNote) {
-        if (newNote == "add note..." || newNote == lastNote) {
+        if (newNote == "add note..." || newNote == lastNote || newNote == "" && self.shift_week_note.id == undefined) {
             lastNote = newNote;
+            if (newNote == "") {
+                self.shift_week_note.text("add note...");
+            }
             return;
         }
         lastNote = newNote;

@@ -53,7 +53,7 @@ class Assignment < ActiveRecord::Base
   def to_json
     [
     "{",
-      "\"assignment\":{",
+      #"\"assignment\":{",
         "\"date\":\"#{date}\",",
         "\"duration\":#{duration || "null"},",
         "\"id\":#{id},",
@@ -62,7 +62,7 @@ class Assignment < ActiveRecord::Base
         "\"public_note\":#{"\"#{public_note}\"" || "null"},",
         "\"shift_id\":#{shift_id},",
         "\"physician_id\":#{physician_id}",
-      "}",
+      #"}",
     "}"
     ].join("")
   end
