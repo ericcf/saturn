@@ -5,9 +5,9 @@ Feature: search shift totals for a section
 
 Scenario: Use section shift totals search form
   Given a section "Nose" with a "Faculty" member "Cyrano D"
-    And a weekly schedule for "Nose" that begins on 2009-12-28 is published
+    And a weekly schedule for "Nose" that begins 2009-12-28 is published
     And a shift "Vacation" in the "Nose" section
-    And "Cyrano D" is assigned to "Vacation" in "Nose" on 2010-01-01
+    And "Cyrano D" is assigned to "Vacation" in "Nose" 2010-01-01
    When I go to the shift totals search page for "Nose"
     And I fill in "shift_totals_report_start_date" with "2010-01-01"
     And I fill in "shift_totals_report_end_date" with "2010-01-02"

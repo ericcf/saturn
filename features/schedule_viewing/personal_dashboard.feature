@@ -5,9 +5,9 @@ Feature: Personal dashboard
 
 Background:
   Given a section "The Highway" with a "Fellows" member "Harley David"
-    And a weekly schedule for "The Highway" that begins on 2012-12-10 is published
+    And a weekly schedule for "The Highway" that begins 2012-12-10 is published
     And a shift "Riding" in the "The Highway" section
-    And "Harley David" is assigned to "Riding" in "The Highway" on 2012-12-10
+    And "Harley David" is assigned to "Riding" in "The Highway" 2012-12-10
 
 Scenario: View a user's personal dashboard
    When I go to the personal dashboard for "Harley David" on 2012-12-10

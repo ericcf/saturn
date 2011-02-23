@@ -3,6 +3,8 @@
 - content_for :content_menu do
   = render "schedules/section_menu.html"
 
+%h3 Manage Shift Categories
+
 %p= link_to "Add Category", new_section_shift_tag_path(@section), { :class => "button" }
 
 - if @shift_tags.size > 0

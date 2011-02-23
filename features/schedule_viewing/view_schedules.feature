@@ -7,8 +7,8 @@ Scenario: View a published call schedule
   Given a section "The Diner" with a "Faculty" member "Jerry Seinfeld"
     And a shift "Lunch" in the "The Diner" section
     And "Lunch" in "The Diner" is tagged with "Call"
-    And a weekly schedule for "The Diner" that begins on 2010-11-22 is published
-    And "Jerry Seinfeld" is assigned to "Lunch" in "The Diner" on 2010-11-22
+    And a weekly schedule for "The Diner" that begins 2010-11-22 is published
+    And "Jerry Seinfeld" is assigned to "Lunch" in "The Diner" 2010-11-22
    When I go to the weekly call schedule page for the week beginning 2010-11-22
    Then I should see "Published Call Schedule"
     And I should see "Mon 11/22"
@@ -19,8 +19,8 @@ Scenario: View a published call schedule
 Scenario: View a published weekly section schedule by shift and physician, as html and xls
   Given a section "Disney World" with a "Faculty" member "Donald Duck"
     And a shift "Singing" in the "Disney World" section
-    And a weekly schedule for "Disney World" that begins on 2010-11-22 is published
-    And "Donald Duck" is assigned to "Singing" in "Disney World" on 2010-11-22
+    And a weekly schedule for "Disney World" that begins 2010-11-22 is published
+    And "Donald Duck" is assigned to "Singing" in "Disney World" 2010-11-22
   When I go to the weekly section schedule page for "Disney World" on 2010-11-22
   Then I should see "Disney World"
    And I should see "Published Schedule"

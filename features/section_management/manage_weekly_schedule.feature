@@ -13,7 +13,7 @@ Scenario: View the edit page
 
 @javascript
 Scenario: Publish a weekly schedule
-    And a weekly schedule for "Body" that begins on 2010-11-22
+    And a weekly schedule for "Body" that begins 2010-11-22
    When I go to edit weekly schedule page for "Body" on 2010-11-22
    Then I should see "Publish"
    When I check "schedule-is-published"

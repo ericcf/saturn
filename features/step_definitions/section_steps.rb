@@ -15,6 +15,17 @@ module SectionHelper
   def find_or_create_group(group_title)
     RadDirectory::Group.find_or_create_by_title(group_title)
   end
+
+  def parse_date(date)
+    case date
+    when "Monday"
+      Date.today.at_beginning_of_week
+    when "today"
+      Date.today
+    else
+      Date.parse date
+    end
+  end
 end
 
 World(SectionHelper)
@@ -48,22 +59,39 @@ Given /^a vacation request for "([^ ]+) ([^"]+)" in the "([^"]*)" section beginn
   )
 end
 
+Given /^a meeting request for "([^ ]+) ([^"]+)" in the "([^"]*)" section beginning (\d{4}-\d{2}-\d{2}) and ending (\d{4}-\d{2}-\d{2})/ do |given_name, family_name, section_title, start_date, end_date|
+  physician = find_or_create_physician(given_name, family_name)
+  section = find_or_create_section(section_title)
+  MeetingRequest.create!(
+    :requester_id => physician.id,
+    :section => section,
+    :start_date => start_date,
+    :end_date => end_date,
+    :shift => section.shifts.create(:title => "Meeting")
+  )
+end
+
+Given /^a shift tag "([^"]*)" in the "([^"]*)" section$/ do |shift_tag_title, section_title|
+  section = find_or_create_section(section_title)
+  section.shift_tags.create(:title => shift_tag_title)
+end
+
 Given /^"([^"]*)" in "([^"]*)" is tagged with "([^"]*)"$/ do |shift_title, section_title, shift_tag_title|
   section = Section.find_by_title(section_title)
   tag = ShiftTag.create!(:section => section, :title => shift_tag_title)
   tag.shifts << section.shifts.find_by_title(shift_title)
 end
 
-Given /^a weekly schedule for "([^"]*)" that begins on (\d{4}-\d{2}-\d{2})( is published)?$/ do |section_title, date, is_published|
+Given /^a weekly schedule for "([^"]*)" that begins ((?:\d{4}-\d{2}-\d{2})|(?:[^ ]+))( is published)?$/ do |section_title, date, is_published|
   section = Section.find_by_title(section_title)
-  section.weekly_schedules.create!(:date => Date.parse(date), :is_published => is_published ? true : false)
+  section.weekly_schedules.create!(:date => parse_date(date), :is_published => is_published ? true : false)
 end
 
-Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" on (\d{4}-\d{2}-\d{2})$/ do |given_name, family_name, shift_title, section_title, date|
+Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" ((?:\d{4}-\d{2}-\d{2})|(?:[^ ]+))$/ do |given_name, family_name, shift_title, section_title, date|
   physician = find_or_create_physician(given_name, family_name)
   section = Section.find_by_title(section_title)
   shift = section.shifts.find_by_title(shift_title)
-  assignment_date = Date.parse(date)
+  assignment_date = parse_date(date)
   schedule = section.weekly_schedules.include_date(assignment_date).first
   schedule.assignments.create(:physician_id => physician.id, :shift => shift, :date => assignment_date)
 end
