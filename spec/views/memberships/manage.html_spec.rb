@@ -13,14 +13,6 @@ describe "memberships/manage.html" do
     should_render_partial("schedules/section_menu")
   end
 
-  it "renders a link to add new members" do
-    render
-    rendered.should have_selector("a",
-      :href => manage_new_section_memberships_path(@mock_section),
-      :content => "Add Members"
-    )
-  end
-
   it "renders a form for updating section members" do
     render
     rendered.should have_selector("form",
@@ -44,8 +36,7 @@ describe "memberships/manage.html" do
   end
 
   it "renders fields to destroy members" do
-    Section.delete_all
-    section = assign(:section, Factory(:section))
+    section = assign(:section, stub_model(Section))
     @mock_person.stub_chain(:section_memberships, :where, :first).
       and_return(stub_model(SectionMembership))
     render

@@ -3,8 +3,6 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%p= link_to "Add Members", manage_new_section_memberships_path(@section)
-
 - if @members_by_group
   %h3 Select members to remove
   = semantic_form_for @section do |section_form|

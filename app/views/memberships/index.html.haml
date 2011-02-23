@@ -3,8 +3,12 @@
 - content_for :content_menu do
   = render "schedules/section_menu"
 
-%ul
-  != nav_item "Edit Members", manage_section_memberships_path(@section), { :class => "button" }, :update, @section
+%p
+  %ul
+    != nav_item "Add Members", manage_new_section_memberships_path(@section), { :class => "button" }, :update, @section
+%p
+  %ul
+    != nav_item "Remove Members", manage_section_memberships_path(@section), { :class => "button" }, :update, @section
 
 - @members_by_group.each do |group_name, people|
   %h3= group_name unless people.blank?

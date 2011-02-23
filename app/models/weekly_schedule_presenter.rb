@@ -37,7 +37,7 @@ class WeeklySchedulePresenter
       dates.map { |d| { :object => d, :type => "date" } }
     when :shifts
       shifts.map do |s|
-        note = s.shift_week_notes.find_by_weekly_schedule_id(weekly_schedule.id) || ShiftWeekNote.new
+        note = s.shift_week_notes.select{|n|n.weekly_schedule_id == weekly_schedule.id}.first || ShiftWeekNote.new
         {
           :object => {
             :title => s.title,

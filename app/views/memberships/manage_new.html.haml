@@ -9,7 +9,7 @@
   = semantic_form_for @section do |section_form|
     = hidden_field_tag "redirect_path", section_memberships_path(@section)
     = section_form.buttons do
-      = section_form.commit_button
+      = section_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_memberships_path(@section)
@@ -19,7 +19,7 @@
           = check_box_tag "section[memberships_attributes][][physician_id]", physician.id
           = label_tag :physician_id, physician.full_name
     = section_form.buttons do
-      = section_form.commit_button
+      = section_form.commit_button :button_html => { :class => "button" }
       %li
         or
         = link_to "Cancel", section_memberships_path(@section)
