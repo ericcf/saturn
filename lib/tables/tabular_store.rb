@@ -13,9 +13,15 @@ module Tables
         yield value
       end
     end
+
+    def cells
+      @row_data
+    end
   end
 
   class TabularStore
+
+    attr_reader :row_headers, :col_headers
 
     def initialize(args={})
       @row_headers, @col_headers = args[:row_headers], args[:col_headers]

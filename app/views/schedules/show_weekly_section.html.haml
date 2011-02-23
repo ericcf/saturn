@@ -35,7 +35,6 @@
       - @schedule_presenter.each_row do |row|
         %tr{ :class => cycle("odd", "") }
           %th= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
-          - row.each_value do |value|
-            %td!= value && value.join("<br/>")
+          = render :partial => "schedule_cell.html", :collection => row.cells
 
 %div#rules-conflicts= render "rules_conflicts.html", :physician_names_by_id => @physician_names_by_id, :schedule => @schedule_presenter.weekly_schedule

@@ -26,7 +26,10 @@ Scenario: View a published weekly section schedule by shift and physician, as ht
    And I should see "Published Schedule"
    And I should see "Singing"
    And I should see "D. Duck"
-  When I follow "View by Physician"
+  When I follow "Download as Excel"
+  Then I should see an Excel file
+  When I go to the weekly section schedule page for "Disney World" on 2010-11-22
+   And I follow "View by Physician"
   Then I should see "View by Shift"
    And I should see "D. Duck"
    And I should see "Singing"

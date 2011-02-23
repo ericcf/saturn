@@ -1,0 +1,13 @@
+%td
+  - if schedule_cell.present?
+    - schedule_cell.each do |summary|
+      = summary[:text]
+      - if summary[:note].present?
+        %span.note
+          = image_tag "pub-note.gif", :alt => summary[:note]
+          %span.note-text= summary[:note]
+      - if summary[:duration].present?
+        %span.note.ui-state-default{ :style => "border:none;" }
+          %span.ui-icon.ui-icon-clock
+          %span.note-text= summary[:duration]
+      %br

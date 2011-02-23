@@ -49,7 +49,15 @@ class WeeklySchedulePresenter
         }
       end
     when :physicians
-      section.members_by_group.values.flatten.map { |p| { :object => p, :type => "physician" } }
+      section.members_by_group.values.flatten.map do |physician|
+        {
+          :object => {
+            :title => physician.short_name,
+            :id => physician.id
+          },
+          :type => "physician"
+        }
+      end
     end
   end
 
@@ -62,17 +70,21 @@ class WeeklySchedulePresenter
         assignments.each do |assignment|
           index = [shift_index(assignment), date_index(assignment)]
           values[index] ||= []
-          data = physician_names_by_id[assignment.physician_id]
-          data += " <span class='note'><img src='/images/pub-note.gif' alt='#{assignment.public_note}' /><span class='note-text'>#{assignment.public_note}</span></span>" if assignment.public_note.present?
-          values[index] << data
+          values[index] << {
+            :text => physician_names_by_id[assignment.physician_id],
+            :note => assignment.public_note,
+            :duration => assignment.duration
+          }
         end
       when :physicians
         assignments.each do |assignment|
           index = [physician_index(assignment), date_index(assignment)]
           values[index] ||= []
-          data = assignment.shift.title
-          data += " <span class='note'><img src='/images/pub-note.gif' alt='#{assignment.public_note}' /><span class='note-text'>#{assignment.public_note}</span></span>" if assignment.public_note.present?
-          values[index] << data
+          values[index] << {
+            :text => assignment.shift.title,
+            :note => assignment.public_note,
+            :duration => assignment.duration
+          }
         end
       end
     end
