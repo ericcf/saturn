@@ -1,36 +1,26 @@
 - page_title "On Call"
 
 %h3 Published Call Schedule
-%h3= "Week of #{@dates.first.to_s(:long)}"
+%h3= "Week of #{@schedule_presenter.dates.first.to_s(:long)}"
 = form_tag weekly_call_schedule_path, :method => :get do
-  = select_year(@dates.first)
-  = select_month(@dates.first)
-  = select_day(@dates.first)
-  = submit_tag "Jump to date"
-%p= link_to "view today", weekly_call_schedule_path
+  = select_year(@schedule_presenter.dates.first)
+  = select_month(@schedule_presenter.dates.first)
+  = select_day(@schedule_presenter.dates.first)
+  = submit_tag "View date"
+%p= link_to "View today", weekly_call_schedule_path
 
-- mapped_assignments = @call_assignments.group_by {|a| [a.shift_id, a.date]}
-- shifts_by_section = @call_shifts.group_by {|s| s.section}
 %table.schedule
   %thead
     %tr
       %th
-      - @dates.each do |date|
-        %th{ :class => date == Date.today ? "current-date" : "" }= short_date(date)
+      - @schedule_presenter.dates.each do |date|
+        %th{ :class => date == Date.today ? "current-date" : "" }= date.to_s(:short_with_weekday)
   %tbody
-    - shifts_by_section.each do |section, shifts|
+    - @schedule_presenter.shifts_by_section_title.each do |section_title, shifts|
       %tr
-        %th{ :colspan => 8, :style => "background-color: #c0d9d9;" }= section.title
+        %th{ :colspan => 8, :style => "background-color: #c0d9d9;" }= section_title
       - shifts.each do |shift|
         %tr
           %th= shift.title
-          - @dates.each do |date|
-            - assignments_by_shift_and_date = mapped_assignments[[shift.id, date]]
-            - if assignments_by_shift_and_date
-              %td{ :class => date.today? ? "current-date" : "" }
-                - assignments_by_shift_and_date.each do |assignment|
-                  - physician = @physicians_by_id[assignment.physician_id]
-                  = link_to physician.short_name, schedule_physician_path(physician)
-                  %br
-            - else
-              %td &nbsp;
+          - @schedule_presenter.dates.each do |date|
+            = render :partial => "schedule_cell.html", :object => @schedule_presenter.summaries_by_shift_id_and_date(shift.id, date)

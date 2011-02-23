@@ -3,7 +3,7 @@ module TablesHelper
   def format_header(item, *options)
     case item.class.to_s
     when "Date"
-      short_date(item)
+      item.to_s(:short_with_weekday)
     when "Shift"
       item.title
     when "RadDirectory::Person"

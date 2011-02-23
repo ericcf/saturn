@@ -26,7 +26,7 @@
     %tr
       %th
       - (@start_date..@end_date).each do |date|
-        %th= short_date(date)
+        %th= date.to_s(:short_with_weekday)
     - @shifts.each do |shift|
       %tr
         %th= "#{shift.title} (#{shift.duration})"

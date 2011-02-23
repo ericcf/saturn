@@ -10,13 +10,6 @@ module ApplicationHelper
     "</li>"
   end
 
-  def short_date(date, options=[])
-    [
-       options.include?(:without_day) ? nil : date.strftime("%a"),
-      "#{date.month}/#{date.day}"
-    ].compact.join(" ")
-  end
-
   def page_title(text)
     content_for(:page_title) { text }
   end

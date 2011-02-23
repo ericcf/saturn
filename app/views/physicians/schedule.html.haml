@@ -28,7 +28,7 @@
           %th{ :class => date == Date.today ? "current-date" : "" }><
             %span.date-label= @schedule.holiday_on(date)
             %br
-            = short_date(date, [:without_day])
+            = date.to_s(:short)
       - @physician.sections.each do |section|
         %tr
           %th= link_to section.title, weekly_section_schedule_path(section)

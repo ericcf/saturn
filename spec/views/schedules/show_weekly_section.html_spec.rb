@@ -5,12 +5,16 @@ describe "schedules/show_weekly_section.html" do
   let(:mock_section) { stub_model(Section) }
   let(:dates) { [Date.today] }
   let(:mock_presenter) do
-    stub_model(WeeklySchedulePresenter, :weekly_schedule => stub_model(WeeklySchedule), :each_col_header => nil, :each_row => nil)
+    stub_model(WeeklySchedulePresenter,
+      :weekly_schedule => stub_model(WeeklySchedule),
+      :each_col_header => nil,
+      :each_row => nil,
+      :dates => dates
+    )
   end
 
   before(:each) do
     assign(:section, mock_section)
-    assign(:dates, dates)
     assign(:schedule_presenter, mock_presenter)
     should_render_partial("section_menu.html")
     should_render_partial("rules_conflicts.html")

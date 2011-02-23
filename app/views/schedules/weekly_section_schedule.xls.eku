@@ -8,7 +8,7 @@ bold = Spreadsheet::Format.new(:weight => :bold)
 sheet1.column(0).default_format = bold
 
 sheet1[0, 0] = @section.title
-sheet1[1, 0] = "Week of #{@dates.first.to_s(:long)}"
+sheet1[1, 0] = "Week of #{@schedule_presenter.dates.first.to_s(:long)}"
 
 row = 3
 sheet1.row(3).default_format = bold
