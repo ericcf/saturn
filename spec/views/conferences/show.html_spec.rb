@@ -1,15 +1,20 @@
 require 'spec_helper'
 
 describe "conferences/show.html.haml" do
-  before(:each) do
-    @conference = assign(:conference, stub_model(Conference,
+
+  let(:mock_conference) do
+    stub_model(Conference,
       :title => "My Title",
       :starts_at => DateTime.now,
       :ends_at => DateTime.now,
       :description => "My Description",
       :external_uid => "My External Uid",
       :categories => "MyText"
-    ))
+    )
+  end
+
+  before(:each) do
+    assign(:conference, mock_conference)
     render
   end
 
@@ -21,7 +26,7 @@ describe "conferences/show.html.haml" do
 
   it { should contain("My External Uid") }
 
-  it { should contain(@conference.starts_at.to_s) }
+  it { should contain(mock_conference.starts_at.to_s) }
 
-  it { should contain(@conference.ends_at.to_s) }
+  it { should contain(mock_conference.ends_at.to_s) }
 end

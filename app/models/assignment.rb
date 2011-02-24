@@ -31,6 +31,10 @@ class Assignment < ActiveRecord::Base
     physician.present? ? physician.short_name : "Na"
   end
 
+  def shift_title
+    shift.present? ? shift.title : "Unknown"
+  end
+
   def public_note_details
     public_note.blank? ? nil : {
       :shift => shift.title,

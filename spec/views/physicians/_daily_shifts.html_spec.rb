@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe "physicians/_daily_shifts.html" do
 
+  let(:mock_shift) { mock("shift", :title => "Shift 1") }
+
   before(:each) do
-    mock_shift = mock("shift", :title => "Shift 1")
-    view.should_receive(:daily_shifts).
-      and_return( { :shifts => [mock_shift] })
-    render
+    render :partial => "physicians/daily_shifts.html",
+      :locals => { :daily_shifts => { :shifts => [mock_shift] } }
   end
 
-  it "renders a cell listing the daily assigned shifts" do
-    rendered.should have_selector("td", :content => "Shift 1")
-  end
+  subject { rendered }
+
+  it { should have_selector("td", :content => mock_shift.title) }
 end

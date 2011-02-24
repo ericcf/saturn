@@ -2,21 +2,19 @@ require 'spec_helper'
 
 describe "memberships/manage.html" do
 
-  def mock_section(stubs={})
-    @mock_section ||= mock_model(Section, stubs)
-  end
+  let(:mock_section) { mock_model(Section, :title => "My Section") }
+  let(:mock_person) { stub_model(Physician, :full_name => "B. Favre") }
 
   before(:each) do
-    @mock_section = assign(:section, mock_section(:title => "My Section"))
-    @mock_person = stub_model(Physician, :full_name => "B. Favre")
-    assign(:members_by_group, { "Group 1" => [@mock_person] })
+    assign(:section, mock_section)
+    assign(:members_by_group, { "Group 1" => [mock_person] })
     should_render_partial("schedules/section_menu")
   end
 
   it "renders a form for updating section members" do
     render
     rendered.should have_selector("form",
-      :action => section_path(@mock_section),
+      :action => section_path(mock_section),
       :method => "post"
     ) do |form|
       form.should have_selector("input", :type => "submit")
@@ -31,13 +29,13 @@ describe "memberships/manage.html" do
   it "renders full names of members" do
     render
     rendered.should have_selector("label") do |label|
-      label.should contain(@mock_person.full_name)
+      label.should contain(mock_person.full_name)
     end
   end
 
   it "renders fields to destroy members" do
     section = assign(:section, stub_model(Section))
-    @mock_person.stub_chain(:section_memberships, :where, :first).
+    mock_person.stub_chain(:section_memberships, :where, :first).
       and_return(stub_model(SectionMembership))
     render
     rendered.should have_selector("form input",

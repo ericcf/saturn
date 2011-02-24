@@ -1,9 +1,10 @@
 require 'spec_helper'
 
 describe "conferences/index.html.haml" do
-  before(:each) do
-    assign(:date, Date.today)
-    assign(:conferences, [
+
+  let(:date) { Date.today }
+  let(:mock_conferences) do
+    [
       stub_model(Conference,
         :title => "Title",
         :description => "Description",
@@ -20,11 +21,18 @@ describe "conferences/index.html.haml" do
         :starts_at => DateTime.now,
         :ends_at => DateTime.now
       )
-    ])
+    ]
   end
 
-  it "renders a list of conferences" do
+  before(:each) do
+    assign(:date, date)
+    assign(:conferences, mock_conferences)
     render
+  end
+
+  subject { rendered }
+
+  it "renders a list of conferences" do
     assert_select "tr>td", :text => "Title", :count => 2
     assert_select "tr>td", :text => "Description", :count => 2
     assert_select "tr>td", :text => "Categories", :count => 2

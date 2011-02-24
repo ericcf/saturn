@@ -7,8 +7,10 @@ describe "admin/index.html.haml" do
     render
   end
 
+  subject { rendered }
+
   it "renders a link to site statistics" do
-    rendered.should have_selector("ul li a", :href => site_statistics_path,
+    should have_selector("ul li a", :href => site_statistics_path,
       :content => "Site Statistics")
   end
 end

@@ -21,13 +21,15 @@ describe "reports/shift_totals_report.html.haml" do
     render
   end
 
+  subject { rendered }
+
   it "displays a header including the date range in the query" do
-    rendered.should have_selector("h3",
+    should have_selector("h3",
       :content => "Report for 2 January 2010 - 4 March 2010")
   end
 
   it "displays each group followed by its members in the header" do
-    rendered.should have_selector("table thead tr") do |header_row|
+    should have_selector("table thead tr") do |header_row|
       header_row.should have_selector("th", :content => mock_group.title)
       header_row.should have_selector("th", :content => mock_physician.initials)
     end

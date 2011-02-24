@@ -37,4 +37,4 @@
           %th= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
           = render :partial => "schedule_cell.html", :collection => row.cells
 
-%div#rules-conflicts= render "rules_conflicts.html", :physician_names_by_id => @schedule_presenter.physician_names_by_id, :schedule => @schedule_presenter.weekly_schedule
+%div#rules-conflicts= render "rules_conflicts.html", :physician_names_by_id => @schedule_presenter.physician_names_by_id, :schedule => @schedule_presenter.weekly_schedule, :assignments => @assignments

@@ -19,38 +19,40 @@ describe "reports/search_shift_totals.html.haml" do
     render
   end
 
+  subject { rendered }
+
   it "displays a form which submits to shift_totals_report" do
-    rendered.should have_selector("form",
+    should have_selector("form",
       :action => shift_totals_report_section_reports_path(mock_section),
       :method => "post")
   end
 
   it "displays a label and text field for the start_date" do
-    rendered.should have_selector("form label", :for => "shift_totals_report_start_date",
+    should have_selector("form label", :for => "shift_totals_report_start_date",
       :content => "From")
-    rendered.should have_selector("form input", :name => "shift_totals_report[start_date]")
+    should have_selector("form input", :name => "shift_totals_report[start_date]")
   end
 
   it "displays a label and text field for the end_date" do
-    rendered.should have_selector("form label", :for => "shift_totals_report_end_date",
+    should have_selector("form label", :for => "shift_totals_report_end_date",
       :content => "To")
-    rendered.should have_selector("form input", :name => "shift_totals_report[end_date]")
+    should have_selector("form input", :name => "shift_totals_report[end_date]")
   end
 
   it "displays a fieldset and check boxes for selecting shifts" do
-    rendered.should have_selector("form fieldset legend", :content => "Shifts")
-    rendered.should have_selector("form input", :name => "shift_totals_report[shift_ids][]",
+    should have_selector("form fieldset legend", :content => "Shifts")
+    should have_selector("form input", :name => "shift_totals_report[shift_ids][]",
       :value => "#{mock_shift.id}")
   end
 
   it "displays a fieldset and check boxes for selecting physician groups" do
-    rendered.should have_selector("form fieldset legend", :content => "Groups")
-    rendered.should have_selector("form input", :name => "shift_totals_report[group_ids][]",
+    should have_selector("form fieldset legend", :content => "Groups")
+    should have_selector("form input", :name => "shift_totals_report[group_ids][]",
       :value => "#{mock_group.id}")
   end
 
   it "dispalys a submit button" do
-    rendered.should have_selector("form input", :type => "submit",
+    should have_selector("form input", :type => "submit",
       :value => "Generate Report")
   end
 end

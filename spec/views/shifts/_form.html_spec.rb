@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe "shifts/_form.html" do
 
+  let(:mock_section) { stub_model(Section) }
+  let(:mock_shift) { stub_model(Shift) }
+
   before(:each) do
-    @mock_section = assign(:section, stub_model(Section))
-    @mock_shift = assign(:shift, stub_model(Shift))
+    assign(:section, mock_section)
+    assign(:shift, mock_shift)
     should_render_partial("schedules/section_menu.html")
     render
   end
@@ -13,7 +16,7 @@ describe "shifts/_form.html" do
 
   it "renders a form for creating a shift" do
     should have_selector("form",
-      :action => section_shift_path(@mock_section, @mock_shift),
+      :action => section_shift_path(mock_section, mock_shift),
       :method => "post"
     ) do |form|
       form.should have_selector("input", :type => "submit")
