@@ -23,7 +23,9 @@ describe Section do
 
   it { should have_many(:weekly_schedules).dependent(:destroy) }
 
-  it { should have_many(:shifts).dependent(:destroy) }
+  it { should have_many(:section_shifts).dependent(:destroy) }
+
+  it { should have_many(:shifts).through(:section_shifts) }
 
   it { should have_many(:vacation_requests).dependent(:destroy) }
 

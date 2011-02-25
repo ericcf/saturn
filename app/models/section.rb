@@ -4,28 +4,38 @@ class Section < ActiveRecord::Base
 
   has_friendly_id :title, :use_slug => true
 
-  has_many :shift_tags, :dependent => :destroy
-  accepts_nested_attributes_for :shift_tags, :allow_destroy => true
-  has_many :memberships,
-    :class_name => 'SectionMembership',
-    :dependent => :destroy
-  accepts_nested_attributes_for :memberships, :allow_destroy => true
-  has_many :weekly_schedules, :dependent => :destroy
+  with_options :dependent => :destroy do |assoc|
+    assoc.has_many :shift_tags
+    assoc.has_many :memberships,:class_name => 'SectionMembership'
+    assoc.has_many :weekly_schedules
+    assoc.has_many :section_shifts
+    assoc.has_many :vacation_requests
+    assoc.has_many :meeting_requests
+    assoc.has_one :weekly_shift_duration_rule
+    assoc.has_many :daily_shift_count_rules
+    assoc.has_one :section_role_assignment
+  end
   has_many :assignments, :through => :weekly_schedules
-  has_many :shifts, :dependent => :destroy
-  accepts_nested_attributes_for :shifts
-  has_many :vacation_requests, :dependent => :destroy
-  has_many :meeting_requests, :dependent => :destroy
-  has_one :weekly_shift_duration_rule, :dependent => :destroy
-  accepts_nested_attributes_for :weekly_shift_duration_rule
-  has_many :daily_shift_count_rules, :dependent => :destroy
-  accepts_nested_attributes_for :daily_shift_count_rules
-  has_one :section_role_assignment, :dependent => :destroy
+  has_many :shifts, :through => :section_shifts
   has_one :admin_role, :through => :section_role_assignment, :source => :role
+  accepts_nested_attributes_for :shift_tags, :allow_destroy => true
+  accepts_nested_attributes_for :memberships, :allow_destroy => true
+  accepts_nested_attributes_for :shifts
+  accepts_nested_attributes_for :section_shifts
+  accepts_nested_attributes_for :weekly_shift_duration_rule
+  accepts_nested_attributes_for :daily_shift_count_rules
 
   validates :title, :presence => true, :uniqueness => true
 
   before_validation { clean_text_attributes :title }
+
+  def active_shifts_as_of(date)
+    Shift.where(:id => section_shifts.active_as_of(date).map(&:shift_id))
+  end
+
+  def retired_shifts_as_of(date)
+    Shift.where(:id => section_shifts.retired_as_of(date).map(&:shift_id))
+  end
 
   def members
     Physician.where(:id => member_ids)

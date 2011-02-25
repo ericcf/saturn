@@ -30,10 +30,9 @@ describe "shifts/_form.html" do
     )
   end
 
-  it "renders a field for the display color" do
+  it "renders a fieldset to select shared sections when not a new record" do
     should have_selector("form input",
-      :type => "text",
-      :name => "shift[display_color]"
+      :name => "shift[section_ids][]"
     )
   end
 end

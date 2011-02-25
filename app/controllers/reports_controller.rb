@@ -4,7 +4,7 @@ class ReportsController < ApplicationController
   def shift_totals
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
     @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today
-    @shifts = @section.shifts.active_as_of(@start_date)
+    @shifts = @section.active_shifts_as_of(@start_date)
     @shift_tags = @section.shift_tags
     @physicians_by_group = @section.members_by_group
     assignments = @section.assignments.published.

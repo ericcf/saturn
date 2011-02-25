@@ -16,11 +16,11 @@
       - @schedule_presenter.dates.each do |date|
         %th{ :class => date == Date.today ? "current-date" : "" }= date.to_s(:short_with_weekday)
   %tbody
-    - @schedule_presenter.shifts_by_section_title.each do |section_title, shifts|
+    - @schedule_presenter.shifts_by_section.each do |section, shifts|
       %tr
-        %th{ :colspan => 8, :style => "background-color: #c0d9d9;" }= section_title
+        %th{ :colspan => 8, :style => "background-color: #c0d9d9;" }= section.title
       - shifts.each do |shift|
         %tr
           %th= shift.title
           - @schedule_presenter.dates.each do |date|
-            = render :partial => "schedule_cell.html", :object => @schedule_presenter.summaries_by_shift_id_and_date(shift.id, date)
+            = render :partial => "schedule_cell.html", :object => @schedule_presenter.summaries_by_section_id_shift_id_and_date(section.id, shift.id, date)

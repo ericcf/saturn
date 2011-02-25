@@ -31,7 +31,7 @@
       %br
       %br
       - per_column = 15
-      - section_shifts = @section.shifts.active_as_of(Date.today)
+      - section_shifts = @section.active_shifts_as_of(Date.today)
       - 0.step(section_shifts.count, per_column) do |index|
         %div{ :style => "float: left;" }
           - (section_shifts[index, per_column]).each do |shift|

@@ -5,9 +5,9 @@ class ShiftsController < ApplicationController
   before_filter :authorize_action
 
   def index
-    @current_shifts = @section.shifts.active_as_of(Date.today).
+    @current_shifts = @section.active_shifts_as_of(Date.today).
       find(:all, :include => :shift_tags)
-    @retired_shifts = @section.shifts.retired_as_of(Date.today).
+    @retired_shifts = @section.retired_shifts_as_of(Date.today).
       find(:all, :include => :shift_tags)
   end
 
@@ -25,14 +25,23 @@ class ShiftsController < ApplicationController
     render :new
   end
 
-  def destroy
+  def edit
     @shift = @section.shifts.find(params[:id])
-    if @shift.destroy
-      flash[:notice] = "Successfully deleted shift"
-    else
-      flash[:error] = "Error: failed to delete shift"
-    end
+
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "Error: requested shift not found"
     redirect_to section_shifts_path(@section)
+  end
+
+  def update
+    @shift = @section.shifts.readonly(false).find(params[:id])
+
+    if @shift.update_attributes(params[:shift])
+      flash[:notice] = "Successfully updated shift"
+      return redirect_to(section_shifts_path(@section))
+    end
+    flash.now[:error] = "Unable to update shift: #{@shift.errors.full_messages.join(", ")}"
+    render :edit
 
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Error: requested shift not found"

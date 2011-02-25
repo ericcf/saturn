@@ -12,7 +12,7 @@ class CallSchedulePresenter
   end
 
   def shifts
-    @shifts ||= Shift.includes(:shift_tags, :section).where("shift_tags.title like ?", "%Call%")
+    @shifts ||= Shift.includes(:shift_tags).where("shift_tags.title like ?", "%Call%")
   end
 
   def schedules
@@ -23,9 +23,9 @@ class CallSchedulePresenter
     @assignments ||= Assignment.by_schedules_and_shifts(schedules, shifts)
   end
 
-  def summaries_by_shift_id_and_date(shift_id, date)
-    @mapped_assignments ||= assignments.group_by { |a| [a.shift_id, a.date] }
-    assignments = @mapped_assignments[[shift_id, date]] || []
+  def summaries_by_section_id_shift_id_and_date(section_id, shift_id, date)
+    @mapped_assignments ||= assignments.group_by { |a| [a.weekly_schedule.section.id, a.shift_id, a.date] }
+    assignments = @mapped_assignments[[section_id, shift_id, date]] || []
     assignments.map do |assignment|
       {
         :text => physicians_by_id[assignment.physician_id].short_name,
@@ -35,8 +35,12 @@ class CallSchedulePresenter
     end
   end
 
-  def shifts_by_section_title
-    shifts.group_by { |shift| shift.section.title }
+  def shifts_by_section
+    call_shifts = Shift.on_call
+    sections = Section.joins(:section_shifts) & SectionShift.where(:shift_id => call_shifts)
+    sections.each_with_object({}) do |section, hsh|
+      hsh[section] = section.shifts.on_call
+    end
   end
 
   def physicians_by_id

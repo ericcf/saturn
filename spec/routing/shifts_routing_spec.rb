@@ -19,9 +19,14 @@ describe ShiftsController do
         should route_to(:controller => "shifts", :action => "create", :section_id => "1") 
     end
 
-    it "recognizes and generates #destroy" do
-      { :delete => "/sections/1/shifts/2" }.
-        should route_to(:controller => "shifts", :action => "destroy", :section_id => "1", :id => "2") 
+    it "recognizes and generates #edit" do
+      { :get => "/sections/1/shifts/2/edit" }.
+        should route_to(:controller => "shifts", :action => "edit", :section_id => "1", :id => "2") 
+    end
+
+    it "recognizes and generates #update" do
+      { :put => "/sections/1/shifts/2" }.
+        should route_to(:controller => "shifts", :action => "update", :section_id => "1", :id => "2") 
     end
   end
 end

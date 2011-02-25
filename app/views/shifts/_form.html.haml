@@ -11,7 +11,8 @@
   = semantic_form_for [@section, @shift] do |shift_form|
     = shift_form.inputs do
       = shift_form.input :title
-      = shift_form.input :display_color, :input_html => { :class => "color_picker" }
+      - unless @shift.new_record?
+        = shift_form.input :sections, :as => :check_boxes
     = shift_form.buttons do
       = shift_form.commit_button :button_html => { :class => "button" }
       %li

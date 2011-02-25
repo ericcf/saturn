@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110208192502) do
+ActiveRecord::Schema.define(:version => 20110224162800) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "weekly_schedule_id",                                              :null => false
@@ -169,6 +169,18 @@ ActiveRecord::Schema.define(:version => 20110208192502) do
   add_index "section_role_assignments", ["section_id", "role_id"], :name => "index_section_role_assignments_on_section_id_and_role_id", :unique => true
   add_index "section_role_assignments", ["section_id"], :name => "index_section_role_assignments_on_section_id"
 
+  create_table "section_shifts", :force => true do |t|
+    t.integer "section_id",                   :null => false
+    t.integer "shift_id",                     :null => false
+    t.integer "position",      :default => 1, :null => false
+    t.string  "display_color"
+    t.date    "retired_on"
+  end
+
+  add_index "section_shifts", ["section_id", "shift_id"], :name => "index_section_shifts_on_section_id_and_shift_id", :unique => true
+  add_index "section_shifts", ["section_id"], :name => "index_section_shifts_on_section_id"
+  add_index "section_shifts", ["shift_id"], :name => "index_section_shifts_on_shift_id"
+
   create_table "sections", :force => true do |t|
     t.string "title",       :null => false
     t.string "cached_slug"
@@ -206,19 +218,11 @@ ActiveRecord::Schema.define(:version => 20110208192502) do
   add_index "shift_week_notes", ["shift_id", "weekly_schedule_id"], :name => "index_shift_week_notes_on_shift_id_and_weekly_schedule_id", :unique => true
 
   create_table "shifts", :force => true do |t|
-    t.integer  "section_id",                                                   :null => false
-    t.string   "title",                                                        :null => false
-    t.string   "description"
-    t.decimal  "duration",      :precision => 2, :scale => 1, :default => 0.5, :null => false
-    t.integer  "position",                                    :default => 1,   :null => false
-    t.string   "phone"
-    t.string   "display_color"
-    t.date     "retired_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "title",                                                      :null => false
+    t.string  "description"
+    t.decimal "duration",    :precision => 2, :scale => 1, :default => 0.5, :null => false
+    t.string  "phone"
   end
-
-  add_index "shifts", ["section_id"], :name => "index_shifts_on_section_id"
 
   create_table "slugs", :force => true do |t|
     t.string   "name"

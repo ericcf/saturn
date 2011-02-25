@@ -1,24 +1,29 @@
 class Shift < ActiveRecord::Base
 
-  has_many :shift_tag_assignments, :dependent => :destroy
+  with_options :dependent => :destroy do |assoc|
+    assoc.has_many :shift_tag_assignments
+    assoc.has_many :shift_week_notes
+    assoc.has_many :section_shifts
+  end
   has_many :shift_tags, :through => :shift_tag_assignments
-  has_many :shift_week_notes, :dependent => :destroy
-  belongs_to :section
+  has_many :sections, :through => :section_shifts
+  accepts_nested_attributes_for :section_shifts, :allow_destroy => true
 
-  validates :title, :duration, :position, :section, :presence => true
-  validates_uniqueness_of :title, :scope => :section_id
-  validates :display_color, :format => { :with => %r{^#[0-9a-f]{3,6}$}i },
-    :allow_nil => true
+  validates :title, :duration, :presence => true
 
   before_validation { clean_text_attributes :title, :description, :phone }
 
-  default_scope :order => "position"
-  scope :active_as_of, lambda { |cutoff_date|
-    where(["retired_on is null or retired_on > ?", cutoff_date])
-  }
-  scope :retired_as_of, lambda { |cutoff_date|
-    where(["retired_on <= ?", cutoff_date])
-  }
+  def self.on_call
+    tags = ShiftTag.where("shift_tags.title like ?", "%Call%")
+    where(:id => tags.map(&:shifts).flatten.uniq.map(&:id))
+  end
+
+  def display_color_for_section(section)
+    section_shift = section_shifts.where(:section_id => section.id)
+    if section_shift.present?
+      section_shift.first.display_color
+    end
+  end
 
   def tags
     shift_tags.map(&:title).join(", ")
@@ -30,17 +35,6 @@ class Shift < ActiveRecord::Base
       unless title.blank? || shift_tags.map(&:title).include?(title)
         shift_tags << section.shift_tags.find_or_create_by_title(title)
       end
-    end
-  end
-
-  def retire
-  end
-
-  def retire=(value)
-    if value.to_i == 1 && retired_on.nil?
-      self[:retired_on] = Date.today
-    elsif value.to_i == 0
-      self[:retired_on] = nil
     end
   end
 end

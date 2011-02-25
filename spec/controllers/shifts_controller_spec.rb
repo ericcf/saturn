@@ -8,14 +8,15 @@ describe ShiftsController do
     end
   end
 
+  let(:mock_shifts_subset) { stub("shifts subset", :find => nil) }
+  let(:mock_section) { mock_model(Section) }
+
   before(:each) do
-    shifts_subset = stub("shifts subset", :find => nil)
-    @section_shifts = stub("shifts", :active_as_of => shifts_subset,
-      :retired_as_of => shifts_subset)
-    @mock_section = mock_model(Section, :shifts => @section_shifts)
-    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
+    mock_section.stub!(:active_shifts_as_of) { mock_shifts_subset }
+    mock_section.stub!(:retired_shifts_as_of) { mock_shifts_subset }
+    Section.stub!(:find).with(mock_section.id) { mock_section }
     controller.should_receive(:authenticate_user!)
-    controller.should_receive(:authorize!).with(:manage, @mock_section)
+    controller.should_receive(:authorize!).with(:manage, mock_section)
   end
 
   describe "GET index" do
@@ -24,13 +25,11 @@ describe ShiftsController do
 
       before(:each) do
         active_shifts = mock("active shifts")
-        @section_shifts.should_receive(:active_as_of).
-          with(Date.today).
+        mock_section.stub!(:active_shifts_as_of).with(Date.today).
           and_return(active_shifts)
-        active_shifts.should_receive(:find).
-          with(:all, :include => :shift_tags).
-          and_return([mock_shift])
-        get :index, :section_id => @mock_section.id
+        active_shifts.stub!(:find).
+          with(:all, :include => :shift_tags) { [mock_shift] }
+        get :index, :section_id => mock_section.id
       end
       
       it { assigns(:current_shifts).should eq([mock_shift]) }
@@ -40,13 +39,13 @@ describe ShiftsController do
 
       before(:each) do
         retired_shifts = mock("retired shifts")
-        @section_shifts.should_receive(:retired_as_of).
+        mock_section.stub!(:retired_shifts_as_of).
           with(Date.today).
           and_return(retired_shifts)
-        retired_shifts.should_receive(:find).
+        retired_shifts.stub!(:find).
           with(:all, :include => :shift_tags).
           and_return([mock_shift])
-        get :index, :section_id => @mock_section.id
+        get :index, :section_id => mock_section.id
       end
       
       it { assigns(:retired_shifts).should eq([mock_shift]) }
@@ -56,8 +55,8 @@ describe ShiftsController do
   describe "GET new" do
 
     before(:each) do
-      Shift.should_receive(:new).and_return(mock_shift)
-      get :new, :section_id => @mock_section.id
+      Shift.should_receive(:new) { mock_shift }
+      get :new, :section_id => mock_section.id
     end
 
     it { assigns(:shift).should eq(mock_shift) }
@@ -67,17 +66,15 @@ describe ShiftsController do
 
     before(:each) do
       @section_shifts = stub("shifts", :<< => nil)
-      @mock_section.stub!(:shifts).and_return(@section_shifts)
-      Shift.stub!(:new).and_return(mock_shift)
+      mock_section.stub!(:shifts) { @section_shifts }
+      Shift.stub!(:new) { mock_shift } 
     end
 
     context "always" do
 
       before(:each) do
-        Shift.should_receive(:new).
-          with("these" => :params).
-          and_return(mock_shift)
-        post :create, :section_id => @mock_section.id,
+        Shift.should_receive(:new).with("these" => :params) { mock_shift }
+        post :create, :section_id => mock_section.id,
           :shift => { :these => :params }
       end
 
@@ -87,11 +84,11 @@ describe ShiftsController do
     context "with valid parameters" do
 
       before(:each) do
-        @section_shifts.should_receive(:<<).with(mock_shift).and_return(true)
-        post :create, :section_id => @mock_section.id
+        @section_shifts.should_receive(:<<).with(mock_shift) { true }
+        post :create, :section_id => mock_section.id
       end
 
-      it { should redirect_to(section_shifts_path(@mock_section)) }
+      it { should redirect_to(section_shifts_path(mock_section)) }
 
       it { flash[:notice].should eq("Successfully created shift") }
     end
@@ -99,8 +96,8 @@ describe ShiftsController do
     context "with invalid parameters" do
 
       before(:each) do
-        @section_shifts.should_receive(:<<).with(mock_shift).and_return(false)
-        post :create, :section_id => @mock_section.id
+        @section_shifts.should_receive(:<<).with(mock_shift) { false }
+        post :create, :section_id => mock_section.id
       end
 
       it { should render_template(:new) }
@@ -109,58 +106,99 @@ describe ShiftsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "GET edit" do
+
+    let(:mock_shifts) { mock("shifts") }
 
     before(:each) do
-      @mock_shifts = mock("shifts")
-      @mock_section.stub!(:shifts).and_return(@mock_shifts)
+      mock_section.stub!(:shifts) { mock_shifts }
     end
 
     context "the requested shift is found" do
 
       before(:each) do
-        @mock_shifts.stub!(:find).with(mock_shift.id).
-          and_return(mock_shift)
+        mock_shifts.stub!(:find).with(mock_shift.id) { mock_shift }
+        get :edit, :section_id => mock_section.id, :id => mock_shift.id
       end
 
-      context "and destroyed successfully" do
+      it { assigns(:shift).should eq(mock_shift) }
 
-        before(:each) do
-          mock_shift.should_receive(:destroy).and_return(true)
-          delete :destroy, :section_id => @mock_section.id,
-            :id => mock_shift.id
-        end
+      it { should render_template(:edit) }
+    end
 
-        it { flash[:notice].should == "Successfully deleted shift" }
+    context "the requested shift is not found" do
 
-        it { should redirect_to(section_shifts_path(@mock_section)) }
+      before(:each) do
+        mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        get :edit, :section_id => mock_section.id, :id => mock_shift.id
       end
 
-      context "and not destroyed successfully" do
+      it { flash[:error].should == "Error: requested shift not found" }
+
+      it { should redirect_to(section_shifts_path(mock_section)) }
+    end
+  end
+
+  describe "PUT update" do
+
+    let(:mock_shifts) { mock("shifts") }
+
+    before(:each) do
+      mock_section.stub_chain("shifts.readonly") { mock_shifts }
+    end
+
+    context "the requested shift is found" do
+
+      before(:each) do
+        mock_shifts.stub!(:find).with(mock_shift.id) { mock_shift }
+      end
+
+      context "always" do
 
         before(:each) do
-          mock_shift.should_receive(:destroy).and_return(false)
-          delete :destroy, :section_id => @mock_section.id,
-            :id => mock_shift.id
+          mock_shift.should_receive(:update_attributes).with("these" => :params)
+          put :update, :section_id => mock_section.id, :id => mock_shift.id,
+            :shift => { :these => :params }
         end
 
-        it { flash[:error].should == "Error: failed to delete shift" }
+        it { assigns(:shift).should eq(mock_shift) }
+      end
 
-        it { should redirect_to(section_shifts_path(@mock_section)) }
+      context "with valid parameters" do
+
+        before(:each) do
+          mock_shift.stub!(:update_attributes) { true }
+          put :update, :section_id => mock_section.id, :id => mock_shift.id
+        end
+
+        it { should redirect_to(section_shifts_path(@section)) }
+
+        it { flash[:notice].should eq("Successfully updated shift") }
+      end
+
+      context "with invalid parameters" do
+
+        before(:each) do
+          mock_shift.stub!(:update_attributes) { false }
+          put :update, :section_id => mock_section.id, :id => mock_shift.id
+        end
+
+        it { should render_template(:edit) }
+
+        it { flash[:error].should match(/Unable to update shift/) }
       end
     end
 
     context "the requested shift is not found" do
 
       before(:each) do
-        @mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
-        delete :destroy, :section_id => @mock_section.id,
-          :id => mock_shift.id
+        mock_shifts.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        put :update, :section_id => mock_section.id, :id => mock_shift.id
       end
 
       it { flash[:error].should == "Error: requested shift not found" }
 
-      it { should redirect_to(section_shifts_path(@mock_section)) }
+      it { should redirect_to(section_shifts_path(mock_section)) }
     end
   end
 end

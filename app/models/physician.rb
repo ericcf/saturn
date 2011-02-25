@@ -15,10 +15,6 @@ RadDirectory::Person.class_eval do
     ::Section.find(section_memberships.map(&:section_id))
   end
 
-  def published_shifts_on_date(date)
-    assignments.where(:date => date).includes(:shift).published.map(&:shift)
-  end
-
   def initials
     return names_alias.initials if names_alias && names_alias.initials
     given_name.first + (family_name && family_name.first || "")

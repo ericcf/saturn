@@ -16,7 +16,7 @@ describe ReportsController do
       Shift.stub!(:find) { [mock_shift] }
       mock_section(:members_by_group => {"Group A" => [mock_physician]},
         :shift_tags => [stub_model(ShiftTag, :shift_ids => [mock_shift.id])])
-      mock_section.stub_chain(:shifts, :active_as_of) { [mock_shift] }
+      mock_section.stub!(:active_shifts_as_of) { [mock_shift] }
       Section.stub!(:find).with(mock_section.id) { mock_section }
       mock_section.
         stub_chain(:assignments, :published, :date_in_range, :includes).

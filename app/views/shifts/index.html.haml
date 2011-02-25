@@ -20,6 +20,7 @@
 %p= link_to "Add Shift", new_section_shift_path(@section), { :class => "button" }
 
 = semantic_form_for @section do |section_form|
+  - section_shifts_by_shift_id = @section.section_shifts.group_by(&:shift_id)
   = section_form.buttons do
     = section_form.commit_button :button_html => { :class => "button" }
     %li
@@ -35,7 +36,9 @@
         %th Duration
         %th Phone
         %th Notes
-        %th Display Color
+        %th Display color
+        %th Shared with
+        %th
         %th{ :colspan => 2 } Retire?
     %tbody
       - @current_shifts.each do |shift|
@@ -50,9 +53,14 @@
             %td.duration= shift_form.select :duration, durations
             %td.phone= shift_form.text_field :phone, :maxlength => "255", :size => 15
             %td.description= shift_form.text_field :description, :maxlength => "255", :size => 30
-            %td.display_color= shift_form.text_field :display_color, :class => "color_picker"
-            %td= shift_form.check_box :retire
-            %td.details.hidden= shift_form.hidden_field :position
+          - section_shift = section_shifts_by_shift_id[shift.id].first
+          = section_form.fields_for :section_shifts, section_shift do |section_shift_form|
+            %td.display_color= section_shift_form.text_field :display_color, :class => "color_picker"
+            %td
+              = shift.sections.map { |section| section == @section ? nil : section.title }.compact.join(", ")
+            %td= link_to "edit sharing", edit_section_shift_path(@section, shift)
+            %td= section_shift_form.check_box :retire
+            %td.details.hidden= section_shift_form.hidden_field :position
 
   %br
   - if @retired_shifts.size > 0
@@ -67,8 +75,9 @@
           %tr
             %td= shift.title
             %td
-              = section_form.fields_for :shifts, shift do |shift_form|
-                = shift_form.check_box :retire, {}, "0", "1"
+              - section_shift = section_shifts_by_shift_id[shift.id].first
+              = section_form.fields_for :section_shifts, section_shift do |section_shift_form|
+                = section_shift_form.check_box :retire, {}, "0", "1"
 
   = section_form.buttons do
     = section_form.commit_button :button_html => { :class => "button" }

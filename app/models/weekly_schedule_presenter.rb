@@ -13,7 +13,7 @@ class WeeklySchedulePresenter
   end
 
   def shifts
-    @shifts ||= section.shifts.active_as_of(dates.first).
+    @shifts ||= section.active_shifts_as_of(dates.first).
       includes(:shift_tags, :shift_week_notes)
   end
 
@@ -41,7 +41,7 @@ class WeeklySchedulePresenter
         {
           :object => {
             :title => s.title,
-            :color => s.display_color,
+            :color => s.display_color_for_section(section),
             :phone => s.phone,
             :note => note.text
           },
