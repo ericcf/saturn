@@ -1,7 +1,6 @@
 class CreateAssignments < ActiveRecord::Migration
   def self.up
     create_table :assignments do |t|
-      t.integer :weekly_schedule_id, :null => false
       t.integer :shift_id, :null => false
       t.integer :physician_id, :null => false
       t.date :date, :null => false
@@ -13,10 +12,9 @@ class CreateAssignments < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :assignments, [:weekly_schedule_id, :shift_id]
-    add_index :assignments, :weekly_schedule_id
+    add_index :assignments, [:date, :shift_id]
+    add_index :assignments, :date
     add_index :assignments, :physician_id
-    add_index :assignments, :position
   end
 
   def self.down

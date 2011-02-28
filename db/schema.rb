@@ -13,22 +13,20 @@
 ActiveRecord::Schema.define(:version => 20110224162800) do
 
   create_table "assignments", :force => true do |t|
-    t.integer  "weekly_schedule_id",                                              :null => false
-    t.integer  "shift_id",                                                        :null => false
-    t.integer  "physician_id",                                                    :null => false
-    t.date     "date",                                                            :null => false
-    t.integer  "position",                                         :default => 1, :null => false
+    t.integer  "shift_id",                                                  :null => false
+    t.integer  "physician_id",                                              :null => false
+    t.date     "date",                                                      :null => false
+    t.integer  "position",                                   :default => 1, :null => false
     t.string   "public_note"
     t.string   "private_note"
-    t.decimal  "duration",           :precision => 2, :scale => 1
+    t.decimal  "duration",     :precision => 2, :scale => 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["date", "shift_id"], :name => "index_assignments_on_date_and_shift_id"
+  add_index "assignments", ["date"], :name => "index_assignments_on_date"
   add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"
-  add_index "assignments", ["position"], :name => "index_assignments_on_position"
-  add_index "assignments", ["weekly_schedule_id", "shift_id"], :name => "index_assignments_on_weekly_schedule_id_and_shift_id"
-  add_index "assignments", ["weekly_schedule_id"], :name => "index_assignments_on_weekly_schedule_id"
 
   create_table "conferences", :force => true do |t|
     t.string   "title",        :null => false

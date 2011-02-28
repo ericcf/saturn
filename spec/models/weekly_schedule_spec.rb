@@ -29,8 +29,6 @@ describe WeeklySchedule do
 
   # associations
 
-  it { should have_many(:assignments).dependent(:destroy) }
-
   it { should have_many(:shift_week_notes).dependent(:destroy) }
 
   it { should belong_to(:section) }

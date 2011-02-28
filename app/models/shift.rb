@@ -15,7 +15,7 @@ class Shift < ActiveRecord::Base
 
   def self.on_call
     tags = ShiftTag.where("shift_tags.title like ?", "%Call%")
-    where(:id => tags.map(&:shifts).flatten.uniq.map(&:id))
+    where(:id => tags.map(&:shifts).flatten.map(&:id).uniq)
   end
 
   def display_color_for_section(section)

@@ -15,10 +15,9 @@ class SchedulesController < ApplicationController
     start_date = monday_of_week_with(request_date)
     dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])
-    schedule = @section.weekly_schedules.
-      find_by_is_published_and_date(true, start_date) ||
+    schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
       @section.weekly_schedules.build(:date => start_date)
-    @assignments = schedule.assignments.includes(:shift)
+    @assignments = schedule.is_published ? schedule.assignments : []
     physician_names_by_id = @section.members.includes(:names_alias).each_with_object({}) do |physician, hsh|
       hsh[physician.id] = physician.short_name
     end

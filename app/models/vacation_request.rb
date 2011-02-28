@@ -21,7 +21,7 @@ class VacationRequest < ActiveRecord::Base
   def approve
     (start_date..(end_date || start_date)).each do |date|
       schedule = section.find_or_create_weekly_schedule_by_included_date(date)
-      schedule.assignments.create(:date => date, :shift => shift, :physician_id => requester_id)
+      Assignment.create(:date => date, :shift => shift, :physician_id => requester_id)
     end
     update_attribute(:status, STATUS_APPROVED)
   end

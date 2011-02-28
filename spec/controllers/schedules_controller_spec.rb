@@ -37,7 +37,7 @@ describe SchedulesController do
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
       mock_schedule.stub_chain(:assignments, :includes) { [] }
-      mock_section.stub_chain("weekly_schedules.find_by_is_published_and_date").
+      mock_section.stub_chain("weekly_schedules.published.find_by_date").
         and_return(mock_schedule)
     end
 
@@ -49,7 +49,7 @@ describe SchedulesController do
     it "assigns weekly assignments to @assignments" do
       WeeklySchedulePresenter.stub!(:new)
       mock_assignment = stub_model(Assignment)
-      mock_schedule.stub_chain(:assignments, :includes).
+      mock_schedule.stub!(:assignments).
         and_return([mock_assignment])
       get :show_weekly_section, :section_id => mock_section.id
       assigns(:assignments).should eq([mock_assignment])
@@ -60,7 +60,7 @@ describe SchedulesController do
       mock_section.stub_chain("members.includes.each_with_object").
         and_return({ mock_physician.id => mock_physician.short_name })
       assignment = stub_model(Assignment, :physician_id => mock_physician.id)
-      mock_schedule.stub_chain(:assignments, :includes).and_return([assignment])
+      mock_schedule.stub_chain(:assignments).and_return([assignment])
       mock_section.stub_chain(:weekly_schedules, :published, :find_by_date)
       mock_section.stub_chain(:weekly_schedules, :build).
         and_return(mock_schedule)

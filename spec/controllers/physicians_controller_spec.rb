@@ -35,10 +35,13 @@ describe PhysiciansController do
       before(:each) do
         Physician.stub_chain(:section_members, :name_like).
           and_return([mock_physician])
-        @mock_shift = stub_model(Shift)
-        @mock_assignment = stub_model(Assignment, :shift => @mock_shift,
+        mock_shift = stub_model(Shift)
+        @mock_assignment = stub_model(Assignment, :shift => mock_shift,
           :physician_id => mock_physician.id)
-        Assignment.stub_chain(:published, :where, :date_in_range, :includes).
+        mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
+        WeeklySchedule.stub_chain("published.include_dates") { [mock_schedule] }
+        Assignment.stub!(:where).
+          with(:physician_id => [mock_physician.id], :date => [Date.today]).
           and_return([@mock_assignment])
         get :search, :query => "Boo"
       end

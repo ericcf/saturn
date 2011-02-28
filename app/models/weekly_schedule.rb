@@ -1,7 +1,5 @@
 class WeeklySchedule < ActiveRecord::Base
 
-  has_many :assignments, :dependent => :destroy
-  accepts_nested_attributes_for :assignments, :allow_destroy => true
   has_many :shift_week_notes, :dependent => :destroy
   accepts_nested_attributes_for :shift_week_notes, :allow_destroy => true
   belongs_to :section
@@ -12,6 +10,40 @@ class WeeklySchedule < ActiveRecord::Base
   scope :include_date, lambda { |date|
     where("weekly_schedules.date <= ? and weekly_schedules.date >= ?", date, date - 6)
   }
+  scope :include_dates, lambda { |dates|
+    possible_schedule_dates = dates.sort.map do |date|
+      (date - 6..date).entries.select { |d| d.monday? }
+    end.flatten.uniq
+    where(:date => possible_schedule_dates)
+  }
+  scope :published, where(:is_published => true)
+
+  def shifts
+    section.active_shifts_as_of(date)
+  end
+
+  def assignments
+    Assignment.where(:date => dates, :shift_id => shifts.map(&:id), :physician_id => section.member_ids)
+  end
+
+  def assignments_attributes=(attributes)
+    assignment_ids = attributes.map { |attr| attr["id"] }
+    assignments_to_update_or_destroy = assignments.where(:id => assignment_ids)
+    assignments_to_update_or_destroy.each do |assignment|
+      assignment_attributes = attributes.find { |a| a["id"] == assignment.id }
+      if assignment_attributes.delete("_destroy") == true
+        assignment.destroy
+      else
+        assignment.update_attributes(assignment_attributes)
+      end
+    end
+    attributes.each do |assignment_attributes|
+      if assignment_attributes["id"].nil?
+        assignment_attributes.delete("_destroy")
+        Assignment.create(assignment_attributes)
+      end
+    end
+  end
 
   def read_only_assignments
     @read_only_assignments ||= assignments.select("date, duration, id, position, private_note, public_note, shift_id, physician_id, updated_at").includes(:shift)
@@ -55,7 +87,7 @@ class WeeklySchedule < ActiveRecord::Base
             id ? "\"id\":#{id}" : nil,
             "\"is_published\":#{is_published}",
             "\"shift_weeks\":[#{shift_weeks_json}]",
-            "\"error_messages\":\"#{errors.values.flatten.join(", ")}\"",
+            "\"error_messages\":#{errors.values.flatten.join(", ").to_json}",
             ].compact.join(","),
           "}",
       "}"
@@ -77,10 +109,10 @@ class WeeklySchedule < ActiveRecord::Base
     "\"dates\":[#{dates.map do |date|
       [
       "{",
-        "\"holiday_title\": #{holiday_titles_by_date[date] ? "\"#{holiday_titles_by_date[date]}\"" : "null"},",
-        "\"year\": #{date.year},",
-        "\"month\": #{date.month},",
-        "\"day\": #{date.day}",
+        "\"holiday_title\":#{holiday_titles_by_date[date].to_json},",
+        "\"year\":#{date.year},",
+        "\"month\":#{date.month},",
+        "\"day\":#{date.day}",
       "}"
       ].join("")
     end.join(",")}]"
@@ -99,7 +131,7 @@ class WeeklySchedule < ActiveRecord::Base
       [
       "{",
         "\"shift_id\":#{shift.id},",
-        "\"shift_title\":\"#{shift.title}\",",
+        "\"shift_title\":#{shift.title.to_json},",
         shift_week_note.to_json + ",",
         "\"shift_days\":[#{dates.map do |day|
           [

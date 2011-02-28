@@ -6,8 +6,8 @@ describe "schedules/weekly_call.html" do
   let(:mock_physician) { stub_model(Physician, :short_name => "L. Effant") }
   let(:mock_shifts) do
     [
-      mock_model(Shift, :title => "Shift A", :section => mock_section),
-      mock_model(Shift, :title => "Shift B", :section => mock_section)
+      mock_model(Shift, :title => "Shift A", :sections => [mock_section]),
+      mock_model(Shift, :title => "Shift B", :sections => [mock_section])
     ]
   end
   let(:dates) { [Date.today, Date.tomorrow] }

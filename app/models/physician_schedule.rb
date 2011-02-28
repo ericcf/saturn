@@ -1,8 +1,7 @@
 class PhysicianSchedule
   include ActiveModel::Validations
 
-  attr_writer :start_date, :number_of_days
-  attr_accessor :physician
+  attr_accessor :start_date, :number_of_days, :physician
 
   validates :start_date, :number_of_days, :physician, :presence => true
 
@@ -14,27 +13,24 @@ class PhysicianSchedule
   end
 
   def dates
-    @dates ||= (@start_date..@start_date+@number_of_days-1).to_a
+    @dates ||= (@start_date..@start_date + @number_of_days - 1).to_a
   end
 
-  def holiday_on(date)
+  def holiday_title_on(date)
     @holidays ||= Holiday.where(:date => dates).group_by(&:date)
     (@holidays[date] || [Holiday.new]).first.title
   end
 
-  def assignments
-    @assignments ||= physician.assignments.
-      includes(:weekly_schedule, :shift).
-      published.
-      find_all_by_date(dates)
-  end
-
   def assignments_for_section_and_date(section, date)
-    @assignments_by_section ||= assignments.group_by do |assignment|
-      assignment.weekly_schedule.section
-    end
-    section_assignments = @assignments_by_section[section] || []
+    section_assignments = published_assignments_by_section[section] || []
     section_assignments.group_by(&:date)[date]
   end
 
+  def published_assignments_by_section
+    @published_assignments_by_section ||= physician.sections.each_with_object({}) do |section, hsh|
+      published_schedules = section.weekly_schedules.published.include_dates(dates)
+      dates = (published_schedules.map(&:dates).flatten || []).sort.uniq
+      hsh[section] = physician.assignments.where(:date => dates)
+    end
+  end
 end

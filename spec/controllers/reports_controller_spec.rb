@@ -18,8 +18,10 @@ describe ReportsController do
         :shift_tags => [stub_model(ShiftTag, :shift_ids => [mock_shift.id])])
       mock_section.stub!(:active_shifts_as_of) { [mock_shift] }
       Section.stub!(:find).with(mock_section.id) { mock_section }
-      mock_section.
-        stub_chain(:assignments, :published, :date_in_range, :includes).
+      mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
+      mock_section.stub_chain("weekly_schedules.published.include_dates").
+        and_return([mock_schedule])
+      mock_section.stub_chain("assignments.where").
         and_return([stub_model(Assignment, :fixed_duration => 0.0, :physician_id => mock_physician.id, :shift_id => mock_shift.id)])
     end
 

@@ -2,7 +2,6 @@
 // UI events and Knockout view models
 
 $(function() {
-    var currentlyDragging = null;
     var currentlyReceiving = null;
 
     ko.bindingHandlers.button = {
@@ -130,8 +129,10 @@ $(function() {
                     viewModel.assignmentDroppedOn(shiftDay);
                 })
                 .bind("dropover", function(event) {
-                    currentlyReceiving = shiftDay;
-                    $(element).addClass("ui-state-highlight");
+                    if (!shiftDay.hasDuplicate(viewModel.draggingAssignment())) {
+                      currentlyReceiving = shiftDay;
+                      $(element).addClass("ui-state-highlight");
+                    }
                 })
                 .bind("dropout", function(event) {
                     if (currentlyReceiving == shiftDay) {
@@ -169,10 +170,12 @@ $(function() {
                     lastReceiver = receiver;
                 })
                 .bind("dragstop", function(event) {
-                    var receiver = getReceiver(this, event);
-                    if ($(receiver).hasClass("shiftDay")) {
-                        $(this).remove();
-                        $(receiver).trigger("drop", element);
+                    if (currentlyReceiving && !currentlyReceiving.hasDuplicate(assignment)) {
+                        var receiver = getReceiver(this, event);
+                        if ($(receiver).hasClass("shiftDay")) {
+                            $(this).remove();
+                            $(receiver).trigger("drop", element);
+                        }
                     }
                     viewModel.stopDragging(assignment);
                     if (viewModel.editingAssignment() == assignment) {

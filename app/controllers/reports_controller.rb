@@ -7,8 +7,12 @@ class ReportsController < ApplicationController
     @shifts = @section.active_shifts_as_of(@start_date)
     @shift_tags = @section.shift_tags
     @physicians_by_group = @section.members_by_group
-    assignments = @section.assignments.published.
-      date_in_range(@start_date, @end_date).includes(:shift)
+    dates = (@start_date..@end_date).to_a
+    published_schedules = @section.weekly_schedules.published.include_dates(dates)
+    published_dates = published_schedules.map(&:dates).flatten
+    physician_ids = @physicians_by_group.values.flatten.map(&:id)
+    assignments = @section.assignments.
+      where(:physician_id => physician_ids, :date => published_dates)
     @totals_by_physician_and_shift = assignments.
       each_with_object({}) do |assignment, hsh|
         key = [assignment.physician_id, assignment.shift_id]
@@ -81,10 +85,11 @@ class ReportsController < ApplicationController
     find_physician
     @start_date = params[:start_date] ? Date.parse(params[:start_date]) : Date.today.at_beginning_of_month
     @end_date = params[:end_date] ? Date.parse(params[:end_date]) : Date.today
-    assignments = Assignment.where(:physician_id => @physician.id).
-      date_in_range(@start_date, @end_date).
-      includes(:shift).
-      published
+    dates = (@start_date..@end_date).to_a
+    published_schedules = @section.weekly_schedules.published.include_dates(dates)
+    published_dates = published_schedules.map(&:dates).flatten
+    assignments = @section.assignments.
+      where(:physician_id => @physician.id, :date => published_dates)
     @shifts = Shift.find(assignments.map(&:shift_id).uniq)
     @assignment_by_shift_and_date = assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift, assignment.date]] = assignment

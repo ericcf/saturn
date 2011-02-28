@@ -3,13 +3,9 @@ require 'spec_helper'
 describe "reports/shift_totals_by_day.html.haml" do
 
   let(:mock_section) { stub_model(Section) }
-
   let(:mock_shift) { stub_model(Shift, :title => "Conference") }
-
   let(:mock_physician) { stub_model(Physician, :initials => "QQ") }
-
   let(:mock_group) { stub_model(RadDirectory::Group, :title => "Fellows") }
-
   let(:mock_report) do
     stub_model(ShiftTotalsReport, :start_date => "2010-05-05",
       :end_date => "2010-06-01",

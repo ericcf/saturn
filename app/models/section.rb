@@ -15,7 +15,6 @@ class Section < ActiveRecord::Base
     assoc.has_many :daily_shift_count_rules
     assoc.has_one :section_role_assignment
   end
-  has_many :assignments, :through => :weekly_schedules
   has_many :shifts, :through => :section_shifts
   has_one :admin_role, :through => :section_role_assignment, :source => :role
   accepts_nested_attributes_for :shift_tags, :allow_destroy => true
@@ -28,6 +27,10 @@ class Section < ActiveRecord::Base
   validates :title, :presence => true, :uniqueness => true
 
   before_validation { clean_text_attributes :title }
+
+  def assignments
+    Assignment.includes(:shift).where(:shift_id => shifts.map(&:id))
+  end
 
   def active_shifts_as_of(date)
     Shift.where(:id => section_shifts.active_as_of(date).map(&:shift_id))

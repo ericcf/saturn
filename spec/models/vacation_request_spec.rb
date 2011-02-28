@@ -98,11 +98,14 @@ describe VacationRequest do
       mock_schedule = stub_model(WeeklySchedule)
       mock_schedule.stub!(:assignments) { mock_assignments_assoc }
       [start_date, end_date].each do |date|
-        mock_assignments_assoc.should_receive(:create).with(:date => date,
-          :shift => mock_shift, :physician_id => mock_physician.id)
         mock_section.stub!(:find_or_create_weekly_schedule_by_included_date).
           with(date).
           and_return(mock_schedule)
+          Assignment.should_receive(:create).
+            with(:date => date,
+              :shift => mock_shift,
+              :physician_id => mock_physician.id
+            )
       end
       vacation_request.approve
     end

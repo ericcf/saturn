@@ -3,7 +3,6 @@ require 'spec_helper'
 describe "physicians/schedule.html" do
 
   let(:mock_physician) { stub_model(Physician, :full_name => "Foo Bar") }
-
   let(:mock_schedule) { stub_model(PhysicianSchedule, :dates => [Date.today]) }
 
   before(:each) do

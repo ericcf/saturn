@@ -93,7 +93,7 @@ Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" ((?:\d{4}-\d{2}-
   shift = section.shifts.find_by_title(shift_title)
   assignment_date = parse_date(date)
   schedule = section.weekly_schedules.include_date(assignment_date).first
-  schedule.assignments.create(:physician_id => physician.id, :shift => shift, :date => assignment_date)
+  Assignment.create(:physician_id => physician.id, :shift => shift, :date => assignment_date)
 end
 
 Given /^User "([^"]*)" is a section administrator for the "([^"]*)" section$/ do |user_email, section_title|
