@@ -37,7 +37,6 @@ gem 'exception_notification', :git => 'git://github.com/rails/exception_notifica
 group :development, :test do
   gem 'mysql2'
   gem 'mongrel', '= 1.2.0.pre2'
-  gem 'sqlite3-ruby', :require => 'sqlite3'
   gem 'haml-rails'
   gem 'launchy'
   gem 'rspec-rails'
