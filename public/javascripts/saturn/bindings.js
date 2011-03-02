@@ -127,6 +127,7 @@ $(function() {
                 .bind("drop", function(event, assignmentElement) {
                     assignmentElement.style.display = "none";
                     viewModel.assignmentDroppedOn(shiftDay);
+                    currentlyReceiving = null;
                 })
                 .bind("dropover", function(event) {
                     if (!shiftDay.hasDuplicate(viewModel.draggingAssignment())) {
