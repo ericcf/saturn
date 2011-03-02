@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Assignment do
 
-  let(:mock_shift) { stub_model(Shift) }
-  let(:mock_physician) { stub_model(Physician) }
+  let(:mock_shift) { stub_model(Shift, :valid? => true) }
+  let(:mock_physician) { stub_model(Physician, :valid? => true) }
   let(:valid_attributes) do
     {
       :shift_id => mock_shift.id,
@@ -54,9 +54,13 @@ describe Assignment do
 
   # validations
 
-  it { should validate_presence_of(:shift_id) }
+  it { should validate_presence_of(:shift) }
 
-  it { should validate_presence_of(:physician_id) }
+  it { should validate_presence_of(:physician) }
+
+  it { should validate_associated(:shift) }
+
+  it { should validate_associated(:physician) }
 
   it { should validate_presence_of(:date) }
 

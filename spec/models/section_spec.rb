@@ -9,6 +9,8 @@ describe Section do
   end
   let(:section) { Section.create!(valid_attributes) }
 
+  subject { section }
+
   # database
 
   it { should have_db_column(:title).with_options(:null => false) }

@@ -2,17 +2,21 @@ require 'spec_helper'
 
 describe PhysicianAlias do
 
-  before(:each) do
-    mock_physician = mock_model(Physician)
-    Physician.stub!(:find).with(mock_physician.id, anything).
-      and_return(mock_physician)
-    @valid_attributes = {
+  let(:mock_physician) { mock_model(Physician) }
+  let(:valid_attributes) do
+    {
       :physician_id => mock_physician.id,
       :initials => "abc",
       :short_name => "value for short_name"
     }
-    PhysicianAlias.create(@valid_attributes).should be_valid
   end
+  let(:physician_alias) { PhysicianAlias.create!(valid_attributes) }
+
+  before(:each) do
+    Physician.stub!(:find).with(mock_physician.id, anything) { mock_physician }
+  end
+
+  subject { physician_alias }
 
   # database
 

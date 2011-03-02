@@ -15,18 +15,12 @@ describe "site_statistics/index.html" do
     render
   end
 
+  subject { rendered }
+
   it do
-    rendered.should have_selector("table tr") do |row|
+    should have_selector("table tr") do |row|
       row.should have_selector("td", :content => "Assignments")
       row.should have_selector("td", :content => "5")
-      row.should have_selector("td",
-        :content => "Section: #{time_ago_in_words(now)}")
-    end
-    rendered.should have_selector("table tr") do |row|
-      row.should have_selector("td", :content => "Sections")
-      row.should have_selector("td", :content => "6")
-      row.should have_selector("td",
-        :content => "Section: #{time_ago_in_words(now)}")
     end
   end
 end

@@ -2,17 +2,20 @@ require 'spec_helper'
 
 describe ShiftTag do
 
-  before(:each) do
-    mock_section = mock_model(Section)
-    Section.stub!(:find).with(mock_section.id, anything).
-      and_return(mock_section)
-    @valid_attributes = {
-      :section_id => mock_section.id,
+  let(:mock_section) { stub_model(Section) }
+  let(:valid_attributes) do
+    {
+      :section => mock_section,
       :title => "value for title"
     }
-    @shift_tag = ShiftTag.create(@valid_attributes)
-    @shift_tag.should be_valid
   end
+  let(:shift_tag) { ShiftTag.create!(valid_attributes) }
+
+  before(:each) do
+    Section.stub!(:find).with(mock_section.id, anything) { mock_section }
+  end
+  
+  subject { shift_tag }
 
   # database
 
@@ -48,16 +51,16 @@ describe ShiftTag do
   context "#destroy is called when assignments are associated" do
   
     it "returns false" do
-      @shift_tag.stub!(:assignments).and_return([mock("assignment")])
-      @shift_tag.destroy.should be_false
+      shift_tag.stub!(:assignments).and_return([mock("assignment")])
+      shift_tag.destroy.should be_false
     end
   end
 
   context "#destroy is called when no assignments are associated" do
 
     it "returns true" do
-      @shift_tag.stub!(:assignments).and_return([])
-      @shift_tag.destroy.should be_true
+      shift_tag.stub!(:assignments).and_return([])
+      shift_tag.destroy.should be_true
     end
   end
 
@@ -69,9 +72,9 @@ describe ShiftTag do
 
       it "clears all assignments" do
         mock_assignments = mock("assignments")
-        @shift_tag.stub!(:assignments).and_return(mock_assignments)
+        shift_tag.stub!(:assignments).and_return(mock_assignments)
         mock_assignments.should_receive(:clear)
-        @shift_tag.clear_assignments = "1"
+        shift_tag.clear_assignments = "1"
       end
     end
   end

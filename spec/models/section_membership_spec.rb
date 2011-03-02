@@ -1,20 +1,23 @@
 require 'spec_helper'
 
 describe SectionMembership do
+
+  let(:mock_physician) { stub_model(Physician) }
+  let(:mock_section) { stub_model(Section) }
+  let(:valid_attributes) do
+    {
+      :physician => mock_physician,
+      :section => mock_section
+    }
+  end
+  let(:section_membership) { SectionMembership.create!(valid_attributes) }
   
   before(:each) do
-    mock_physician = stub_model(Physician)
-    Physician.stub!(:find).with(mock_physician.id, anything).
-      and_return(mock_physician)
-    mock_section = stub_model(Section)
-    Section.stub!(:find).with(mock_section.id, anything).
-      and_return(mock_section)
-    @valid_attributes = {
-      :physician_id => mock_physician.id,
-      :section_id => mock_section.id
-    }
-    SectionMembership.create(@valid_attributes).should be_valid
+    Physician.stub!(:find).with(mock_physician.id, anything) { mock_physician }
+    Section.stub!(:find).with(mock_section.id, anything) { mock_section }
   end
+
+  subject { section_membership }
 
   # database
 

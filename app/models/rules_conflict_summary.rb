@@ -1,8 +1,11 @@
 class RulesConflictSummary
   extend ActiveModel::Naming
+  include ActiveModel::Validations
 
-  attr_accessor :section, :weekly_schedule, :assignments
-  attr_writer :ordered_physician_ids
+  attr_accessor :section, :weekly_schedule, :assignments, :ordered_physician_ids
+
+  validates :section, :weekly_schedule, :assignments, :ordered_physician_ids,
+    :presence => true
 
   def initialize(attributes = {})
     return unless attributes.respond_to?(:each)
@@ -23,6 +26,26 @@ class RulesConflictSummary
     ].join("") if !duration_rule.nil? || !count_rules.blank?
   end
 
+  def duration_rule
+    @duration_rule ||= section.weekly_shift_duration_rule
+  end
+
+  def count_rules
+    @count_rules ||= section.daily_shift_count_rules
+  end
+
+  def weekly_conflicts
+    return @weekly_conflicts if @weekly_conflicts
+    @weekly_conflicts = duration_rule &&
+      duration_rule.process(assignments_by_physician_id, @ordered_physician_ids)
+  end
+
+  def physician_ids_over_daily_count_max(rule)
+    rule.process(assignments_by_physician_id)
+  end
+
+  private
+
   def duration_rule_json
     weekly_conflicts && duration_rule.to_json
   end
@@ -36,23 +59,5 @@ class RulesConflictSummary
 
   def assignments_by_physician_id
     @assignments_by_physician_id ||= assignments.group_by { |a| a.physician_id }
-  end
-
-  def duration_rule
-    @duration_rule ||= section.weekly_shift_duration_rule
-  end
-
-  def count_rules
-    @count_rules ||= section.daily_shift_count_rules
-  end
-
-  def physician_ids_over_daily_count_max(rule)
-    rule.process(assignments_by_physician_id)
-  end
-
-  def weekly_conflicts
-    return @weekly_conflicts if @weekly_conflicts
-    @weekly_conflicts = duration_rule &&
-      duration_rule.process(assignments_by_physician_id, @ordered_physician_ids)
   end
 end

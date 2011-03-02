@@ -13,8 +13,7 @@
   %thead
     %tr
       %th
-      - @schedule_presenter.dates.each do |date|
-        %th{ :class => date == Date.today ? "current-date" : "" }= date.to_s(:short_with_weekday)
+      = render :partial => "date_header", :collection => @schedule_presenter.dates, :as => :date
   %tbody
     - @schedule_presenter.shifts_by_section.each do |section, shifts|
       %tr

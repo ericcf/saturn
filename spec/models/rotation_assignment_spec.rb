@@ -2,22 +2,25 @@ require 'spec_helper'
 
 describe RotationAssignment do
 
-  before(:each) do
-    @mock_physician = mock_model(Physician)
-    Physician.stub!(:find).with(@mock_physician.id, anything).
-      and_return(@mock_physician)
-    @mock_rotation = mock_model(Rotation)
-    Rotation.stub!(:find).with(@mock_rotation.id, anything).
-      and_return(@mock_rotation)
-    @valid_attributes = {
-      :physician => @mock_physician,
-      :rotation => @mock_rotation,
-      :starts_on => Date.today,
-      :ends_on => Date.today
+  let(:mock_physician) { mock_model(Physician) }
+  let(:mock_rotation) { mock_model(Rotation) }
+  let(:today) { Date.today }
+  let(:valid_attributes) do
+    {
+      :physician => mock_physician,
+      :rotation => mock_rotation,
+      :starts_on => today,
+      :ends_on => today
     }
-    @assignment = RotationAssignment.create(@valid_attributes)
-    @assignment.should be_valid
   end
+  let(:assignment) { RotationAssignment.create!(valid_attributes) }
+
+  before(:each) do
+    Physician.stub!(:find).with(mock_physician.id, anything) { mock_physician }
+    Rotation.stub!(:find).with(mock_rotation.id, anything) { mock_rotation }
+  end
+
+  subject { assignment }
 
   # database
   
@@ -44,7 +47,7 @@ describe RotationAssignment do
   it { should validate_presence_of(:ends_on) }
 
   it "should not allow ends_on to occur before starts_on" do
-    RotationAssignment.create(@valid_attributes.merge({
+    RotationAssignment.create(valid_attributes.merge({
       :starts_on => Date.today,
       :ends_on => Date.yesterday
     })).should_not be_valid

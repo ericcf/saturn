@@ -64,11 +64,6 @@ class ShiftTotalsReport
   end
 
   def published_assignments
-    #@published_assignments ||= section.assignments.
-    #  published.
-    #  date_in_range(start_date, end_date).
-    #  includes(:shift).
-    #  where(:physician_id => physicians_by_group.values.flatten.map(&:id))
     dates = (start_date..end_date).to_a
     published_schedules = section.weekly_schedules.published.include_dates(dates)
     published_dates = published_schedules.map(&:dates).flatten

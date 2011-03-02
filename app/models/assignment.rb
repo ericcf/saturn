@@ -3,9 +3,8 @@ class Assignment < ActiveRecord::Base
   belongs_to :shift
   belongs_to :physician
 
-  # NOT validating presence of shift and physician (for now) because it vastly
-  # slows down mass assignments
-  validates :shift_id, :physician_id, :date, :presence => true
+  validates :shift, :physician, :date, :presence => true
+  validates_associated :shift, :physician
   validates_numericality_of :position,
     :greater_than_or_equal_to => 1
   validates_uniqueness_of :physician_id,
@@ -17,10 +16,6 @@ class Assignment < ActiveRecord::Base
   scope :date_in_range, lambda { |start_date, end_date|
     where("assignments.date >= ? and assignments.date <= ?", start_date, end_date)
   }
-  #scope :published_with_dates, lambda { |dates|
-  #  published_schedules = WeeklySchedule.published.include_dates(dates)
-  #  dates_with_published_assignments = schedules.map(&:dates).flatten.sort.uniq
-  #  intersecting_dates = dates.select { |date| published_dates.include? date }
 
   default_scope order("assignments.position")
 

@@ -2,20 +2,22 @@ require 'spec_helper'
 
 describe DailyShiftCountRule do
 
-  before(:each) do
-    mock_section = stub_model(Section, :valid? => true)
-    Section.stub!(:find).with(mock_section.id, anything).
-      and_return(mock_section)
-    mock_shift_tag = stub_model(ShiftTag, :valid? => true)
-    ShiftTag.stub!(:find).with(mock_shift_tag.id, anything).
-      and_return(mock_shift_tag)
-    @valid_attributes = {
+  let(:mock_section) { stub_model(Section, :valid? => true) }
+  let(:mock_shift_tag) { stub_model(ShiftTag, :valid? => true) }
+  let(:valid_attributes) do
+    {
       :section => mock_section,
       :shift_tag => mock_shift_tag
     }
-    @rule = DailyShiftCountRule.create(@valid_attributes)
-    @rule.should be_valid
   end
+  let(:rule) { DailyShiftCountRule.create!(valid_attributes) }
+
+  before(:each) do
+    Section.stub!(:find).with(mock_section.id, anything) { mock_section }
+    ShiftTag.stub!(:find).with(mock_shift_tag.id, anything) { mock_shift_tag }
+  end
+
+  subject { rule }
 
   # database
   
@@ -62,18 +64,25 @@ describe DailyShiftCountRule do
       date = Date.civil(2011, 1, 1)
       mock_shift_tag = stub_model(ShiftTag)
       mock_shift_tag.stub(:shift_ids).and_return([shift_id])
-      @rule.update_attribute(:maximum, 0)
-      @rule.stub(:shift_tag).and_return(mock_shift_tag)
+      rule.update_attribute(:maximum, 0)
+      rule.stub(:shift_tag).and_return(mock_shift_tag)
       mock_physician = stub_model(Physician)
       mock_assignment = stub_model(Assignment, :shift_id => shift_id,
         :date => date)
-      @rule.process({ mock_physician.id => [mock_assignment] }).
+      rule.process({ mock_physician.id => [mock_assignment] }).
         should eq([
           {
             :physician_id => mock_physician.id,
             :description => "1 on Sat 1/1"
           }
         ])
+    end
+  end
+
+  describe "#to_json" do
+
+    it "returns valid json" do
+      expect { JSON.parse(rule.to_json) }.to_not raise_error(JSON::ParserError)
     end
   end
 end

@@ -2,15 +2,17 @@ require 'spec_helper'
 
 describe Conference do
 
-  before(:each) do
-    @valid_attributes = {
+  let(:today) { DateTime.now }
+  let(:valid_attributes) do
+    {
       :title => "Meeting of the Century",
-      :starts_at => DateTime.now,
-      :ends_at => DateTime.now
+      :starts_at => today,
+      :ends_at => today
     }
-    @conference = Conference.create(@valid_attributes)
-    @conference.should be_valid
   end
+  let(:conference) { Conference.create!(valid_attributes) }
+
+  subject { conference }
 
   # database
   
@@ -29,7 +31,7 @@ describe Conference do
   it { should allow_value(nil).for(:external_uid) }
 
   it "validates uniqueness of external_uid" do
-    @conference.update_attribute(:external_uid, "UID")
+    conference.update_attribute(:external_uid, "UID")
     Conference.new(:external_uid => "UID").
       should have(1).errors_on(:external_uid)
   end
@@ -41,9 +43,9 @@ describe Conference do
   it { should validate_presence_of(:ends_at) }
 
   it "validates uniqueness of title scoped to starts_at and ends_at" do
-    conference_dup = Conference.new(:title => @conference.title,
-      :starts_at => @conference.starts_at,
-      :ends_at => @conference.ends_at)
+    conference_dup = Conference.new(:title => conference.title,
+      :starts_at => conference.starts_at,
+      :ends_at => conference.ends_at)
     conference_dup.should have(1).errors_on(:title)
   end
 
@@ -53,7 +55,7 @@ describe Conference do
 
     it "returns conferences which occur on the specified date" do
       today = Date.today
-      conference = Conference.create(@valid_attributes.merge({
+      conference = Conference.create(valid_attributes.merge({
         :title => "Conference Today!",
         :starts_at => today.to_time,
         :ends_at => today.to_time

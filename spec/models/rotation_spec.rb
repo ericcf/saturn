@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe Rotation do
 
-  before(:each) do
-    @valid_attributes = {
+  let(:valid_attributes) do
+    {
       :title => "valid title"
     }
-    @rotation = Rotation.create(@valid_attributes)
-    @rotation.should be_valid
   end
+  let(:rotation) { Rotation.create!(valid_attributes) }
+
+  subject { rotation }
 
   # database
 

@@ -2,17 +2,22 @@ require 'spec_helper'
 
 describe ShiftTagAssignment do
 
-  before(:each) do
-    mock_tag = mock_model(ShiftTag)
-    ShiftTag.stub!(:find).with(mock_tag.id, anything).and_return(mock_tag)
-    mock_shift = mock_model(Shift)
-    Shift.stub!(:find).with(mock_shift.id, anything).and_return(mock_shift)
-    @valid_attributes = {
-      :shift_tag_id => mock_tag.id,
-      :shift_id => mock_shift.id
+  let(:mock_tag) { stub_model(ShiftTag) }
+  let(:mock_shift) { stub_model(Shift) }
+  let(:valid_attributes) do
+    {
+      :shift_tag => mock_tag,
+      :shift => mock_shift
     }
-    ShiftTagAssignment.create(@valid_attributes).should be_valid
   end
+  let(:assignment) { ShiftTagAssignment.create!(valid_attributes) }
+
+  before(:each) do
+    ShiftTag.stub!(:find).with(mock_tag.id, anything) { mock_tag }
+    Shift.stub!(:find).with(mock_shift.id, anything) { mock_shift }
+  end
+
+  subject { assignment }
 
   # database
 
