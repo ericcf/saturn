@@ -49,8 +49,6 @@ group :development, :test do
   gem 'webrat'
   gem 'capybara'
   gem 'shoulda'
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
   gem 'jasmine'
   if RUBY_VERSION =~ /1.9/
     gem 'ruby-debug19', :require => 'ruby-debug'

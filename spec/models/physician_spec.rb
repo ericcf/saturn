@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe Physician do
 
+  let(:physician) do
+    physician = Physician.new
+    physician[:given_name] = "Andrew"
+    physician[:family_name] = "Bernard"
+    physician.save!
+    physician
+  end
+
   # associations
 
   it { should have_many(:section_memberships).dependent(:destroy) }
@@ -19,7 +27,6 @@ describe Physician do
   describe ".with_assignments(:assignments)" do
 
     it "returns physicians associated with the assignments" do
-      physician = Factory(:physician)
       assignment = stub_model(Assignment, :physician => physician)
       Physician.with_assignments([assignment]).map(&:id).
         should include(physician.id)
