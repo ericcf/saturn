@@ -1,17 +1,23 @@
 require 'spec_helper'
 
 describe WeeklySchedule do
+
+  let(:mock_section) { stub_model(Section) }
+  let(:today) { Date.today }
+  let(:valid_attributes) do
+    {
+      :section_id => mock_section.id,
+      :date => today
+    }
+  end
+  let(:weekly_schedule) { WeeklySchedule.create!(valid_attributes) }
+
   before(:each) do
-    mock_section = mock_model(Section)
     Section.stub!(:find).with(mock_section.id, anything).
       and_return(mock_section)
-    @valid_attributes = {
-      :section_id => mock_section.id,
-      :date => Date.today
-    }
-    @schedule = WeeklySchedule.create(@valid_attributes)
-    @schedule.should be_valid
   end
+
+  subject { weekly_schedule }
 
   # database
   
@@ -46,15 +52,25 @@ describe WeeklySchedule do
   describe "#include_date(:date)" do
 
     it "returns schedules which include the specified date" do
-      WeeklySchedule.include_date(@schedule.date).should include(@schedule)
-      WeeklySchedule.include_date(@schedule.date + 6).should include(@schedule)
+      WeeklySchedule.include_date(weekly_schedule.date).
+        should include(weekly_schedule)
+      WeeklySchedule.include_date(weekly_schedule.date + 6).
+        should include(weekly_schedule)
     end
 
     it "does not return schedules which do not include the specified date" do
-      WeeklySchedule.include_date(@schedule.date - 1).
-        should_not include(@schedule)
-      WeeklySchedule.include_date(@schedule.date + 7).
-        should_not include(@schedule)
+      WeeklySchedule.include_date(weekly_schedule.date - 1).
+        should_not include(weekly_schedule)
+      WeeklySchedule.include_date(weekly_schedule.date + 7).
+        should_not include(weekly_schedule)
+    end
+  end
+
+  describe "#shift_weeks_json" do
+
+    it "serializes the object as valid json" do
+      expect { JSON.parse(weekly_schedule.to_json) }.
+        to_not raise_error(JSON::ParserError)
     end
   end
 end

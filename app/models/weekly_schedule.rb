@@ -126,7 +126,7 @@ class WeeklySchedule < ActiveRecord::Base
     notes_by_shift_id = shift_week_notes.each_with_object({}) do |note, hsh|
       hsh[note.shift_id] = note
     end
-    section.active_shifts_as_of(date).select("id, title").map do |shift|
+    section.active_shifts_as_of(date).select("shifts.id, shifts.title").map do |shift|
       shift_week_note = notes_by_shift_id[shift.id] || ShiftWeekNote.new(:shift_id => shift.id)
       [
       "{",

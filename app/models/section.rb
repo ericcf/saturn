@@ -33,11 +33,11 @@ class Section < ActiveRecord::Base
   end
 
   def active_shifts_as_of(date)
-    Shift.where(:id => section_shifts.active_as_of(date).map(&:shift_id))
+    Shift.joins(:section_shifts).merge(section_shifts.active_as_of(date))
   end
 
   def retired_shifts_as_of(date)
-    Shift.where(:id => section_shifts.retired_as_of(date).map(&:shift_id))
+    Shift.joins(:section_shifts).merge(section_shifts.retired_as_of(date))
   end
 
   def members

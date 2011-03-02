@@ -30,7 +30,8 @@ class PhysicianSchedule
     @published_assignments_by_section ||= physician.sections.each_with_object({}) do |section, hsh|
       published_schedules = section.weekly_schedules.published.include_dates(dates)
       dates = (published_schedules.map(&:dates).flatten || []).sort.uniq
-      hsh[section] = physician.assignments.where(:date => dates)
+      shifts = section.shifts
+      hsh[section] = physician.assignments.where(:date => dates, :shift_id => shifts.map(&:id))
     end
   end
 end

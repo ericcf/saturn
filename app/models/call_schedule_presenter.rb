@@ -26,7 +26,7 @@ class CallSchedulePresenter
   end
 
   def shifts_by_section
-    shifts.group_by { |shift| shift.sections.first }
+    shifts.includes(:sections).group_by { |shift| shift.sections.first }
   end
 
   private
@@ -45,10 +45,6 @@ class CallSchedulePresenter
 
   def shifts
     @shifts ||= Shift.on_call
-  end
-
-  def schedules
-    @schedules ||= WeeklySchedule.published.where(:date => dates)
   end
 
   def assignments_by_section
