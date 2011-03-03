@@ -58,6 +58,11 @@ Given /^a vacation shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, s
   section.vacation_shifts.create(:title => shift_title)
 end
 
+Given /^a meeting shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, section_title|
+  section = find_or_create_section(section_title)
+  section.meeting_shifts.create(:title => shift_title)
+end
+
 Given /^a vacation request for "([^ ]+) ([^"]+)" in the "([^"]*)" section beginning (\d{4}-\d{2}-\d{2}) and ending (\d{4}-\d{2}-\d{2})/ do |given_name, family_name, section_title, start_date, end_date|
   physician = find_or_create_physician(given_name, family_name)
   section = find_or_create_section(section_title)

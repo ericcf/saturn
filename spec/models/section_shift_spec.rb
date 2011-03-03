@@ -38,6 +38,8 @@ describe SectionShift do
 
   it { should belong_to(:vacation_shift) }
 
+  it { should belong_to(:meeting_shift) }
+
   # validations
 
   it { should validate_presence_of(:section) }

@@ -4,6 +4,7 @@ class SectionShift < ActiveRecord::Base
   belongs_to :shift
   belongs_to :call_shift, :foreign_key => :shift_id
   belongs_to :vacation_shift, :foreign_key => :shift_id
+  belongs_to :meeting_shift, :foreign_key => :shift_id
 
   validates :section, :shift, :position, :presence => true
   validates_associated :section, :shift

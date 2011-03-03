@@ -18,12 +18,14 @@ class Section < ActiveRecord::Base
   has_many :shifts, :through => :section_shifts
   has_many :call_shifts, :through => :section_shifts
   has_many :vacation_shifts, :through => :section_shifts
+  has_many :meeting_shifts, :through => :section_shifts
   has_one :admin_role, :through => :section_role_assignment, :source => :role
   accepts_nested_attributes_for :shift_tags, :allow_destroy => true
   accepts_nested_attributes_for :memberships, :allow_destroy => true
   accepts_nested_attributes_for :shifts
   accepts_nested_attributes_for :call_shifts
   accepts_nested_attributes_for :vacation_shifts
+  accepts_nested_attributes_for :meeting_shifts
   accepts_nested_attributes_for :section_shifts
   accepts_nested_attributes_for :weekly_shift_duration_rule
   accepts_nested_attributes_for :daily_shift_count_rules
@@ -122,7 +124,7 @@ class Section < ActiveRecord::Base
   end
 
   def meeting_shift
-    shifts.find_by_title("Meeting")
+    meeting_shifts.first
   end
 
   def find_or_create_weekly_schedule_by_included_date(date)

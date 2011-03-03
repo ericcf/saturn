@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CallShiftsController do
+describe VacationShiftsController do
 
   describe "routing" do
 

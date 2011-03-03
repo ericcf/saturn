@@ -4,7 +4,7 @@ Feature: add meeting requests
   I should be able to request meeting days
 
 Background:
-  Given a shift "Meeting" in the "Nose" section
+  Given a meeting shift "Meeting" in the "Nose" section
     And a physician "Cyrano deBergerac" in the "Nose" section
 
 Scenario: add a new meeting request

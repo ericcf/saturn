@@ -46,6 +46,27 @@ describe "shifts/index.html" do
     )
   end
 
+  it "renders a link to add a new call shift" do
+    should have_selector("a",
+      :href => new_section_call_shift_path(mock_section),
+      :content => "Add Call Shift"
+    )
+  end
+
+  it "renders a link to add a new vacation shift" do
+    should have_selector("a",
+      :href => new_section_vacation_shift_path(mock_section),
+      :content => "Add Vacation Shift"
+    )
+  end
+
+  it "renders a link to add a new meeting shift" do
+    should have_selector("a",
+      :href => new_section_meeting_shift_path(mock_section),
+      :content => "Add Meeting Shift"
+    )
+  end
+
   it "renders hidden redirect_path field" do
     should have_selector("form input",
       :type => "hidden",

@@ -20,6 +20,8 @@
 %p
   = link_to "Add Shift", new_section_shift_path(@section), { :class => "button" }
   = link_to "Add Call Shift", new_section_call_shift_path(@section), { :class => "button" }
+  = link_to "Add Vacation Shift", new_section_vacation_shift_path(@section), { :class => "button" }
+  = link_to "Add Meeting Shift", new_section_meeting_shift_path(@section), { :class => "button" }
 
 = semantic_form_for @section do |section_form|
   - section_shifts_by_shift_id = @section.section_shifts.group_by(&:shift_id)
