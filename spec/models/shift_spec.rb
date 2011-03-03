@@ -2,17 +2,21 @@ require 'spec_helper'
 
 describe Shift do
 
-  let(:mock_section) { stub_model(Section) }
+  let(:mock_section) { stub_model(Section, :valid? => true) }
   let(:valid_attributes) do
     {
-      :title => "value for title"
+      :title => "value for title",
+      :section_ids => [mock_section.id]
     }
   end
-  let(:shift) { Shift.create!(valid_attributes) }
+  let(:shift) do
+    Shift.create!(valid_attributes)
+  end
 
   before(:each) do
     Section.stub!(:find)
     Section.stub!(:find).with(mock_section.id, anything) { mock_section }
+    Section.stub!(:find).with([mock_section.id]) { [mock_section] }
   end
 
   # database

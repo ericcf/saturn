@@ -16,10 +16,14 @@ class Section < ActiveRecord::Base
     assoc.has_one :section_role_assignment
   end
   has_many :shifts, :through => :section_shifts
+  has_many :call_shifts, :through => :section_shifts
+  has_many :vacation_shifts, :through => :section_shifts
   has_one :admin_role, :through => :section_role_assignment, :source => :role
   accepts_nested_attributes_for :shift_tags, :allow_destroy => true
   accepts_nested_attributes_for :memberships, :allow_destroy => true
   accepts_nested_attributes_for :shifts
+  accepts_nested_attributes_for :call_shifts
+  accepts_nested_attributes_for :vacation_shifts
   accepts_nested_attributes_for :section_shifts
   accepts_nested_attributes_for :weekly_shift_duration_rule
   accepts_nested_attributes_for :daily_shift_count_rules
@@ -114,7 +118,7 @@ class Section < ActiveRecord::Base
   end
 
   def vacation_shift
-    shifts.find_by_title("Vacation")
+    vacation_shifts.first
   end
 
   def meeting_shift

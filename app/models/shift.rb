@@ -13,9 +13,8 @@ class Shift < ActiveRecord::Base
 
   before_validation { clean_text_attributes :title, :description, :phone }
 
-  def self.on_call
-    tags = ShiftTag.where("shift_tags.title like ?", "%Call%")
-    where(:id => tags.map(&:shifts).flatten.map(&:id).uniq)
+  def type_name
+    ""
   end
 
   def display_color_for_section(section)

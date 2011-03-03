@@ -36,7 +36,10 @@ class ShiftsController < ApplicationController
   def update
     @shift = @section.shifts.readonly(false).find(params[:id])
 
-    if @shift.update_attributes(params[:shift])
+    shift_attributes = params[:shift] || {}
+    shift_attributes[:section_ids] ||= []
+    shift_attributes[:section_ids] << @section.id
+    if @shift.update_attributes(shift_attributes)
       flash[:notice] = "Successfully updated shift"
       return redirect_to(section_shifts_path(@section))
     end

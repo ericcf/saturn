@@ -26,6 +26,8 @@ Saturn::Application.routes.draw do
       end
     end
     resources :shifts, :except => [:show, :destroy]
+    resources :call_shifts, :except => [:index, :show, :destroy]
+    resources :vacation_shifts, :except => [:index, :show, :destroy]
     resource :rules, :only => [:show, :edit, :update]
     resources :vacation_requests, :except => [:show, :destroy] do
       member do

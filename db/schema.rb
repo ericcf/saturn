@@ -216,6 +216,7 @@ ActiveRecord::Schema.define(:version => 20110224162800) do
   add_index "shift_week_notes", ["shift_id", "weekly_schedule_id"], :name => "index_shift_week_notes_on_shift_id_and_weekly_schedule_id", :unique => true
 
   create_table "shifts", :force => true do |t|
+    t.string  "type"
     t.string  "title",                                                      :null => false
     t.string  "description"
     t.decimal "duration",    :precision => 2, :scale => 1, :default => 0.5, :null => false

@@ -17,7 +17,9 @@
 
 %h3 Manage Shifts
 
-%p= link_to "Add Shift", new_section_shift_path(@section), { :class => "button" }
+%p
+  = link_to "Add Shift", new_section_shift_path(@section), { :class => "button" }
+  = link_to "Add Call Shift", new_section_call_shift_path(@section), { :class => "button" }
 
 = semantic_form_for @section do |section_form|
   - section_shifts_by_shift_id = @section.section_shifts.group_by(&:shift_id)
@@ -32,6 +34,7 @@
       %tr
         %th
         %th Shift
+        %th Type
         %th Categories
         %th Duration
         %th Phone
@@ -47,6 +50,7 @@
             %td.control
               %label.handle &nbsp;
             %td.title= shift_form.text_field :title, :maxlength => "255", :size => 30
+            %td.type= shift.type_name
             %td.tags
               = shift_form.text_field "tags", :size => 40
             - durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
@@ -58,7 +62,7 @@
             %td.display_color= section_shift_form.text_field :display_color, :class => "color_picker"
             %td
               = shift.sections.map { |section| section == @section ? nil : section.title }.compact.join(", ")
-            %td= link_to "edit sharing", edit_section_shift_path(@section, shift)
+            %td= link_to "edit", edit_section_shift_path(@section, shift)
             %td= section_shift_form.check_box :retire
             %td.details.hidden= section_shift_form.hidden_field :position
 

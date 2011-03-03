@@ -34,6 +34,10 @@ describe SectionShift do
 
   it { should belong_to(:shift) }
 
+  it { should belong_to(:call_shift) }
+
+  it { should belong_to(:vacation_shift) }
+
   # validations
 
   it { should validate_presence_of(:section) }

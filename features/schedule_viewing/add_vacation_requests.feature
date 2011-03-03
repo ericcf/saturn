@@ -4,7 +4,7 @@ Feature: add vacation requests
   I should be able to request vacation days
 
 Background:
-  Given a shift "Vacation" in the "Nose" section
+  Given a vacation shift "Vacation" in the "Nose" section
     And a physician "Cyrano deBergerac" in the "Nose" section
 
 Scenario: add a new vacation request

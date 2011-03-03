@@ -156,7 +156,8 @@ describe ShiftsController do
       context "always" do
 
         before(:each) do
-          mock_shift.should_receive(:update_attributes).with("these" => :params)
+          mock_shift.should_receive(:update_attributes).
+            with("these" => :params, "section_ids" => [mock_section.id])
           put :update, :section_id => mock_section.id, :id => mock_shift.id,
             :shift => { :these => :params }
         end

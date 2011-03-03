@@ -7,7 +7,7 @@ Background:
   Given there is a user "harold@foo.com" with password "secret"
     And User "harold@foo.com" is a section administrator for the "MSK" section
     And a physician "Julia Child" in the "MSK" section
-    And a shift "Vacation" in the "MSK" section
+    And a vacation shift "Vacation" in the "MSK" section
    When I go to the new vacation request page for the "MSK" section
     And I select "Julia Child" from "vacation_request_requester_id"
     And I fill in "vacation_request_start_date" with "2010-01-01"

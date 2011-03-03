@@ -26,7 +26,7 @@ class CallSchedulePresenter
   end
 
   def shifts_by_section
-    Shift.on_call.includes(:sections).group_by { |shift| shift.sections.first }
+    CallShift.includes(:sections).group_by { |shift| shift.sections.first }
   end
 
   private

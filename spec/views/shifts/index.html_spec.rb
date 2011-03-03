@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "shifts/index.html" do
   
   let(:mock_current_shift) do
-    mock_model(Shift,
+    mock_model(CallShift,
       :title => "AM Duty",
       :retired_on => nil,
       :phone => "(123) 456-7890",
@@ -30,7 +30,6 @@ describe "shifts/index.html" do
   end
 
   before(:each) do
-    Section.delete_all
     assign(:section, mock_section)
     assign(:current_shifts, [mock_current_shift])
     assign(:retired_shifts, [mock_retired_shift])
@@ -61,6 +60,12 @@ describe "shifts/index.html" do
     end
   end
 
+  it "renders the shift type" do
+    should have_selector("form tr td.type") do |cell|
+      cell.should contain("Call")
+    end
+  end
+
   it "renders tags field" do
     should have_selector("form") do |form|
       form.should have_selector("input", :type => "text", :name => "section[shifts_attributes][0][tags]", :value => mock_current_shift.tags)
@@ -85,19 +90,19 @@ describe "shifts/index.html" do
     end
   end
 
-  #it "renders display color field" do
-  #  should have_selector("form input",
-  #    :type => "text",
-  #    :name => "section[shifts_attributes][0][display_color]"
-  #  )
-  #end
+  it "renders display color field" do
+    should have_selector("form input",
+      :type => "text",
+      :name => "section[section_shifts_attributes][0][display_color]"
+    )
+  end
 
-  #it "renders retire field" do
-  #  should have_selector("form input",
-  #    :type => "checkbox",
-  #    :name => "section[shifts_attributes][0][retire]"
-  #  )
-  #end
+  it "renders retire field" do
+    should have_selector("form input",
+      :type => "checkbox",
+      :name => "section[section_shifts_attributes][0][retire]"
+    )
+  end
 
   it "renders position field" do
     should have_selector("form") do |form|

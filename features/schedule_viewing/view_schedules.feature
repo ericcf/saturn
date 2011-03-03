@@ -5,8 +5,7 @@ Feature: View schedules
 
 Scenario: View a published call schedule
   Given a section "The Diner" with a "Faculty" member "Jerry Seinfeld"
-    And a shift "Lunch" in the "The Diner" section
-    And "Lunch" in "The Diner" is tagged with "Call"
+    And a call shift "Lunch" in the "The Diner" section
     And a weekly schedule for "The Diner" that begins 2010-11-22 is published
     And "Jerry Seinfeld" is assigned to "Lunch" in "The Diner" 2010-11-22
    When I go to the weekly call schedule page for the week beginning 2010-11-22

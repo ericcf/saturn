@@ -1,9 +1,3 @@
-- content_for :javascripts do
-  = javascript_include_tag 'syronex-colorpicker', 'shared/color_picker'
-
-- content_for :stylesheets do
-  = stylesheet_link_tag 'syronex-colorpicker'
-
 - content_for :content_menu do
   = render "schedules/section_menu.html"
 
@@ -12,7 +6,7 @@
     = shift_form.inputs do
       = shift_form.input :title
       - unless @shift.new_record?
-        = shift_form.input :sections, :as => :check_boxes
+        = shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", @section.id), :label => "Sharing"
     = shift_form.buttons do
       = shift_form.commit_button :button_html => { :class => "button" }
       %li

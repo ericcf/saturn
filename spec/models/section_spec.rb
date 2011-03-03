@@ -29,6 +29,10 @@ describe Section do
 
   it { should have_many(:shifts).through(:section_shifts) }
 
+  it { should have_many(:call_shifts).through(:section_shifts) }
+
+  it { should have_many(:vacation_shifts).through(:section_shifts) }
+
   it { should have_many(:vacation_requests).dependent(:destroy) }
 
   it { should have_many(:meeting_requests).dependent(:destroy) }
@@ -70,8 +74,8 @@ describe Section do
 
   describe ".vacation_shift" do
 
-    it "returns an associated shift with the title 'Vacation'" do
-      vacation_shift = section.shifts.create(:title => "Vacation")
+    it "returns the first associated vacation shift" do
+      vacation_shift = section.vacation_shifts.create(:title => "Vacation")
       section.vacation_shift.should eq(vacation_shift)
     end
   end
