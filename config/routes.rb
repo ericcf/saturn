@@ -30,12 +30,7 @@ Saturn::Application.routes.draw do
     resources :vacation_shifts, :except => [:index, :show, :destroy]
     resources :meeting_shifts, :except => [:index, :show, :destroy]
     resource :rules, :only => [:show, :edit, :update]
-    resources :vacation_requests, :except => [:show, :destroy] do
-      member do
-        post "approve"
-      end
-    end
-    resources :meeting_requests, :except => [:show, :destroy] do
+    resources :assignment_requests, :except => [:show, :destroy] do
       member do
         post "approve"
       end

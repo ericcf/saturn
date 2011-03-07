@@ -5,7 +5,7 @@ class ShiftsController < ApplicationController
   before_filter :authorize_action
 
   def index
-    @current_shifts = @section.active_shifts_as_of(Date.today).
+    @current_shifts = @section.active_shifts.
       find(:all, :include => :shift_tags)
     @retired_shifts = @section.retired_shifts_as_of(Date.today).
       find(:all, :include => :shift_tags)

@@ -9,8 +9,6 @@ class Section < ActiveRecord::Base
     assoc.has_many :memberships,:class_name => 'SectionMembership'
     assoc.has_many :weekly_schedules
     assoc.has_many :section_shifts
-    assoc.has_many :vacation_requests
-    assoc.has_many :meeting_requests
     assoc.has_one :weekly_shift_duration_rule
     assoc.has_many :daily_shift_count_rules
     assoc.has_one :section_role_assignment
@@ -38,12 +36,23 @@ class Section < ActiveRecord::Base
     Assignment.includes(:shift).where(:shift_id => shifts.map(&:id))
   end
 
-  def active_shifts_as_of(date)
+  def assignment_requests
+    AssignmentRequest.includes(:shift).where(:shift_id => shifts.map(&:id))
+  end
+
+  def active_shifts(options = nil)
+    date = options.nil? ? Date.today : options[:as_of]
     Shift.joins(:section_shifts).merge(section_shifts.active_as_of(date))
   end
 
   def retired_shifts_as_of(date)
     Shift.joins(:section_shifts).merge(section_shifts.retired_as_of(date))
+  end
+
+  def published_assignments_by_dates(dates)
+    published_schedules = weekly_schedules.published.include_dates dates
+    published_dates = published_schedules.map(&:dates).flatten
+    assignments.where(:date => published_dates)
   end
 
   def members
@@ -111,24 +120,15 @@ class Section < ActiveRecord::Base
     admin_role.users
   end
 
+  def administrator_emails
+    administrators.map(&:email)
+  end
+
   def administrator_ids
     administrators.map(&:id)
   end
 
   def administrator_ids=(ids)
     create_admin_role.user_ids = ids
-  end
-
-  def vacation_shift
-    vacation_shifts.first
-  end
-
-  def meeting_shift
-    meeting_shifts.first
-  end
-
-  def find_or_create_weekly_schedule_by_included_date(date)
-    weekly_schedules.include_date(date).first ||
-      weekly_schedules.create(:date => date.at_beginning_of_week)
   end
 end

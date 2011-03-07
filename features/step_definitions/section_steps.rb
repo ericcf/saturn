@@ -63,27 +63,16 @@ Given /^a meeting shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, se
   section.meeting_shifts.create(:title => shift_title)
 end
 
-Given /^a vacation request for "([^ ]+) ([^"]+)" in the "([^"]*)" section beginning (\d{4}-\d{2}-\d{2}) and ending (\d{4}-\d{2}-\d{2})/ do |given_name, family_name, section_title, start_date, end_date|
+Given /^an assignment request for "([^ ]+) ([^"]+)" on "([^"]*)" in the "([^"]*)" section beginning today and ending tomorrow/ do |given_name, family_name, shift_title, section_title|
   physician = find_or_create_physician(given_name, family_name)
   section = find_or_create_section(section_title)
-  VacationRequest.create!(
+  shift = section.shifts.create(:title => shift_title)
+  AssignmentRequest.create!(
     :requester_id => physician.id,
-    :section => section,
-    :start_date => start_date,
-    :end_date => end_date,
-    :shift => section.shifts.create(:title => "Vacation")
-  )
-end
-
-Given /^a meeting request for "([^ ]+) ([^"]+)" in the "([^"]*)" section beginning (\d{4}-\d{2}-\d{2}) and ending (\d{4}-\d{2}-\d{2})/ do |given_name, family_name, section_title, start_date, end_date|
-  physician = find_or_create_physician(given_name, family_name)
-  section = find_or_create_section(section_title)
-  MeetingRequest.create!(
-    :requester_id => physician.id,
-    :section => section,
-    :start_date => start_date,
-    :end_date => end_date,
-    :shift => section.shifts.create(:title => "Meeting")
+    :shift_id => shift.id,
+    :start_date => Date.today,
+    :end_date => Date.tomorrow,
+    :shift => section.shifts.create(:title => "AM Conference")
   )
 end
 
@@ -131,10 +120,11 @@ Then /^I should be able to view the edit weekly schedule page for "([^"]*)"$/ do
   Then %{I should see "Editing the week of "}
 end
 
-Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)" on (\d{4}-\d{2}-\d{2})$/ do |given_name, family_name, shift_title, section_title, date|
+Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)" on today's date$/ do |given_name, family_name, shift_title, section_title|
   physician = find_or_create_physician(given_name, family_name)
   section = find_or_create_section(section_title)
   shift = section.shifts.find_by_title(shift_title)
+  date = Date.today
   assignments = section.assignments.where(:physician_id => physician.id, :shift_id => shift.id, :date => date)
   assert !assignments.blank?, "requested assignment not found"
 end

@@ -1,0 +1,36 @@
+- page_title "Assignment Requests"
+
+- content_for :content_menu do
+  = render "schedules/section_menu"
+
+%h3 Assignment requests
+
+%p= link_to "New Request", new_section_assignment_request_path(@section), { :class => "button" }
+
+- unless @assignment_requests.blank?
+  - is_section_admin = can? :manage, @section
+  %table
+    %thead
+      %tr
+        %th Requester
+        %th Submitted
+        %th Dates
+        %th Comments
+        %th Status
+        - if is_section_admin
+          %th Actions
+    - @assignment_requests.each do |assignment_request|
+      %tr
+        %td= assignment_request.requester.short_name
+        %td
+          - time = assignment_request.created_at
+          = time.strftime("#{time.day} %b @ %I %p").gsub(/ 0/, " ")
+        %td
+          - start = assignment_request.start_date
+          = start.strftime("#{start.day} %b %Y")
+          - unless (end_date = assignment_request.end_date).nil?
+            = end_date.strftime(" - #{end_date.day} %b %Y")
+        %td= assignment_request.comments
+        %td= assignment_request.status.capitalize
+        - if is_section_admin
+          %td= button_to("Approve", { :action => "approve", :id => assignment_request.id }) if assignment_request.status == "pending"

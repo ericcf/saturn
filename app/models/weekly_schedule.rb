@@ -7,9 +7,6 @@ class WeeklySchedule < ActiveRecord::Base
   validates_presence_of :section, :date
   validates_uniqueness_of :date, :scope => :section_id
 
-  scope :include_date, lambda { |date|
-    where("weekly_schedules.date <= ? and weekly_schedules.date >= ?", date, date - 6)
-  }
   scope :include_dates, lambda { |dates|
     possible_schedule_dates = dates.sort.map do |date|
       (date - 6..date).entries.select { |d| d.monday? }
@@ -19,7 +16,7 @@ class WeeklySchedule < ActiveRecord::Base
   scope :published, where(:is_published => true)
 
   def shifts
-    section.active_shifts_as_of(date)
+    section.active_shifts(:as_of => date)
   end
 
   def assignments
@@ -126,7 +123,7 @@ class WeeklySchedule < ActiveRecord::Base
     notes_by_shift_id = shift_week_notes.each_with_object({}) do |note, hsh|
       hsh[note.shift_id] = note
     end
-    section.active_shifts_as_of(date).select("shifts.id, shifts.title").map do |shift|
+    section.active_shifts(:as_of => date).select("shifts.id, shifts.title").map do |shift|
       shift_week_note = notes_by_shift_id[shift.id] || ShiftWeekNote.new(:shift_id => shift.id)
       [
       "{",

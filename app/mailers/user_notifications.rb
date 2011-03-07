@@ -1,19 +1,14 @@
 class UserNotifications < ActionMailer::Base
+
   default :from => APP_CONFIG["from_email"]
 
-  def new_vacation_request(request, recipients)
+  def new_assignment_request(request)
     @physician_name = request.requester.full_name
-    @section_title = request.section.title
-    @vacation_requests_url = section_vacation_requests_url(request.section)
+    sections = request.sections
+    @section_title = sections.first.title
+    @assignment_requests_url = section_assignment_requests_url(sections.first)
+    recipients = sections.map(&:administrator_emails).flatten.join(", ")
 
-    mail :to => recipients, :subject => "Saturn: New Vacation Request"
-  end
-
-  def new_meeting_request(request, recipients)
-    @physician_name = request.requester.full_name
-    @section_title = request.section.title
-    @meeting_requests_url = section_meeting_requests_url(request.section)
-
-    mail :to => recipients, :subject => "Saturn: New Meeting Request"
+    mail :to => recipients, :subject => "Saturn: #{@physician_name} submitted a request"
   end
 end

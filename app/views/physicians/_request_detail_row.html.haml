@@ -1,5 +1,6 @@
 %tr
-  %td= request.section_title
+  %td= request.sections.map(&:title).join(", ")
+  %td= request.shift.title
   - date = request.start_date
   %td= link_to date.to_s(:rfc822), schedule_physician_path(physician, :date => { :year => date.year, :month => date.month, :day => date.day })
   %td= request.status

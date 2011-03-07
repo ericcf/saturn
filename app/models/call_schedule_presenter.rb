@@ -35,14 +35,10 @@ class CallSchedulePresenter
     return @mapped_assignments if @mapped_assignments
     @mapped_assignments = {}
     Section.all.each do |section|
-      published_schedule = section.weekly_schedules.published.
-       where(:date => dates.first)
-      if published_schedule
-        published_schedule.first.assignments.each do |assignment|
-          key = [section.id, assignment.shift_id, assignment.date]
-          @mapped_assignments[key] ||= []
-          @mapped_assignments[key] << assignment
-        end
+      section.published_assignments_by_dates(dates).each do |assignment|
+        key = [section.id, assignment.shift_id, assignment.date]
+        @mapped_assignments[key] ||= []
+        @mapped_assignments[key] << assignment
       end
     end
     @mapped_assignments

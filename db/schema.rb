@@ -10,7 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110224162800) do
+ActiveRecord::Schema.define(:version => 20110304151754) do
+
+  create_table "assignment_requests", :force => true do |t|
+    t.integer  "requester_id",                        :null => false
+    t.integer  "shift_id",                            :null => false
+    t.string   "status",       :default => "pending", :null => false
+    t.date     "start_date",                          :null => false
+    t.date     "end_date"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "assignment_requests", ["requester_id"], :name => "index_assignment_requests_on_requester_id"
 
   create_table "assignments", :force => true do |t|
     t.integer  "shift_id",                                                  :null => false
@@ -63,22 +76,6 @@ ActiveRecord::Schema.define(:version => 20110224162800) do
   end
 
   add_index "holidays", ["date"], :name => "index_holidays_on_date"
-
-  create_table "meeting_requests", :force => true do |t|
-    t.integer  "requester_id",                        :null => false
-    t.integer  "section_id",                          :null => false
-    t.integer  "shift_id",                            :null => false
-    t.string   "status",       :default => "pending", :null => false
-    t.date     "start_date",                          :null => false
-    t.date     "end_date"
-    t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "meeting_requests", ["requester_id"], :name => "index_meeting_requests_on_requester_id"
-  add_index "meeting_requests", ["section_id"], :name => "index_meeting_requests_on_section_id"
-  add_index "meeting_requests", ["status"], :name => "index_meeting_requests_on_status"
 
   create_table "permissions", :force => true do |t|
     t.string   "action",      :null => false
@@ -259,22 +256,6 @@ ActiveRecord::Schema.define(:version => 20110224162800) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
-
-  create_table "vacation_requests", :force => true do |t|
-    t.integer  "requester_id",                        :null => false
-    t.integer  "section_id",                          :null => false
-    t.integer  "shift_id",                            :null => false
-    t.string   "status",       :default => "pending", :null => false
-    t.date     "start_date",                          :null => false
-    t.date     "end_date"
-    t.text     "comments"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "vacation_requests", ["requester_id"], :name => "index_vacation_requests_on_requester_id"
-  add_index "vacation_requests", ["section_id"], :name => "index_vacation_requests_on_section_id"
-  add_index "vacation_requests", ["status"], :name => "index_vacation_requests_on_status"
 
   create_table "weekly_schedules", :force => true do |t|
     t.integer  "section_id",                      :null => false

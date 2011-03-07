@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe "vacation_requests/new" do
+describe "assignment_requests/new" do
 
   it "renders the form partial" do
     assign(:section, mock_model(Section))
-    assign(:vacation_request, stub_model(VacationRequest))
+    assign(:assignment_request, stub_model(AssignmentRequest))
     should_render_partial("form")
     render
   end

@@ -4,11 +4,12 @@ describe Assignment do
 
   let(:mock_shift) { stub_model(Shift, :valid? => true) }
   let(:mock_physician) { stub_model(Physician, :valid? => true) }
+  let(:today) { Date.today }
   let(:valid_attributes) do
     {
       :shift_id => mock_shift.id,
       :physician_id => mock_physician.id,
-      :date => Date.today,
+      :date => today,
       :position => 1,
       :public_note => "value for public_note",
       :private_note => "value for private_note",
@@ -112,6 +113,14 @@ describe Assignment do
   end
 
   # methods
+  
+  describe ".create_for_dates(:dates, :attributes)" do
+
+    it "creates an assignment for each date with the attributes" do
+      Assignment.should_receive(:create).with(:date => today, :this => :attr)
+      Assignment.create_for_dates([today], :this => :attr)
+    end
+  end
   
   describe "#physician_name" do
 

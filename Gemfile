@@ -48,6 +48,7 @@ group :development, :test do
   gem 'cucumber'
   gem 'webrat'
   gem 'capybara'
+  gem 'metric_fu'
   gem 'shoulda'
   gem 'jasmine'
   if RUBY_VERSION =~ /1.9/

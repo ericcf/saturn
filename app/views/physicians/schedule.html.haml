@@ -41,12 +41,7 @@
 
 %div{ :style => "clear:both;height:1em;" } &nbsp;
 
-- if @physician.meeting_requests.any?
-  %h3 Meeting Requests
+- if @physician.assignment_requests.any?
+  %h3 Requests
   %table
-    = render :partial => "request_detail_row.html", :collection => @physician.meeting_requests, :as => :request, :locals => { :physician => @physician }
-
-- if @physician.vacation_requests.any?
-  %h3 Vacation Requests
-  %table
-    = render :partial => "request_detail_row.html", :collection => @physician.vacation_requests, :as => :request, :locals => { :physician => @physician }
+    = render :partial => "request_detail_row.html", :collection => @physician.assignment_requests, :as => :request, :locals => { :physician => @physician }

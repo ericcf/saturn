@@ -35,14 +35,10 @@ module NavigationHelpers
       weekly_call_schedule_path(:date => { :year => $1, :month => $2, :day => $3 })
     when /the weekly section schedule page for \"([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/
       weekly_section_schedule_path(find_section($1), :date => { :year => $2, :month => $3, :day => $4 })
-    when /the vacation requests page for the \"([^"]+)\" section/
-      section_vacation_requests_path(find_section($1))
-    when /the new vacation request page for the \"([^"]+)\" section/
-      new_section_vacation_request_path(find_section($1))
-    when /the meeting requests page for the \"([^"]+)\" section/
-      section_meeting_requests_path(find_section($1))
-    when /the new meeting request page for the \"([^"]+)\" section/
-      new_section_meeting_request_path(find_section($1))
+    when /the assignment requests page for the \"([^"]+)\" section/
+      section_assignment_requests_path(find_section($1))
+    when /the new assignment request page for the \"([^"]+)\" section/
+      new_section_assignment_request_path(find_section($1))
 
     # personal
     when /the personal dashboard for \"([^ ]+) ([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/

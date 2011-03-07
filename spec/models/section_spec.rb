@@ -35,10 +35,6 @@ describe Section do
 
   it { should have_many(:meeting_shifts).through(:section_shifts) }
 
-  it { should have_many(:vacation_requests).dependent(:destroy) }
-
-  it { should have_many(:meeting_requests).dependent(:destroy) }
-
   it { should have_one(:weekly_shift_duration_rule).dependent(:destroy) }
 
   it { should have_many(:daily_shift_count_rules).dependent(:destroy) }
@@ -71,47 +67,6 @@ describe Section do
         and_return(mock_admin_role)
       mock_admin_role.stub_chain("role_permissions.first.update_attributes")
       section.create_admin_role.should eq(mock_admin_role)
-    end
-  end
-
-  describe ".vacation_shift" do
-
-    it "returns the first associated vacation shift" do
-      vacation_shift = section.vacation_shifts.create(:title => "Vacation")
-      section.vacation_shift.should eq(vacation_shift)
-    end
-  end
-
-  describe ".meeting_shift" do
-
-    it "returns the first associated meeting shift" do
-      meeting_shift = section.meeting_shifts.create(:title => "Meeting")
-      section.meeting_shift.should eq(meeting_shift)
-    end
-  end
-
-  describe ".find_or_create_weekly_schedule_by_included_date(:date)" do
-
-    let(:mock_schedule) { stub_model(WeeklySchedule) }
-    let(:mock_schedules_assoc) { stub("schedules") }
-    let(:date) { Date.today }
-
-    before(:each) { section.stub!(:weekly_schedules) { mock_schedules_assoc } }
-
-    it "returns a weekly schedule that includes the date" do
-      mock_schedules_assoc.stub!(:include_date).with(date) { [mock_schedule] }
-      section.find_or_create_weekly_schedule_by_included_date(date).
-        should eq(mock_schedule)
-    end
-
-    it "returns a new weekly schedule when none include the date" do
-      monday_before_date = date.at_beginning_of_week
-      mock_schedules_assoc.should_receive(:create).
-        with(:date => monday_before_date).
-        and_return(mock_schedule)
-      mock_schedules_assoc.stub!(:include_date).with(date) { [] }
-      section.find_or_create_weekly_schedule_by_included_date(date).
-        should eq(mock_schedule)
     end
   end
 end

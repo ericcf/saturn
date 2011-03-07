@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe "vacation_requests/index" do
+describe "assignment_requests/index" do
   
   let(:mock_section) { stub_model(Section) }
   let(:mock_request) do
-    mock_model(VacationRequest,
+    mock_model(AssignmentRequest,
       :created_at => DateTime.now,
       :start_date => Date.today,
       :end_date => Date.tomorrow,
-      :status => VacationRequest::STATUS_PENDING,
+      :status => AssignmentRequest::STATUS[:pending],
       :comments => "Foo, bar!"
     )
   end
@@ -16,7 +16,7 @@ describe "vacation_requests/index" do
   before(:each) do
     assign(:section, mock_section)
     mock_request.stub_chain("requester.short_name") { "E. Fudd" }
-    assign(:vacation_requests, [mock_request])
+    assign(:assignment_requests, [mock_request])
     should_render_partial("schedules/section_menu")
     view.stub!(:can?)
     render
@@ -26,7 +26,7 @@ describe "vacation_requests/index" do
 
   it {
     should have_selector("a",
-      :href => new_section_vacation_request_path(mock_section),
+      :href => new_section_assignment_request_path(mock_section),
       :content => "New Request"
     )
   }

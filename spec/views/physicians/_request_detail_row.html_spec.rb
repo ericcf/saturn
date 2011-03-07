@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe "physicians/_request_detail_row.html" do
 
+  let(:mock_section) { mock_model(Section, :title => "Foo") }
+  let(:mock_shift) { mock_model(Shift, :title => "Bar") }
   let(:mock_request) do
     stub("request",
-      :section_title => "Foo",
+      :sections => [mock_section],
+      :shift => mock_shift,
       :start_date => Date.today,
       :status => "under the weather"
     )
@@ -20,7 +23,8 @@ describe "physicians/_request_detail_row.html" do
 
   it do
     should have_selector("tr") do |row|
-      row.should have_selector("td", :content => mock_request.section_title)
+      row.should have_selector("td", :content => mock_section.title)
+      row.should have_selector("td", :content => mock_shift.title)
       row.should have_selector("td a", :content => mock_request.start_date.to_s(:rfc822))
       row.should have_selector("td", :content => mock_request.status)
     end

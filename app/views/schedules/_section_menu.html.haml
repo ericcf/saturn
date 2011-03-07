@@ -4,8 +4,7 @@
     %ul.navlist
       - date = @dates ? @dates.first : Date.today
       != nav_item "View Schedule", weekly_section_schedule_path(@section, :year => date.year, :month => date.month, :day => date.day), {}, nil, nil, /sections\/[\w-]+\/schedule/
-      != nav_item "Vacation Requests", section_vacation_requests_path(@section), {}, nil, nil, /sections\/[\w-]+\/vacation_requests/
-      != nav_item "Meeting Requests", section_meeting_requests_path(@section), {}, nil, nil, /sections\/[\w-]+\/meeting_requests/
+      != nav_item "Requests", section_assignment_requests_path(@section), {}, nil, nil, /sections\/[\w-]+\/assignment_requests/
       != nav_item "Edit Schedule", edit_section_weekly_schedules_path(@section, :anchor => date), {}, :update, @section, /sections\/[\w-]+\/weekly_schedules\/edit/
       != nav_item "Rules", section_rules_path(@section), {}, nil, nil, /sections\/[\w-]+\/rules/
       != nav_item "Members", section_memberships_path(@section), {}, nil, nil, /sections\/[\w-]+\/members/

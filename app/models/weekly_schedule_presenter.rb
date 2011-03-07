@@ -13,7 +13,7 @@ class WeeklySchedulePresenter
   end
 
   def shifts
-    @shifts ||= section.active_shifts_as_of(dates.first).
+    @shifts ||= section.active_shifts(:as_of => dates.first).
       includes(:shift_tags, :shift_week_notes)
   end
 

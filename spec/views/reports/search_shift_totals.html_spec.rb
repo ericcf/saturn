@@ -8,7 +8,7 @@ describe "reports/search_shift_totals.html.haml" do
   let(:mock_report) { mock_model(ShiftTotalsReport, :start_date => nil, :end_date => nil, :shift_ids => [], :group_ids => []) }
 
   before(:each) do
-    mock_section.stub!(:active_shifts_as_of) { [mock_shift] }
+    mock_section.stub!(:active_shifts) { [mock_shift] }
     assign(:section, mock_section)
     assign(:shift_totals_report, mock_report)
     view.stub!(:physician_groups) { [mock_group] }

@@ -12,7 +12,7 @@ describe ShiftsController do
   let(:mock_section) { mock_model(Section) }
 
   before(:each) do
-    mock_section.stub!(:active_shifts_as_of) { mock_shifts_subset }
+    mock_section.stub!(:active_shifts) { mock_shifts_subset }
     mock_section.stub!(:retired_shifts_as_of) { mock_shifts_subset }
     Section.stub!(:find).with(mock_section.id) { mock_section }
     controller.should_receive(:authenticate_user!)
@@ -25,8 +25,7 @@ describe ShiftsController do
 
       before(:each) do
         active_shifts = mock("active shifts")
-        mock_section.stub!(:active_shifts_as_of).with(Date.today).
-          and_return(active_shifts)
+        mock_section.stub!(:active_shifts) { active_shifts }
         active_shifts.stub!(:find).
           with(:all, :include => :shift_tags) { [mock_shift] }
         get :index, :section_id => mock_section.id

@@ -19,6 +19,12 @@ class Assignment < ActiveRecord::Base
 
   default_scope order("assignments.position")
 
+  def self.create_for_dates dates, attributes
+    dates.each do |date|
+      create(attributes.merge({ :date => date }))
+    end
+  end
+
   def physician_name
     physician.present? ? physician.short_name : "Na"
   end

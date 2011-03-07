@@ -2,59 +2,37 @@ require "spec_helper"
 
 describe UserNotifications do
 
-  describe "new_vacation_request" do
+  describe "new_assignment_request" do
 
-    before(:each) do
-      @requester = stub_model(Physician, :full_name => "Dr. Nick")
-      @section = stub_model(Section, :title => "ER")
-      @request = stub_model(VacationRequest, :requester => @requester,
-        :section => @section)
-      @recipients = ["a@foo.com", "b@foo.com"]
+    let(:mock_requester) { stub_model(Physician, :full_name => "Dr. Nick") }
+    let(:mock_section) do
+      stub_model(Section,
+        :title => "ER",
+        :administrator_emails => ["a@foo.com", "b@foo.com"]
+      )
     end
+    let(:mock_request) do
+      stub_model(AssignmentRequest,
+        :requester => mock_requester,
+        :sections => [mock_section]
+      )
+    end
+    let(:mail) { UserNotifications.new_assignment_request(mock_request) }
 
-    let(:mail) { UserNotifications.new_vacation_request(@request, @recipients) }
+    subject { mail }
 
     it "renders the headers" do
-      mail.subject.should eq("Saturn: New Vacation Request")
-      mail.to.should eq(@recipients)
+      mail.subject.should eq("Saturn: Dr. Nick submitted a request")
+      mail.to.should eq(mock_section.administrator_emails)
     end
 
     it "renders the requester's name in the body" do
-      mail.body.encoded.
-        should match(/#{@requester.full_name} submitted a vacation request/)
-    end
-
-    it "renders a link to the section's vacation requests in the body" do
-      mail.body.encoded.
-        should match(/<a href="#{section_vacation_requests_url(@section)}">View all vacation requests for ER<\/a>/)
-    end
-  end
-
-  describe "new_meeting_request" do
-
-    before(:each) do
-      @requester = stub_model(Physician, :full_name => "Dr. Nick")
-      @section = stub_model(Section, :title => "ER")
-      @request = stub_model(MeetingRequest, :requester => @requester,
-        :section => @section)
-      @recipients = ["a@foo.com", "b@foo.com"]
-    end
-
-    let(:mail) { UserNotifications.new_meeting_request(@request, @recipients) }
-
-    it "renders the headers" do
-      mail.subject.should eq("Saturn: New Meeting Request")
-      mail.to.should eq(@recipients)
-    end
-
-    it "renders the requester's name in the body" do
-      mail.body.encoded.
-        should match(/#{@requester.full_name} submitted a meeting request/)
+      mail.body.encoded.should match(/Dr. Nick submitted an assignment request/)
     end
 
     it "renders a link to the section's meeting requests in the body" do
       mail.body.encoded.
-        should match(/<a href="#{section_meeting_requests_url(@section)}">View all meeting requests for ER<\/a>/)
+        should match(/<a href="#{section_assignment_requests_url(mock_section)}">View all assignment requests for ER<\/a>/)
     end
   end
 end

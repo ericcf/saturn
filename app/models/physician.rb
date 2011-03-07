@@ -1,18 +1,20 @@
 RadDirectory::Person.class_eval do
   attr_accessible []
 
-  has_many :assignments, :foreign_key => :physician_id, :dependent => :destroy
-  has_many :meeting_requests, :foreign_key => :requester_id,
-    :dependent => :destroy
-  has_many :vacation_requests, :foreign_key => :requester_id,
-    :dependent => :destroy
-  has_one :names_alias, :class_name => "PhysicianAlias",
-    :foreign_key => :physician_id
-  has_many :section_memberships, :foreign_key => :physician_id,
-    :dependent => :destroy
+  with_options :dependent => :destroy do |assoc|
+    assoc.has_many :assignments, :foreign_key => :physician_id
+    assoc.has_many :assignment_requests, :foreign_key => :requester_id
+    assoc.has_one :names_alias, :class_name => "PhysicianAlias",
+      :foreign_key => :physician_id
+    assoc.has_many :section_memberships, :foreign_key => :physician_id
+  end
 
   def sections
-    ::Section.find(section_memberships.map(&:section_id))
+    ::Section.where(:id => section_memberships.map(&:section_id))
+  end
+
+  def shifts
+    Shift.includes(:sections).merge(sections)
   end
 
   def initials
