@@ -14,7 +14,7 @@ class WeeklySchedulePresenter
 
   def shifts
     @shifts ||= section.active_shifts(:as_of => dates.first).
-      includes(:shift_tags, :shift_week_notes)
+      includes(:shift_tags)
   end
 
   private
@@ -31,17 +31,27 @@ class WeeklySchedulePresenter
     tabular_data.send sym, *args, &block
   end
 
+  def week_note_by_shift_id(shift_id)
+    @note_by_shift_id ||= weekly_schedule.shift_week_notes.group_by(&:shift_id)
+    (@note_by_shift_id[shift_id] || [ShiftWeekNote.new]).first
+  end
+
+  def display_color(shift_id)
+    @section_shift_by_shift_id ||= section.section_shifts.group_by(&:shift_id)
+    @section_shift_by_shift_id[shift_id].first.display_color
+  end
+
   def headers(type)
     case type
     when :dates
       dates.map { |d| { :object => d, :type => "date" } }
     when :shifts
       shifts.map do |s|
-        note = s.shift_week_notes.select{|n|n.weekly_schedule_id == weekly_schedule.id}.first || ShiftWeekNote.new
+        note = week_note_by_shift_id(s.id)
         {
           :object => {
             :title => s.title,
-            :color => s.display_color_for_section(section),
+            :color => display_color(s.id),
             :phone => s.phone,
             :note => note.text
           },
