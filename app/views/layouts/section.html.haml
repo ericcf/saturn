@@ -1,0 +1,11 @@
+!!!
+%html
+  = render "shared/head"
+
+  %body
+    = render "shared/header"
+    = render "shared/personal"
+    = render "shared/flash_banner.html"
+    %div#main
+      = render "sections/content_menu"
+      = yield :layout

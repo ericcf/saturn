@@ -8,7 +8,6 @@ describe "call_shifts/_form.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:call_shift, mock_call_shift)
-    should_render_partial("schedules/section_menu.html")
     render
   end
 

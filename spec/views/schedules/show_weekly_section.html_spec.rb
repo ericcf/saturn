@@ -16,8 +16,6 @@ describe "schedules/show_weekly_section.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:schedule_presenter, mock_presenter)
-    should_render_partial("section_menu.html")
-    should_render_partial("rules_conflicts.html")
     render
   end
 

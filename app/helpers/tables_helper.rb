@@ -4,12 +4,10 @@ module TablesHelper
     case item.class.to_s
     when "Date"
       item.to_s(:short_with_weekday)
-    when "Shift"
+    when "Shift", "Rotation"
       item.title
     when "RadDirectory::Person"
       item.short_name
-    when "Rotation"
-      item.title
     else
       item.to_s if item.respond_to?(:to_s)
     end

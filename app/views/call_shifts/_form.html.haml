@@ -1,6 +1,3 @@
-- content_for :content_menu do
-  = render "schedules/section_menu.html"
-
 %div.form-container
   = semantic_form_for [@section, @call_shift] do |call_shift_form|
     = call_shift_form.inputs do

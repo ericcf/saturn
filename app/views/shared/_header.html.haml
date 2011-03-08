@@ -1,0 +1,12 @@
+%div#header
+  %h1#logo
+    = link_to "Saturn", root_path
+  %div#top-menu
+    %ul
+      -#!= nav_item "Residents", resident_rotations_path
+      != nav_item "Home", root_path, {}, nil, nil, /\/$/
+      != nav_item "On Call", weekly_call_schedule_path
+      != nav_item "Sections", sections_path
+      != nav_item "Conferences", conferences_path
+      != nav_item "Physicians", physicians_path, {}, :manage, Physician
+      != nav_item "Admin", admin_path, {}, :manage, :all

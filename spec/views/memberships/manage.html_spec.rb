@@ -8,7 +8,6 @@ describe "memberships/manage.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:members_by_group, { "Group 1" => [mock_person] })
-    should_render_partial("schedules/section_menu")
   end
 
   it "renders a form for updating section members" do

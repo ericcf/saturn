@@ -8,7 +8,6 @@ describe "admins/show.html.haml" do
   before(:each) do
     assign(:section, mock_section)
     assign(:users, mock_users)
-    should_render_partial("schedules/section_menu")
     render
   end
 

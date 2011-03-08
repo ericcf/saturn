@@ -1,6 +1,3 @@
-- content_for :content_menu do
-  = render "schedules/section_menu.html"
-
 :javascript
   $(function() {
     var onSelected = function(selectedDate) {
@@ -46,7 +43,7 @@
   });
 
 %div.form-container
-  = semantic_form_for [@section, @assignment_request] do |assignment_request_form|
+  = semantic_form_for [@section, assignment_request] do |assignment_request_form|
     = assignment_request_form.inputs do
       = assignment_request_form.input :requester, :as => :select, :collection => @section.members
       = assignment_request_form.input :shift, :as => :select, :collection => @section.active_shifts

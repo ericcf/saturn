@@ -1,6 +1,3 @@
-- content_for :content_menu do
-  = render "schedules/section_menu.html"
-
 %div.form-container
   = semantic_form_for [@section, @shift_tag] do |tag_form|
     = hidden_field_tag "redirect_path", section_shift_tags_path(@section)

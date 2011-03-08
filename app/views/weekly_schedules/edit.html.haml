@@ -32,9 +32,6 @@
 - content_for :stylesheets do
   = stylesheet_link_tag "schedule_editor"
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %div#physician-groups{ :style => "display:none;", :"data-bind" => "template: { name: 'directoryListing' }, directoryDialogVisibility: selectedShiftDays" }
 
 %div#assignment-details{ :style => "display: none;", :"data-bind" => "template: { name: 'assignmentDetails', data: editingAssignment }" }

@@ -12,7 +12,6 @@ describe "reports/shift_totals.html" do
     assign(:shift_tags, [])
     assign(:start_date, start_date)
     assign(:end_date, end_date)
-    should_render_partial("schedules/section_menu")
     render
   end
 

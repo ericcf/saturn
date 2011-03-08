@@ -1,8 +1,5 @@
 - page_title "Manage #{@section.title} schedule admins"
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %h3 Schedule Administrators
 
 = semantic_form_for @section, :url => section_admins_path(@section), :html => { :method => :put } do |form|

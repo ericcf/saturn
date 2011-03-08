@@ -6,7 +6,6 @@ describe "rules/show.html" do
 
   before(:each) do
     assign(:daily_shift_count_rules, [])
-    should_render_partial("schedules/section_menu")
     assign(:section, mock_section)
     view.stub!(:nav_item)
   end

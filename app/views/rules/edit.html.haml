@@ -1,8 +1,5 @@
 - page_title "Edit rules"
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %h3 Edit rules
 
 = semantic_form_for @section, :url => section_rules_path(@section) do |section_form|

@@ -1,8 +1,5 @@
 - page_title "#{@section.title} members"
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %p
   %ul
     != nav_item "Add Members", manage_new_section_memberships_path(@section), { :class => "button" }, :update, @section

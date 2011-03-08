@@ -11,7 +11,6 @@ describe "reports/section_physician_shift_totals.html" do
     assign(:shifts, [])
     assign(:start_date, start_date)
     assign(:end_date, end_date)
-    should_render_partial("schedules/section_menu")
     render
   end
 

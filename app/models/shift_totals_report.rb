@@ -64,12 +64,11 @@ class ShiftTotalsReport
   end
 
   def published_assignments
+    return @published_assignments if @published_assignments
     dates = (start_date..end_date).to_a
-    published_schedules = section.weekly_schedules.published.include_dates(dates)
-    published_dates = published_schedules.map(&:dates).flatten
     physician_ids = physicians_by_group.values.flatten.map(&:id)
-    @published_assignments = section.assignments.
-      where(:physician_id => physician_ids, :date => published_dates)
+    @published_assignments = section.published_assignments_by_dates(dates).
+      where(:physician_id => physician_ids)
   end
 
   # returns a hash mapping physicians to groups, excluding empty groups, i.e.

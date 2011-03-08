@@ -14,7 +14,7 @@ class PhysiciansController < ApplicationController
       @query = params[:query]
       @physicians = Physician.section_members.name_like(params[:query]).
         paginate(:page => params[:page], :per_page => 15)
-      @dates = (Date.today..Date.today+6.days).entries
+      @dates = (Date.today..Date.today+6.days).to_a
       schedules = WeeklySchedule.published.include_dates(@dates)
       dates_with_published_assignments = schedules.map(&:dates).flatten.sort.uniq
       @assignments = Assignment.

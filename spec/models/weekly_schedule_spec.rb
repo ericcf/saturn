@@ -49,23 +49,6 @@ describe WeeklySchedule do
 
   # methods
   
-  describe "#include_date(:date)" do
-
-    it "returns schedules which include the specified date" do
-      WeeklySchedule.include_date(weekly_schedule.date).
-        should include(weekly_schedule)
-      WeeklySchedule.include_date(weekly_schedule.date + 6).
-        should include(weekly_schedule)
-    end
-
-    it "does not return schedules which do not include the specified date" do
-      WeeklySchedule.include_date(weekly_schedule.date - 1).
-        should_not include(weekly_schedule)
-      WeeklySchedule.include_date(weekly_schedule.date + 7).
-        should_not include(weekly_schedule)
-    end
-  end
-
   describe "#shift_weeks_json" do
 
     it "serializes the object as valid json" do

@@ -8,7 +8,6 @@ describe "memberships/manage_new.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:physicians, [mock_physician])
-    should_render_partial("schedules/section_menu")
     render
   end
 

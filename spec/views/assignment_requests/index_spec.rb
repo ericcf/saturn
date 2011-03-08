@@ -17,7 +17,6 @@ describe "assignment_requests/index" do
     assign(:section, mock_section)
     mock_request.stub_chain("requester.short_name") { "E. Fudd" }
     assign(:assignment_requests, [mock_request])
-    should_render_partial("schedules/section_menu")
     view.stub!(:can?)
     render
   end

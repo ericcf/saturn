@@ -33,7 +33,6 @@ describe "shifts/index.html" do
     assign(:section, mock_section)
     assign(:current_shifts, [mock_current_shift])
     assign(:retired_shifts, [mock_retired_shift])
-    should_render_partial("schedules/section_menu.html")
     render
   end
 

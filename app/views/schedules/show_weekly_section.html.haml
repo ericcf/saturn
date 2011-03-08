@@ -3,9 +3,6 @@
 - content_for :stylesheets do
   = stylesheet_link_tag 'schedule'
 
-- content_for :content_menu do
-  = render "section_menu.html"
-
 - date = @schedule_presenter.dates.first
 
 %h3 Published Schedule

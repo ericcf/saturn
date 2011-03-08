@@ -38,7 +38,7 @@ class SchedulesController < ApplicationController
       end
 
     respond_to do |format|
-      format.html
+      format.html { render :layout => "section" }
       format.xls { render :xls => @schedule_presenter, :template => "schedules/weekly_section_schedule.xls", :layout => false }
     end
   end

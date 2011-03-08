@@ -15,7 +15,6 @@ describe "shift_tags/index.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:shift_tags, [mock_shift_tag, mock_orphan_tag])
-    should_render_partial("schedules/section_menu.html")
     render
   end
 

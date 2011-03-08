@@ -1,6 +1,3 @@
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %h3= "Daily Totals for #{@shift.title}, #{@shift_totals_report.start_date.strftime("#{@shift_totals_report.start_date.day} %B %Y")} - #{@shift_totals_report.end_date.strftime("#{@shift_totals_report.end_date.day} %B %Y")}"
 
 %table

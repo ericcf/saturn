@@ -8,9 +8,6 @@
       $("#shift_totals_report_start_date").date_span_selector("shift_totals_report_end_date");
     });
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %h3 Report on Shift Totals for Published Schedules
 
 = semantic_form_for @shift_totals_report, :url => shift_totals_report_section_reports_path(@section) do |report_form|

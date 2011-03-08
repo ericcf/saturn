@@ -7,7 +7,6 @@ describe "shift_tags/_form.html" do
   before(:each) do
     assign(:section, mock_section)
     assign(:shift_tag, stub_model(ShiftTag).as_new_record)
-    should_render_partial("schedules/section_menu.html")
     render
   end
 

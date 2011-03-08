@@ -10,9 +10,6 @@
   = stylesheet_link_tag 'shifts'
   = stylesheet_link_tag 'syronex-colorpicker'
 
-- content_for :content_menu do
-  = render "schedules/section_menu.html"
-
 %span.hidden#tags_search_url= search_section_shift_tags_path(@section)
 
 %h3 Manage Shifts

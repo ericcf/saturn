@@ -7,9 +7,8 @@ describe "assignment_requests/_form.html" do
 
   before(:each) do
     assign(:section, mock_section)
-    assign(:assignment_request, mock_assignment_request)
-    should_render_partial("schedules/section_menu.html")
-    render
+    render :partial => "assignment_requests/form",
+      :locals => { :assignment_request => mock_assignment_request }
   end
 
   subject { rendered }

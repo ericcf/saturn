@@ -4,9 +4,6 @@
   = javascript_include_tag 'shared/date_selector'
   = javascript_include_tag 'report'
 
-- content_for :content_menu do
-  = render "schedules/section_menu"
-
 %h3 Totals from Published Weekly Schedules
 
 %p= link_to "Reports Search", search_shift_totals_section_reports_path(@section)

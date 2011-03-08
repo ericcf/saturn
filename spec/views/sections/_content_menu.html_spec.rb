@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "schedules/_section_menu.html" do
+describe "sections/_content_menu.html" do
 
   let(:mock_section) { stub_model(Section, :title => "Foo") }
 
