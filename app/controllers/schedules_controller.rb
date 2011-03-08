@@ -22,20 +22,19 @@ class SchedulesController < ApplicationController
       hsh[physician.id] = physician.short_name
     end
     @view_mode = params[:view_mode]
-    @schedule_presenter = case @view_mode.to_i
+    presenter_options = case @view_mode.to_i
       when 0, 1
-        WeeklySchedulePresenter.new(:section => @section, :dates => dates,
-          :assignments => @assignments, :weekly_schedule => schedule,
-          :physician_names_by_id => physician_names_by_id,
-          :options => { :col_type => :dates, :row_type => :shifts }
-        )
+        { :col_type => :dates, :row_type => :shifts }
       when 2
-        WeeklySchedulePresenter.new(:section => @section, :dates => dates,
-          :assignments => @assignments, :weekly_schedule => schedule,
-          :physician_names_by_id => physician_names_by_id,
-          :options => { :col_type => :dates, :row_type => :physicians }
-        )
+        { :col_type => :dates, :row_type => :physicians }
       end
+    @schedule_presenter = WeeklySchedulePresenter.new(:section => @section,
+      :dates => dates,
+      :assignments => @assignments,
+      :weekly_schedule => schedule,
+      :physician_names_by_id => physician_names_by_id,
+      :options => presenter_options
+    )
 
     respond_to do |format|
       format.html { render :layout => "section" }

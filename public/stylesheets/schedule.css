@@ -24,6 +24,8 @@ div.schedule-wrapper {
   .schedule th.section-week {
     background-color: #919397;
     color: #fefefe; }
+  .schedule .pending {
+    color: #cccc33; }
 
 .paginated-schedule {
   clear: left; }

@@ -20,7 +20,15 @@ class WeeklySchedule < ActiveRecord::Base
   end
 
   def assignments
-    Assignment.where(:date => dates, :shift_id => shifts.map(&:id), :physician_id => section.member_ids)
+    Assignment.where(:date => dates,
+      :shift_id => shifts.map(&:id),
+      :physician_id => section.member_ids
+    )
+  end
+
+  def assignment_requests
+    AssignmentRequest.include_dates(dates).
+      where(:shift_id => shifts.map(&:id), :requester_id => section.member_ids)
   end
 
   def assignments_attributes=(attributes)

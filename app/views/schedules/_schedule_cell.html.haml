@@ -1,7 +1,7 @@
 %td><
   - if schedule_cell.present?
     - schedule_cell.each do |summary|
-      = summary[:text]
+      %span{ :class => summary[:status] }= summary[:text]
       - if summary[:note].present?
         %span.note
           = image_tag "pub-note.gif", :alt => summary[:note]

@@ -18,12 +18,35 @@ class AssignmentRequest < ActiveRecord::Base
   validate :requester_associated_with_shift?
   validates_inclusion_of :status, :in => STATUS.values
 
+  scope :include_dates, lambda { |dates|
+    sorted_dates = dates.sort
+    where("start_date <= ? or end_date >= ?", sorted_dates.last, sorted_dates.first)
+  }
+
   def sections
     shift.sections
   end
 
+  def physician_id
+    requester_id
+  end
+
+  def public_note
+    status
+  end
+
+  def duration
+  end
+
+  def shift_title
+    shift.title
+  end
+
+  def dates
+    (start_date..(end_date || start_date)).to_a
+  end
+
   def approve!
-    dates = (start_date..(end_date || start_date)).to_a
     Assignment.create_for_dates(dates,
       :shift_id => shift_id,
       :physician_id => requester_id

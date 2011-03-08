@@ -1,6 +1,7 @@
 /* common schedule elements */
 
 @import "colors";
+$pendingColor: #cc3;
 
 div.schedule-wrapper {
   position: absolute;
@@ -27,7 +28,9 @@ div.schedule-wrapper {
     width: 118px; }
   th.section-week {
     background-color: $mediumBackgroundColor;
-    color: $lightTextColor; } }
+    color: $lightTextColor; }
+  .pending {
+    color: $pendingColor; } }
 
 .paginated-schedule {
   clear: left; }
