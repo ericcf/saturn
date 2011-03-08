@@ -19,19 +19,19 @@
 %table.schedule.wide-schedule
   %thead
     %tr
-      %th
+      %th.empty
         - if @view_mode == "2"
           = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day })
         - else
           = link_to "View by Physician", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => 2)
       - @schedule_presenter.each_col_header do |col_header|
-        %th= render :partial => "schedules/headers/html/#{col_header[:type]}.html", :object => col_header[:object]
+        = render :partial => "schedules/headers/html/#{col_header[:type]}.html", :object => col_header[:object]
 %div.schedule-wrapper
   %table.schedule.wide-schedule
     %tbody
       - @schedule_presenter.each_row do |row|
         %tr{ :class => cycle("odd", "") }
-          %th= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
+          %th><= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
           = render :partial => "schedule_cell.html", :collection => row.cells
 
 %div#rules-conflicts= render "rules_conflicts.html", :physician_names_by_id => @schedule_presenter.physician_names_by_id, :schedule => @schedule_presenter.weekly_schedule, :assignments => @assignments

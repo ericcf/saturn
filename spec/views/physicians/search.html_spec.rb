@@ -44,6 +44,7 @@ describe "physicians/search.html" do
     end
 
     it "renders the weekly_schedule partial" do
+      should_render_partial("schedules/date_header")
       should_render_partial("weekly_schedule.html").once
       render
     end

@@ -1,3 +1,5 @@
+@import "colors";
+
 #schedule-wrapper {
   position: absolute;
   overflow-x: hidden;
@@ -5,7 +7,7 @@
   top: 229px;
   bottom: 8px;
   left: 140px;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid $headerBackgroundColor;
   width: 877px; }
 
 #schedule {
@@ -21,29 +23,29 @@
   box-shadow: -3px 2px 5px 0 rgba(0, 0, 0, 0.5); }
 
 .schedule-headers {
-  border-top: 1px solid #333333;
-  border-right: 1px solid #333333;
-  border-bottom: 1px solid #333333;
+  border-top: 1px solid $headerBackgroundColor;
+  border-right: 1px solid $headerBackgroundColor;
+  border-bottom: 1px solid $headerBackgroundColor;
   float: left;
-  background-color: #e6eae1; }
+  background-color: $tableHeaderBackgroundColor; }
 
 .shift-title {
   font-weight: bold;
   padding-left: 0.5em; }
 
 .shift-week {
-  background-color: #919397;
-  color: #fefefe;
+  background-color: $mediumBackgroundColor;
+  color: $lightTextColor;
   margin-bottom: 9px; }
 
 .shift-week-note {
   position: absolute;
   height: 16px;
-  background-color: #f2ece9;
+  background-color: $oppositeTextColor;
   left: 180px;
   width: 620px;
   padding-left: 0.5em;
-  color: #6e6f72; }
+  color: $baseTextColor; }
 
 .schedule-grid {
   border: none;
@@ -52,7 +54,7 @@
 .shiftDay {
   vertical-align: top;
   width: 118px;
-  min-height: 36px;
+  min-height: 2 * $baseLineHeight;
   padding-top: 2px;
   padding-bottom: 2px; }
 

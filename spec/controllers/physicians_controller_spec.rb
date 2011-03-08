@@ -8,6 +8,8 @@ describe PhysiciansController do
     end
   end
 
+  let(:monday) { Date.today.at_beginning_of_week }
+
   describe "GET 'index'" do
 
     before(:each) do
@@ -33,16 +35,14 @@ describe PhysiciansController do
     context "query parameter present" do
 
       before(:each) do
-        Physician.stub_chain(:section_members, :name_like).
-          and_return([mock_physician])
+        Physician.stub_chain("section_members.name_like") { [mock_physician] }
         mock_shift = stub_model(Shift)
         @mock_assignment = stub_model(Assignment, :shift => mock_shift,
           :physician_id => mock_physician.id)
         mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
         WeeklySchedule.stub_chain("published.include_dates") { [mock_schedule] }
-        Assignment.stub!(:where).
-          with(:physician_id => [mock_physician.id], :date => [Date.today]).
-          and_return([@mock_assignment])
+        mock_schedule.stub_chain("assignments.where.includes").
+         and_return([@mock_assignment])
         get :search, :query => "Boo"
       end
 
@@ -50,7 +50,7 @@ describe PhysiciansController do
 
       it { assigns(:physicians).should eq([mock_physician]) }
 
-      it { assigns(:dates).should eq((Date.today..Date.today+6.days).entries) }
+      it { assigns(:dates).should eq((monday..monday + 6.days).entries) }
 
       it { assigns(:assignments).should eq([@mock_assignment]) }
     end

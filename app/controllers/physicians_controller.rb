@@ -14,11 +14,13 @@ class PhysiciansController < ApplicationController
       @query = params[:query]
       @physicians = Physician.section_members.name_like(params[:query]).
         paginate(:page => params[:page], :per_page => 15)
-      @dates = (Date.today..Date.today+6.days).to_a
+      start_date = params[:date] ? Date.parse(params[:date]) : Date.today.at_beginning_of_week
+      @dates = (start_date..start_date + 6.days).to_a
       schedules = WeeklySchedule.published.include_dates(@dates)
-      dates_with_published_assignments = schedules.map(&:dates).flatten.sort.uniq
-      @assignments = Assignment.
-        where(:physician_id => @physicians.map(&:id), :date => dates_with_published_assignments)
+      @assignments = schedules.map do |schedule|
+        schedule.assignments.where(:physician_id => @physicians.map(&:id)).
+          includes(:shift)
+      end.flatten
     end
   end
 

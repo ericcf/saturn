@@ -142,28 +142,10 @@ form fieldset.buttons {
 .inline_form {
   margin: 0 0.5em; }
 
-div.schedule-wrapper {
-  position: absolute;
-  width: 1001px;
-  top: 251px;
-  bottom: 5px;
-  left: 18px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border-bottom: 1px solid #cccccc; }
-
 table {
   border-collapse: collapse;
   border-left: 1px solid #cccccc;
   border-top: 1px solid #cccccc; }
-  table.schedule {
-    float: left;
-    clear: left; }
-    table.schedule thead th {
-      text-align: center;
-      vertical-align: bottom; }
-    table.schedule td, table.schedule th {
-      width: 120px; }
   table.wide-schedule {
     width: 986px; }
 
@@ -185,9 +167,9 @@ tr {
   tr th {
     background-color: white; }
   tr.odd {
-    background-color: #e6eae1; }
+    background-color: #f7ffff; }
     tr.odd th {
-      background-color: #e6eae1; }
+      background-color: #f7ffff; }
   tr.hover {
     background-color: #4466ff; }
     tr.hover td, tr.hover td a {
@@ -308,9 +290,6 @@ td:last-child .note:hover .note-text {
     float: left; }
   .subheadline h3, .subheadline .inline_form {
     margin: 5px 5px 5px 0px; }
-
-.current-date, .highlight {
-  background-color: #e6eae1; }
 
 .date-label {
   color: #6e8e41;

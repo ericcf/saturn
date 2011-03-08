@@ -14,6 +14,10 @@ module ApplicationHelper
     content_for(:page_title) { text }
   end
 
+  def holiday_title_on(date)
+    (Holiday.where(:date => date).first || Holiday.new).title
+  end
+
   private
 
   # helps determine current tab

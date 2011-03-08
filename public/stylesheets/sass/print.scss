@@ -1,0 +1,43 @@
+body {
+  background: white;
+  font-size: 11pt; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  td, th {
+    width: 12%;
+    font-size: 9pt;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    text-align: left;
+    a, img {
+      display: none; } } }
+
+fieldset.buttons {
+  display: none; }
+
+form, .inline_form, .content_actions {
+  display: none; }
+
+#top-menu, #personal {
+  display: none; }
+
+.navcontainer {
+  display: none; }
+
+#main {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  float: none !important;
+  color: black;
+  background: transparent; }
+
+.note {
+  color: #cccccc; }
+
+// schedules
+.assignment .details {
+  display: none; }

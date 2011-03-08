@@ -1,4 +1,7 @@
 /* common schedule elements */
+
+@import "colors";
+
 div.schedule-wrapper {
   position: absolute;
   width: 1001px;
@@ -7,23 +10,24 @@ div.schedule-wrapper {
   left: 18px;
   overflow-y: auto;
   overflow-x: hidden;
-  border-bottom: 1px solid #cccccc; }
+  border-bottom: 1px solid $tableCellBorderColor; }
 
 .schedule {
-  float: left; }
-  .schedule thead th {
-    background-color: #e6eae1;
+  float: left;
+  thead th {
+    background-color: $tableHeaderBackgroundColor;
     text-align: center;
-    vertical-align: bottom; }
-    .schedule thead th.current-date {
-      background-color: #ffffee; }
-    .schedule thead th.empty {
-      background-color: white; }
-  .schedule td, .schedule th {
+    vertical-align: bottom;
+      &.current-date {
+        background-color: $highlightColor; }
+      &.empty {
+        background-color: white; } }
+
+  td, th {
     width: 119px; }
-  .schedule th.section-week {
-    background-color: #919397;
-    color: #fefefe; }
+  th.section-week {
+    background-color: $mediumBackgroundColor;
+    color: $lightTextColor; } }
 
 .paginated-schedule {
   clear: left; }
@@ -33,7 +37,7 @@ div.schedule-wrapper {
   text-align: center;
   width: 118px;
   font-weight: bold;
-  border-left: 1px solid #333333;
+  border-left: 1px solid $headerBackgroundColor;
   padding: 2px; }
 
 .prepended-column-header {

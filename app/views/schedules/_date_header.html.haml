@@ -1,1 +1,3 @@
-%th{ :class => date == Date.today ? "current-date" : "" }= date.to_s(:short_with_weekday)
+%th{ :class => date == Date.today ? "current-date" : "date" }
+  %div.date-label= holiday_title_on(date)
+  %span= date.to_s(:short_with_weekday)
