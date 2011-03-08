@@ -1,5 +1,8 @@
 - page_title "Schedule for #{@physician.full_name}"
 
+- content_for :stylesheets do
+  = stylesheet_link_tag "schedule"
+
 %h2= @physician.full_name
 
 %h3= "Published Schedule #{@schedule.dates.first.to_s(:long)} - #{@schedule.dates.last.to_s(:long)}"
@@ -14,19 +17,26 @@
   - date = @schedule.dates.first
   = link_to "Download or subscribe to iCalendar", schedule_physician_path(@physician, :format => :ics, :date => { :year => date.year, :month => date.month, :day => date.day })
 
+%div.schedule-column-header.prepended-column-header
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
+  - last_month = @schedule.dates.first - 28
+  %a{ :href => schedule_physician_path(@physician, :date => { :year => last_month.year, :month => last_month.month, :day => last_month.day }) }
+    &laquo; previous
+
 %table.schedule
   %thead
     %tr
-      %th
+      %th.empty
       - %w{ Mon Tue Wed Thu Fri Sat Sun }.each do |day|
         %th= day
   - @schedule.dates.each_slice(7) do |dates|
     %thead
       %tr
-        %th
+        %th.empty
         - dates.each do |date|
           %th{ :class => date == Date.today ? "current-date" : "" }><
-            %span.date-label= @schedule.holiday_title_on(date)
+            %span.date-label= holiday_title_on(date)
             %br
             = date.to_s(:short)
       - @physician.sections.each do |section|
@@ -38,6 +48,13 @@
               %td{ :class => date == Date.today ? "current-date" : "" }= render :partial => "assignment", :collection => assignments, :spacer_template => "break"
             - else
               %td &nbsp;
+
+%div.schedule-column-header.appended-column-header
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
+  - next_month = @schedule.dates.first + 28
+  %a{ :href => schedule_physician_path(@physician, :date => { :year => next_month.year, :month => next_month.month, :day => next_month.day }) }
+    next &raquo;
 
 %div{ :style => "clear:both;height:1em;" } &nbsp;
 

@@ -15,7 +15,8 @@ module ApplicationHelper
   end
 
   def holiday_title_on(date)
-    (Holiday.where(:date => date).first || Holiday.new).title
+    @holidays_by_date ||= Holiday.all.group_by(&:date)
+    (@holidays_by_date[date] || [Holiday.new]).first.title
   end
 
   private

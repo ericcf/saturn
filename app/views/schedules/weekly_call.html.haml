@@ -13,8 +13,8 @@
 %p= link_to "View today", weekly_call_schedule_path
 
 %div.schedule-column-header.prepended-column-header
-  %div.placeholder
-  %div.placeholder
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
   - last_week = @schedule_presenter.dates.first - 7
   %a{ :href => weekly_call_schedule_path(:date => { :year => last_week.year, :month => last_week.month, :day => last_week.day }) }
     &laquo; previous week
@@ -35,8 +35,8 @@
             = render :partial => "schedule_cell.html", :object => @schedule_presenter.summaries_by_section_id_shift_id_and_date(section.id, shift.id, date)
 
 %div.schedule-column-header.appended-column-header
-  %div.placeholder
-  %div.placeholder
+  %div.placeholder &nbsp;
+  %div.placeholder &nbsp;
   - next_week = @schedule_presenter.dates.first + 7
   %a{ :href => weekly_call_schedule_path(:date => { :year => next_week.year, :month => next_week.month, :day => next_week.day }) }
     next week &raquo;

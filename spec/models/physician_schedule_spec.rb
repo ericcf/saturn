@@ -40,12 +40,4 @@ describe PhysicianSchedule do
       schedule.dates.should == [today]
     end
   end
-
-  describe "#holiday_title_on(date)" do
-
-    it "returns the title of the holiday on the given date" do
-      easter = Holiday.create!(:date => today, :title => "Easter")
-      schedule.holiday_title_on(today).should eq("Easter")
-    end
-  end
 end

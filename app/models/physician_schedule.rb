@@ -16,11 +16,6 @@ class PhysicianSchedule
     @dates ||= (@start_date..@start_date + @number_of_days - 1).to_a
   end
 
-  def holiday_title_on(date)
-    @holidays ||= Holiday.where(:date => dates).group_by(&:date)
-    (@holidays[date] || [Holiday.new]).first.title
-  end
-
   def assignments_for_section_and_date(section, date)
     section_assignments = published_assignments_by_section[section] || []
     section_assignments.group_by(&:date)[date]
