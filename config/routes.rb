@@ -75,7 +75,7 @@ Saturn::Application.routes.draw do
         scope "/people" do
           scope :path => "/:physician_id" do
             match "shift_totals", :to => "reports#section_physician_shift_totals",
-              :via => "get", :as => :section_physician_shift_totals 
+              :via => "get", :as => :section_physician_shift_totals
           end
         end
       end

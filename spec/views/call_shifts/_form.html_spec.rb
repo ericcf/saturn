@@ -6,9 +6,8 @@ describe "call_shifts/_form.html" do
   let(:mock_call_shift) { stub_model(CallShift) }
 
   before(:each) do
-    assign(:section, mock_section)
-    assign(:call_shift, mock_call_shift)
-    render
+    render "call_shifts/form", :section => mock_section,
+      :call_shift => mock_call_shift
   end
 
   subject { rendered }

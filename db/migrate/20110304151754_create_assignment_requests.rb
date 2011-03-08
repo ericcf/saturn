@@ -12,6 +12,7 @@ class CreateAssignmentRequests < ActiveRecord::Migration
     end
 
     add_index :assignment_requests, :requester_id
+    add_index :assignment_requests, :shift_id
   end
 
   def self.down

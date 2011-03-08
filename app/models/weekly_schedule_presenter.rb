@@ -81,7 +81,7 @@ class WeeklySchedulePresenter
           index = [physician_index(assignment), date_index(assignment)]
           values[index] ||= []
           values[index] << {
-            :text => assignment.shift.title,
+            :text => assignment.shift_title,
             :note => assignment.public_note,
             :duration => assignment.duration
           }

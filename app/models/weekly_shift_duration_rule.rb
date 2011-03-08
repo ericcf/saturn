@@ -3,7 +3,7 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
   attr_accessible :section, :minimum, :maximum
 
   belongs_to :section
-  
+
   validates :section, :presence => true
   validates_associated :section
   validates :minimum, :maximum, :numericality => {
@@ -34,11 +34,12 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
       end
     end
     assigned_physician_ids = assignments_by_physician_id.keys
-    if minimum
+    if minimum > 0.0
+      # include physicians with zero assignments
       section.member_ids.each do |physician_id|
         unless assigned_physician_ids.include?(physician_id)
           summary = { :physician_id => physician_id, :description => BigDecimal.new('0.0') }
-          @offenders[:below_minimum] << summary if minimum > 0.0
+          @offenders[:below_minimum] << summary
         end
       end
     end

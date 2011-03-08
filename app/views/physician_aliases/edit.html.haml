@@ -1,3 +1,3 @@
 - page_title "Edit aliases for #{@physician.full_name}"
 
-= render :partial => "form.html"
+= render "form", :physician => @physician, :physician_alias => @physician_alias

@@ -2,7 +2,7 @@
   = render "rotation_menu.html"
 
 %div.form-container
-  = semantic_form_for @rotation do |rotation_form|
+  = semantic_form_for rotation do |rotation_form|
     = rotation_form.inputs :title, :description
     = rotation_form.buttons do
       = rotation_form.commit_button

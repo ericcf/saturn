@@ -8,14 +8,12 @@ describe "reports/headers/_physician.html" do
   end
 
   before(:each) do
-    assign(:section, mock_section)
-    render :partial => "reports/headers/physician.html",
-      :locals => {
-        :group_name => "Bar",
-        :physician => mock_physician,
-        :start_date => Date.today,
-        :end_date => Date.tomorrow
-      }
+    render "reports/headers/physician",
+      :section => mock_section,
+      :group_name => "Bar",
+      :physician => mock_physician,
+      :start_date => Date.today,
+      :end_date => Date.tomorrow
   end
 
   subject { rendered }

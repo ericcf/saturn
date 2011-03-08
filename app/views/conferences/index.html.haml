@@ -10,7 +10,7 @@
 %p= link_to "view today", conferences_path
 
 %table
-  %tr 
+  %tr
     %th Title
     %th Presenter
     %th Description
@@ -19,10 +19,10 @@
     %th Location
     %th Contact
     %th Categories
-    %th 
+    %th
 
   - @conferences.each do |conference|
-    %tr 
+    %tr
       %td= conference.title
       %td= conference.presenter
       %td= conference.description

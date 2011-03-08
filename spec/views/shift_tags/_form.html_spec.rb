@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "shift_tags/_form.html" do
 
   let(:mock_section) { stub_model(Section) }
+  let(:mock_shift_tag) { stub_model(ShiftTag).as_new_record }
 
   before(:each) do
-    assign(:section, mock_section)
-    assign(:shift_tag, stub_model(ShiftTag).as_new_record)
-    render
+    render "shift_tags/form", :section => mock_section,
+      :shift_tag => mock_shift_tag
   end
 
   subject { rendered }

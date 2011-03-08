@@ -1,11 +1,11 @@
 %div.form-container
-  = semantic_form_for [@section, @call_shift] do |call_shift_form|
+  = semantic_form_for [section, call_shift] do |call_shift_form|
     = call_shift_form.inputs do
       = call_shift_form.input :title
-      - unless @call_shift.new_record?
-        = call_shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", @section.id), :label => "Sharing"
+      - unless call_shift.new_record?
+        = call_shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", section.id), :label => "Sharing"
     = call_shift_form.buttons do
       = call_shift_form.commit_button :button_html => { :class => "button" }
       %li
         or
-        = link_to "Cancel", section_call_shifts_path(@section)
+        = link_to "Cancel", section_shifts_path(section)

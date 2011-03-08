@@ -7,5 +7,6 @@
     = render "shared/personal"
     = render "shared/flash_banner.html"
     %div#main
-      = render "sections/content_menu"
+      - date = @dates ? @dates.first : Date.today
+      = render "sections/content_menu", :section => @section, :date => date
       = yield :layout

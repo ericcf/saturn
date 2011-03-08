@@ -1,2 +1,2 @@
 - header_class = cycle("odd #{group_name}", "#{group_name}", :name => "header")
-%th.physician_name{ :class => header_class, :title => physician.full_name }= link_to physician.initials, section_physician_shift_totals_path(@section, physician, :start_date => start_date, :end_date => end_date)
+%th.physician_name{ :class => header_class, :title => physician.full_name }= link_to physician.initials, section_physician_shift_totals_path(section, physician, :start_date => start_date, :end_date => end_date)

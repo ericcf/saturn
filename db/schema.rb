@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
   end
 
   add_index "assignment_requests", ["requester_id"], :name => "index_assignment_requests_on_requester_id"
+  add_index "assignment_requests", ["shift_id"], :name => "index_assignment_requests_on_shift_id"
 
   create_table "assignments", :force => true do |t|
     t.integer  "shift_id",                                                  :null => false

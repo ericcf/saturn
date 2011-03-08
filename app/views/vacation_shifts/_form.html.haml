@@ -1,11 +1,11 @@
 %div.form-container
-  = semantic_form_for [@section, @vacation_shift] do |vacation_shift_form|
+  = semantic_form_for [section, vacation_shift] do |vacation_shift_form|
     = vacation_shift_form.inputs do
       = vacation_shift_form.input :title
-      - unless @vacation_shift.new_record?
-        = vacation_shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", @section.id), :label => "Sharing"
+      - unless vacation_shift.new_record?
+        = vacation_shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", section.id), :label => "Sharing"
     = vacation_shift_form.buttons do
       = vacation_shift_form.commit_button :button_html => { :class => "button" }
       %li
         or
-        = link_to "Cancel", section_vacation_shifts_path(@section)
+        = link_to "Cancel", section_shifts_path(section)

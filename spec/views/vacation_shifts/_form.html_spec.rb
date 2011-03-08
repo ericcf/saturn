@@ -6,9 +6,8 @@ describe "vacation_shifts/_form.html" do
   let(:mock_vacation_shift) { stub_model(VacationShift) }
 
   before(:each) do
-    assign(:section, mock_section)
-    assign(:vacation_shift, mock_vacation_shift)
-    render
+    render "vacation_shifts/form", :section => mock_section,
+      :vacation_shift => mock_vacation_shift
   end
 
   subject { rendered }

@@ -6,7 +6,7 @@
       %th
       - @shift_totals_report.physicians_by_group.each do |group, physicians|
         %th= group.title
-        = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :group_name => nil, :start_date => @start_date, :end_date => @end_date }
+        = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :section => @section, :group_name => nil, :start_date => @start_date, :end_date => @end_date }
   %tbody
     - totals_by_physician_id_and_day = @shift_totals_report.totals_by_physician_id_and_day(@shift.id)
     - totals_by_group_id_and_day = @shift_totals_report.totals_by_group_id_and_day(@shift.id)

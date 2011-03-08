@@ -6,9 +6,8 @@ describe "assignment_requests/_form.html" do
   let(:mock_assignment_request) { stub_model(AssignmentRequest) }
 
   before(:each) do
-    assign(:section, mock_section)
-    render :partial => "assignment_requests/form",
-      :locals => { :assignment_request => mock_assignment_request }
+    render "assignment_requests/form",
+      :assignment_request => mock_assignment_request, :section => mock_section
   end
 
   subject { rendered }

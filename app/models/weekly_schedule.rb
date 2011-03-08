@@ -114,7 +114,7 @@ class WeeklySchedule < ActiveRecord::Base
       ].join("")
     end.join(",")}]"
   end
-  
+
   def shift_weeks_json
     assignments_by_shift_id_and_date = read_only_assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift_id, assignment.date]] ||= []
