@@ -32,15 +32,12 @@ describe Tables::TabularStore do
     end
   end
 
-  describe "#each_row" do
+  describe "#rows" do
 
-    it "yields TabularRow objects" do
-      yielded = []
-      @store.each_row do |row|
-        yielded << row
-      end
-      yielded.size.should == 1
-      row = yielded.first
+    it "returns TabularRow objects" do
+      rows = @store.rows
+      rows.size.should == 1
+      row = rows.first
       row.should be_a(Tables::TabularRow)
       yielded_values = []
       row.each_value do |value|

@@ -14,8 +14,7 @@ class WeeklySchedulePresenter
   end
 
   def shifts
-    @shifts ||= section.active_shifts(:as_of => dates.first).
-      includes(:shift_tags)
+    @shifts ||= weekly_schedule.shifts
   end
 
   private
@@ -35,7 +34,7 @@ class WeeklySchedulePresenter
   # calculate the week note for the specified shift
   def week_note(shift_id)
     @note_by_shift_id ||= weekly_schedule.shift_week_notes.group_by(&:shift_id)
-    (@note_by_shift_id[shift_id] || [ShiftWeekNote.new]).first
+    (@note_by_shift_id[shift_id] || [ShiftWeekNote.new]).first.text
   end
 
   # calculate the display color for the specified shift
@@ -58,13 +57,12 @@ class WeeklySchedulePresenter
       dates.map { |d| { :object => d, :type => "date" } }
     when :shifts
       shifts.map do |s|
-        note = week_note(s.id)
         {
           :object => {
             :title => title(s.id),
             :color => display_color(s.id),
             :phone => s.phone,
-            :note => note.text
+            :note => week_note(s.id)
           },
           :type => "shift"
         }
@@ -121,12 +119,13 @@ class WeeklySchedulePresenter
       values[index] ||= []
       values[index] << assignment_summary(assignment)
     end
-    weekly_schedule.assignment_requests.each do |request|
+    weekly_schedule.assignment_requests.pending.each do |request|
       request.dates.each do |request_date|
         virtual_request = AssignmentRequest.new(:start_date => request_date,
           :requester_id => request.requester_id,
           :shift_id => request.shift_id
         )
+        virtual_request[:status] = request.status
         index = request_key(virtual_request)
         values[index] ||= []
         values[index] << assignment_summary(virtual_request, request.status)

@@ -22,6 +22,7 @@ class AssignmentRequest < ActiveRecord::Base
     sorted_dates = dates.sort
     where("start_date <= ? or end_date >= ?", sorted_dates.last, sorted_dates.first)
   }
+  scope :pending, where(:status => STATUS[:pending])
 
   def sections
     shift.sections

@@ -26,7 +26,7 @@ row += 1
 col = 0
 widest_row_header = @schedule_presenter.row_headers.map{ |h| h[:object][:title].size }.max
 sheet1.column(col).width = widest_row_header + 3
-@schedule_presenter.each_row do |row_data|
+@schedule_presenter.rows.each do |row_data|
   sheet1[row, col] = render :partial => "schedules/headers/plain/#{row_data.header[:type]}", :object => row_data.header[:object]
   col += 1
   row_data.each_value do |cell|

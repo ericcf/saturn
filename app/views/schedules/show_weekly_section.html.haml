@@ -29,7 +29,7 @@
 %div.schedule-wrapper
   %table.schedule.wide-schedule
     %tbody
-      - @schedule_presenter.each_row do |row|
+      - @schedule_presenter.rows.each do |row|
         %tr{ :class => cycle("odd", "") }
           %th><= render :partial => "schedules/headers/html/#{row.header[:type]}.html", :object => row.header[:object]
           = render :partial => "schedule_cell.html", :collection => row.cells
