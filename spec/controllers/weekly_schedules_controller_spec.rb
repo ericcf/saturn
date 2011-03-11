@@ -47,4 +47,35 @@ describe WeeklySchedulesController do
       end
     end
   end
+
+  describe "POST create" do
+
+    before(:each) do
+      controller.should_receive(:authenticate_user!)
+      controller.should_receive(:authorize!).with(:update, mock_section)
+    end
+
+    context "no schedule exists for the section and date" do
+
+      before(:each) do
+        WeeklySchedule.stub!(:find_by_section_id_and_date)
+        WeeklySchedule.stub!(:create).
+          with(:section_id => mock_section.id, :date => monday).
+          and_return(mock_schedule)
+        mock_schedule.stub!(:update_attributes)
+        mock_schedule.stub!(:touch)
+        WeeklySchedule.stub!(:find).with(mock_schedule.id) { mock_schedule }
+        post :create,
+          :section_id => mock_section.id,
+          :weekly_schedule => {
+            :date => monday
+          }.to_json,
+          :format => :json
+      end
+
+      it "assigns a newly created schedule to @weekly_schedule" do
+        assigns(:weekly_schedule).should eq(mock_schedule)
+      end
+    end
+  end
 end

@@ -36,7 +36,7 @@ class WeeklySchedulesController < ApplicationController
     @weekly_schedule = WeeklySchedule.find_by_section_id_and_date(
       @section.id,
       start_date
-    ) || WeeklySchedule.new(
+    ) || WeeklySchedule.create(
       :section_id => @section.id,
       :date => start_date
     )
