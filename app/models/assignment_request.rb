@@ -55,6 +55,22 @@ class AssignmentRequest < ActiveRecord::Base
     update_attribute(:status, STATUS[:approved])
   end
 
+  def to_json
+    [
+    "{",
+      "\"date\":\"#{start_date}\",",
+      "\"duration\":null,",
+      "\"id\":null,",
+      "\"position\":1,",
+      "\"private_note\":null,",
+      "\"public_note\":\"request #{status}\",",
+      "\"immutable\":true,",
+      "\"shift_id\":#{shift_id},",
+      "\"physician_id\":#{requester_id}",
+    "}"
+    ].join("")
+  end
+
   private
 
   def end_date_on_or_after_start_date?

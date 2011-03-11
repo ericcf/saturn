@@ -123,21 +123,40 @@ class WeeklySchedule < ActiveRecord::Base
     end.join(",")}]"
   end
 
-  def shift_weeks_json
-    assignments_by_shift_id_and_date = read_only_assignments.each_with_object({}) do |assignment, hsh|
+  def assignments_by_shift_id_and_date
+    return @mapped_assignments if @mapped_assignments
+    @mapped_assignments =
+        read_only_assignments.each_with_object({}) do |assignment, hsh|
       hsh[[assignment.shift_id, assignment.date]] ||= []
       hsh[[assignment.shift_id, assignment.date]] << assignment
     end
-    notes_by_shift_id = shift_week_notes.each_with_object({}) do |note, hsh|
+    assignment_requests.pending.each do |request|
+      request.dates.each do |date|
+        key = [request.shift_id, date]
+        @mapped_assignments[key] ||= []
+        @mapped_assignments[key] << AssignmentRequest.new(:start_date => date,
+          :requester_id => request.requester_id,
+          :shift_id => request.shift_id
+        )
+      end
+    end
+    @mapped_assignments
+  end
+
+  def shift_week_note(shift)
+    @notes_by_shift_id ||= shift_week_notes.each_with_object({}) do |note, hsh|
       hsh[note.shift_id] = note
     end
+    @notes_by_shift_id[shift.id] || ShiftWeekNote.new(:shift_id => shift.id)
+  end
+
+  def shift_weeks_json
     section.active_shifts(:as_of => date).select("shifts.id, shifts.title").map do |shift|
-      shift_week_note = notes_by_shift_id[shift.id] || ShiftWeekNote.new(:shift_id => shift.id)
       [
       "{",
         "\"shift_id\":#{shift.id},",
         "\"shift_title\":#{shift.title.to_json},",
-        shift_week_note.to_json + ",",
+        shift_week_note(shift).to_json + ",",
         "\"shift_days\":[#{dates.map do |day|
           [
           "{",

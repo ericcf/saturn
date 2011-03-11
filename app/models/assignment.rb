@@ -46,16 +46,14 @@ class Assignment < ActiveRecord::Base
   def to_json
     [
     "{",
-      #"\"assignment\":{",
-        "\"date\":\"#{date}\",",
-        "\"duration\":#{duration || "null"},",
-        "\"id\":#{id},",
-        "\"position\":#{position},",
-        "\"private_note\":#{private_note.to_json || "null"},",
-        "\"public_note\":#{public_note.to_json || "null"},",
-        "\"shift_id\":#{shift_id},",
-        "\"physician_id\":#{physician_id}",
-      #"}",
+      "\"date\":\"#{date}\",",
+      "\"duration\":#{duration || "null"},",
+      "\"id\":#{id},",
+      "\"position\":#{position},",
+      "\"private_note\":#{private_note.to_json || "null"},",
+      "\"public_note\":#{public_note.to_json || "null"},",
+      "\"shift_id\":#{shift_id},",
+      "\"physician_id\":#{physician_id}",
     "}"
     ].join("")
   end

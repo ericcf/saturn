@@ -65,11 +65,20 @@ $(function() {
         $("#assignment-details")
             .dialog("option", "title", options.title)                   
             .dialog('open');
+        if (options.deleteDisabled) {
+            $(":button:contains('Delete assignment')")
+                .attr("disabled", "disabled")
+                .addClass('ui-state-disabled');
+        } else {
+            $(":button:contains('Delete assignment')")
+                .removeAttr("disabled")
+                .removeClass("ui-state-disabled");
+        }
     }
 
     function openDirectoryDialog() {
-                $("#physician-groups").tabs("destroy");
-                $("#physician-groups").tabs();
+        $("#physician-groups").tabs("destroy");
+        $("#physician-groups").tabs();
         if ($("#physician-groups").dialog("isOpen")) return;
         $("#physician-groups").dialog("open");
     }
@@ -146,6 +155,9 @@ $(function() {
 
     ko.bindingHandlers.assignmentDragging = {
         init: function(element, valueAccessor, allBindingsAccessor, assignment) {
+            var value = valueAccessor();
+            var assignmentIsImmutable = ko.utils.unwrapObservable(value);
+            if (assignmentIsImmutable) { return; };
             var lastReceiver = null;
             function getReceiver(dragging, event) {
                 $(dragging).hide();
@@ -201,7 +213,10 @@ $(function() {
             var value = valueAccessor();
             var assignmentIsInEditMode = ko.utils.unwrapObservable(value);
             if (assignmentIsInEditMode == true) {
-                openDetailsDialog({ title: assignment.physician_name });
+                openDetailsDialog({
+                    title: assignment.physician_name,
+                    deleteDisabled: assignment.immutable()
+                });
             }
         }
     };

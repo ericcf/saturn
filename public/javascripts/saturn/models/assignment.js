@@ -14,6 +14,7 @@ var assignment = function(attributes) {
     this.public_note = ko.observable("");
     this.private_note = ko.observable("");
     this.duration = ko.observable(null);
+    this.immutable = ko.observable(false);
     this.inEditMode = ko.observable(false);
     this.inDraggingMode = ko.observable(false);
     this.inHoveringMode = ko.observable(false);
