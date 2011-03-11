@@ -1,10 +1,7 @@
 - page_title "Manage #{@section.title} shifts"
 
 - content_for :javascripts do
-  = javascript_include_tag 'sections/section_shifts'
-  = javascript_include_tag 'sections/shift'
-  = javascript_include_tag 'sections/shift_tags'
-  = javascript_include_tag 'syronex-colorpicker', 'shared/color_picker'
+  = javascript_include_tag 'sections/section_shifts', 'sections/shift', 'sections/shift_tags', 'third_party/syronex-colorpicker', 'shared/color_picker', :cache => "cache/shifts_manager"
 
 - content_for :stylesheets do
   = stylesheet_link_tag 'shifts'
