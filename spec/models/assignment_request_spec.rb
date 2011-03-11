@@ -7,7 +7,11 @@ describe AssignmentRequest do
     stub_model(Physician, :shifts => [mock_shift], :valid? => true)
   end
   let(:mock_shift) do
-    mock_model(Shift, :sections => [mock_section], :valid? => true)
+    mock_model(Shift,
+      :sections => [mock_section],
+      :title => "Clinic",
+      :valid? => true
+    )
   end
   let(:today) { Date.today }
   let(:valid_attributes) do

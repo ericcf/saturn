@@ -1,0 +1,7 @@
+%p
+  Your request was approved for:
+  %br
+  %br
+  = "#{@shift_title}, #{@date_range}"
+
+%p= link_to "View your schedule here", schedule_physician_url(@requester)

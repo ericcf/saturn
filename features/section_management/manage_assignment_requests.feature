@@ -16,7 +16,7 @@ Background:
     And I press "Create Assignment request"
 
 Scenario: Be notified of a new request
-   Then I should have received an email at "harold@foo.com" with the subject "Saturn: Julia Child submitted a request"
+   Then "harold@foo.com" should have received an email with the subject "Saturn: Julia Child submitted a request"
 
 Scenario: Approve a pending request
      And I go to the assignment requests page for the "MSK" section
@@ -25,3 +25,4 @@ Scenario: Approve a pending request
      And I should see "Successfully approved assignment request"
      And I should see "Approved"
      And "Julia Child" should be assigned to "Kitchen" in "MSK" on today's date
+     And physician "Julia Child" should have received an email with the subject "Saturn: Request approved"

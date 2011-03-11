@@ -13,4 +13,25 @@ describe AssignmentRequestObserver do
     mock_notification.should_receive(:deliver)
     observer.after_create(mock_request)
   end
+
+  context "when a request is updated" do
+
+    before(:each) do
+      PhysicianNotifications.stub!(:assignment_request_approved).
+        with(mock_request).
+        and_return(mock_notification)
+    end
+
+    it "sends a physician notification if the request is approved" do
+      mock_notification.should_receive(:deliver)
+      mock_request.stub!(:status) { AssignmentRequest::STATUS[:approved] }
+      observer.after_update(mock_request)
+    end
+
+    it "doesn't send a physician notification if the request is pending" do
+      mock_notification.should_not_receive(:deliver)
+      mock_request.stub!(:status) { AssignmentRequest::STATUS[:pending] }
+      observer.after_update(mock_request)
+    end
+  end
 end
