@@ -250,11 +250,13 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.boolean  "admin",                               :default => false
+    t.integer  "physician_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["physician_id"], :name => "index_users_on_physician_id", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
 

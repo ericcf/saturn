@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/ericcf/deadbolt.git
-  revision: 8f343ab3edab19248b1aee35b7db122b119fbafc
+  revision: 5cfb87752116a351423fd09b6bf64471ef9971b5
   specs:
-    deadbolt (0.0.4)
+    deadbolt (0.0.6)
       cancan (~> 1.4.0)
       devise (~> 1.1.3)
       formtastic (~> 1.1.0)

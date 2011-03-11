@@ -27,6 +27,11 @@ RadDirectory::Person.class_eval do
     "#{given_name[0, 1]}. #{family_name}".strip
   end
 
+  def work_email
+    email = emails.find_by_category("work")
+    email.present? ? email.value : ""
+  end
+
   def to_json
     [
       "{\"physician\":",

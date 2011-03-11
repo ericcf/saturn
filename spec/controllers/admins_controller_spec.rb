@@ -5,8 +5,8 @@ describe AdminsController do
   before(:each) do
     @mock_section = stub_model(Section)
     Section.stub!(:find) { @mock_section }
-    @mock_user = stub_model(Deadbolt::User)
-    Deadbolt::User.stub!(:all) { [@mock_user] }
+    @mock_user = stub_model(User)
+    User.stub!(:all) { [@mock_user] }
     controller.should_receive(:authenticate_user!)
     controller.should_receive(:authorize!).with(:manage, @mock_section)
   end
@@ -26,7 +26,7 @@ describe AdminsController do
   describe "PUT 'update'" do
 
     before(:each) do
-      @mock_user = stub_model(Deadbolt::User)
+      @mock_user = stub_model(User)
     end
 
     it "updates the section with administrator ids" do

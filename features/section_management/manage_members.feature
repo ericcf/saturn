@@ -3,8 +3,16 @@ Feature: Manage members
   A section administrator
   Should be able to manage section members
 
-Scenario: View the membership page
+Background:
   Given a section "General"
+    And a "Faculty" member "Spud McKenzie"
     And I am an authenticated section administrator for "General"
-   When I go to manage new memberships page for "General"
-   Then I should see "Add Members"
+
+Scenario: Add a member
+   When I go to the memberships page for "General"
+    And I follow "Add Members"
+   Then I should be on the add new memberships page for "General"
+   When I check "Spud McKenzie" within "form"
+    And I press "Update Section"
+   Then I should see "Successfully updated section"
+    And there should be a user that belongs to "Spud McKenzie"

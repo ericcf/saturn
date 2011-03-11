@@ -4,7 +4,7 @@ module SectionHelper
     Physician.find_by_given_name_and_family_name(given_name, family_name) || (
       physician = Physician.new
       physician.given_name = given_name; physician.family_name = family_name
-      physician.save
+      physician.save!
       physician
     )
   end
@@ -35,11 +35,17 @@ Given /^a section "([^"]*)"$/ do |title|
   find_or_create_section(title)
 end
 
-Given /^a section "([^"]*)" with a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |section_title, group_title, given_name, family_name|
+Given /^a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |group_title, given_name, family_name|
+  Given %{a physician "#{given_name} #{family_name}"}
   physician = find_or_create_physician(given_name, family_name)
-  section = find_or_create_section(section_title)
   group = find_or_create_group(group_title)
   group.members << physician unless group.members.include? physician
+end
+
+Given /^a section "([^"]*)" with a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |section_title, group_title, given_name, family_name|
+  Given %{a "#{group_title}" member "#{given_name} #{family_name}"}
+  physician = find_or_create_physician(given_name, family_name)
+  section = find_or_create_section(section_title)
   section.memberships.create(:physician_id => physician.id)
 end
 
@@ -102,7 +108,7 @@ Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" ((?:\d{4}-\d{2}-
 end
 
 Given /^User "([^"]*)" is a section administrator for the "([^"]*)" section$/ do |user_email, section_title|
-  user = Deadbolt::User.find_by_email(user_email)
+  user = User.find_by_email(user_email)
   section = find_or_create_section(section_title)
   section.administrator_ids = section.administrator_ids.concat([user.id])
 end

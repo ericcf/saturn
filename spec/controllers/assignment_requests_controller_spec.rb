@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe AssignmentRequestsController do
 
+  include Devise::TestHelpers
+
   def mock_request(stubs={})
     (@mock_request ||= mock_model(AssignmentRequest).as_null_object).tap do |v_request|
       v_request.stub(stubs) unless stubs.empty?
@@ -9,6 +11,7 @@ describe AssignmentRequestsController do
   end
 
   let(:mock_section) { mock_model(Section, :assignment_requests => []) }
+  let(:mock_user) { mock_model(User, :physician_id => 7) }
 
   before(:each) do
     Section.stub!(:find).with(mock_section.id) { mock_section }
@@ -26,18 +29,44 @@ describe AssignmentRequestsController do
 
   describe "GET new" do
 
-    before(:each) do
-      AssignmentRequest.should_receive(:new) { mock_request }
+    it "should redirect if the user is not authenticated" do
+      sign_out mock_user
       get :new, :section_id => mock_section.id
+      should redirect_to(new_user_session_path)
     end
 
-    it { assigns(:assignment_request).should eq(mock_request) }
+    context "when the user is authenticated" do
+
+      before(:each) do
+        controller.stub!(:authenticate_user!)
+        controller.stub!(:current_user) { mock_user }
+        AssignmentRequest.should_receive(:new).
+          with(:requester_id => mock_user.physician_id).
+          and_return(mock_request)
+        get :new, :section_id => mock_section.id
+      end
+
+      it { assigns(:assignment_request).should eq(mock_request) }
+    end
   end
 
   describe "POST create" do
 
     before(:each) do
+      controller.should_receive(:authenticate_user!)
+      controller.stub!(:authorize!)
+      controller.stub!(:current_user) { mock_user }
       AssignmentRequest.stub!(:new) { mock_request }
+    end
+
+    context "the current user is not associated with the requester" do
+
+      it "should determine if the user is authorized to manage the section" do
+        mock_user.stub!(:physician_id)
+        controller.should_receive(:authorize!).with(:manage, mock_section)
+        post :create, :section_id => mock_section.id,
+          :assignment_request => { :requester_id => mock_user.physician_id }
+      end
     end
 
     context "always" do

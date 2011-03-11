@@ -1,19 +1,22 @@
 class AssignmentRequestsController < ApplicationController
   include SectionResourceController
 
-  before_filter :authenticate_user!, :except => [:index, :new, :create]
+  before_filter :authenticate_user!, :except => [:index]
 
   def index
     @assignment_requests = @section.assignment_requests
   end
 
   def new
-    @assignment_request = AssignmentRequest.new
+    @assignment_request = AssignmentRequest.new(:requester_id => current_user.physician_id)
   end
 
   def create
     @assignment_request = AssignmentRequest.new(params[:assignment_request])
 
+    if @assignment_request.requester_id != current_user.physician_id
+      authorize! :manage, @section
+    end
     if @assignment_request.save
       flash[:notice] = "Successfully submitted assignment request"
       return(redirect_to section_assignment_requests_path(@section))

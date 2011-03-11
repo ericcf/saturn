@@ -58,3 +58,9 @@ if defined?(ActiveRecord::Base)
   rescue LoadError => ignore_if_database_cleaner_not_present
   end
 end
+
+# hacky method of truncating directory database because I cannot get
+# database cleaner to do the job
+Before do
+  Physician.delete_all
+end

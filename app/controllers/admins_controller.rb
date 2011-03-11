@@ -1,4 +1,5 @@
 class AdminsController < ApplicationController
+
   include SectionResourceController
 
   before_filter :authenticate_user!
@@ -6,7 +7,7 @@ class AdminsController < ApplicationController
   def show
     authorize! :manage, @section
     @section.create_admin_role
-    @users = Deadbolt::User.all
+    @users = User.all
   end
 
   def update

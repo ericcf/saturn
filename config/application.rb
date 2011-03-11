@@ -24,7 +24,8 @@ module Saturn
     end
 
     # Activate observers that should always be running.
-    config.active_record.observers = :assignment_request_observer
+    config.active_record.observers = :assignment_request_observer,
+      :section_membership_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.

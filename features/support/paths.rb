@@ -63,7 +63,9 @@ module NavigationHelpers
       end
 
     # section management
-    when /manage new memberships page for \"([^"]+)\"/
+    when /the memberships page for \"([^"]+)\"/
+      section_memberships_path(find_section($1))
+    when /the add new memberships page for \"([^"]+)\"/
       manage_new_section_memberships_path(find_section($1))
     when /the schedule rules page for \"([^"]+)\"/
       section_rules_path(find_section($1))

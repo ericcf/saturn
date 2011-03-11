@@ -14,7 +14,7 @@
       - @physicians.each do |physician|
         %li
           = check_box_tag "section[memberships_attributes][][physician_id]", physician.id
-          = label_tag :physician_id, physician.full_name
+          = label_tag :section_memberships_attributes__physician_id, physician.full_name
     = section_form.buttons do
       = section_form.commit_button :button_html => { :class => "button" }
       %li

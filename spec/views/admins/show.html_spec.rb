@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "admins/show.html.haml" do
 
   let(:mock_section) { stub_model(Section) }
-  let(:mock_users) { [stub_model(Deadbolt::User)] }
+  let(:mock_users) { [stub_model(User)] }
 
   before(:each) do
     assign(:section, mock_section)

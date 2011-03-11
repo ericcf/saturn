@@ -6,9 +6,9 @@ describe "schedules/show_weekly_section.html" do
   let(:dates) { [Date.today] }
   let(:mock_presenter) do
     stub_model(WeeklySchedulePresenter,
-      :weekly_schedule => stub_model(WeeklySchedule),
+      :weekly_schedule => mock_model(WeeklySchedule),
       :each_col_header => nil,
-      :each_row => nil,
+      :rows => [],
       :dates => dates
     )
   end
