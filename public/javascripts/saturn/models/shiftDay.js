@@ -16,6 +16,8 @@ var shiftDay = function(attributes) {
 
     // observables
 
+    this.date = ko.observable(undefined);
+    this.shift_id = ko.observable(undefined);
     this.assignments = ko.observableArray([]);
     this.inSelectedMode = ko.observable(false);
     this.inHoverMode = ko.observable(false);

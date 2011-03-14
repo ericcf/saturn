@@ -1,4 +1,7 @@
 var shiftWeek = function(attributes) {
+
+    // private attributes
+
     var self = this;
     var schedule = undefined;
     var mapping = {
@@ -11,10 +14,31 @@ var shiftWeek = function(attributes) {
             }
         }
     };
+    var ignoreNextNoteChange = false;
 
+    // public attributes
+
+    this.shift_title = ko.observable(undefined);
+    this.shift_days = ko.observableArray([]);
     this.shift_week_note = {
         text: ko.observable(undefined),
         shift_id: ko.observable(undefined)
+    };
+    this.defaultNote = "add note...";
+
+    // public methods
+    
+    this.showDefaultNote = function() {
+        if (this.shift_week_note.text() == "") {
+            this.shift_week_note.text(this.defaultNote);
+        }
+    };
+
+    this.hideDefaultNote = function() {
+        if (this.shift_week_note.text() == this.defaultNote) {
+            ignoreNextNoteChange = true;
+            this.shift_week_note.text("");
+        }
     };
 
     this.setSchedule = function(model) {
@@ -49,22 +73,25 @@ var shiftWeek = function(attributes) {
 
     ko.mapping.fromJS(attributes, mapping, this);
 
+    // subscriptions
+
     if (this.shift_week_note.text() == "") {
-        this.shift_week_note.text("add note...");
+        this.shift_week_note.text(this.defaultNote);
     }
     var lastNote = this.shift_week_note.text();
     this.shift_week_note.text.subscribe(function(newNote) {
-        if (newNote == "add note..." || newNote == lastNote || newNote == "" && self.shift_week_note.id == undefined) {
+        if (newNote == self.defaultNote || newNote == lastNote || newNote == "" && self.shift_week_note.id == undefined) {
             lastNote = newNote;
-            if (newNote == "") {
-                self.shift_week_note.text("add note...");
+            if (!ignoreNextNoteChange && newNote == "") {
+                self.shift_week_note.text(self.defaultNote);
             }
+            ignoreNextNoteChange = false;
             return;
         }
         lastNote = newNote;
         self.save();
         if (newNote == "") {
-            self.shift_week_note.text("add note...");
+            self.shift_week_note.text(self.defaultNote);
         }
     });
 };
