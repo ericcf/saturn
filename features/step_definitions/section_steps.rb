@@ -122,7 +122,7 @@ Given /^I am an authenticated section administrator for "([^"]*)"$/ do |section_
 end
 
 Then /^I should be able to view the edit weekly schedule page for "([^"]*)"$/ do |section_title|
-  Given %{I go to edit weekly schedule page for "#{section_title}"}
+  Given %{I go to the edit weekly schedule page for "#{section_title}"}
   Then %{I should see "Editing the week of "}
 end
 

@@ -54,13 +54,17 @@ module NavigationHelpers
       shift_totals_report_section_reports_path(find_section($1))
     when /the totals by day page for the \"([^"]+)\" shift in \"([^"]+)\"/
       totals_by_day_section_reports_path(find_section($2), find_shift($1))
-    when /edit weekly schedule page for \"([^"]+)\"(?: on (\d{4}-\d{2}-\d{2}))?/
+    when /the edit weekly schedule page for \"([^"]+)\"(?: on (\d{4}-\d{2}-\d{2}))?/
       section = find_section($1)
       if $2
         edit_section_weekly_schedules_path(section, :anchor => $2)
       else
         edit_section_weekly_schedules_path(section)
       end
+    when /the edit weekly schedule page for \"([^"]+)\" on the first of the month/
+      first_day = Date.today.at_beginning_of_month
+      section = find_section($1)
+      edit_section_weekly_schedules_path(section, :anchor => first_day.to_s(:rfc822))
 
     # section management
     when /the memberships page for \"([^"]+)\"/

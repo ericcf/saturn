@@ -2,10 +2,10 @@
   position: absolute;
   overflow-x: hidden;
   overflow-y: auto;
-  top: 229px;
+  top: 231px;
   bottom: 8px;
   left: 140px;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid #919397;
   width: 877px; }
 
 #schedule {
@@ -21,9 +21,9 @@
   box-shadow: -3px 2px 5px 0 rgba(0, 0, 0, 0.5); }
 
 .schedule-headers {
-  border-top: 1px solid #333333;
-  border-right: 1px solid #333333;
-  border-bottom: 1px solid #333333;
+  border-top: 1px solid #919397;
+  border-right: 1px solid #919397;
+  border-bottom: 1px solid #919397;
   float: left;
   background-color: #e6eae1; }
 
