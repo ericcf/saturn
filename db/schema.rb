@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
     t.string  "description"
     t.decimal "duration",    :precision => 2, :scale => 1, :default => 0.5, :null => false
     t.string  "phone"
+    t.string  "cached_slug"
   end
 
   create_table "slugs", :force => true do |t|

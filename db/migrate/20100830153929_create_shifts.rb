@@ -6,6 +6,7 @@ class CreateShifts < ActiveRecord::Migration
       t.string :description
       t.decimal :duration, :null => false, :precision => 2, :scale => 1, :default => 0.5
       t.string :phone
+      t.string :cached_slug
     end
   end
 

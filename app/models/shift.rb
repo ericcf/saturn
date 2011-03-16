@@ -3,6 +3,8 @@ class Shift < ActiveRecord::Base
   attr_accessible :title, :description, :duration, :phone, :section_ids,
     :shift_tags
 
+  has_friendly_id :title, :use_slug => true
+
   with_options :dependent => :destroy do |assoc|
     assoc.has_many :shift_week_notes
     assoc.has_many :section_shifts
