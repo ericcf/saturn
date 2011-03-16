@@ -18,6 +18,7 @@ div.schedule-wrapper {
     .schedule thead th.current-date {
       background-color: #ffffee; }
     .schedule thead th.empty {
+      border-top: none;
       background-color: white; }
   .schedule td, .schedule th {
     width: 118px; }
@@ -26,6 +27,33 @@ div.schedule-wrapper {
     color: #fefefe; }
   .schedule .pending {
     color: #cccc33; }
+  .schedule .schedule-row {
+    height: 5em; }
+
+.block-schedule td, .block-schedule th {
+  border-bottom: none; }
+
+.schedule-header {
+  border-left: 1px solid white;
+  border-top: none; }
+  .schedule-header thead th {
+    border-top: 1px solid #cccccc;
+    background-color: #c8d0bf; }
+
+.schedule-row-header {
+  border-left: 1px solid white;
+  border-top: none; }
+  .schedule-row-header thead th {
+    border-bottom: 1px solid #cccccc; }
+
+.schedule-row {
+  border-top: none; }
+  .schedule-row tbody th {
+    vertical-align: middle;
+    border-left: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc; }
+  .schedule-row tbody td {
+    border-bottom: 1px solid #cccccc; }
 
 .paginated-schedule {
   clear: left; }

@@ -24,28 +24,33 @@
   %a{ :href => schedule_physician_path(@physician, :date => { :year => last_month.year, :month => last_month.month, :day => last_month.day }) }
     &laquo; previous
 
-%table.schedule
-  %thead
-    %tr
-      %th.empty
-      - %w{ Mon Tue Wed Thu Fri Sat Sun }.each do |day|
-        %th= day
-  - @schedule.dates.each_slice(7) do |dates|
+- today = Date.today
+%div.schedule.block-schedule
+  %table.schedule-header
     %thead
       %tr
         %th.empty
-        - dates.each do |date|
-          %th{ :class => date == Date.today ? "current-date" : "" }><
-            %span.date-label= holiday_title_on(date)
-            %br
-            = date.to_s(:short)
-      - @physician.sections.each do |section|
+        - weekdays = %w{ Mon Tue Wed Thu Fri Sat Sun }
+        - weekdays.each_with_index do |day, index|
+          %th{ :class => index + 1 == today.wday ? "current-date" : ""}= day
+  - @schedule.dates.each_slice(7) do |dates|
+    %table.schedule-row-header
+      %thead
+        %tr
+          %th.empty
+          - dates.each do |date|
+            %th{ :class => date == today ? "current-date" : "" }><
+              %span.date-label= holiday_title_on(date)
+              %br
+              = date.to_s(:short)
+    - @physician.sections.each do |section|
+      %table.schedule-row
         %tr
           %th= link_to section.title, weekly_section_schedule_path(section)
           - dates.each do |date|
             - assignments = @schedule.assignments_for_section_and_date(section, date)
             - unless assignments.blank?
-              %td{ :class => date == Date.today ? "current-date" : "" }= render :partial => "assignment", :collection => assignments, :spacer_template => "break"
+              %td{ :class => date == today ? "current-date" : "" }= render :partial => "assignment", :collection => assignments, :spacer_template => "break"
             - else
               %td &nbsp;
 
@@ -59,6 +64,12 @@
 %div{ :style => "clear:both;height:1em;" } &nbsp;
 
 - if @physician.assignment_requests.any?
-  %h3 Requests
+  %h3 Your Requests
   %table
     = render :partial => "request_detail_row.html", :collection => @physician.assignment_requests, :as => :request, :locals => { :physician => @physician }
+
+%div{ :style => "clear:both;height:1em;" } &nbsp;
+
+%h3 Your Totals
+- @physician.sections.each do |section|
+  %p= link_to section.title, section_physician_shift_totals_path(section, @physician)

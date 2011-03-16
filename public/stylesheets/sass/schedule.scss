@@ -22,6 +22,7 @@ div.schedule-wrapper {
       &.current-date {
         background-color: $highlightColor; }
       &.empty {
+        border-top: none;
         background-color: white; } }
 
   td, th {
@@ -30,7 +31,36 @@ div.schedule-wrapper {
     background-color: $mediumBackgroundColor;
     color: $lightTextColor; }
   .pending {
-    color: $pendingColor; } }
+    color: $pendingColor; }
+  .schedule-row {
+    height: 5em; } }
+
+.block-schedule {
+  td, th {
+    border-bottom: none; } }
+
+.schedule-header {
+  border-left: 1px solid white;
+  border-top: none;
+  thead th {
+    border-top: 1px solid $tableCellBorderColor;
+    background-color: $tableHeaderDarkerBackgroundColor; } }
+
+.schedule-row-header {
+  border-left: 1px solid white;
+  border-top: none;
+  thead th {
+    border-bottom: 1px solid $tableCellBorderColor; } }
+
+.schedule-row {
+  border-top: none;
+  tbody {
+    th {
+      vertical-align: middle;
+      border-left: 1px solid $tableCellBorderColor;
+      border-bottom: 1px solid $tableCellBorderColor; }
+    td {
+      border-bottom: 1px solid $tableCellBorderColor; } } }
 
 .paginated-schedule {
   clear: left; }

@@ -59,11 +59,16 @@ GEM
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     cancan (1.4.1)
-    capistrano (2.5.19)
+    capistrano (2.5.20)
       highline
+      highline
+      net-scp
       net-scp (>= 1.0.0)
+      net-sftp
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
+      net-ssh
+      net-ssh-gateway
       net-ssh-gateway (>= 1.0.0)
     capybara (0.4.1.2)
       celerity (>= 0.7.9)
@@ -273,7 +278,7 @@ GEM
     tlsmail (0.0.1)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.24)
+    tzinfo (0.3.25)
     vpim (0.695)
     warden (1.0.3)
       rack (>= 1.0.0)
