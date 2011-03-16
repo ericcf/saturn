@@ -5,7 +5,7 @@
 = semantic_form_for @section, :url => section_rules_path(@section) do |section_form|
   = section_form.semantic_fields_for :weekly_shift_duration_rule do |rule|
     = rule.inputs :name => "Weekly limits for shift totals" do
-      = rule.input :minimum, :label => "Minimum", :as => :select, :collection => (0..40).map{ |n| n / 2.0 }
+      = rule.input :minimum, :label => "Minimum", :as => :select, :collection => (1..40).map{ |n| n / 2.0 }
       = rule.input :maximum, :label => "Maximum", :as => :select, :collection => (0..40).map{ |n| n / 2.0 }
   = section_form.inputs :name => "Daily limits by category" do
     = section_form.semantic_fields_for :daily_shift_count_rules, @daily_shift_count_rules do |rule|

@@ -106,4 +106,19 @@ describe WeeklyShiftDurationRule do
         should include(mock_physician.id)
     end
   end
+
+  context "minimum is nil" do
+
+    it "returns physicians above the maximum" do
+      rule.update_attributes(:minimum => nil, :maximum => 1.0)
+      mock_physician = stub_model(Physician)
+      mock_assignment = stub_model(Assignment, :fixed_duration => 2.0)
+      rule.section.stub!(:members) { [] }
+      output = rule.process({
+        mock_physician.id => [mock_assignment]
+      })
+      output[:above_maximum].map{ |o| o[:physician_id] }.
+        should include(mock_physician.id)
+    end
+  end
 end

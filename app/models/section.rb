@@ -1,5 +1,9 @@
 class Section < ActiveRecord::Base
 
+  attr_accessible :title, :memberships_attributes, :shifts_attributes,
+    :shift_tags_attributes, :administrator_ids,
+    :weekly_shift_duration_rule_attributes, :daily_shift_count_rules_attributes
+
   SCHEDULE_GROUPS = %w[Faculty Fellows Residents]
 
   has_friendly_id :title, :use_slug => true
@@ -17,6 +21,7 @@ class Section < ActiveRecord::Base
   has_many :call_shifts, :through => :section_shifts
   has_many :vacation_shifts, :through => :section_shifts
   has_many :meeting_shifts, :through => :section_shifts
+  has_many :shift_tag_assignments, :through => :section_shifts
   has_one :admin_role, :through => :section_role_assignment, :source => :role
   accepts_nested_attributes_for :shift_tags, :allow_destroy => true
   accepts_nested_attributes_for :memberships, :allow_destroy => true
@@ -47,6 +52,17 @@ class Section < ActiveRecord::Base
 
   def retired_shifts_as_of(date)
     Shift.joins(:section_shifts).merge(section_shifts.retired_as_of(date))
+  end
+
+  def tags_for_shift(shift)
+    @shift_tag_by_id ||= shift_tags.scoped.hash_by_id
+    @shift_tags_by_shift_id ||= shift_tag_assignments.
+      includes(:section_shift, :shift_tag).
+      each_with_object({}) do |assignment, hsh|
+        hsh[assignment.section_shift.shift_id] ||= []
+        hsh[assignment.section_shift.shift_id] << assignment.shift_tag
+      end
+    @shift_tags_by_shift_id[shift.id] || []
   end
 
   def published_assignments_by_dates(dates)

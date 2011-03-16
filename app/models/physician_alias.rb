@@ -1,5 +1,7 @@
 class PhysicianAlias < ActiveRecord::Base
 
+  attr_accessible :physician, :physician_id, :initials, :short_name
+
   belongs_to :physician
 
   validates_presence_of :physician

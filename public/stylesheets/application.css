@@ -45,6 +45,9 @@ h4 {
 .right {
   float: right; }
 
+.clear-left {
+  clear: left; }
+
 #logo {
   width: 150px;
   float: left;

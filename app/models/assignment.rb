@@ -1,5 +1,8 @@
 class Assignment < ActiveRecord::Base
 
+  attr_accessible :shift, :shift_id, :physician, :physician_id, :date,
+    :position, :public_note, :private_note, :duration
+
   belongs_to :shift
   belongs_to :physician
 

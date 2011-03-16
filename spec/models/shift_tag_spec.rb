@@ -32,7 +32,7 @@ describe ShiftTag do
 
   it { should have_many(:assignments).dependent(:destroy) }
 
-  it { should have_many(:shifts).through(:assignments) }
+  it { should have_many(:section_shifts).through(:assignments) }
 
   it { should have_one(:daily_shift_count_rule).dependent(:destroy) }
 

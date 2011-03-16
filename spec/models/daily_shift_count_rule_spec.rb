@@ -57,7 +57,7 @@ describe DailyShiftCountRule do
 
   # methods
 
-  describe ".process(:assignments_by_physician)" do
+  describe "#process(:assignments_by_physician_id)" do
 
     it "returns physicians over the daily maximum count in the tag" do
       shift_id = 0

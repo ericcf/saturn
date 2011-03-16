@@ -8,11 +8,11 @@ describe ShiftsController do
     end
   end
 
-  let(:mock_shifts_subset) { stub("shifts subset", :find => nil) }
+  let(:mock_shifts_subset) { stub("shifts subset") }
   let(:mock_section) { mock_model(Section) }
 
   before(:each) do
-    mock_section.stub!(:active_shifts) { mock_shifts_subset }
+    mock_section.stub_chain("active_shifts.includes")
     mock_section.stub!(:retired_shifts_as_of) { mock_shifts_subset }
     Section.stub!(:find).with(mock_section.id) { mock_section }
     controller.should_receive(:authenticate_user!)
@@ -24,10 +24,8 @@ describe ShiftsController do
     context "shifts that have not been retired" do
 
       before(:each) do
-        active_shifts = mock("active shifts")
-        mock_section.stub!(:active_shifts) { active_shifts }
-        active_shifts.stub!(:find).
-          with(:all, :include => :shift_tags) { [mock_shift] }
+        mock_section.stub_chain("active_shifts.includes").
+          and_return([mock_shift])
         get :index, :section_id => mock_section.id
       end
       
@@ -37,12 +35,7 @@ describe ShiftsController do
     context "shifts that have been retired" do
 
       before(:each) do
-        retired_shifts = mock("retired shifts")
-        mock_section.stub!(:retired_shifts_as_of).
-          with(Date.today).
-          and_return(retired_shifts)
-        retired_shifts.stub!(:find).
-          with(:all, :include => :shift_tags).
+        mock_section.stub!(:retired_shifts_as_of).with(Date.today).
           and_return([mock_shift])
         get :index, :section_id => mock_section.id
       end

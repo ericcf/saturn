@@ -1,5 +1,8 @@
 class RotationAssignment < ActiveRecord::Base
 
+  attr_accessible :physician, :physician_id, :rotation, :rotation_id,
+    :starts_on, :ends_on
+
   belongs_to :physician
   belongs_to :rotation
 

@@ -1,5 +1,8 @@
 class Conference < ActiveRecord::Base
 
+  attr_accessible :title, :presenter, :description, :external_uid, :starts_at,
+    :ends_at, :categories, :location, :contact
+
   validates :external_uid, :uniqueness => true, :allow_nil => true
   validates :title, :starts_at, :ends_at, :presence => true
   validates_uniqueness_of :title, :scope => [:starts_at, :ends_at]

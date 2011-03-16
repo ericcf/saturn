@@ -1,5 +1,10 @@
 class SectionShift < ActiveRecord::Base
 
+  attr_accessible :section, :section_id, :shift, :shift_id, :display_color,
+    :position, :retired_on
+
+  has_many :shift_tag_assignments, :dependent => :destroy
+  has_many :shift_tags, :through => :shift_tag_assignments
   belongs_to :section
   belongs_to :shift
   belongs_to :call_shift, :foreign_key => :shift_id

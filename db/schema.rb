@@ -201,14 +201,12 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
   add_index "sections", ["title"], :name => "index_sections_on_title", :unique => true
 
   create_table "shift_tag_assignments", :force => true do |t|
-    t.integer  "shift_tag_id", :null => false
-    t.integer  "shift_id",     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer "shift_tag_id",     :null => false
+    t.integer "section_shift_id", :null => false
   end
 
-  add_index "shift_tag_assignments", ["shift_id", "shift_tag_id"], :name => "index_shift_tag_assignments_on_shift_id_and_shift_tag_id", :unique => true
-  add_index "shift_tag_assignments", ["shift_id"], :name => "index_shift_tag_assignments_on_shift_id"
+  add_index "shift_tag_assignments", ["section_shift_id", "shift_tag_id"], :name => "index_shift_tag_assignments_on_section_shift_id_and_shift_tag_id", :unique => true
+  add_index "shift_tag_assignments", ["section_shift_id"], :name => "index_shift_tag_assignments_on_section_shift_id"
   add_index "shift_tag_assignments", ["shift_tag_id"], :name => "index_shift_tag_assignments_on_shift_tag_id"
 
   create_table "shift_tags", :force => true do |t|

@@ -47,8 +47,7 @@
               %label.handle &nbsp;
             %td.title= shift_form.text_field :title, :maxlength => "255", :size => 30
             %td.type= shift.type_name
-            %td.tags
-              = shift_form.text_field "tags", :size => 40
+            %td.tags= @section.tags_for_shift(shift).map(&:title).join(", ")
             - durations = [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
             %td.duration= shift_form.select :duration, durations
             %td.phone= shift_form.text_field :phone, :maxlength => "255", :size => 15
@@ -56,8 +55,7 @@
           - section_shift = section_shifts_by_shift_id[shift.id].first
           = section_form.fields_for :section_shifts, section_shift do |section_shift_form|
             %td.display_color= section_shift_form.text_field :display_color, :class => "color_picker"
-            %td
-              = shift.sections.map { |section| section == @section ? nil : section.title }.compact.join(", ")
+            %td= shift.sections.map { |section| section == @section ? nil : section.title }.compact.join(", ")
             %td= link_to "edit", edit_section_shift_path(@section, shift)
             %td= section_shift_form.check_box :retire
             %td.details.hidden= section_shift_form.hidden_field :position

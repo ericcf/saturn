@@ -29,6 +29,10 @@ describe SectionShift do
   it { should have_db_index(:shift_id) }
 
   # associations
+  
+  it { should have_many(:shift_tag_assignments).dependent(:destroy) }
+
+  it { should have_many(:shift_tags).through(:shift_tag_assignments) }
 
   it { should belong_to(:section) }
 

@@ -1,5 +1,7 @@
 class SectionMembership < ActiveRecord::Base
 
+  attr_accessible :physician, :physician_id, :section, :section_id
+
   belongs_to :physician
   belongs_to :section
 

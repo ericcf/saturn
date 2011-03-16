@@ -86,9 +86,9 @@ describe "shifts/index.html" do
     end
   end
 
-  it "renders tags field" do
+  it "renders tags" do
     should have_selector("form") do |form|
-      form.should have_selector("input", :type => "text", :name => "section[shifts_attributes][0][tags]", :value => mock_current_shift.tags)
+      form
     end
   end
 

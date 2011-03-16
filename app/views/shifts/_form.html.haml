@@ -4,6 +4,7 @@
       = shift_form.input :title
       - unless shift.new_record?
         = shift_form.input :sections, :as => :check_boxes, :collection => Section.where("sections.id <> ?", section.id), :label => "Sharing"
+      = shift_form.input :shift_tags, :collection => section.shift_tags, :as => :check_boxes, :label => "Categories"
     = shift_form.buttons do
       = shift_form.commit_button :button_html => { :class => "button" }
       %li

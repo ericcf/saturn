@@ -26,15 +26,15 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
     assignments_by_physician_id.each do |physician_id, assignments|
       duration = assignments.map { |a| a.fixed_duration }.sum
       summary = { :physician_id => physician_id, :description => duration }
-      if minimum
+      if minimum.present?
         @offenders[:below_minimum] << summary if duration < minimum
       end
-      if maximum
+      if maximum.present?
         @offenders[:above_maximum] << summary if duration > maximum
       end
     end
     assigned_physician_ids = assignments_by_physician_id.keys
-    if minimum > 0.0
+    if minimum.present? && minimum > 0.0
       # include physicians with zero assignments
       section.member_ids.each do |physician_id|
         unless assigned_physician_ids.include?(physician_id)
