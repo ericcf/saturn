@@ -5,6 +5,9 @@ gem 'haml'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
 
+# custom error pages
+gem 'goalie'
+
 gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
 # required by Rad Directory
 gem 'rack-cache', :require => 'rack/cache'

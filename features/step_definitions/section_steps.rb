@@ -126,11 +126,12 @@ Then /^I should be able to view the edit weekly schedule page for "([^"]*)"$/ do
   Then %{I should see "Editing the week of "}
 end
 
-Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)" on today's date$/ do |given_name, family_name, shift_title, section_title|
+Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)"(?: on (today)'s date)?$/ do |given_name, family_name, shift_title, section_title, today|
   physician = find_or_create_physician(given_name, family_name)
   section = find_or_create_section(section_title)
   shift = section.shifts.find_by_title(shift_title)
-  date = Date.today
-  assignments = section.assignments.where(:physician_id => physician.id, :shift_id => shift.id, :date => date)
+  conditions = { :physician_id => physician.id, :shift_id => shift.id }
+  conditions[:date] = Date.today unless today.nil?
+  assignments = section.assignments.where(conditions)
   assert !assignments.blank?, "requested assignment not found"
 end

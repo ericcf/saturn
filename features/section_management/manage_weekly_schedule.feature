@@ -5,6 +5,7 @@ Feature: Manage weekly schedule
 
 Background:
   Given a section "Body"
+    And a shift "PM" in the "Body" section
     And I am an authenticated section administrator for "Body"
 
 @javascript
@@ -13,24 +14,24 @@ Scenario: View the edit page
 
 @javascript
 Scenario: Select the schedule that belongs to a specific date
-  When I go to the edit weekly schedule page for "Body"
-   And I click "#date-selector"
+   When I go to the edit weekly schedule page for "Body"
+    And I click "#date-selector"
 
 @javascript
 Scenario: Add a new assignment
- Given a section "Body" with a "Fellows" member "Colonel Sanders"
-   And a shift "PM" in the "Body" section
-  When I go to the edit weekly schedule page for "Body"
-   And I click ".shiftDay:first"
-   And I click ".physician-name:first"
-  Then I should see "C. Sanders" within ".shiftDay:first"
+  Given a section "Body" with a "Fellows" member "Colonel Sanders"
+   When I go to the edit weekly schedule page for "Body"
+    And I click ".shiftDay:first"
+    And I click ".physician-name:first"
+   Then I should see the ajax result /last saved: \d\d\d\d/
+    And I should see "C. Sanders" within ".shiftDay:first"
+    And "Colonel Sanders" should be assigned to "PM" in "Body"
 
 @javascript
 Scenario: Delete an assignment
   Given a section "Body" with a "Fellows" member "Colonel Sanders"
-    And a shift "Float" in the "Body" section
     And a weekly schedule for "Body" that begins Monday
-    And "Colonel Sanders" is assigned to "Float" in "Body" today
+    And "Colonel Sanders" is assigned to "PM" in "Body" today
    When I go to the edit weekly schedule page for "Body"
     And I click ".assignment"
     And I press "Delete assignment"
@@ -43,3 +44,10 @@ Scenario: Publish a weekly schedule
    Then I should see "Publish"
    When I check "schedule-is-published"
    Then I should see "status: published"
+
+@javascript
+Scenario: Add a shift week note
+  When I go to the edit weekly schedule page for "Body"
+   And I update text field "shift-week-note" with "my note"
+  Then I should see the ajax result /last saved: \d\d\d\d/
+   And the "shift_week_note" field should contain "my note"

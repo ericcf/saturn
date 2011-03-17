@@ -3446,6 +3446,9 @@ var ruleConflicts = function(attributes) {
 
 
 var shiftWeek = function(attributes) {
+
+    // private attributes
+
     var self = this;
     var schedule = undefined;
     var mapping = {
@@ -3458,10 +3461,31 @@ var shiftWeek = function(attributes) {
             }
         }
     };
+    var ignoreNextNoteChange = false;
 
+    // public attributes
+
+    this.shift_title = ko.observable(undefined);
+    this.shift_days = ko.observableArray([]);
     this.shift_week_note = {
         text: ko.observable(undefined),
         shift_id: ko.observable(undefined)
+    };
+    this.defaultNote = "add note...";
+
+    // public methods
+    
+    this.showDefaultNote = function() {
+        if (this.shift_week_note.text() == "") {
+            this.shift_week_note.text(this.defaultNote);
+        }
+    };
+
+    this.hideDefaultNote = function() {
+        if (this.shift_week_note.text() == this.defaultNote) {
+            ignoreNextNoteChange = true;
+            this.shift_week_note.text("");
+        }
     };
 
     this.setSchedule = function(model) {
@@ -3496,28 +3520,34 @@ var shiftWeek = function(attributes) {
 
     ko.mapping.fromJS(attributes, mapping, this);
 
+    // subscriptions
+
     if (this.shift_week_note.text() == "") {
-        this.shift_week_note.text("add note...");
+        this.shift_week_note.text(this.defaultNote);
     }
     var lastNote = this.shift_week_note.text();
     this.shift_week_note.text.subscribe(function(newNote) {
-        if (newNote == "add note..." || newNote == lastNote || newNote == "" && self.shift_week_note.id == undefined) {
+        if (newNote == self.defaultNote || newNote == lastNote || newNote == "" && self.shift_week_note.id == undefined) {
             lastNote = newNote;
-            if (newNote == "") {
-                self.shift_week_note.text("add note...");
+            if (!ignoreNextNoteChange && newNote == "") {
+                self.shift_week_note.text(self.defaultNote);
             }
+            ignoreNextNoteChange = false;
             return;
         }
         lastNote = newNote;
         self.save();
         if (newNote == "") {
-            self.shift_week_note.text("add note...");
+            self.shift_week_note.text(self.defaultNote);
         }
     });
 };
 
 
 var shiftDay = function(attributes) {
+    // private
+    
+    var self = this;
     var schedule = undefined;
     var mapping = {
         "assignments": {
@@ -3530,9 +3560,15 @@ var shiftDay = function(attributes) {
         }
     };
 
+    // observables
+
+    this.date = ko.observable(undefined);
+    this.shift_id = ko.observable(undefined);
     this.assignments = ko.observableArray([]);
     this.inSelectedMode = ko.observable(false);
     this.inHoverMode = ko.observable(false);
+
+    // public methods
 
     this.toggleSelected = function() {
         if (schedule == undefined) {
@@ -3548,7 +3584,6 @@ var shiftDay = function(attributes) {
         }
     };
 
-    var self = this;
     this.addAssignment = function(assignment) {
         if (self.assignments.indexOf(assignment) != -1) {
             self.assignments.remove(assignment);
@@ -3558,7 +3593,16 @@ var shiftDay = function(attributes) {
         self.assignments.push(assignment);
         assignment.date(self.date());
         assignment.shift_id(self.shift_id());
-    }
+    };
+
+    this.hasDuplicate = function(assignment) {
+        for (var i = 0; i < self.assignments().length; i++) {
+            if (self.assignments()[i].physician_id() == assignment.physician_id()) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     ko.mapping.fromJS(attributes, mapping, this);
 }
@@ -3580,6 +3624,7 @@ var assignment = function(attributes) {
     this.public_note = ko.observable("");
     this.private_note = ko.observable("");
     this.duration = ko.observable(null);
+    this.immutable = ko.observable(false);
     this.inEditMode = ko.observable(false);
     this.inDraggingMode = ko.observable(false);
     this.inHoveringMode = ko.observable(false);
@@ -3940,7 +3985,6 @@ var weeklySchedule = function(attributes) {
 // UI events and Knockout view models
 
 $(function() {
-    var currentlyDragging = null;
     var currentlyReceiving = null;
 
     ko.bindingHandlers.button = {
@@ -4004,11 +4048,20 @@ $(function() {
         $("#assignment-details")
             .dialog("option", "title", options.title)                   
             .dialog('open');
+        if (options.deleteDisabled) {
+            $(":button:contains('Delete assignment')")
+                .attr("disabled", "disabled")
+                .addClass('ui-state-disabled');
+        } else {
+            $(":button:contains('Delete assignment')")
+                .removeAttr("disabled")
+                .removeClass("ui-state-disabled");
+        }
     }
 
     function openDirectoryDialog() {
-                $("#physician-groups").tabs("destroy");
-                $("#physician-groups").tabs();
+        $("#physician-groups").tabs("destroy");
+        $("#physician-groups").tabs();
         if ($("#physician-groups").dialog("isOpen")) return;
         $("#physician-groups").dialog("open");
     }
@@ -4066,10 +4119,13 @@ $(function() {
                 .bind("drop", function(event, assignmentElement) {
                     assignmentElement.style.display = "none";
                     viewModel.assignmentDroppedOn(shiftDay);
+                    currentlyReceiving = null;
                 })
                 .bind("dropover", function(event) {
-                    currentlyReceiving = shiftDay;
-                    $(element).addClass("ui-state-highlight");
+                    if (!shiftDay.hasDuplicate(viewModel.draggingAssignment())) {
+                      currentlyReceiving = shiftDay;
+                      $(element).addClass("ui-state-highlight");
+                    }
                 })
                 .bind("dropout", function(event) {
                     if (currentlyReceiving == shiftDay) {
@@ -4082,6 +4138,9 @@ $(function() {
 
     ko.bindingHandlers.assignmentDragging = {
         init: function(element, valueAccessor, allBindingsAccessor, assignment) {
+            var value = valueAccessor();
+            var assignmentIsImmutable = ko.utils.unwrapObservable(value);
+            if (assignmentIsImmutable) { return; };
             var lastReceiver = null;
             function getReceiver(dragging, event) {
                 $(dragging).hide();
@@ -4107,10 +4166,12 @@ $(function() {
                     lastReceiver = receiver;
                 })
                 .bind("dragstop", function(event) {
-                    var receiver = getReceiver(this, event);
-                    if ($(receiver).hasClass("shiftDay")) {
-                        $(this).remove();
-                        $(receiver).trigger("drop", element);
+                    if (currentlyReceiving && !currentlyReceiving.hasDuplicate(assignment)) {
+                        var receiver = getReceiver(this, event);
+                        if ($(receiver).hasClass("shiftDay")) {
+                            $(this).remove();
+                            $(receiver).trigger("drop", element);
+                        }
                     }
                     viewModel.stopDragging(assignment);
                     if (viewModel.editingAssignment() == assignment) {
@@ -4135,7 +4196,10 @@ $(function() {
             var value = valueAccessor();
             var assignmentIsInEditMode = ko.utils.unwrapObservable(value);
             if (assignmentIsInEditMode == true) {
-                openDetailsDialog({ title: assignment.physician_name });
+                openDetailsDialog({
+                    title: assignment.physician_name,
+                    deleteDisabled: assignment.immutable()
+                });
             }
         }
     };

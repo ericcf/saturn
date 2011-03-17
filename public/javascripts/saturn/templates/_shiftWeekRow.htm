@@ -1,7 +1,7 @@
 <script id="shiftWeekRow" type="text/html">
     <div class="shift-week">
         <span class="shift-title" data-bind="text: shift_title"></span>
-        <input class="shift-week-note" data-bind="value: shift_week_note.text, focus: function(event) { hideDefaultNote() }, blur: function(event) { showDefaultNote() }" />
+        <input class="shift-week-note" name="shift_week_note" data-bind="value: shift_week_note.text, focus: function(event) { hideDefaultNote() }, blur: function(event) { showDefaultNote() }" />
         <table class="schedule-grid">
             <tbody>
                 <tr data-bind="template: { name: 'shiftDayCell', foreach: shift_days }"></tr>

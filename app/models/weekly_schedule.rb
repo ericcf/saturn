@@ -1,6 +1,7 @@
 class WeeklySchedule < ActiveRecord::Base
 
-  attr_accessible :section, :section_id, :date, :is_published
+  attr_accessible :section, :section_id, :date, :is_published,
+    :assignments_attributes, :shift_week_notes_attributes
 
   has_many :shift_week_notes, :dependent => :destroy
   accepts_nested_attributes_for :shift_week_notes, :allow_destroy => true

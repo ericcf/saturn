@@ -29,7 +29,8 @@ var shiftWeek = function(attributes) {
     // public methods
     
     this.showDefaultNote = function() {
-        if (this.shift_week_note.text() == "") {
+        var noteText = this.shift_week_note.text();
+        if (noteText == undefined || noteText == "") {
             this.shift_week_note.text(this.defaultNote);
         }
     };
