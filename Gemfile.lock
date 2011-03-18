@@ -103,7 +103,7 @@ GEM
       cucumber (>= 0.8.0)
     culerity (0.2.15)
     daemons (1.0.10)
-    database_cleaner (0.6.5)
+    database_cleaner (0.6.6)
     devise (1.1.8)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -208,7 +208,7 @@ GEM
       activesupport (= 3.0.5)
       bundler (~> 1.0)
       railties (= 3.0.5)
-    rails_best_practices (0.7.1)
+    rails_best_practices (0.7.2)
       activesupport
       colored (~> 1.2)
       erubis (~> 2.6.6)
