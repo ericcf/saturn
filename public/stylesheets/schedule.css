@@ -30,6 +30,8 @@ div.schedule-wrapper {
   .schedule .schedule-row {
     height: 5em; }
 
+.block-schedule tr:last-child .note .note-text {
+  top: -0.5em; }
 .block-schedule td, .block-schedule th {
   border-bottom: none; }
 

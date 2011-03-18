@@ -2,7 +2,7 @@ $(function() {
   $(".color_picker").hide();
   $("<span/>").appendTo($(".color_picker").parent()).each(function() {
     $(this).colorPicker({
-      color: ["#FF7400", "#CDEB8B", "#6BBA70", "#006E2E", "#4096EE", "#356AA0",
+      color: ["#FF7400", "#11CC11", "#006E2E", "#4096EE", "#356AA0",
         "#FF0000", "#B02B2C", "#000000"],
       defaultColor: $(this).parent().find("input").val(),
       click: function(color, picker) {

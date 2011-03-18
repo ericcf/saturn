@@ -305,15 +305,22 @@ $navActiveBorderBottomColor: white;
     margin-left: -999em;
     position: absolute;
     padding: 4px 5px;
-    background: $altColor;
-    color: $oppositeTextColor; }
+    color: black;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 2px solid $altColor;
+    background: $altColor * 1.5; }
   &:hover .note-text {
     position: absolute;
-    left: 4em;
+    left: 2em;
     top: 0em;
     z-index: 99;
     margin-left: 0;
     width: 110px; } }
+
+td .note:hover .note-text {
+  left: 16px; }
 
 // fix visibility of notes in the last table row
 tr:last-child {
@@ -321,9 +328,6 @@ tr:last-child {
     top: -2em; }
   .note:hover .note-text {
     top: -2em; } }
-
-td .note:hover .note-text {
-  left: 20px; }
 
 // fix visibility of notes in the last table cell
 td:last-child .note:hover .note-text {

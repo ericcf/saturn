@@ -266,23 +266,27 @@ table .schedule_block {
     margin-left: -999em;
     position: absolute;
     padding: 4px 5px;
-    background: #6e8e41;
-    color: #f2ece9; }
+    color: black;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border: 2px solid #6e8e41;
+    background: #a5d561; }
   .note:hover .note-text {
     position: absolute;
-    left: 4em;
+    left: 2em;
     top: 0em;
     z-index: 99;
     margin-left: 0;
     width: 110px; }
 
+td .note:hover .note-text {
+  left: 16px; }
+
 tr:last-child .note .note-text {
   top: -2em; }
 tr:last-child .note:hover .note-text {
   top: -2em; }
-
-td .note:hover .note-text {
-  left: 20px; }
 
 td:last-child .note:hover .note-text {
   left: -120px; }
