@@ -122,22 +122,6 @@ describe Assignment do
     end
   end
   
-  describe "#physician_name" do
-
-    it "returns the associated physician's short_name" do
-      mock_physician.stub!(:short_name) { "short name" }
-      assignment.physician_name.should == "short name"
-    end
-  end
-
-  describe "#shift_title" do
-
-    it "returns the associated shift's title" do
-      mock_shift.stub!(:title) { "shift title" }
-      assignment.shift_title.should == "shift title"
-    end
-  end
-  
   describe "#fixed_duration" do
 
     context "duration is not set" do

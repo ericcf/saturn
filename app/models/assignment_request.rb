@@ -24,9 +24,7 @@ class AssignmentRequest < ActiveRecord::Base
   }
   scope :pending, where(:status => STATUS[:pending])
 
-  def sections
-    shift.sections
-  end
+  delegate :sections, :title, :to => :shift, :prefix => true
 
   def physician_id
     requester_id
@@ -37,10 +35,6 @@ class AssignmentRequest < ActiveRecord::Base
   end
 
   def duration
-  end
-
-  def shift_title
-    shift.title
   end
 
   def dates

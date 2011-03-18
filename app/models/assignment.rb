@@ -22,18 +22,12 @@ class Assignment < ActiveRecord::Base
 
   default_scope order("assignments.position")
 
+  delegate :title, :to => :shift, :prefix => true
+
   def self.create_for_dates dates, attributes
     dates.each do |date|
       create(attributes.merge({ :date => date }))
     end
-  end
-
-  def physician_name
-    physician.present? ? physician.short_name : "Na"
-  end
-
-  def shift_title
-    shift.present? ? shift.title : "Unknown"
   end
 
   def fixed_duration
