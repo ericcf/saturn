@@ -1,8 +1,9 @@
 require 'spec_helper'
+require 'saturn/dates'
 
-class NoDateSupport; include DateHelpers; end
+class NoDateSupport; include Saturn::Dates; end
 
-describe DateHelpers do
+describe Saturn::Dates do
 
   before(:each) do
     @test_object = NoDateSupport.new

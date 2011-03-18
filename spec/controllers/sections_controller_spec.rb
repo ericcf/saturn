@@ -18,6 +18,21 @@ describe SectionsController do
     it { assigns(:sections).should eq([mock_section]) }
   end
 
+  describe "GET show" do
+
+    before(:each) do
+      Section.stub!(:find).with(mock_section.id) { mock_section }
+      @mock_schedule = mock_model(::Logical::YearlySectionSchedule)
+      year = Date.today.year
+      ::Logical::YearlySectionSchedule.stub!(:new).
+        with(:year => year, :section => mock_section).
+        and_return(@mock_schedule)
+      get :show, :id => mock_section.id, :year => year
+    end
+
+    it { assigns(:schedule).should eq(@mock_schedule) }
+  end
+
   describe "GET new" do
 
     before(:each) do

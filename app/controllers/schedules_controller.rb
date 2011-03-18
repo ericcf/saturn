@@ -1,8 +1,8 @@
-require 'date_helpers'
+require 'saturn/dates'
 
 class SchedulesController < ApplicationController
 
-  include DateHelpers
+  include Saturn::Dates
 
   def weekly_call
     start_date = (params[:date].nil? ? Date.today : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)).at_beginning_of_week

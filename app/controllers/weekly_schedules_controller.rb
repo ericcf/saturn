@@ -1,8 +1,9 @@
-require 'date_helpers'
+require 'saturn/dates'
 
 class WeeklySchedulesController < ApplicationController
+
   include SectionResourceController
-  include DateHelpers
+  include Saturn::Dates
 
   before_filter :authenticate_user!, :only => [:edit, :create]
 

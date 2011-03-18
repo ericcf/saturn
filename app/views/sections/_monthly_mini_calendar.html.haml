@@ -1,0 +1,7 @@
+%div.mini-calendar
+  = schedule.month_name
+  %table
+    %thead
+      %tr
+        %th!= print_padded_day_letters
+    = render :partial => "mini_calendar_week_row", :collection => schedule.weekly_schedules, :as => :schedule

@@ -1,9 +1,22 @@
+require 'saturn/dates'
+
 class SectionsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => :index
+  include Saturn::Dates
+
+  before_filter :authenticate_user!, :except => [:index, :show]
 
   def index
     @sections = Section.order(:title)
+  end
+
+  def show
+    year = params[:year] || Date.today.year
+    @section = Section.find(params[:id])
+    @schedule = ::Logical::YearlySectionSchedule.new(:year => year,
+      :section => @section
+    )
+    render :layout => "section"
   end
 
   def new

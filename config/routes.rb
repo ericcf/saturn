@@ -12,7 +12,7 @@ Saturn::Application.routes.draw do
     resource :physician_alias, :only => [:new, :create, :edit, :update]
   end
 
-  resources :sections, :except => :show do
+  resources :sections do
     resource :weekly_schedules
     resources :memberships, :only => :index do
       collection do

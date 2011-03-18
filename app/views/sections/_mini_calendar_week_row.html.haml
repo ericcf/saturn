@@ -1,0 +1,3 @@
+%tr
+  %td{ :class => schedule.is_published ? "schedule-published" : "schedule-unpublished" }><
+    %a{ :href => weekly_section_schedule_path(schedule.section_id, :date => { :year => schedule.date.year, :month => schedule.date.month, :day => schedule.date.day }) }!= print_padded_days(schedule.dates)

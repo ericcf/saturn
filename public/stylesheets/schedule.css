@@ -73,6 +73,28 @@ div.schedule-wrapper {
 .appended-column-header {
   border-left: none; }
 
+.mini-calendar-block {
+  float: left;
+  margin-bottom: 9px;
+  clear: left; }
+
+.mini-calendar {
+  font-weight: bold;
+  float: left;
+  margin-right: 18px; }
+  .mini-calendar table {
+    font-family: monospace; }
+  .mini-calendar thead tr th {
+    background-color: #e6eae1; }
+  .mini-calendar .schedule-published {
+    background-color: #6e8a41; }
+    .mini-calendar .schedule-published a {
+      color: white; }
+  .mini-calendar .current-date {
+    padding: 0 0 2px 0;
+    background-color: #2f4462;
+    color: white; }
+
 #rules-conflicts {
   float: left;
   margin-left: 20px; }

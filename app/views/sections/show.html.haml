@@ -1,0 +1,10 @@
+- content_for :stylesheets do
+  = stylesheet_link_tag "schedule"
+
+%h3
+  %a{ :href => section_path(@section, :year => @schedule.year - 1) } &laquo;
+  = @schedule.year
+  %a{ :href => section_path(@section, :year => @schedule.year + 1) } &raquo;
+
+- @schedule.monthly_schedules.each_slice(3) do |monthly_schedules|
+  %div.mini-calendar-block= render :partial => "monthly_mini_calendar", :collection => monthly_schedules, :as => :schedule

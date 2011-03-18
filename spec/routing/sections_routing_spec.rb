@@ -9,6 +9,11 @@ describe SectionsController do
         should route_to(:controller => "sections", :action => "index") 
     end
 
+    it "recognizes and generates #show" do
+      { :get => "/sections/1" }.
+        should route_to(:controller => "sections", :action => "show", :id => "1")
+    end
+
     it "recognizes and generates #new" do
       { :get => "/sections/new" }.
         should route_to(:controller => "sections", :action => "new") 

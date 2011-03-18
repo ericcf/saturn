@@ -1,8 +1,8 @@
-require 'date_helpers'
+require 'saturn/dates'
 
 class PhysiciansController < ApplicationController
 
-  include DateHelpers
+  include Saturn::Dates
 
   def index
     @physicians = Physician.section_members.includes(:groups).

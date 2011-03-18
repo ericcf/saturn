@@ -3,11 +3,11 @@ require 'spec_helper'
 describe WeeklySchedule do
 
   let(:mock_section) { stub_model(Section) }
-  let(:today) { Date.today }
+  let(:monday) { Date.today.at_beginning_of_week }
   let(:valid_attributes) do
     {
       :section_id => mock_section.id,
-      :date => today
+      :date => monday
     }
   end
   let(:weekly_schedule) { WeeklySchedule.create!(valid_attributes) }
@@ -46,6 +46,34 @@ describe WeeklySchedule do
   it { should validate_presence_of(:date) }
 
   it { should validate_uniqueness_of(:date).scoped_to(:section_id) }
+
+  # scopes
+
+  describe "#include_dates" do
+
+    it "returns schedules that include the dates" do
+      WeeklySchedule.include_dates([weekly_schedule.date]).
+        should include(weekly_schedule)
+    end
+
+    it "does not return schedules that do not include the dates" do
+      WeeklySchedule.include_dates([weekly_schedule.date - 1.year]).
+        should_not include(weekly_schedule)
+    end
+  end
+
+  describe "#by_year" do
+
+    it "returns schedules that begin on the calendar year" do
+      WeeklySchedule.by_year(weekly_schedule.date.year).
+        should include(weekly_schedule)
+    end
+
+    it "does not return schedules that do not begin on the calendar year" do
+      WeeklySchedule.by_year(weekly_schedule.date.year - 1).
+        should_not include(weekly_schedule)
+    end
+  end
 
   # methods
   

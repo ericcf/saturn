@@ -80,6 +80,28 @@ div.schedule-wrapper {
 .appended-column-header {
   border-left: none; }
 
+.mini-calendar-block {
+  float: left;
+  margin-bottom: $baseLineHeight / 2;
+  clear: left; }
+
+.mini-calendar {
+  font-weight: bold;
+  float: left;
+  margin-right: $baseLineHeight;
+  table {
+    font-family: monospace; }
+  thead tr th {
+    background-color: $tableHeaderBackgroundColor; }
+  .schedule-published {
+    background-color: $baseOkayColor;
+    a {
+      color: white } }
+  .current-date {
+    padding: 0 0 2px 0;
+    background-color: $baseLinkColor;
+    color: white; } }
+
 #rules-conflicts {
   float: left;
   margin-left: 20px; }

@@ -12,11 +12,18 @@ class WeeklySchedule < ActiveRecord::Base
 
   scope :include_dates, lambda { |dates|
     possible_schedule_dates = dates.sort.map do |date|
-      (date - 6..date).entries.select { |d| d.monday? }
+      (date - 6..date).select { |d| d.monday? }
     end.flatten.uniq
     where(:date => possible_schedule_dates)
   }
+  scope :by_year, lambda { |year|
+    where("weekly_schedules.date >= ? and weekly_schedules.date <= ?",
+      Date.civil(year.to_i, 1, 1),
+      Date.civil(year.to_i, 12, 31)
+    )
+  }
   scope :published, where(:is_published => true)
+  default_scope :order => :date
 
   def shifts
     section.active_shifts(:as_of => date)
@@ -58,7 +65,7 @@ class WeeklySchedule < ActiveRecord::Base
   end
 
   def dates
-    @dates ||= (date..date+6.days).entries
+    @dates ||= (date..date + 6.days).to_a
   end
 
   def holiday_titles_by_date

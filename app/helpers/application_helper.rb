@@ -19,6 +19,21 @@ module ApplicationHelper
     (@holidays_by_date[date] || [Holiday.new]).first.title
   end
 
+  # returns a string of days with single digits padded with an extra space
+  # e.g. [2011-1-8, 2011-1-9, 2011-10] => "&nbsp;8 &nbsp;9 10"
+  def print_padded_days(dates)
+    @today ||= Date.today
+    dates.map do |date|
+      date_str = "#{date.day < 10 ? "&nbsp;" : ""}#{date.day}"
+      date_str = date == @today ? "<span class=\"current-date\">#{date_str}</span>" : date_str
+    end.join(" ")
+  end
+
+  def print_padded_day_letters
+    letters = Date::ABBR_DAYNAMES.map(&:first)
+    (1..7).map { |i| "&nbsp;#{letters[i % 7]}" }.join(" ")
+  end
+
   private
 
   # helps determine current tab
