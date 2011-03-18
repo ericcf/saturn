@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CallSchedulePresenter do
+describe ::Logical::CallSchedulePresenter do
 
   let(:today) { Date.today }
   let(:mock_section) { mock_model(Section) }
@@ -20,7 +20,7 @@ describe CallSchedulePresenter do
       :dates => [today]
     }
   end
-  let(:presenter) { CallSchedulePresenter.new(valid_attributes) }
+  let(:presenter) { ::Logical::CallSchedulePresenter.new(valid_attributes) }
 
   before(:each) do
     Physician.stub_chain("includes.hash_by_id").
@@ -34,7 +34,7 @@ describe CallSchedulePresenter do
   # validations
 
   it "validates presence of dates" do
-    CallSchedulePresenter.new(:dates => nil).
+    ::Logical::CallSchedulePresenter.new(:dates => nil).
       should have(1).error_on(:dates)
   end
 

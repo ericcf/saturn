@@ -39,11 +39,11 @@ describe ReportsController do
 
   describe "GET search_shift_totals" do
 
-    let(:mock_report) { mock_model(ShiftTotalsReport) }
+    let(:mock_report) { mock_model(::Logical::ShiftTotalsReport) }
 
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
-      ShiftTotalsReport.stub!(:new) { mock_report }
+      ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       get :search_shift_totals, :section_id => mock_section.id
     end
 
@@ -52,22 +52,22 @@ describe ReportsController do
 
   describe "GET shift_totals_report" do
 
-    let(:mock_report) { mock_model(ShiftTotalsReport) }
+    let(:mock_report) { mock_model(::Logical::ShiftTotalsReport) }
 
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
-      ShiftTotalsReport.stub!(:new) { mock_report }
+      ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       mock_report.stub!(:section=)
     end
 
     context "always" do
 
       before(:each) do
-        ShiftTotalsReport.should_receive(:new).with("these" => :params).
+        ::Logical::ShiftTotalsReport.should_receive(:new).with("these" => :params).
           and_return(mock_report)
         mock_report.should_receive(:section=).with(mock_section)
         get :shift_totals_report, :section_id => mock_section.id,
-          :shift_totals_report => { :these => :params }
+          :logical_shift_totals_report => { :these => :params }
       end
 
       it { assigns(:shift_totals_report).should eq(mock_report) }
@@ -96,13 +96,13 @@ describe ReportsController do
 
   describe "GET shift_totals_by_day" do
 
-    let(:mock_report) { mock_model(ShiftTotalsReport) }
+    let(:mock_report) { mock_model(::Logical::ShiftTotalsReport) }
 
     let(:mock_shift) { stub_model(Shift) }
 
     before(:each) do
       Section.stub!(:find).with(mock_section.id) { mock_section }
-      ShiftTotalsReport.stub!(:new) { mock_report }
+      ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       mock_report.stub!(:section=)
       Shift.stub!(:find).with(mock_shift.id) { mock_shift }
       get :shift_totals_by_day, :section_id => mock_section.id,

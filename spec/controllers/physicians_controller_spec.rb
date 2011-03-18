@@ -63,8 +63,8 @@ describe PhysiciansController do
       before(:each) do
         Physician.should_receive(:find).with(mock_physician.id).
           and_return(mock_physician)
-        @mock_schedule = stub_model(PhysicianSchedule)
-        PhysicianSchedule.should_receive(:new).with(
+        @mock_schedule = stub_model(::Logical::PhysicianSchedule)
+        ::Logical::PhysicianSchedule.should_receive(:new).with(
           :physician => mock_physician,
           :start_date => Date.today.at_beginning_of_week,
           :number_of_days => 28

@@ -75,7 +75,7 @@ class WeeklySchedule < ActiveRecord::Base
   end
 
   def rules_conflicts
-    @rules_conflicts ||= RulesConflictSummary.new(
+    @rules_conflicts ||= ::Logical::RulesConflictSummary.new(
       :section => section,
       :weekly_schedule => self,
       :assignments => read_only_assignments,

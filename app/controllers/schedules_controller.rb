@@ -7,7 +7,7 @@ class SchedulesController < ApplicationController
   def weekly_call
     start_date = (params[:date].nil? ? Date.today : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)).at_beginning_of_week
     dates = week_dates_beginning_with(start_date)
-    @schedule_presenter = CallSchedulePresenter.new(:dates => dates)
+    @schedule_presenter = ::Logical::CallSchedulePresenter.new(:dates => dates)
   end
 
   def show_weekly_section
@@ -28,7 +28,8 @@ class SchedulesController < ApplicationController
       when 2
         { :col_type => :dates, :row_type => :physicians }
       end
-    @schedule_presenter = WeeklySchedulePresenter.new(:section => @section,
+    @schedule_presenter = ::Logical::WeeklySchedulePresenter.new(
+      :section => @section,
       :dates => dates,
       :assignments => @assignments,
       :weekly_schedule => schedule,

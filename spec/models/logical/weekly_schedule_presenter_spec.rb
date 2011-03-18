@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe WeeklySchedulePresenter do
+describe ::Logical::WeeklySchedulePresenter do
 
   let(:mock_section) { stub_model(Section) }
   let(:mock_shift) { stub_model(Shift) }
@@ -18,13 +18,19 @@ describe WeeklySchedulePresenter do
   let(:dates) { [Date.yesterday, Date.today] }
 
   it "passes a smoke test" do
-    WeeklySchedulePresenter.new(:section => mock_section, :dates => dates,
-      :assignments => mock_assignments, :weekly_schedule => mock_weekly_schedule,
+    ::Logical::WeeklySchedulePresenter.new(:section => mock_section,
+      :dates => dates,
+      :assignments => mock_assignments,
+      :weekly_schedule => mock_weekly_schedule,
       :physician_names_by_id => mock_physician_name_by_id,
-      :options => { :col_type => :dates, :row_type => :shifts })
-    WeeklySchedulePresenter.new(:section => mock_section, :dates => dates,
-      :assignments => mock_assignments, :weekly_schedule => mock_weekly_schedule,
+      :options => { :col_type => :dates, :row_type => :shifts }
+    )
+    ::Logical::WeeklySchedulePresenter.new(:section => mock_section,
+      :dates => dates,
+      :assignments => mock_assignments,
+      :weekly_schedule => mock_weekly_schedule,
       :physician_names_by_id => mock_physician_name_by_id,
-      :options => { :col_type => :dates, :row_type => :physicians })
+      :options => { :col_type => :dates, :row_type => :physicians }
+    )
   end
 end

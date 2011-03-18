@@ -57,11 +57,12 @@ class ReportsController < ApplicationController
   end
 
   def search_shift_totals
-    @shift_totals_report = ShiftTotalsReport.new
+    @shift_totals_report = ::Logical::ShiftTotalsReport.new
   end
 
   def shift_totals_report
-    @shift_totals_report = ShiftTotalsReport.new(params[:shift_totals_report])
+    @shift_totals_report = ::Logical::ShiftTotalsReport.
+      new(params[:logical_shift_totals_report])
     @shift_totals_report.section = @section
 
     unless @shift_totals_report.valid?
@@ -76,7 +77,8 @@ class ReportsController < ApplicationController
   end
 
   def shift_totals_by_day
-    @shift_totals_report = ShiftTotalsReport.new(params[:shift_totals_report])
+    @shift_totals_report = ::Logical::ShiftTotalsReport.
+      new(params[:logical_shift_totals_report])
     @shift_totals_report.section = @section
     @shift = Shift.find(params[:shift_id])
   end

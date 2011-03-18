@@ -25,7 +25,7 @@
     %tbody
       - @shift_totals_report.shifts.each do |shift|
         %tr{ :class => cycle("odd", "", :name => "row") }
-          %th= link_to shift.title, totals_by_day_section_reports_path(@section, shift, :shift_totals_report => params[:shift_totals_report])
+          %th= link_to shift.title, totals_by_day_section_reports_path(@section, shift, :logical_shift_totals_report => params[:logical_shift_totals_report])
           - @shift_totals_report.physicians_by_group.each do |group, physicians|
             %td= @shift_totals_report.totals_by_group_id_and_shift_id[[group.id, shift.id]]
             - physicians.each do |physician|

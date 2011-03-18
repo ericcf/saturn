@@ -27,7 +27,10 @@ class PhysiciansController < ApplicationController
   def schedule
     start_date = params[:date].blank? ? Date.today.at_beginning_of_week : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     find_physician
-    @schedule = PhysicianSchedule.new(:physician => @physician, :start_date => start_date, :number_of_days => 28)
+    @schedule = ::Logical::PhysicianSchedule.new(:physician => @physician,
+      :start_date => start_date,
+      :number_of_days => 28
+    )
 
     respond_to do |format|
       format.html

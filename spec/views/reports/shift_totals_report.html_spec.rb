@@ -9,7 +9,7 @@ describe "reports/shift_totals_report.html.haml" do
   let(:mock_group) { stub_model(RadDirectory::Group, :title => "Jets") }
 
   let(:mock_report) do
-    stub_model(ShiftTotalsReport, :start_date => "2010-01-02",
+    stub_model(::Logical::ShiftTotalsReport, :start_date => "2010-01-02",
       :end_date => "2010-03-04",
       :physicians_by_group => { mock_group => [mock_physician] })
   end

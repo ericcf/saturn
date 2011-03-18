@@ -19,7 +19,7 @@ describe "schedules/weekly_call.html" do
     )
   end
   let(:mock_presenter) do
-    stub_model(CallSchedulePresenter,
+    stub_model(::Logical::CallSchedulePresenter,
       :dates => dates,
       :shifts_by_section => { mock_section => mock_shifts }
     )

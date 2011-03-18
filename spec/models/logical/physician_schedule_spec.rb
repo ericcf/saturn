@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PhysicianSchedule do
+describe ::Logical::PhysicianSchedule do
 
   let(:today) { Date.today }
   let(:mock_physician) { stub_model(Physician) }
@@ -11,7 +11,7 @@ describe PhysicianSchedule do
       :physician => mock_physician
     }
   end
-  let(:schedule) { PhysicianSchedule.new(valid_attributes) }
+  let(:schedule) { ::Logical::PhysicianSchedule.new(valid_attributes) }
 
   subject { schedule }
 
@@ -20,17 +20,17 @@ describe PhysicianSchedule do
   # validations
 
   it "validates presence of start_date" do
-    PhysicianSchedule.new(:start_date => nil).
+    ::Logical::PhysicianSchedule.new(:start_date => nil).
       should have(1).error_on(:start_date)
   end
 
   it "validates presence of number_of_days" do
-    PhysicianSchedule.new(:number_of_days => nil).
+    ::Logical::PhysicianSchedule.new(:number_of_days => nil).
       should have(1).error_on(:number_of_days)
   end
 
   it "validates presence of physician" do
-    PhysicianSchedule.new(:physician => nil).
+    ::Logical::PhysicianSchedule.new(:physician => nil).
       should have(1).error_on(:physician)
   end
 

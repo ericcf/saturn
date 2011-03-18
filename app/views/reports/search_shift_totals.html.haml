@@ -5,7 +5,8 @@
   = javascript_include_tag "shared/date_span_selector"
   :javascript
     $(function() {
-      $("#shift_totals_report_start_date").date_span_selector("shift_totals_report_end_date");
+      $("#logical_shift_totals_report_start_date").
+        date_span_selector("logical_shift_totals_report_end_date");
     });
 
 %h3 Report on Shift Totals for Published Schedules
@@ -18,8 +19,8 @@
   %fieldset.inputs
     %legend Shifts
     %div{ :style => "margin-left: 25%;" }
-      = check_box_tag "shift_totals_report[hide_empty_shifts]", 1, true
-      = label_tag "shift_totals_report[hide_empty_shifts]", "Hide unpopulated shifts?"
+      = check_box_tag "logical_shift_totals_report[hide_empty_shifts]", 1, true
+      = label_tag "logical_shift_totals_report[hide_empty_shifts]", "Hide unpopulated shifts?"
       %br
       %br
       = link_to "select all", "#", :class => "check_all_boxes"
@@ -32,16 +33,16 @@
       - 0.step(section_shifts.count, per_column) do |index|
         %div{ :style => "float: left;" }
           - (section_shifts[index, per_column]).each do |shift|
-            = check_box_tag "shift_totals_report[shift_ids][]", shift.id, @shift_totals_report.shift_ids.nil? || @shift_totals_report.shift_ids.include?(shift.id)
-            = label_tag "shift_totals_report[shift_ids][]", shift.title
+            = check_box_tag "logical_shift_totals_report[shift_ids][]", shift.id, @shift_totals_report.shift_ids.nil? || @shift_totals_report.shift_ids.include?(shift.id)
+            = label_tag "logical_shift_totals_report[shift_ids][]", shift.title
             %br
 
   %fieldset.inputs
     %legend Groups
     %div{ :style => "margin-left: 25%;" }
       - physician_groups.each do |group|
-        = check_box_tag "shift_totals_report[group_ids][]", group.id, @shift_totals_report.group_ids.nil? || @shift_totals_report.group_ids.include?(group.id)
-        = label_tag "shift_totals_report[group_ids][]", group.title
+        = check_box_tag "logical_shift_totals_report[group_ids][]", group.id, @shift_totals_report.group_ids.nil? || @shift_totals_report.group_ids.include?(group.id)
+        = label_tag "logical_shift_totals_report[group_ids][]", group.title
         %br
 
   = report_form.buttons do

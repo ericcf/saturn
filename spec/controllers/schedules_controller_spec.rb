@@ -25,8 +25,8 @@ describe SchedulesController do
     end
 
     it "assigns call schedule presenter to @schedule_presenter" do
-      mock_presenter = stub(CallSchedulePresenter)
-      CallSchedulePresenter.stub!(:new) { mock_presenter }
+      mock_presenter = stub(::Logical::CallSchedulePresenter)
+      ::Logical::CallSchedulePresenter.stub!(:new) { mock_presenter }
       get :weekly_call
       assigns(:schedule_presenter).should eq(mock_presenter)
     end
@@ -47,7 +47,7 @@ describe SchedulesController do
     end
 
     it "assigns weekly assignments to @assignments" do
-      WeeklySchedulePresenter.stub!(:new)
+      ::Logical::WeeklySchedulePresenter.stub!(:new)
       mock_assignment = stub_model(Assignment)
       mock_schedule.stub!(:assignments).
         and_return([mock_assignment])
@@ -65,7 +65,7 @@ describe SchedulesController do
       mock_section.stub_chain(:weekly_schedules, :build).
         and_return(mock_schedule)
       mock_schedule_presenter = mock("presenter")
-      WeeklySchedulePresenter.should_receive(:new).
+      ::Logical::WeeklySchedulePresenter.should_receive(:new).
         with(:section => mock_section, :dates => instance_of(Array),
              :assignments => [assignment], :weekly_schedule => mock_schedule,
              :physician_names_by_id => { mock_physician.id => mock_physician.short_name },
@@ -80,7 +80,7 @@ describe SchedulesController do
       it "assigns tabular data object to @schedule_view" do
         get :show_weekly_section, :section_id => mock_section.id, :view_mode => 2
         assigns(:schedule_presenter).
-          should be_an_instance_of(WeeklySchedulePresenter)
+          should be_an_instance_of(::Logical::WeeklySchedulePresenter)
       end
     end
   end

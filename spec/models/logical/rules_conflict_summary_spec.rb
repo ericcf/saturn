@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RulesConflictSummary do
+describe ::Logical::RulesConflictSummary do
 
   let(:mock_section) { stub_model(Section) }
   let(:mock_weekly_schedule) { stub_model(WeeklySchedule) }
@@ -14,28 +14,29 @@ describe RulesConflictSummary do
       :ordered_physician_ids => [mock_physician.id]
     }
   end
-  let(:summary) { RulesConflictSummary.new(valid_attributes) }
+  let(:summary) { ::Logical::RulesConflictSummary.new(valid_attributes) }
 
   subject { summary }
 
   # validations
 
   it do
-    RulesConflictSummary.new(:section => nil).should have(1).error_on(:section)
+    ::Logical::RulesConflictSummary.new(:section => nil).
+      should have(1).error_on(:section)
   end
 
   it do
-    RulesConflictSummary.new(:weekly_schedule => nil).
+    ::Logical::RulesConflictSummary.new(:weekly_schedule => nil).
       should have(1).error_on(:weekly_schedule)
   end
 
   it do
-    RulesConflictSummary.new(:assignments => nil).
+    ::Logical::RulesConflictSummary.new(:assignments => nil).
       should have(1).error_on(:assignments)
   end
 
   it do
-    RulesConflictSummary.new(:ordered_physician_ids => nil).
+    ::Logical::RulesConflictSummary.new(:ordered_physician_ids => nil).
       should have(1).error_on(:ordered_physician_ids)
   end
 
