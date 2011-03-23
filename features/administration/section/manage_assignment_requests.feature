@@ -7,7 +7,7 @@ Background:
   Given there is a user "harold@foo.com" with password "secret"
     And User "harold@foo.com" is a section administrator for the "MSK" section
     And a physician "Julia Child" in the "MSK" section
-    And a shift "Kitchen" in the "MSK" section
+    And a shift "Kitchen" in the section "MSK"
     And I sign in as user "harold@foo.com" with password "secret"
    When I go to the new assignment request page for the "MSK" section
     And I select "Julia Child" from "assignment_request_requester_id"

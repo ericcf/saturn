@@ -6,7 +6,7 @@ Feature: Personal dashboard
 Background:
   Given a section "The Highway" with a "Fellows" member "Harley David"
     And a weekly schedule for "The Highway" that begins 2012-12-10 is published
-    And a shift "Riding" in the "The Highway" section
+    And a shift "Riding" in the section "The Highway"
     And "Harley David" is assigned to "Riding" in "The Highway" 2012-12-10
 
 Scenario: View a user's personal dashboard

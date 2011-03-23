@@ -14,7 +14,7 @@ describe UserNotifications do
     let(:mock_request) do
       mock_model(AssignmentRequest,
         :requester => mock_requester,
-        :sections => [mock_section]
+        :shift_sections => [mock_section]
       )
     end
     let(:mail) { UserNotifications.new_assignment_request(mock_request) }

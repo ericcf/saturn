@@ -5,7 +5,7 @@ Feature: Manage weekly schedule
 
 Background:
   Given a section "Body"
-    And a shift "PM" in the "Body" section
+    And a shift "PM" in the section "Body"
     And I am an authenticated section administrator for "Body"
 
 @javascript
@@ -24,7 +24,6 @@ Scenario: Add a new assignment
     And I click ".shiftDay:first"
     And I click ".physician-name:first"
    Then I should see the ajax result /last saved: \d\d\d\d/
-    And I should see "C. Sanders" within ".shiftDay:first"
     And "Colonel Sanders" should be assigned to "PM" in "Body"
 
 @javascript

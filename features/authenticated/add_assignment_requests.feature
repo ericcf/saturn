@@ -4,7 +4,7 @@ Feature: add assignment requests
   I should be able to request assignment days
 
 Background:
-  Given a shift "Call" in the "Nose" section
+  Given a shift "Call" in the section "Nose"
     And I am an authenticated user associated with physician "Cyrano deBergerac"
     And a physician "Cyrano deBergerac" in the "Nose" section
 

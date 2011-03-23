@@ -5,7 +5,7 @@ Feature: View assignment requests
 
 Background:
   Given a section "Brain" with a "Faculty" member "Dr. Evil"
-    And a shift "Surgery" in the "Brain" section
+    And a shift "Surgery" in the section "Brain"
     And an assignment request for "Dr. Evil" on "Surgery" in the "Brain" section beginning today and ending tomorrow
 
 Scenario: View assignment requests

@@ -1,4 +1,4 @@
-RadDirectory::Person.class_eval do
+RadDirectory::Physician.class_eval do
   attr_accessible []
 
   with_options :dependent => :destroy do |assoc|
@@ -14,7 +14,7 @@ RadDirectory::Person.class_eval do
   end
 
   def shifts
-    Shift.includes(:sections).merge(sections)
+    ::Shift.includes(:sections).merge(sections)
   end
 
   def initials
@@ -42,9 +42,6 @@ RadDirectory::Person.class_eval do
       "}"
     ].join("")
   end
-end
-
-class Physician < RadDirectory::Person
 
   scope :with_assignments, lambda { |assignments|
     where(:id => assignments.map(&:physician_id))
@@ -52,5 +49,13 @@ class Physician < RadDirectory::Person
 
   def self.section_members
     where(:id => SectionMembership.all.map(&:physician_id).uniq)
+  end
+end
+
+class Physician < RadDirectory::Physician
+
+  # queries will use type = "RadDirectory::Physician"
+  def self.sti_name
+    "RadDirectory::Physician"
   end
 end

@@ -21,7 +21,7 @@ Scenario: Add weekly shift limit rules
     And I should see "Minimum: 0.5"
 
 Scenario: Add daily shift limit rules
-  Given a shift tag "General" in the "Ear" section
+  Given a shift tag "General" in the section "Ear"
    When I follow "Edit Rules"
     And I select "2" from "General"
     And I press "Update Section"

@@ -49,17 +49,17 @@ Given /^a section "([^"]*)" with a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |sect
   section.memberships.create(:physician_id => physician.id)
 end
 
-Given /^a shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, section_title|
+Given /^a shift "([^"]*)" in the section "([^"]*)"$/ do |shift_title, section_title|
   section = find_or_create_section(section_title)
   section.shifts.create(:title => shift_title)
 end
 
-Given /^a call shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, section_title|
+Given /^a call shift "([^"]*)" in the section "([^"]*)"$/ do |shift_title, section_title|
   section = find_or_create_section(section_title)
   section.call_shifts.create(:title => shift_title)
 end
 
-Given /^a vacation shift "([^"]*)" in the "([^"]*)" section$/ do |shift_title, section_title|
+Given /^a vacation shift "([^"]*)" in the section "([^"]*)"$/ do |shift_title, section_title|
   section = find_or_create_section(section_title)
   section.vacation_shifts.create(:title => shift_title)
 end
@@ -82,7 +82,7 @@ Given /^an assignment request for "([^ ]+) ([^"]+)" on "([^"]*)" in the "([^"]*)
   )
 end
 
-Given /^a shift tag "([^"]*)" in the "([^"]*)" section$/ do |shift_tag_title, section_title|
+Given /^a shift tag "([^"]*)" in the section "([^"]*)"$/ do |shift_tag_title, section_title|
   section = find_or_create_section(section_title)
   section.shift_tags.create(:title => shift_tag_title)
 end

@@ -6,7 +6,7 @@ Feature: Manage shift categories
 Background:
   Given a section "Throat"
     And I am an authenticated section administrator for "Throat"
-    And a shift tag "AM" in the "Throat" section
+    And a shift tag "AM" in the section "Throat"
     And I go to the shift categories management page for "Throat"
 
 Scenario: View shift categories management page

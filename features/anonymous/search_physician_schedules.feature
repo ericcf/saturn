@@ -6,7 +6,7 @@ Feature: Search physician schedules
 Background:
   Given a section "Moon" with a "Faculty" member "Buzz Aldrin"
     And a weekly schedule for "Moon" that begins Monday is published
-    And a shift "Float" in the "Moon" section
+    And a shift "Float" in the section "Moon"
     And "Buzz Aldrin" is assigned to "Float" in "Moon" today
 
 Scenario: search for a physician by name
