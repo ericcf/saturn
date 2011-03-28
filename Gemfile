@@ -4,6 +4,7 @@ gem 'rails'
 gem 'haml'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
+gem 'http_accept_language'
 
 # custom error pages
 gem 'goalie'
@@ -40,8 +41,19 @@ gem 'exception_notification', :git => 'git://github.com/rails/exception_notifica
 group :development, :test do
   gem 'mysql2'
   gem 'mongrel', '= 1.2.0.pre2'
-  gem 'haml-rails'
   gem 'launchy'
+  if RUBY_VERSION =~ /1.9/
+    gem 'ruby-debug19', :require => 'ruby-debug'
+  end
+end
+
+group :development do
+  gem 'haml-rails'
+  gem 'metric_fu'
+end
+
+group :test do
+  gem 'simplecov'
   gem 'rspec-rails'
   gem 'autotest-standalone'
   gem 'autotest-growl'
@@ -51,11 +63,6 @@ group :development, :test do
   gem 'cucumber'
   gem 'webrat'
   gem 'capybara'
-  gem 'metric_fu'
   gem 'shoulda'
   gem 'jasmine'
-  if RUBY_VERSION =~ /1.9/
-    gem 'ruby-debug19', :require => 'ruby-debug'
-    gem 'simplecov', '>= 0.3.5', :require => false
-  end
 end

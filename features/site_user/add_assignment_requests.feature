@@ -6,7 +6,7 @@ Feature: add assignment requests
 Background:
   Given a shift "Call" in the section "Nose"
     And I am an authenticated user associated with physician "Cyrano deBergerac"
-    And a physician "Cyrano deBergerac" in the "Nose" section
+    And a physician "Cyrano deBergerac" in the section "Nose"
 
 Scenario: add a new assignment request
    When I go to the new assignment request page for the "Nose" section

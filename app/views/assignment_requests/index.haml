@@ -16,18 +16,19 @@
         %th Status
         - if is_section_admin
           %th Actions
-    - @assignment_requests.each do |assignment_request|
-      %tr
-        %td= assignment_request.requester.short_name
-        %td
-          - time = assignment_request.created_at
-          = time.strftime("#{time.day} %b @ %I %p").gsub(/ 0/, " ")
-        %td
-          - start = assignment_request.start_date
-          = start.strftime("#{start.day} %b %Y")
-          - unless (end_date = assignment_request.end_date).nil?
-            = end_date.strftime(" - #{end_date.day} %b %Y")
-        %td= assignment_request.comments
-        %td= assignment_request.status.capitalize
-        - if is_section_admin
-          %td= button_to("Approve", { :action => "approve", :id => assignment_request.id }) if assignment_request.status == "pending"
+    %tbody
+      - @assignment_requests.each do |assignment_request|
+        %tr.assignment_request
+          %td= assignment_request.requester.short_name
+          %td
+            - time = assignment_request.created_at
+            = time.strftime("#{time.day} %b @ %I %p").gsub(/ 0/, " ")
+          %td
+            - start = assignment_request.start_date
+            = start.strftime("#{start.day} %b %Y")
+            - unless (end_date = assignment_request.end_date).nil?
+              = end_date.strftime(" - #{end_date.day} %b %Y")
+          %td= assignment_request.comments
+          %td= assignment_request.status.capitalize
+          - if is_section_admin
+            %td= button_to("Approve", { :action => "approve", :id => assignment_request.id }) if assignment_request.status == "pending"

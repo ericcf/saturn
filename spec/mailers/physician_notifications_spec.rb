@@ -22,7 +22,7 @@ describe PhysicianNotifications do
     end
 
     it "renders the headers" do
-      mail.subject.should eq("Saturn: Request approved")
+      mail.subject.should eq("Request approved")
       mail.to.should eq([mock_requester.work_email])
       mail.from.should eq([APP_CONFIG["from_email"]])
     end

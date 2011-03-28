@@ -13,13 +13,14 @@
       %th Abbrev. name
       %th Initials
       %th Actions
-  - @physicians.each do |physician|
-    %tr{ :class => cycle("odd", "") }
-      %td= link_to physician.full_name, schedule_physician_path(physician)
-      %td= physician.groups.select{|g| Section::SCHEDULE_GROUPS.include?(g.title)}.map(&:title).join(", ")
-      %td= physician.sections.map(&:title).join(", ")
-      %td= physician.short_name
-      %td= physician.initials
-      %td= link_to "Edit Alias", physician.names_alias ? edit_physician_physician_alias_path(physician) : new_physician_physician_alias_path(physician)
+  %tbody
+    - @physicians.each do |physician|
+      %tr{ :class => cycle("odd", "") }
+        %td= link_to physician.full_name, schedule_physician_path(physician)
+        %td= physician.groups.select{|g| Section::SCHEDULE_GROUPS.include?(g.title)}.map(&:title).join(", ")
+        %td= physician.sections.map(&:title).join(", ")
+        %td= physician.short_name
+        %td= physician.initials
+        %td= link_to "Edit Alias", physician.names_alias ? edit_physician_physician_alias_path(physician) : new_physician_physician_alias_path(physician)
 
 = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"

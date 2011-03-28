@@ -9,7 +9,6 @@ class UserNotifications < ActionMailer::Base
     @assignment_requests_url = section_assignment_requests_url(sections.first)
     recipients = sections.map(&:administrator_emails).flatten.join(", ")
 
-    mail :to => recipients,
-      :subject => "Saturn: #{@physician_name} submitted a request"
+    mail :to => recipients, :subject => I18n.t('actionmailer.user_notifications.new_assignment_request.subject', :name => @physician_name)
   end
 end

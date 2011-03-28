@@ -10,7 +10,6 @@ class PhysicianNotifications < ActionMailer::Base
     ].compact.join(" - ")
     @requester = request.requester
 
-    mail :to => request.requester.work_email,
-      :subject => "Saturn: Request approved"
+    mail :to => request.requester.work_email, :subject => I18n.t('actionmailer.physician_notifications.assignment_request_approved.subject')
   end
 end

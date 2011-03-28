@@ -55,15 +55,15 @@ GEM
     arrayfields (4.7.4)
     autotest-growl (0.2.9)
     autotest-standalone (4.5.5)
-    babosa (0.2.2)
+    babosa (0.3.0)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     cancan (1.4.1)
     capistrano (2.5.20)
       highline
       highline
-      net-scp
       net-scp (>= 1.0.0)
+      net-scp
       net-sftp
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
@@ -106,7 +106,7 @@ GEM
     culerity (0.2.15)
     daemons (1.0.10)
     database_cleaner (0.6.6)
-    devise (1.1.8)
+    devise (1.1.9)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
     diff-lcs (1.1.2)
@@ -129,8 +129,8 @@ GEM
       actionpack (>= 2.3.0)
       activesupport (>= 2.3.0)
       i18n (>= 0.4.0)
-    friendly_id (3.2.1)
-      babosa (~> 0.2.1)
+    friendly_id (3.2.1.1)
+      babosa (~> 0.3.0)
     gem_plugin (0.2.3)
     gherkin (2.3.5)
       json (>= 1.4.6)
@@ -144,7 +144,8 @@ GEM
       haml (~> 3.0)
       railties (~> 3.0)
     highline (1.6.1)
-    hirb (0.4.0)
+    hirb (0.4.3)
+    http_accept_language (1.0.1)
     i18n (0.5.0)
     icalendar (1.1.6)
     jasmine (1.0.1.1)
@@ -198,7 +199,7 @@ GEM
     rack (1.2.2)
     rack-cache (1.0)
       rack (>= 0.4)
-    rack-mount (0.6.13)
+    rack-mount (0.6.14)
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
@@ -210,7 +211,7 @@ GEM
       activesupport (= 3.0.5)
       bundler (~> 1.0)
       railties (= 3.0.5)
-    rails_best_practices (0.7.3)
+    rails_best_practices (0.7.5)
       activesupport
       colored (~> 1.2)
       erubis (~> 2.6.6)
@@ -317,6 +318,7 @@ DEPENDENCIES
   goalie
   haml
   haml-rails
+  http_accept_language
   icalendar
   jasmine
   launchy
@@ -330,7 +332,7 @@ DEPENDENCIES
   ruby-debug19
   selenium-client
   shoulda
-  simplecov (>= 0.3.5)
+  simplecov
   tlsmail
   vpim
   webrat

@@ -2,9 +2,12 @@
 
 %h2 Sections
 
-%ul
+%table
   - @sections.each do |section|
-    %li= link_to section.title, weekly_section_schedule_path(section)
+    %tr.section
+      %td= link_to section.title, weekly_section_schedule_path(section)
+      - if can? :update, section
+        %td= link_to t(:edit), edit_section_path(section)
 
 %br
 

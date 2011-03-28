@@ -50,7 +50,7 @@ Given /^a physician "([^ ]+) ([^"]+)"$/ do |given_name, family_name|
   end
 end
 
-Given /^a physician "([^ ]+) ([^"]+)" in the "([^"]*)" section$/ do |given_name, family_name, section_title|
+Given /^a physician "([^ ]+) ([^"]+)" in the section "([^"]*)"$/ do |given_name, family_name, section_title|
   Given %{a physician "#{given_name} #{family_name}"}
     And %{a section "#{section_title}"}
   section = Section.find_by_title(section_title)

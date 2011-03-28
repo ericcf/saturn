@@ -20,7 +20,7 @@ describe UserNotifications do
     let(:mail) { UserNotifications.new_assignment_request(mock_request) }
 
     it "renders the headers" do
-      mail.subject.should eq("Saturn: Dr. Nick submitted a request")
+      mail.subject.should eq("Dr. Nick submitted a request")
       mail.to.should eq(mock_section.administrator_emails)
       mail.from.should eq([APP_CONFIG["from_email"]])
     end

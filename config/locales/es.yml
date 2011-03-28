@@ -1,11 +1,11 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
-en:
-  edit: "Edit"
+es:
+  edit: "Editar"
   actionmailer:
     user_notifications:
       new_assignment_request:
-        subject: "%{name} submitted a request"
+        subject: "%{name} presentó una solicitud"
     physician_notifications:
       assignment_request_approved:
-        subject: "Request approved"
+        subject: "Se aprobó la solicitud"
