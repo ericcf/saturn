@@ -7,6 +7,7 @@ Scenario: Add a shift
    When I add a shift to a section
    Then I should see "Successfully created shift"
 
+@javascript
 Scenario: Modify a shift title from the shifts management page
    When I modify a shift title from the shifts management page
    Then I should see "Successfully updated section"

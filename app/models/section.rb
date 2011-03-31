@@ -1,7 +1,7 @@
 class Section < ActiveRecord::Base
 
   attr_accessible :title, :memberships_attributes, :shifts_attributes,
-    :shift_tags_attributes, :administrator_ids,
+    :shift_tags_attributes, :administrator_ids, :section_shifts_attributes,
     :weekly_shift_duration_rule_attributes, :daily_shift_count_rules_attributes
 
   SCHEDULE_GROUPS = %w[Faculty Fellows Residents]

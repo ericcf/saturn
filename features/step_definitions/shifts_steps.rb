@@ -32,8 +32,10 @@ When /^I modify a shift title from the shifts management page$/ do
   fill_in "section[shifts_attributes][0][title]", :with => "Meeting 1"
   click_on "Update Section"
   section = Section.find_by_title("Body and general")
-  assert section.shifts.find_by_title("Meeting").nil?
-  assert !section.shifts.find_by_title("Meeting 1").nil?
+  assert section.shifts.find_by_title("Meeting").nil?,
+    "shift with old title should not exist"
+  assert !section.shifts.find_by_title("Meeting 1").nil?,
+    "shift with new title should exist"
 end
 
 When /^I share a shift with another section$/ do

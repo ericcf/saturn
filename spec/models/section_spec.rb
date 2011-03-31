@@ -51,6 +51,8 @@ describe Section do
 
   it { @section = section; should validate_uniqueness_of(:title) }
 
+  it { should allow_mass_assignment_of(:section_shifts_attributes) }
+
   # attribute cleanup
 
   it { should clean_text_attribute(:title) }

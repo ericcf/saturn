@@ -42,6 +42,7 @@ group :development, :test do
   gem 'mysql2'
   gem 'mongrel', '= 1.2.0.pre2'
   gem 'launchy'
+  gem 'rspec-rails'
   if RUBY_VERSION =~ /1.9/
     gem 'ruby-debug19', :require => 'ruby-debug'
   end
@@ -54,7 +55,6 @@ end
 
 group :test do
   gem 'simplecov'
-  gem 'rspec-rails'
   gem 'autotest-standalone'
   gem 'autotest-growl'
   gem 'database_cleaner'

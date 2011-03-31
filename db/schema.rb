@@ -78,6 +78,22 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
 
   add_index "holidays", ["date"], :name => "index_holidays_on_date"
 
+  create_table "meeting_requests", :force => true do |t|
+    t.integer  "requester_id",                        :null => false
+    t.integer  "section_id",                          :null => false
+    t.integer  "shift_id",                            :null => false
+    t.string   "status",       :default => "pending", :null => false
+    t.date     "start_date",                          :null => false
+    t.date     "end_date"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "meeting_requests", ["requester_id"], :name => "index_meeting_requests_on_requester_id"
+  add_index "meeting_requests", ["section_id"], :name => "index_meeting_requests_on_section_id"
+  add_index "meeting_requests", ["status"], :name => "index_meeting_requests_on_status"
+
   create_table "permissions", :force => true do |t|
     t.string   "action",      :null => false
     t.string   "target_type", :null => false
@@ -258,6 +274,22 @@ ActiveRecord::Schema.define(:version => 20110304151754) do
   add_index "users", ["physician_id"], :name => "index_users_on_physician_id", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "vacation_requests", :force => true do |t|
+    t.integer  "requester_id",                        :null => false
+    t.integer  "section_id",                          :null => false
+    t.integer  "shift_id",                            :null => false
+    t.string   "status",       :default => "pending", :null => false
+    t.date     "start_date",                          :null => false
+    t.date     "end_date"
+    t.text     "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "vacation_requests", ["requester_id"], :name => "index_vacation_requests_on_requester_id"
+  add_index "vacation_requests", ["section_id"], :name => "index_vacation_requests_on_section_id"
+  add_index "vacation_requests", ["status"], :name => "index_vacation_requests_on_status"
 
   create_table "weekly_schedules", :force => true do |t|
     t.integer  "section_id",                      :null => false
