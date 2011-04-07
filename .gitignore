@@ -3,10 +3,9 @@
 .rspec
 .autotest
 .rvmrc
-db/*.sqlite3
 db/*seeds*
-log/*.log
-tmp/**/*
+log
+tmp
 autotest/*
 lib/legacy*
 lib/resident*
@@ -14,4 +13,4 @@ coverage*
 Capfile
 config/database.yml
 config/deploy.rb
-config/environments/production.rb
+config/environments

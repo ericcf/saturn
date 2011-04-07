@@ -13,9 +13,10 @@
 src_files:
   - public/javascripts/jquery.min.js
   - public/javascripts/jquery-ui.min.js
+  - public/javascripts/rails.js
   - public/javascripts/jquery.tmpl.js
-  - public/javascripts/third_party/*.js
-  - public/javascripts/report.js
+  - public/javascripts/third_party/knockout-1.2.0pre.debug.js
+  - public/javascripts/third_party/knockout.mapping-latest.js
   - public/javascripts/saturn/**/*.js
   - public/javascripts/sections/**/*.js
   - public/javascripts/shared/**/*.js

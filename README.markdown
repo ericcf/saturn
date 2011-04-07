@@ -15,7 +15,7 @@ Run RSpec specs with:
     rake spec
 
 Start jasmine server with:
-    rake jasmine
+    rake jasmine RAILS_ENV=test
 Then open up localhost:8888 in a browser.
 
 Run Cucumber features with:
