@@ -1,4 +1,5 @@
 RadDirectory::Physician.class_eval do
+
   attr_accessible []
 
   with_options :dependent => :destroy do |assoc|
@@ -53,9 +54,4 @@ RadDirectory::Physician.class_eval do
 end
 
 class Physician < RadDirectory::Physician
-
-  # queries will use type = "RadDirectory::Physician"
-  def self.sti_name
-    "RadDirectory::Physician"
-  end
 end
