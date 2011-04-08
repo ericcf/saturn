@@ -309,5 +309,8 @@ td:last-child .note:hover .note-text {
 .ui-datepicker-trigger {
   cursor: pointer; }
 
+#ui-datepicker-div {
+  z-index: 999 !important; }
+
 #ui-datepicker-div.ui-helper-hidden-accessible {
   clip: auto; }

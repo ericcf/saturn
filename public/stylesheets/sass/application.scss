@@ -355,6 +355,11 @@ td:last-child .note:hover .note-text {
 .ui-datepicker-trigger {
   cursor: pointer; }
 
+// force the datepicker to appear on top of redrawn assignments, e.g.
+#ui-datepicker-div {
+  z-index: 999 !important;
+}
+
 // a hack here to allow the datepicker to show up
 #ui-datepicker-div.ui-helper-hidden-accessible {
   clip: auto; }
