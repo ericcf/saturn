@@ -10,7 +10,6 @@ gem 'http_accept_language'
 gem 'goalie'
 
 gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
-#gem 'rad_directory', :path => "/Users/ericcf/projects/rad_directory"
 # required by Rad Directory
 gem 'rack-cache', :require => 'rack/cache'
 gem 'dragonfly'

@@ -65,6 +65,8 @@ class Section < ActiveRecord::Base
     @shift_tags_by_shift_id[shift.id] || []
   end
 
+  # Finds all published schedules that intersect with the +dates+ parameter,
+  # then returns all assignments for those schedules.
   def published_assignments_by_dates(dates)
     published_schedules = weekly_schedules.published.include_dates dates
     published_dates = published_schedules.map(&:dates).flatten

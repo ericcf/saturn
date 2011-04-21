@@ -47,6 +47,9 @@ Saturn::Application.routes.draw do
     end
   end
 
+  # provides an external API for consuming call schedules
+  resources :section_call_schedules, :only => [:index]
+
   controller :schedules do
     scope "/schedules" do
       match "call", :to => "schedules#weekly_call", :via => "get",

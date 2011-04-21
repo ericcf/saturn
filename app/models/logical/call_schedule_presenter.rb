@@ -1,7 +1,6 @@
-require 'tables'
-
 module Logical
 
+  # Collects all CallShift assignments for the specified dates
   class CallSchedulePresenter < ::Logical::ValidatableModel
 
     attr_accessor :dates
@@ -39,9 +38,7 @@ module Logical
     end
 
     def physicians_by_id
-      @physicians_by_id ||= Physician.
-        includes(:names_alias).
-        hash_by_id
+      @physicians_by_id ||= Physician.includes(:names_alias).hash_by_id
     end
   end
 end
