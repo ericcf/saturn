@@ -50,8 +50,8 @@ class WeeklyShiftDurationRule < ActiveRecord::Base
 
   def sort_summaries!(conflict_summaries, ordered_physician_ids)
     conflict_summaries.sort! do |x, y|
-      ordered_physician_ids.index(x[:physician_id]) <=>
-        ordered_physician_ids.index(y[:physician_id])
+      (ordered_physician_ids.index(x[:physician_id]) <=>
+        ordered_physician_ids.index(y[:physician_id])) || 0
     end
   end
 
