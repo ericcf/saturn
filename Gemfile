@@ -9,7 +9,8 @@ gem 'http_accept_language'
 # custom error pages
 gem 'goalie'
 
-gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
+#gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
+gem 'rad_directory', :path => "/Users/ericcf/projects/rad_directory"
 # required by Rad Directory
 gem 'rack-cache', :require => 'rack/cache'
 gem 'dragonfly'
@@ -40,7 +41,6 @@ gem 'exception_notification', :git => 'git://github.com/rails/exception_notifica
 
 group :development, :test do
   gem 'mysql2'
-  gem 'mongrel', '= 1.2.0.pre2'
   gem 'launchy'
   gem 'rspec-rails'
   if RUBY_VERSION =~ /1.9/

@@ -8,16 +8,15 @@ GIT
       formtastic (~> 1.1.0)
 
 GIT
-  remote: git://github.com/ericcf/rad_directory.git
-  revision: 80069ca90d810c49f1a274f6180e681215d90595
-  specs:
-    rad_directory (0.1.0)
-
-GIT
   remote: git://github.com/rails/exception_notification
   revision: 192a49a02d63d28b23ed41cebadfedd490929cf1
   specs:
     exception_notification (1.0.0)
+
+PATH
+  remote: /Users/ericcf/projects/rad_directory
+  specs:
+    rad_directory (0.2.0)
 
 GEM
   remote: http://rubygems.org/
@@ -99,7 +98,6 @@ GEM
       nokogiri (>= 1.4.4)
       rack-test (>= 0.5.7)
     culerity (0.2.15)
-    daemons (1.0.10)
     database_cleaner (0.6.6)
     devise (1.1.9)
       bcrypt-ruby (~> 2.1.2)
@@ -126,7 +124,6 @@ GEM
       i18n (>= 0.4.0)
     friendly_id (3.2.1.1)
       babosa (~> 0.3.0)
-    gem_plugin (0.2.3)
     gherkin (2.3.6)
       json (>= 1.4.6)
     goalie (0.0.4)
@@ -176,9 +173,6 @@ GEM
       roodi (>= 2.1.0)
       syntax
     mime-types (1.16)
-    mongrel (1.2.0.pre2)
-      daemons (~> 1.0.10)
-      gem_plugin (~> 0.2.3)
     mysql2 (0.2.7)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -314,7 +308,6 @@ DEPENDENCIES
   jasmine
   launchy
   metric_fu
-  mongrel (= 1.2.0.pre2)
   mysql2
   rack-cache
   rad_directory!

@@ -37,6 +37,15 @@ class Section < ActiveRecord::Base
 
   before_validation { clean_text_attributes :title }
 
+  def as_json(options = {})
+    {
+      :id => id,
+      :title => title,
+      :members => members.includes(:names_alias),
+      :shifts => active_shifts
+    }
+  end
+
   def assignments
     Assignment.includes(:shift).where(:shift_id => shifts.map(&:id))
   end

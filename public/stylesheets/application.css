@@ -149,8 +149,6 @@ table {
   border-collapse: collapse;
   border-left: 1px solid #cccccc;
   border-top: 1px solid #cccccc; }
-  table.wide-schedule {
-    width: 986px; }
 
 th {
   text-align: left;
@@ -166,7 +164,7 @@ td, th {
   vertical-align: top; }
 
 tr {
-  height: 18px; }
+  height: 23px; }
   tr th {
     background-color: white; }
   tr.odd {

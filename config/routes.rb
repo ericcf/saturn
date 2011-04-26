@@ -14,6 +14,10 @@ Saturn::Application.routes.draw do
 
   resources :sections do
     resource :weekly_schedules
+    match "/weekly_schedules/:date(.:format)" => "weekly_schedules#show",
+      :date => /\d{4}-\d{2}-\d{2}/
+    match "/weekly_schedules/:date/assignments(.:format)" => "assignments#index",
+      :date => /\d{4}-\d{2}-\d{2}/
     resources :memberships, :only => :index do
       collection do
         get "manage"

@@ -33,6 +33,13 @@ RadDirectory::Physician.class_eval do
     email.present? ? email.value : ""
   end
 
+  def as_json(options = {})
+    {
+      :id => id,
+      :short_name => short_name
+    }
+  end
+
   def to_json
     [
       "{\"physician\":",

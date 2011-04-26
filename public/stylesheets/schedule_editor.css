@@ -1,15 +1,25 @@
+.controls h3, .controls h4 {
+  float: left;
+  margin: 0;
+  height: 38px;
+  padding-top: 14px; }
+.controls h4 {
+  padding-top: 16px; }
+.controls #date-selector {
+  width: 8em; }
+
 #schedule-wrapper {
   position: absolute;
   overflow-x: hidden;
   overflow-y: auto;
-  top: 231px;
+  top: 207px;
   bottom: 8px;
-  left: 140px;
+  left: 16px;
   border-bottom: 1px solid #919397;
-  width: 877px; }
+  width: 990px; }
 
 #schedule {
-  width: 861px; }
+  width: 974px; }
 
 .physician-name {
   display: block;
@@ -25,53 +35,68 @@
   border-right: 1px solid #919397;
   border-bottom: 1px solid #919397;
   float: left;
-  background-color: #e6eae1; }
+  background-color: #e6eae1;
+  margin-left: 214px; }
 
 .shift-title {
   font-weight: bold;
-  padding-left: 0.5em; }
+  padding-left: 0.5em;
+  float: left;
+  height: 16px; }
 
 .shift-week {
-  background-color: #919397;
-  color: #fefefe;
-  margin-bottom: 9px; }
+  float: left;
+  border-bottom: 1px solid #999;
+  background-color: #fffff6;
+  color: #2f4462; }
+
+.shift-week-header {
+  float: left;
+  width: 216px; }
 
 .shift-week-note {
-  position: absolute;
   height: 16px;
   background-color: #f2ece9;
-  left: 180px;
-  width: 620px;
+  width: 97px;
   padding-left: 0.5em;
-  color: #6e6f72; }
+  color: #6e6f72;
+  float: right; }
 
 .schedule-grid {
   border: none;
-  width: 862px; }
+  float: left; }
 
 .shiftDay {
   vertical-align: top;
-  width: 118px;
+  width: 102px;
   min-height: 36px;
   padding-top: 2px;
-  padding-bottom: 2px; }
+  padding-bottom: 2px;
+  border: none;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc; }
+  .shiftDay:first-child {
+    border-left: 1px solid #ccc; }
 
 .assignment {
   position: relative;
   cursor: pointer;
-  width: 100px;
+  width: 90px;
   overflow: hidden;
   padding-left: 2px; }
+  .assignment span {
+    font-weight: bold; }
 
 .assignment-indicators {
   position: absolute;
   right: 0;
   top: 0;
-  width: 32px; }
+  width: 27px; }
 
 .note-indicator {
   background-repeat: no-repeat;
-  width: 16px;
+  width: 14px;
   display: block;
   height: 16px;
   float: left; }
@@ -86,12 +111,12 @@
   background-image: url("../images/pnp-note.gif"); }
 
 .duration-indicator {
-  width: 16px; }
+  width: 13px; }
 
 #rules-conflicts-wrapper {
   position: absolute;
-  left: 1038px;
-  top: 244px;
+  left: 1028px;
+  top: 114px;
   width: 250px;
   bottom: 5px; }
 

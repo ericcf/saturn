@@ -1,21 +1,13 @@
 <script id="weeklySchedule" type="text/html">
-    <h3>Editing the week of <span id="schedule-date" data-bind="text: longDate"></span> <input id="date-selector" type="text" value=" select date..." data-bind="dateSelector: {}"></input></h3>
-    <h4 class="left">last saved: <span id="schedule-update-timestamp" data-bind="text: longLastUpdate"></span> | status: <span id="schedule-status" data-bind="text: is_published() ? 'published' : 'unpublished'"></span></h4>
-    <p id="schedule-publish-control" class="inline-control">
-        &nbsp;
-        <input id="schedule-is-published" type="checkbox" data-bind="checked: is_published, button: {}"></input>
-        <label for="schedule-is-published"><span class="ui-button-text" data-bind="text: publishAction">${publishAction}</span></label>
-    </p>
+    <div class="controls">
+        <h3>Editing the week of <a href="#" data-bind="click: function() { location.hash = '#' + previousWeekDate(); location.reload() }">&laquo;</a> <span id="schedule-date" data-bind="text: longDate"></span> <a href="#" data-bind="click: function() { location.hash = '#' + nextWeekDate(); location.reload() }">&raquo;</a> <input id="date-selector" type="text" value=" select date..." data-bind="dateSelector: {}"></input></h3>
+        <h4> | last saved: <span id="schedule-update-timestamp" data-bind="text: longLastUpdate"></span> | status: <span id="schedule-status" data-bind="text: is_published() ? 'published' : 'unpublished'"></span></h4>
+        <p id="schedule-publish-control" class="inline-control">
+            &nbsp;
+            <input id="schedule-is-published" type="checkbox" data-bind="checked: is_published, button: {}"></input>
+            <label for="schedule-is-published"><span class="ui-button-text" data-bind="text: publishAction">${publishAction}</span></label>
+        </p>
+    </div>
 
-    <div class="schedule-column-header prepended-column-header">
-        <div class="placeholder">&nbsp;</div>
-        <div class="placeholder">&nbsp;</div>
-        <a href="#" data-bind="click: function() { location.hash = '#' + previousWeekDate(); location.reload() }">&laquo; previous week</a>
-    </div>
     <div class="schedule-headers main-ui" data-bind="template: { name: 'dateColHeader', foreach: dates }"></div>
-    <div class="schedule-column-header appended-column-header">
-        <div class="placeholder">&nbsp;</div>
-        <div class="placeholder">&nbsp;</div>
-        <a href="#" data-bind="click: function() { location.hash = '#' + nextWeekDate(); location.reload() }">next week &raquo;</a>
-    </div>
 </script>

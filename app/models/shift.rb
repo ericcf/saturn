@@ -21,6 +21,13 @@ class Shift < ActiveRecord::Base
     ""
   end
 
+  def as_json(options = {})
+    {
+      :id => id,
+      :title => title
+    }
+  end
+
   def display_color_for_section(section)
     section_shifts.where(:section_id => section.id).select(:display_color).
       map(&:display_color).first

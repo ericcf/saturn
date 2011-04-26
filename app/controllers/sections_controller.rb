@@ -13,10 +13,16 @@ class SectionsController < ApplicationController
   def show
     year = params[:year] || Date.today.year
     @section = Section.find(params[:id])
-    @schedule = ::Logical::YearlySectionSchedule.new(:year => year,
-      :section => @section
-    )
-    render :layout => "section"
+
+    respond_to do |format|
+      format.html do
+        @schedule = ::Logical::YearlySectionSchedule.new(:year => year,
+          :section => @section
+        )
+        render :layout => "section"
+      end
+      format.json { render :json => @section }
+    end
   end
 
   def new

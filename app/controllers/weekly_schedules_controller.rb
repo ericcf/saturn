@@ -8,7 +8,17 @@ class WeeklySchedulesController < ApplicationController
   before_filter :authenticate_user!, :only => [:edit, :create]
 
   def show
-    @weekly_schedules = @section.weekly_schedules
+    if params[:date]
+      schedule = @section.weekly_schedules.include_dates([Date.parse(params[:date])]).first
+      render :json => {
+        :is_published => schedule.is_published,
+        :dates => schedule.dates.map { |date|
+          { :value => date, :label => date.to_s(:short_with_weekday) }
+        }
+      }
+    else
+      @weekly_schedules = @section.weekly_schedules
+    end
   end
 
   def edit

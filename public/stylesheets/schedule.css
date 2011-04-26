@@ -1,7 +1,8 @@
 /* common schedule elements */
+/* constants */
 div.schedule-wrapper {
   position: absolute;
-  width: 1001px;
+  width: 880px;
   top: 285px;
   bottom: 5px;
   left: 18px;
@@ -21,7 +22,7 @@ div.schedule-wrapper {
       border-top: none;
       background-color: white; }
   .schedule td, .schedule th {
-    width: 118px; }
+    width: 102px; }
   .schedule th.section-week {
     background-color: #919397;
     color: #fefefe; }
@@ -34,6 +35,9 @@ div.schedule-wrapper {
   top: -0.5em; }
 .block-schedule td, .block-schedule th {
   border-bottom: none; }
+
+.wide-schedule {
+  width: 864px; }
 
 .schedule-header {
   border-left: 1px solid white;
@@ -63,7 +67,7 @@ div.schedule-wrapper {
 .schedule-column-header {
   float: left;
   text-align: center;
-  width: 118px;
+  width: 102px;
   font-weight: bold;
   border-left: 1px solid #919397;
   padding: 2px; }

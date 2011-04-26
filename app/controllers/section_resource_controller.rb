@@ -3,7 +3,6 @@ module SectionResourceController
   def self.included(base)
     base.before_filter :find_section
     base.layout "section"
-
   end
 
   private
