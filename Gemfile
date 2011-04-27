@@ -1,7 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'rails'
+gem 'mysql2', '~>0.2.7'
 gem 'haml'
+gem 'sass'
 gem 'will_paginate', '~> 3.0.pre2'
 gem 'formtastic'
 gem 'http_accept_language'
@@ -9,8 +11,7 @@ gem 'http_accept_language'
 # custom error pages
 gem 'goalie'
 
-#gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
-gem 'rad_directory', :path => "/Users/ericcf/projects/rad_directory"
+gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
 # required by Rad Directory
 gem 'rack-cache', :require => 'rack/cache'
 gem 'dragonfly'
@@ -40,12 +41,9 @@ gem 'capistrano'
 gem 'exception_notification', :git => 'git://github.com/rails/exception_notification', :require => 'exception_notifier'
 
 group :development, :test do
-  gem 'mysql2'
   gem 'launchy'
   gem 'rspec-rails'
-  if RUBY_VERSION =~ /1.9/
-    gem 'ruby-debug19', :require => 'ruby-debug'
-  end
+  gem 'ruby-debug19', :require => 'ruby-debug'
 end
 
 group :development do
@@ -65,4 +63,5 @@ group :test do
   gem 'capybara'
   gem 'shoulda'
   gem 'jasmine'
+  gem 'rad_matchers'
 end
