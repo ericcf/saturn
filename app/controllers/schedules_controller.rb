@@ -11,7 +11,8 @@ class SchedulesController < ApplicationController
   end
 
   def show_weekly_section
-    request_date = params[:date].nil? ? nil : "#{params[:date][:year]}-#{params[:date][:month]}-#{params[:date][:day]}"
+    date_params = params[:date] || params
+    request_date = date_params[:year].nil? ? nil : "#{date_params[:year]}-#{date_params[:month]}-#{date_params[:day]}"
     start_date = monday_of_week_with(request_date)
     dates = week_dates_beginning_with(start_date)
     @section = Section.find(params[:section_id])

@@ -304,6 +304,9 @@ td:last-child .note:hover .note-text {
 .clickable {
   cursor: pointer; }
 
+body .jnotify-container {
+  top: 50px; }
+
 .ui-datepicker-trigger {
   cursor: pointer; }
 

@@ -349,6 +349,12 @@ td:last-child .note:hover .note-text {
 .clickable {
   cursor: pointer; }
 
+// jquery.jnotice related
+
+body .jnotify-container {
+  top: 50px;
+}
+
 // jquery ui related
 
 .ui-datepicker-trigger {

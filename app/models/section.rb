@@ -46,6 +46,10 @@ class Section < ActiveRecord::Base
     }
   end
 
+  def to_s
+    title
+  end
+
   def assignments
     Assignment.includes(:shift).where(:shift_id => shifts.map(&:id))
   end
