@@ -3,13 +3,13 @@ require 'spec_helper'
 describe "schedules/show_weekly_section.html" do
 
   let(:mock_section) { stub_model(Section) }
-  let(:dates) { [Date.today] }
+  let(:today) { Date.today }
   let(:mock_presenter) do
     stub_model(::Logical::WeeklySchedulePresenter,
       :weekly_schedule => mock_model(WeeklySchedule),
       :each_col_header => nil,
       :rows => [],
-      :dates => dates
+      :dates => [today]
     )
   end
 
@@ -23,7 +23,7 @@ describe "schedules/show_weekly_section.html" do
 
   it {
     should have_selector("form",
-      :action => weekly_section_schedule_path(mock_section),
+      :action => weekly_section_schedule_path(mock_section, :year => today.year, :month => today.month, :day => today.day),
       :method => "get"
     )
   }
@@ -33,9 +33,8 @@ describe "schedules/show_weekly_section.html" do
   it { should have_selector("form select", :name => "date[day]") }
 
   it {
-    date = dates.first
     should have_selector("a",
-      :href => weekly_section_schedule_path(mock_section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => nil),
+      :href => weekly_section_schedule_path(mock_section, :format => :xls, :date => { :year => today.year, :month => today.month, :day => today.day }, :view_mode => nil),
       :content => "Download as Excel"
     )
   }

@@ -1,0 +1,13 @@
+- content_for :stylesheets do
+  = stylesheet_link_tag 'shared/date_select_widget'
+
+- content_for :javascripts do
+  = javascript_include_tag 'shared/date_select_widget'
+
+= "#{prefix} the Week of"
+= current_date.to_s(:long)
+= form_tag view_path, :method => :get, :id => "date-selector" do
+  = select_year(current_date)
+  = select_month(current_date)
+  = select_day(current_date)
+  = submit_tag "View date"

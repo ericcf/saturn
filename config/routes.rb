@@ -55,10 +55,10 @@ Saturn::Application.routes.draw do
   resources :section_call_schedules, :only => [:index]
 
   controller :schedules do
-    scope "/schedules" do
-      match "call", :to => "schedules#weekly_call", :via => "get",
-        :as => :weekly_call_schedule
-    end
+    match "/schedules/call(/:year/:month/:day)",
+      :to => "schedules#weekly_call",
+      :via => "get",
+      :as => :weekly_call_schedule
 
     scope "/sections" do
       scope :path => "/:section_id/schedule(/:year/:month/:day)" do
@@ -94,5 +94,5 @@ Saturn::Application.routes.draw do
     resources :site_statistics, :only => :index
   end
 
-  root :to => "physicians#search"
+  root :to => "schedules#weekly_call"
 end

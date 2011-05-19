@@ -5,8 +5,7 @@ class SchedulesController < ApplicationController
   include Saturn::Dates
 
   def weekly_call
-    start_date = (params[:date].nil? ? Date.today : Date.civil(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)).at_beginning_of_week
-    dates = week_dates_beginning_with(start_date)
+    dates = week_dates_beginning_with(week_start_date)
     @schedule_presenter = ::Logical::CallSchedulePresenter.new(:dates => dates)
   end
 
@@ -42,5 +41,14 @@ class SchedulesController < ApplicationController
       format.html { render :layout => "section" }
       format.xls { render :xls => @schedule_presenter, :template => "schedules/weekly_section_schedule.xls", :layout => false }
     end
+  end
+
+  private
+
+  # calculate the date at the beginning of the week based on the params
+  def week_start_date
+    date_params = params[:date] || params
+    request_date = date_params[:year].nil? ? nil : "#{date_params[:year]}-#{date_params[:month]}-#{date_params[:day]}"
+    start_date = monday_of_week_with(request_date)
   end
 end

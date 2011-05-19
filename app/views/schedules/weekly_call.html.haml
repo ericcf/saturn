@@ -3,19 +3,16 @@
 - content_for :stylesheets do
   = stylesheet_link_tag "schedule"
 
-%h3 Published Call Schedule
-%h3= "Week of #{@schedule_presenter.dates.first.to_s(:long)}"
-= form_tag weekly_call_schedule_path, :method => :get do
-  = select_year(@schedule_presenter.dates.first)
-  = select_month(@schedule_presenter.dates.first)
-  = select_day(@schedule_presenter.dates.first)
-  = submit_tag "View date"
-%p= link_to "View today", weekly_call_schedule_path
+- content_for :javascripts do
+  = javascript_include_tag 'shared/date_selector'
+
+- week_start_date = @schedule_presenter.dates.first
+%h3= render "shared/date_select_widget", :prefix => "Published call schedule for", :current_date => week_start_date, :view_path => weekly_call_schedule_path(:year => week_start_date.year, :month => week_start_date.month, :day => week_start_date.day)
 
 %div.schedule-column-header.prepended-column-header
   %div.placeholder &nbsp;
   %div.placeholder &nbsp;
-  - last_week = @schedule_presenter.dates.first - 7
+  - last_week = week_start_date - 7
   %a{ :href => weekly_call_schedule_path(:date => { :year => last_week.year, :month => last_week.month, :day => last_week.day }) }
     &laquo; previous week
 
@@ -37,6 +34,6 @@
 %div.schedule-column-header.appended-column-header
   %div.placeholder &nbsp;
   %div.placeholder &nbsp;
-  - next_week = @schedule_presenter.dates.first + 7
+  - next_week = week_start_date + 7
   %a{ :href => weekly_call_schedule_path(:date => { :year => next_week.year, :month => next_week.month, :day => next_week.day }) }
     next week &raquo;

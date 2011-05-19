@@ -32,12 +32,6 @@ describe "schedules/weekly_call.html" do
 
   subject { rendered }
 
-  it "renders first of mock_presenter.dates" do
-    should have_selector("h3",
-      :content => "Week of #{mock_presenter.dates.first.to_s(:long)}"
-    )
-  end
-
   it "renders a table with headers labeled by date from mock_presenter.dates" do
     should have_selector("table") do |table|
       table.should have_selector("tr") do |tr|

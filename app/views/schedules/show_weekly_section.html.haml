@@ -3,39 +3,20 @@
 - content_for :stylesheets do
   = stylesheet_link_tag 'schedule'
 
-- date = @schedule_presenter.dates.first
+- week_start_date = @schedule_presenter.dates.first
+%h3= render "shared/date_select_widget", :prefix => "Published schedule for", :current_date => week_start_date, :view_path => weekly_section_schedule_path(@section, :year => week_start_date.year, :month => week_start_date.month, :day => week_start_date.day)
+%p= link_to "View today", weekly_section_schedule_path(@section)
 
-%h3
-  Published Schedule for the Week of
-  = @schedule_presenter.dates.first.to_s(:long)
-  = form_tag weekly_section_schedule_path(@section), :method => :get, :id => "date-selector", :style => "display: inline;" do
-    = select_year(@schedule_presenter.dates.first)
-    = select_month(@schedule_presenter.dates.first)
-    = select_day(@schedule_presenter.dates.first)
-    = submit_tag "View date"
-    :javascript
-      $("#date-selector select, #date-selector input[type=submit]").hide();
-      $("<input name=\"date\" type=\"text\" value=\"select date...\"/>")
-        .appendTo("#date-selector")
-        .datepicker({
-          onSelect: function(dateText, inst) {
-            var date = $(this).datepicker("getDate");
-            var href = location.href.replace(/\/?\d{4}\/\d{1,2}\/\d{1,2}(\??)/, "$1");
-            location.href = href.replace(/\/?(\?.*)?$/, "/" + date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate() + "$1");
-          }
-        });
-  %p= link_to "View today", weekly_section_schedule_path(@section)
-
-%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => @view_mode)
+%p.content_actions= link_to "Download as Excel", weekly_section_schedule_path(@section, :format => :xls, :date => { :year => week_start_date.year, :month => week_start_date.month, :day => week_start_date.day }, :view_mode => @view_mode)
 
 %table.schedule.wide-schedule
   %thead
     %tr
       %th.empty
         - if @view_mode == "2"
-          = link_to "View by Shifts", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day })
+          = link_to "View by Shifts", weekly_section_schedule_path(@section, :year => week_start_date.year, :month => week_start_date.month, :day => week_start_date.day)
         - else
-          = link_to "View by Physician", weekly_section_schedule_path(@section, :date => { :year => date.year, :month => date.month, :day => date.day }, :view_mode => 2)
+          = link_to "View by Physician", weekly_section_schedule_path(@section, :year => week_start_date.year, :month => week_start_date.month, :day => week_start_date.day, :view_mode => 2)
       - @schedule_presenter.each_col_header do |col_header|
         = render :partial => "schedules/headers/html/#{col_header[:type]}.html", :object => col_header[:object]
 %div.schedule-wrapper

@@ -32,13 +32,13 @@ module NavigationHelpers
 
     # schedules
     when /the weekly call schedule page for the week beginning (\d{4})-(\d{2})-(\d{2})/
-      weekly_call_schedule_path(:date => { :year => $1, :month => $2, :day => $3 })
+      weekly_call_schedule_path(:year => $1, :month => $2, :day => $3)
 
     # sections
     when /the index page for \"([^"]+)\"/
       section_path(find_section($1))
     when /the weekly section schedule page for \"([^"]+)\" on (\d{4})-(\d{2})-(\d{2})/
-      weekly_section_schedule_path(find_section($1), :date => { :year => $2, :month => $3, :day => $4 })
+      weekly_section_schedule_path(find_section($1), :year => $2, :month => $3, :day => $4)
     when /the assignment requests page for the \"([^"]+)\" section/
       section_assignment_requests_path(find_section($1))
     when /the new assignment request page for the \"([^"]+)\" section/
