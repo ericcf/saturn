@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails'
+gem 'rails', '~>3.0.7'
+gem 'rake', '~>0.8.7'
 gem 'mysql2', '~>0.2.7'
 gem 'haml'
 gem 'sass'
@@ -49,6 +50,7 @@ end
 group :development do
   gem 'haml-rails'
   gem 'metric_fu'
+  gem 'jquery-rails'
 end
 
 group :test do
