@@ -8,6 +8,7 @@ describe "shifts/index.html" do
       :retired_on => nil,
       :phone => "(123) 456-7890",
       :description => "Lorem ipsum...",
+      :duration => 1.0,
       :position => 1,
       :tags => "AM"
     ).as_null_object
