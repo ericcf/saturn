@@ -46,7 +46,7 @@ Given /^a physician "([^ ]+) ([^"]+)"$/ do |given_name, family_name|
     @physician.given_name = given_name
     @physician.family_name = family_name
     @physician.save!
-    @physician.emails << RadDirectory::Email.new(:value => default_email, :category => "work")
+    @physician.emails << RadDirectory::Email.new(:value => default_email)
   end
 end
 

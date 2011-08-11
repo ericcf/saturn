@@ -29,7 +29,7 @@ RadDirectory::Physician.class_eval do
   end
 
   def work_email
-    email = emails.find_by_category("work")
+    email = emails.first
     email.present? ? email.value : ""
   end
 
