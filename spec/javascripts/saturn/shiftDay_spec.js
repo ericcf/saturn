@@ -5,9 +5,9 @@ describe("shiftDay", function() {
   });
 
   beforeEach(function() {
-    loadFixtures("saturn/shiftDay.html");
+    loadFixtures("../../../../__spec__/javascripts/fixtures/saturn/shiftDay.html");
     $.ajax({
-      url: "/public/javascripts/saturn/templates/_shiftDayCell.htm",
+      url: "/saturn/templates/_shiftDayCell.htm",
       aync: false,
       success: function(template) {
         $("#shiftDay-fixture").append(template);

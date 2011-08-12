@@ -41,7 +41,7 @@ Scenario: Publish a weekly schedule
   Given a weekly schedule for "Body" that begins 2010-11-22
    When I go to the edit weekly schedule page for "Body" on 2010-11-22
    Then I should see "Publish"
-   When I check "schedule-is-published"
+   When I click "label[for=schedule-is-published]"
    Then I should see "status: published"
 
 @javascript

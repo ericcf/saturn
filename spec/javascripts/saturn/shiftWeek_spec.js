@@ -5,9 +5,9 @@ describe("shiftWeek", function() {
   });
 
   beforeEach(function() {
-    loadFixtures("saturn/shiftWeek.html");
+    loadFixtures("../../../../__spec__/javascripts/fixtures/saturn/shiftWeek.html");
     $.ajax({
-      url: "/public/javascripts/saturn/templates/_shiftWeekRow.htm",
+      url: "/saturn/templates/_shiftWeekRow.htm",
       aync: false,
       success: function(template) {
         $("#shiftWeek-fixture").append(template);

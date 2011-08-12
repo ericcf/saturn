@@ -5,9 +5,9 @@ describe("assignment", function() {
   });
 
   beforeEach(function() {
-    loadFixtures("saturn/assignment.html");
+    loadFixtures("/../../../../__spec__/javascripts/fixtures/saturn/assignment.html");
     $.ajax({
-      url: "/public/javascripts/saturn/templates/_assignment.htm",
+      url: "/saturn/templates/_assignment.htm",
       aync: false,
       success: function(template) {
         $("#assignment-fixture").append(template);

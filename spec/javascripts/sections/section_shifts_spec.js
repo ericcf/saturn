@@ -2,7 +2,7 @@ describe("shifts", function() {
   var sectionShifts;
 
   beforeEach(function() {
-    loadFixtures("sections/section_shifts.html");
+    loadFixtures("../../../../__spec__/javascripts/fixtures/sections/section_shifts.html");
     $("table#current_shifts").section_shifts();
     sectionShifts = $("table#current_shifts").data("section_shifts");
   });

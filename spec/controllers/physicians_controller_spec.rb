@@ -13,7 +13,7 @@ describe PhysiciansController do
   describe "GET 'index'" do
 
     before(:each) do
-      Physician.stub_chain(:section_members, :includes).
+      Physician.stub_chain("section_members.includes.paginate").
         and_return([mock_physician])
       get :index
     end
@@ -35,14 +35,15 @@ describe PhysiciansController do
     context "query parameter present" do
 
       before(:each) do
-        Physician.stub_chain("section_members.name_like") { [mock_physician] }
+        Physician.stub_chain("section_members.name_like.paginate").
+          and_return([mock_physician])
         mock_shift = stub_model(Shift)
         @mock_assignment = stub_model(Assignment, :shift => mock_shift,
           :physician_id => mock_physician.id)
         mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
         WeeklySchedule.stub_chain("published.include_dates") { [mock_schedule] }
         mock_schedule.stub_chain("assignments.where.includes").
-         and_return([@mock_assignment])
+          and_return([@mock_assignment])
         get :search, :query => "Boo"
       end
 
