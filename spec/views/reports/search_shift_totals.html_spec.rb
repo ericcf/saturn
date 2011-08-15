@@ -3,14 +3,13 @@ require 'spec_helper'
 describe "reports/search_shift_totals.html.haml" do
 
   let(:mock_shift) { stub_model(Shift, :title => "Foo") }
-  let(:mock_group) { stub_model(RadDirectory::Group, :title => "Bars") }
   let(:mock_section) { stub_model(Section) }
   let(:mock_report) do
     mock_model(::Logical::ShiftTotalsReport,
       :start_date => nil,
       :end_date => nil,
       :shift_ids => [],
-      :group_ids => []
+      :groups => []
     )
   end
 
@@ -18,7 +17,6 @@ describe "reports/search_shift_totals.html.haml" do
     mock_section.stub!(:active_shifts) { [mock_shift] }
     assign(:section, mock_section)
     assign(:shift_totals_report, mock_report)
-    view.stub!(:physician_groups) { [mock_group] }
     view.stub!(:nav_item)
     render
   end
@@ -51,8 +49,8 @@ describe "reports/search_shift_totals.html.haml" do
 
   it "displays a fieldset and check boxes for selecting physician groups" do
     should have_selector("form fieldset legend", :content => "Groups")
-    should have_selector("form input", :name => "logical_shift_totals_report[group_ids][]",
-      :value => "#{mock_group.id}")
+    should have_selector("form input", :name => "logical_shift_totals_report[groups][]",
+      :value => "Faculty")
   end
 
   it "dispalys a submit button" do

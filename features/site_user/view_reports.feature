@@ -4,6 +4,5 @@ Feature: View reports
   Should be able to view reports on published schedules
 
 Scenario: View default section report
-  Given a section "Brain"
-   When I go to the reports page for "Brain"
-   Then I should see "Totals from Published Weekly Schedules"
+  When I view the reports page for a section
+  Then I should see "Totals from Published Weekly Schedules"

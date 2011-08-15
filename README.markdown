@@ -14,6 +14,8 @@ Currently, this depends on [deadbolt](http://github.com/ericcf/deadbolt) for aut
 Run RSpec specs with:
     rake spec
 
+Precompile the assets with:
+    rake assets:precompile
 Start jasmine server with:
     rake jasmine RAILS_ENV=test
 Then open up localhost:8888 in a browser.

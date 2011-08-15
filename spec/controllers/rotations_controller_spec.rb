@@ -39,7 +39,7 @@ describe RotationsController do
 
       before(:each) do
         Rotation.should_receive(:new).
-          with("these" => :params).
+          with("these" => "params").
           and_return(mock_rotation)
         post :create, :rotation => { :these => :params }
       end
@@ -111,7 +111,7 @@ describe RotationsController do
 
         it "updates with the provided attributes" do
           mock_rotation.should_receive(:update_attributes).
-            with("these" => :params)
+            with("these" => "params")
           put :update, :id => mock_rotation.id,
             :rotation => { :these => :params }
         end

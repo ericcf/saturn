@@ -1,18 +1,17 @@
 class AssignmentRequest < ActiveRecord::Base
 
-  attr_accessible :requester, :requester_id, :shift, :shift_id,
-    :start_date, :end_date, :comments
+  attr_accessible :requester, :requester_id, :shift, :shift_id, :start_date, :end_date,
+    :comments
 
   STATUS = {
     :pending => "pending",
     :approved => "approved"
   }
 
-  belongs_to :requester, :class_name => "Physician"
   belongs_to :shift
 
-  validates :requester, :shift, :status, :start_date, :presence => true
-  validates_associated :requester, :shift
+  validates :requester_id, :shift, :status, :start_date, :presence => true
+  validates_associated :shift
   validate :end_date_on_or_after_start_date?
   validate :start_date_on_or_after_today?
   validate :requester_associated_with_shift?
@@ -28,6 +27,13 @@ class AssignmentRequest < ActiveRecord::Base
 
   def physician_id
     requester_id
+  end
+
+  def requester
+    requester_id && Physician.find(requester_id)
+
+  rescue ActiveResource::ResourceNotFound
+    nil
   end
 
   def public_note
@@ -84,7 +90,7 @@ class AssignmentRequest < ActiveRecord::Base
   end
 
   def requester_associated_with_shift?
-    unless requester.blank?
+    unless requester_id.blank?
       associated_shift_ids = requester.shifts.map(&:id).uniq
       unless associated_shift_ids.include? shift_id
         errors.add(:requester_id, "cannot be assigned to this shift")

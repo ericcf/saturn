@@ -6,14 +6,14 @@ describe WeeklySchedule do
   let(:monday) { Date.today.at_beginning_of_week }
   let(:valid_attributes) do
     {
-      :section_id => mock_section.id,
+      :section => mock_section,
       :date => monday
     }
   end
   let(:weekly_schedule) { WeeklySchedule.create!(valid_attributes) }
 
   before(:each) do
-    Section.stub!(:find).with(mock_section.id, anything).
+    Section.stub!(:find).with(mock_section.id).
       and_return(mock_section)
   end
 

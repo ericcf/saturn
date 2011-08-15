@@ -1,0 +1,11 @@
+//= require json2
+//= require jquery.tmpl
+//= require third_party/knockout-1.2.0pre.debug
+//= require third_party/knockout.mapping-latest.debug.js
+//= require saturn/models/scheduleDate
+//= require saturn/models/ruleConflicts
+//= require saturn/models/shiftWeek
+//= require saturn/models/shiftDay
+//= require saturn/models/assignment
+//= require saturn/models/weeklySchedule
+//= require saturn/bindings

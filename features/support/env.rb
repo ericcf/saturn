@@ -29,4 +29,5 @@ ActionController::Base.allow_rescue = false
 
 # Remove this line if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.
-DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.clean_with :truncation
+DatabaseCleaner.strategy = :transaction

@@ -4,7 +4,10 @@ describe AssignmentRequest do
 
   let(:mock_section) { mock_model(Section, :administrator_emails => []).as_null_object }
   let(:mock_requester) do
-    stub_model(Physician, :shifts => [mock_shift], :valid? => true)
+    stub_model(Physician,
+               :shifts => [mock_shift],
+               :full_name => "Aaa Baa",
+               :emails => [])
   end
   let(:mock_shift) do
     mock_model(Shift,
@@ -15,8 +18,9 @@ describe AssignmentRequest do
   end
   let(:today) { Date.today }
   let(:valid_attributes) do
+    Physician.stub!(:find).with(mock_requester.id) { mock_requester }
     {
-      :requester => mock_requester,
+      :requester_id => mock_requester.id,
       :shift => mock_shift,
       :status => AssignmentRequest::STATUS[:pending],
       :start_date => today
@@ -45,21 +49,17 @@ describe AssignmentRequest do
 
   # associations
 
-  it { should belong_to(:requester) }
-
   it { should belong_to(:shift) }
 
   # validations
 
-  it { should validate_presence_of(:requester) }
+  it { should validate_presence_of(:requester_id) }
 
   it { should validate_presence_of(:shift) }
 
   it { should validate_presence_of(:status) }
 
   it { should validate_presence_of(:start_date) }
-
-  it { should validate_associated(:requester) }
 
   it { should validate_associated(:shift) }
 

@@ -10,7 +10,7 @@ describe PhysicianAliasesController do
 
   before(:each) do
     @mock_physician = mock_model(Physician, :physician_aliases => [mock_alias])
-    Physician.stub!(:find).with(@mock_physician.id).and_return(@mock_physician)
+    Physician.stub!(:find).with(@mock_physician.id.to_s) { @mock_physician }
     controller.should_receive(:authenticate_user!)
   end
 
@@ -29,16 +29,14 @@ describe PhysicianAliasesController do
   describe "POST create" do
 
     before(:each) do
-      @mock_physician.stub!(:build_names_alias).
+      PhysicianAlias.should_receive(:new).
+        with({ :physician_id => @mock_physician.id, "these" => "params" }).
         and_return(mock_alias)
     end
 
     context "always" do
 
       before(:each) do
-        @mock_physician.should_receive(:build_names_alias).
-          with("these" => :params).
-          and_return(mock_alias)
         post :create, :physician_id => @mock_physician.id,
           :physician_alias => { :these => :params }
       end
@@ -50,7 +48,8 @@ describe PhysicianAliasesController do
 
       before(:each) do
         mock_alias.should_receive(:save).and_return(true)
-        post :create, :physician_id => @mock_physician.id
+        post :create, :physician_id => @mock_physician.id,
+          :physician_alias => { :these => :params }
       end
 
       it { should redirect_to(physicians_path) }
@@ -62,7 +61,8 @@ describe PhysicianAliasesController do
 
       before(:each) do
         mock_alias.should_receive(:save).and_return(false)
-        post :create, :physician_id => @mock_physician.id
+        post :create, :physician_id => @mock_physician.id,
+          :physician_alias => { :these => :params }
       end
 
       it { should render_template(:new) }
@@ -102,7 +102,7 @@ describe PhysicianAliasesController do
 
       before(:each) do
         mock_alias.should_receive(:update_attributes).
-          with("these" => :params).and_return(true)
+          with("these" => "params").and_return(true)
         put :update, :physician_id => @mock_physician.id,
           :physician_alias => { :these => :params }
       end
@@ -116,7 +116,7 @@ describe PhysicianAliasesController do
 
       before(:each) do
         mock_alias.should_receive(:update_attributes).
-          with("these" => :params).and_return(false)
+          with("these" => "params").and_return(false)
         put :update, :physician_id => @mock_physician.id,
           :physician_alias => { :these => :params }
       end

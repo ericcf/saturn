@@ -3,11 +3,11 @@ require 'spec_helper'
 describe Assignment do
 
   let(:mock_shift) { stub_model(Shift, :valid? => true) }
-  let(:mock_physician) { stub_model(Physician, :valid? => true) }
+  let(:mock_physician) { stub_model(Physician) }
   let(:today) { Date.today }
   let(:valid_attributes) do
     {
-      :shift_id => mock_shift.id,
+      :shift => mock_shift,
       :physician_id => mock_physician.id,
       :date => today,
       :position => 1,
@@ -20,7 +20,7 @@ describe Assignment do
 
   before(:each) do
     Shift.stub!(:find).with(mock_shift.id, anything) { mock_shift }
-    Physician.stub!(:find).with(mock_physician.id, anything) { mock_physician }
+    Physician.stub!(:find).with(mock_physician.id) { mock_physician }
   end
 
   subject { assignment }
@@ -51,17 +51,13 @@ describe Assignment do
 
   it { should belong_to(:shift) }
 
-  it { should belong_to(:physician) }
-
   # validations
 
   it { should validate_presence_of(:shift) }
 
-  it { should validate_presence_of(:physician) }
+  it { should validate_presence_of(:physician_id) }
 
   it { should validate_associated(:shift) }
-
-  it { should validate_associated(:physician) }
 
   it { should validate_presence_of(:date) }
 

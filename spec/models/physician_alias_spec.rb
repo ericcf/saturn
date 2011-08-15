@@ -30,7 +30,7 @@ describe PhysicianAlias do
 
   # validations
 
-  it { should validate_presence_of(:physician) }
+  it { should validate_presence_of(:physician_id) }
 
   it { should allow_value(nil).for(:initials) }
 

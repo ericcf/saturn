@@ -1,7 +1,7 @@
 class SectionMembershipObserver < ActiveRecord::Observer
 
   def after_create(section_membership)
-    email = section_membership.physician.work_email
+    email = section_membership.physician.primary_email
     unless User.find_by_email(email)
       password = random_password
       User.create(:email => email,

@@ -9,11 +9,11 @@ end
 Then /^(?:|I )should see the ajax result \/([^\/]*)\/(?: within "([^"]*)")?$/ do |regexp, selector|
   regexp = Regexp.new(regexp)
   with_scope(selector) do
-    begin
+    #begin
       page.should have_xpath('//*', :text => regexp)
-    rescue Selenium::WebDriver::Error::ObsoleteElementError
-      page.should have_xpath('//*', :text => regexp)
-    end
+    #rescue Selenium::WebDriver::Error::ObsoleteElementError
+    #  page.should have_xpath('//*', :text => regexp)
+    #end
   end
 end
 

@@ -67,8 +67,8 @@ describe Section do
         with("manage", "Section").
         and_return(mock_permission)
       mock_admin_role = stub_model(Deadbolt::Role)
-      mock_permission.stub_chain("roles.find_or_create_by_name").
-        and_return(mock_admin_role)
+      mock_permission.stub_chain("roles.exists?") { true }
+      mock_permission.stub_chain("roles.find_by_name") { mock_admin_role }
       mock_admin_role.stub_chain("role_permissions.first.update_attributes")
       section.create_admin_role.should eq(mock_admin_role)
     end

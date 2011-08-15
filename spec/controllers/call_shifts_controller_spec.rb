@@ -11,7 +11,7 @@ describe CallShiftsController do
   let(:mock_section) { mock_model(Section) }
 
   before(:each) do
-    Section.stub!(:find).with(mock_section.id) { mock_section }
+    Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
     controller.should_receive(:authenticate_user!)
     controller.should_receive(:authorize!).with(:manage, mock_section)
   end
@@ -37,7 +37,7 @@ describe CallShiftsController do
     context "always" do
 
       before(:each) do
-        CallShift.should_receive(:new).with("these" => :params) { mock_call_shift }
+        CallShift.should_receive(:new).with("these" => "params") { mock_call_shift }
         post :create, :section_id => mock_section.id,
           :call_shift => { :these => :params }
       end
@@ -81,7 +81,7 @@ describe CallShiftsController do
     context "the requested call_shift is found" do
 
       before(:each) do
-        mock_call_shifts.stub!(:find).with(mock_call_shift.id) { mock_call_shift }
+        mock_call_shifts.stub!(:find).with(mock_call_shift.id.to_s) { mock_call_shift }
         get :edit, :section_id => mock_section.id, :id => mock_call_shift.id
       end
 
@@ -114,14 +114,14 @@ describe CallShiftsController do
     context "the requested call_shift is found" do
 
       before(:each) do
-        mock_call_shifts.stub!(:find).with(mock_call_shift.id) { mock_call_shift }
+        mock_call_shifts.stub!(:find).with(mock_call_shift.id.to_s) { mock_call_shift }
       end
 
       context "always" do
 
         before(:each) do
           mock_call_shift.should_receive(:update_attributes).
-            with("these" => :params, "section_ids" => [mock_section.id])
+            with("these" => "params", "section_ids" => [mock_section.id])
           put :update, :section_id => mock_section.id, :id => mock_call_shift.id,
             :call_shift => { :these => :params }
         end

@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe "assignment_requests/_form.html" do
 
-  let(:mock_section) { stub_model(Section) }
-  let(:mock_assignment_request) { stub_model(AssignmentRequest) }
+  let(:mock_section) do
+    mock_model(Section, :members => [], :active_shifts => [])
+  end
+  let(:mock_assignment_request) do
+    mock_model(AssignmentRequest, :requester_id => nil, :shift_id => nil, :start_date => nil, :end_date => nil, :comments => nil)
+  end
 
   before(:each) do
     render "assignment_requests/form",
@@ -46,7 +50,7 @@ describe "assignment_requests/_form.html" do
   end
 
   it "renders a field for comments" do
-    should have_selector("form textarea",
+    should have_selector("form input",
       :name => "assignment_request[comments]"
     )
   end

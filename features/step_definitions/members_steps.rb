@@ -1,18 +1,19 @@
-When /^I prepare to manage members for the section "([^"]+)"$/ do |section_title|
-  Given %{I am an authenticated section administrator for "#{section_title}"}
-  section = Section.find_by_title(section_title)
-  visit section_memberships_path(section)
+When /^I prepare to manage members for the section$/ do
+  Given %{I am an authenticated section administrator for the section}
+  visit section_memberships_path(@section)
 end
 
 When /^I add a new member to a section$/ do
-  Given %{a "Faculty" member "Spud McKenzie"}
-    And %{I prepare to manage members for the section "General"}
+  Given %{a section}
+    And %{a physician}
+    And %{I prepare to manage members for the section}
   click_on "Add Members"
-  within("form") { check("Spud McKenzie") }
+  within("form") { check(@physician.full_name) }
   click_on "Update Section"
-  section = Section.find_by_title("General")
-  physician = Physician.find_by_given_name_and_family_name("Spud", "McKenzie")
-  assert section.members.include?(physician)
+  # refresh stale associations
+  @section = Section.first
+  assert @section.members.include?(@physician),
+    "expected section members not to include physician"
 end
 
 Then /^there should be a user associated with the new section member$/ do
@@ -23,12 +24,15 @@ Then /^there should be a user associated with the new section member$/ do
 end
 
 When /^I remove an existing member from a section$/ do
-  Given %{a section "Nuclear medicine" with a "Fellows" member "Barry Bonds"}
-    And %{I prepare to manage members for the section "Nuclear medicine"}
+  Given %{a section}
+    And %{a physician}
+    And %{the physician is a member of the section}
+    And %{I prepare to manage members for the section}
   click_on "Remove Members"
-  check "Barry Bonds"
+  check @physician.full_name
   click_on "Update Section"
-  section = Section.find_by_title("Nuclear medicine")
-  physician = Physician.find_by_given_name_and_family_name("Barry", "Bonds")
-  assert !section.members.include?(physician)
+  # refresh stale associations
+  @section = Section.first
+  assert !@section.members.include?(@physician),
+    "expected section members not to include physician"
 end

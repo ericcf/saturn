@@ -12,7 +12,7 @@ class WeeklySchedule < ActiveRecord::Base
 
   scope :include_dates, lambda { |dates|
     possible_schedule_dates = dates.sort.map do |date|
-      (date - 6..date).select { |d| d.monday? }
+      (date - 6..date).select { |d| d.wday == 1 }
     end.flatten.uniq
     where(:date => possible_schedule_dates)
   }
@@ -79,7 +79,7 @@ class WeeklySchedule < ActiveRecord::Base
       :section => section,
       :weekly_schedule => self,
       :assignments => read_only_assignments,
-      :ordered_physician_ids => section.members.order(:family_name).map(&:id)
+      :ordered_physician_ids => section.members.map(&:id)
     )
   end
 

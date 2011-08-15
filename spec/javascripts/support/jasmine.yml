@@ -1,12 +1,13 @@
+src_dir: public/assets
+
 src_files:
-  - jquery.min.js
-  - jquery-ui.min.js
-  - rails.js
-  - jquery.tmpl.js
-  - third_party/knockout-1.2.0pre.debug.js
-  - third_party/knockout.mapping-latest.js
+  - jquery-*.min.js
+  - jquery-ui-*.min.js
+  - jquery-*.tmpl.js
+  - third_party/knockout-*pre.debug.js
+  - third_party/knockout-*.mapping-latest.js
   - saturn/**/*.js
-  - sections/**/*.js
+  - sections/*.js
   - shared/**/*.js
 
 stylesheets:
@@ -17,7 +18,5 @@ helpers:
 
 spec_files:
   - javascripts/**/*[sS]pec.js
-
-src_dir: public/javascripts
 
 spec_dir: spec

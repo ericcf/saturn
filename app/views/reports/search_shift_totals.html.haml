@@ -40,9 +40,9 @@
   %fieldset.inputs
     %legend Groups
     %div{ :style => "margin-left: 25%;" }
-      - physician_groups.each do |group|
-        = check_box_tag "logical_shift_totals_report[group_ids][]", group.id, @shift_totals_report.group_ids.nil? || @shift_totals_report.group_ids.include?(group.id)
-        = label_tag "logical_shift_totals_report[group_ids][]", group.title
+      - %w( Faculty Fellows Residents ).each do |group|
+        = check_box_tag "logical_shift_totals_report[groups][]", group, @shift_totals_report.groups.nil? || @shift_totals_report.groups.include?(group)
+        = label_tag "logical_shift_totals_report[groups][]", group
         %br
 
   = report_form.buttons do

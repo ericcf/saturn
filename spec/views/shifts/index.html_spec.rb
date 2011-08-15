@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "shifts/index.html" do
   
   let(:mock_current_shift) do
-    mock_model(CallShift,
+    stub_model(CallShift,
       :title => "AM Duty",
       :retired_on => nil,
       :phone => "(123) 456-7890",
@@ -11,23 +11,31 @@ describe "shifts/index.html" do
       :duration => 1.0,
       :position => 1,
       :tags => "AM"
-    ).as_null_object
+    )
   end
   let(:mock_retired_shift) do
     mock_model(Shift,
       :title => "PM Duty",
       :retired_on => Date.yesterday,
       :tags => "PM"
-    ).as_null_object
+    )
+  end
+  let(:mock_section) do
+    mock_model(Section,
+               :title => "MSK",
+               :section_shifts => mock_section_shifts,
+               :tags_for_shift => []
+               )
   end
   let(:mock_section_shifts) do
     [
-      stub_model(SectionShift, :shift_id => mock_current_shift.id),
-      stub_model(SectionShift, :shift_id => mock_retired_shift.id)
+      stub_model(SectionShift,
+                 :shift_id => mock_current_shift.id,
+                 :position => 1),
+      stub_model(SectionShift,
+                 :shift_id => mock_retired_shift.id,
+                 :position => 2)
     ]
-  end
-  let(:mock_section) do
-    stub_model(Section, :section_shifts => mock_section_shifts)
   end
 
   before(:each) do
@@ -112,18 +120,17 @@ describe "shifts/index.html" do
   end
 
   it "renders display color field" do
-    should have_selector("form input",
-      :type => "text",
-      :name => "section[section_shifts_attributes][0][display_color]"
+    should have_selector("form input.color_picker",
+      :type => "text"
     )
   end
 
-  it "renders retire field" do
-    should have_selector("form input",
-      :type => "checkbox",
-      :name => "section[section_shifts_attributes][0][retire]"
-    )
-  end
+  #it "renders retire field" do
+  #  should have_selector("form input",
+  #    :type => "checkbox",
+  #    :name => "section[section_shifts_attributes][0][retire]"
+  #  )
+  #end
 
   it "renders position field" do
     should have_selector("form") do |form|

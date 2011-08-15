@@ -8,7 +8,9 @@ class PhysicianAliasesController < ApplicationController
   end
 
   def create
-    @physician_alias = @physician.build_names_alias(params[:physician_alias])
+    alias_attributes = { :physician_id => @physician.id }.
+      merge(params[:physician_alias])
+    @physician_alias = PhysicianAlias.new alias_attributes
 
     if @physician_alias.save
       flash[:notice] = "Successfully created alias"

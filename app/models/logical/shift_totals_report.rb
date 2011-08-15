@@ -5,7 +5,7 @@ module Logical
     include ActiveModel::Conversion
     extend ActiveModel::Naming
 
-    attr_reader :start_date, :end_date, :shift_ids, :group_ids,
+    attr_reader :start_date, :end_date, :shift_ids, :groups,
       :hide_empty_shifts
     attr_accessor :section
 
@@ -32,10 +32,8 @@ module Logical
       end
     end
 
-    def group_ids=(values)
-      if values.respond_to?(:map)
-        @group_ids = values.map { |v| v.to_i }
-      end
+    def groups=(values)
+      @groups = values
     end
 
     def hide_empty_shifts=(value)
@@ -51,12 +49,8 @@ module Logical
       end
     end
 
-    def groups
-      @groups ||= RadDirectory::Group.where(:id => group_ids).select("id, title")
-    end
-
     def physicians
-      @physicians ||= section.members.select("id, given_name, other_given_names, family_name, suffixes").includes(:names_alias, :memberships)
+      @physicians ||= section.members
     end
 
     def published_assignments
@@ -70,11 +64,14 @@ module Logical
     # returns a hash mapping physicians to groups, excluding empty groups, i.e.
     # { <RadDirectory::Group...> => [<Physician...>, ...] }
     def physicians_by_group
-      @physicians_by_group ||= groups.each_with_object({}) do |group, grouped_members|
-        grouped_members[group] = physicians.select do |physician|
+      return @physicians_by_group if @physicians_by_group
+      @physicians_by_group = {}
+       groups.each do |group|
+        @physicians_by_group[group] = physicians.select do |physician|
           physician.in_group? group
         end
-      end.delete_if { |k, v| v.empty? }
+      end
+      @physicians_by_group.delete_if { |k, v| v.empty? }
     end
 
     def totals_by_physician_id_and_shift_id
@@ -85,20 +82,20 @@ module Logical
         end
     end
 
-    def totals_by_group_id_and_shift_id
-      return @totals_by_group_id_and_shift_id unless @totals_by_group_id_and_shift_id.nil?
-      @totals_by_group_id_and_shift_id = {}
+    def totals_by_group_and_shift_id
+      return @totals_by_group_and_shift_id unless @totals_by_group_and_shift_id.nil?
+      @totals_by_group_and_shift_id = {}
       totals_by_physician_id_and_shift_id.each do |key, total|
         physician_id, shift_id = key
         physicians_by_group.each do |group, physicians|
           if physicians.map(&:id).include?(physician_id)
-            key = [group.id, shift_id]
-            @totals_by_group_id_and_shift_id[key] ||= 0.0
-            @totals_by_group_id_and_shift_id[key] += total
+            key = [group, shift_id]
+            @totals_by_group_and_shift_id[key] ||= 0.0
+            @totals_by_group_and_shift_id[key] += total
           end
         end
       end
-      @totals_by_group_id_and_shift_id
+      @totals_by_group_and_shift_id
     end
 
     def totals_by_physician_id_and_day(shift_id)
@@ -110,13 +107,13 @@ module Logical
       end
     end
 
-    def totals_by_group_id_and_day(shift_id)
+    def totals_by_group_and_day(shift_id)
       totals = {}
       totals_by_physician_id_and_day(shift_id).each do |key, total|
         physician_id, day = key
         physicians_by_group.each do |group, physicians|
           if physicians.map(&:id).include?(physician_id)
-            key = [group.id, day]
+            key = [group, day]
             totals[key] ||= 0.0
             totals[key] += total
           end

@@ -9,7 +9,7 @@ describe WeeklySchedulesController do
   let(:monday) { Date.today.at_beginning_of_week }
 
   before(:each) do
-    Section.stub!(:find).with(mock_section.id) { mock_section }
+    Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
   end
 
   describe "GET show" do
@@ -60,7 +60,7 @@ describe WeeklySchedulesController do
       before(:each) do
         WeeklySchedule.stub!(:find_by_section_id_and_date)
         WeeklySchedule.stub!(:create).
-          with(:section_id => mock_section.id, :date => monday).
+          with(:section_id => mock_section.id, :date => monday.to_s(:db)).
           and_return(mock_schedule)
         mock_schedule.stub!(:update_attributes)
         mock_schedule.stub!(:touch)

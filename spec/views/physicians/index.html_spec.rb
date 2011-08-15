@@ -11,11 +11,11 @@ describe "physicians/index.html" do
     mock_physician(
       :full_name => "IP Daily",
       :short_name => "I. Daily",
-      :initials => "ID"
+      :initials => "ID",
+      :groups => []
     )
     mock_physician.stub!(:sections).and_return([mock_section])
     assign(:physicians, [mock_physician])
-    view.should_receive(:will_paginate).twice
     render
     rendered.should have_selector("td",
       :content => mock_physician.full_name

@@ -14,7 +14,7 @@ describe ShiftsController do
   before(:each) do
     mock_section.stub_chain("active_shifts.includes")
     mock_section.stub!(:retired_shifts_as_of) { mock_shifts_subset }
-    Section.stub!(:find).with(mock_section.id) { mock_section }
+    Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
     controller.should_receive(:authenticate_user!)
     controller.should_receive(:authorize!).with(:manage, mock_section)
   end
@@ -65,7 +65,7 @@ describe ShiftsController do
     context "always" do
 
       before(:each) do
-        Shift.should_receive(:new).with("these" => :params) { mock_shift }
+        Shift.should_receive(:new).with("these" => "params") { mock_shift }
         post :create, :section_id => mock_section.id,
           :shift => { :these => :params }
       end
@@ -109,7 +109,7 @@ describe ShiftsController do
     context "the requested shift is found" do
 
       before(:each) do
-        mock_shifts.stub!(:find).with(mock_shift.id) { mock_shift }
+        mock_shifts.stub!(:find).with(mock_shift.id.to_s) { mock_shift }
         get :edit, :section_id => mock_section.id, :id => mock_shift.id
       end
 
@@ -142,14 +142,14 @@ describe ShiftsController do
     context "the requested shift is found" do
 
       before(:each) do
-        mock_shifts.stub!(:find).with(mock_shift.id) { mock_shift }
+        mock_shifts.stub!(:find).with(mock_shift.id.to_s) { mock_shift }
       end
 
       context "always" do
 
         before(:each) do
           mock_shift.should_receive(:update_attributes).
-            with("these" => :params, "section_ids" => [mock_section.id])
+            with("these" => "params", "section_ids" => [mock_section.id])
           put :update, :section_id => mock_section.id, :id => mock_shift.id,
             :shift => { :these => :params }
         end

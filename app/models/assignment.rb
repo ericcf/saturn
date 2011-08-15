@@ -1,13 +1,12 @@
 class Assignment < ActiveRecord::Base
 
-  attr_accessible :shift, :shift_id, :physician, :physician_id, :date,
+  attr_accessible :shift, :shift_id, :physician_id, :date,
     :position, :public_note, :private_note, :duration
 
   belongs_to :shift
-  belongs_to :physician
 
-  validates :shift, :physician, :date, :presence => true
-  validates_associated :shift, :physician
+  validates :shift, :physician_id, :date, :presence => true
+  validates_associated :shift
   validates_numericality_of :position,
     :greater_than_or_equal_to => 1
   validates_uniqueness_of :physician_id,

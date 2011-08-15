@@ -21,11 +21,11 @@ describe SectionsController do
   describe "GET show" do
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       @mock_schedule = mock_model(::Logical::YearlySectionSchedule)
       year = Date.today.year
       ::Logical::YearlySectionSchedule.stub!(:new).
-        with(:year => year, :section => mock_section).
+        with(:year => year.to_s, :section => mock_section).
         and_return(@mock_schedule)
       get :show, :id => mock_section.id, :year => year
     end
@@ -55,7 +55,7 @@ describe SectionsController do
 
       before(:each) do
         Section.should_receive(:new).
-          with("these" => :params).
+          with("these" => "params").
           and_return(mock_section)
         controller.should_receive(:authorize!).with(:create, mock_section)
         post :create, :section => { :these => :params }
@@ -102,7 +102,7 @@ describe SectionsController do
     context "the requested section is found" do
 
       before(:each) do
-        Section.should_receive(:find).with(mock_section.id).
+        Section.should_receive(:find).with(mock_section.id.to_s).
           and_return(mock_section)
         controller.should_receive(:authorize!).with(:update, mock_section)
         get :edit, :id => mock_section.id
@@ -138,9 +138,9 @@ describe SectionsController do
 
         before(:each) do
           mock_section.should_receive(:update_attributes).
-            with("these" => :params)
+            with("these" => "params")
           Section.should_receive(:find).
-            with(mock_section.id).
+            with(mock_section.id.to_s).
             and_return(mock_section)
           controller.should_receive(:authorize!).with(:update, mock_section)
           put :update, :id => mock_section.id, :section => { :these => :params }
@@ -215,7 +215,7 @@ describe SectionsController do
     context "the requested section is found" do
 
       before(:each) do
-        Section.should_receive(:find).with(mock_section.id).
+        Section.should_receive(:find).with(mock_section.id.to_s).
           and_return(mock_section)
         controller.should_receive(:authorize!).with(:destroy, mock_section)
       end

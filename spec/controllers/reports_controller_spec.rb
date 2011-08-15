@@ -17,7 +17,7 @@ describe ReportsController do
       mock_section(:members_by_group => {"Group A" => [mock_physician]},
         :shift_tags => [stub_model(ShiftTag, :shift_ids => [mock_shift.id])])
       mock_section.stub!(:active_shifts) { [mock_shift] }
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
       mock_section.stub_chain("weekly_schedules.published.include_dates").
         and_return([mock_schedule])
@@ -42,7 +42,7 @@ describe ReportsController do
     let(:mock_report) { mock_model(::Logical::ShiftTotalsReport) }
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       get :search_shift_totals, :section_id => mock_section.id
     end
@@ -55,7 +55,7 @@ describe ReportsController do
     let(:mock_report) { mock_model(::Logical::ShiftTotalsReport) }
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       mock_report.stub!(:section=)
     end
@@ -63,7 +63,7 @@ describe ReportsController do
     context "always" do
 
       before(:each) do
-        ::Logical::ShiftTotalsReport.should_receive(:new).with("these" => :params).
+        ::Logical::ShiftTotalsReport.should_receive(:new).with("these" => "params").
           and_return(mock_report)
         mock_report.should_receive(:section=).with(mock_section)
         get :shift_totals_report, :section_id => mock_section.id,
@@ -101,10 +101,10 @@ describe ReportsController do
     let(:mock_shift) { stub_model(Shift) }
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       ::Logical::ShiftTotalsReport.stub!(:new) { mock_report }
       mock_report.stub!(:section=)
-      Shift.stub!(:find).with(mock_shift.id) { mock_shift }
+      Shift.stub!(:find).with(mock_shift.id.to_s) { mock_shift }
       get :shift_totals_by_day, :section_id => mock_section.id,
         :shift_id => mock_shift.id
     end
@@ -117,7 +117,7 @@ describe ReportsController do
   describe "GET section_physician_shift_totals" do
 
     before(:each) do
-      Section.stub!(:find).with(mock_section.id) { mock_section }
+      Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
       @mock_physician = mock_model(Physician)
       mock_section.stub_chain("members.find") { @mock_physician }
       get :section_physician_shift_totals, :section_id => mock_section.id,

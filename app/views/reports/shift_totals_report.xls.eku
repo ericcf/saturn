@@ -18,11 +18,11 @@ sheet1[next_row, col] = "Report for #{@shift_totals_report.start_date.strftime("
 next_row
 
 @shift_totals_report.physicians_by_group.each do |group, physicians|
-  sheet1[row, next_col] = group.title
-  sheet1.column(col).width = group.title.size + 1
+  sheet1[row, next_col] = "#{group}"
+  sheet1.column(col).width = group.size + 1
 
   physicians.each do |physician|
-    sheet1[row, next_col] = physician.initials
+    sheet1[row, next_col] = physician.short_name
     sheet1.column(col).width = 4
   end
 end
@@ -33,7 +33,7 @@ reset_col
   sheet1[next_row, col] = shift.title
 
   @shift_totals_report.physicians_by_group.each do |group, physicians|
-    sheet1[row, next_col] = @shift_totals_report.totals_by_group_id_and_shift_id[[group.id, shift.id]]
+    sheet1[row, next_col] = @shift_totals_report.totals_by_group_and_shift_id[[group, shift.id]]
 
     physicians.each do |physician|
       sheet1[row, next_col] = @shift_totals_report.totals_by_physician_id_and_shift_id[[physician.id, shift.id]]

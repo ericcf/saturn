@@ -1,7 +1,7 @@
 class SectionShift < ActiveRecord::Base
 
   attr_accessible :section, :section_id, :shift, :shift_id, :display_color,
-    :position, :retired_on
+    :position, :retired_on, :retire
 
   has_many :shift_tag_assignments, :dependent => :destroy
   has_many :shift_tags, :through => :shift_tag_assignments
@@ -24,6 +24,8 @@ class SectionShift < ActiveRecord::Base
     where(["section_shifts.retired_on <= ?", cutoff_date])
   }
 
+  after_initialize :populate_defaults
+
   def retire
   end
 
@@ -33,5 +35,11 @@ class SectionShift < ActiveRecord::Base
     elsif value.to_i == 0
       self[:retired_on] = nil
     end
+  end
+
+  private
+
+  def populate_defaults
+    self.display_color = "#000000" unless display_color?
   end
 end

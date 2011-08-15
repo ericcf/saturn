@@ -14,7 +14,7 @@ describe AssignmentRequestsController do
   let(:mock_user) { mock_model(User, :physician_id => 7) }
 
   before(:each) do
-    Section.stub!(:find).with(mock_section.id) { mock_section }
+    Section.stub!(:find).with(mock_section.id.to_s) { mock_section }
   end
 
   describe "GET index" do
@@ -73,7 +73,7 @@ describe AssignmentRequestsController do
 
       before(:each) do
         AssignmentRequest.should_receive(:new).
-          with("these" => :params).
+          with("these" => "params").
           and_return(mock_request)
         post :create, :section_id => mock_section.id,
           :assignment_request => { :these => :params }
@@ -119,7 +119,7 @@ describe AssignmentRequestsController do
     context "the requested assignment request is found" do
 
       before(:each) do
-        @mock_requests.should_receive(:find).with(mock_request.id).
+        @mock_requests.should_receive(:find).with(mock_request.id.to_s).
           and_return(mock_request)
         get :edit, :section_id => mock_section.id,
           :id => mock_request.id
@@ -158,9 +158,9 @@ describe AssignmentRequestsController do
 
         before(:each) do
           mock_request.should_receive(:update_attributes).
-            with("these" => :params)
+            with("these" => "params")
           @mock_requests.should_receive(:find).
-            with(mock_request.id).
+            with(mock_request.id.to_s).
             and_return(mock_request)
           put :update, :section_id => mock_section.id,
             :id => mock_request.id, :assignment_request => { :these => :params }
@@ -216,7 +216,7 @@ describe AssignmentRequestsController do
 
     before(:each) do
       @mock_requests = mock("assignment_requests")
-      @mock_requests.stub!(:find).with(mock_request.id) { mock_request }
+      @mock_requests.stub!(:find).with(mock_request.id.to_s) { mock_request }
       mock_section.stub!(:assignment_requests) { @mock_requests }
       controller.should_receive(:authenticate_user!)
       controller.should_receive(:authorize!).with(:manage, mock_section)

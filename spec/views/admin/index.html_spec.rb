@@ -3,8 +3,9 @@ require 'spec_helper'
 describe "admin/index.html.haml" do
 
   before(:each) do
-    should_render_partial("deadbolt/shared_partials/admin_menu")
+    view.stub! :can?
     render
+    should render_template(:partial => "deadbolt/shared_partials/_admin_menu")
   end
 
   subject { rendered }

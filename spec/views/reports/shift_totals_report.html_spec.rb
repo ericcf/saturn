@@ -3,15 +3,15 @@ require 'spec_helper'
 describe "reports/shift_totals_report.html.haml" do
 
   let(:mock_section) { stub_model(Section) }
-
-  let(:mock_physician) { stub_model(Physician, :initials => "AA") }
-
-  let(:mock_group) { stub_model(RadDirectory::Group, :title => "Jets") }
-
+  let(:mock_physician) do
+    stub_model(Physician, :initials => "AA", :full_name => "A A")
+  end
+  let(:mock_group) { stub("group", :id => 1, :title => "Jets") }
   let(:mock_report) do
     stub_model(::Logical::ShiftTotalsReport, :start_date => "2010-01-02",
       :end_date => "2010-03-04",
-      :physicians_by_group => { mock_group => [mock_physician] })
+      :physicians_by_group => { mock_group => [mock_physician] },
+      :groups => [mock_group.title])
   end
 
   before(:each) do

@@ -9,11 +9,9 @@ class MembershipsController < ApplicationController
 
   def manage_new
     authorize! :update, @section
-    schedule_groups = RadDirectory::Group.find_all_by_title(Section::SCHEDULE_GROUPS)
     memberships = @section.memberships.map(&:physician_id)
-    @physicians = Physician.current.includes(:memberships).select do |p|
-      !memberships.include?(p.id) &&
-        schedule_groups.any? { |g| p.in_group? g }
+    @physicians = Physician.all.select do |physician|
+      !memberships.include?(physician.id)
     end
   end
 

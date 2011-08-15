@@ -12,6 +12,6 @@ describe "schedules/headers/html/_shift.html" do
 
     subject { rendered }
 
-    it { should have_selector("img", :src => image_path("phone.jpg")) }
+    it { should have_selector("img", :src => "/assets/phone.jpg") }
   end
 end

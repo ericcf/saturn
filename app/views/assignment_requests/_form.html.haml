@@ -4,10 +4,10 @@
 %div.form-container
   = semantic_form_for [section, assignment_request] do |assignment_request_form|
     = assignment_request_form.inputs do
-      - if assignment_request.requester.present?
+      - if assignment_request.requester_id.present?
         = assignment_request_form.input :requester_id, :as => :hidden
       - else
-        = assignment_request_form.input :requester, :as => :select, :collection => section.members
+        = assignment_request_form.input :requester_id, :as => :select, :collection => section.members
       = assignment_request_form.input :shift, :as => :select, :collection => section.active_shifts
       = assignment_request_form.input :start_date, :as => :string
       = assignment_request_form.input :end_date, :as => :string

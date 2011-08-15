@@ -38,7 +38,10 @@ module Logical
     end
 
     def physicians_by_id
-      @physicians_by_id ||= Physician.includes(:names_alias).hash_by_id
+      @physicians_by_id ||= 
+        Physician.all.each_with_object({}) do |record, hash|
+          hash[record.id] = record
+        end
     end
   end
 end

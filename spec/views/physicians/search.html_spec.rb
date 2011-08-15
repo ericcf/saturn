@@ -26,7 +26,7 @@ describe "physicians/search.html" do
   context "search results present" do
 
     before(:each) do
-      physicians = mock("physicians", :total_entries => 1, :total_pages => 1)
+      physicians = [mock_model(Physician)]
       assign(:physicians, physicians)
       dates = assign(:dates, [Date.today])
       mock_assignments = assign(:assignments, [
@@ -44,9 +44,8 @@ describe "physicians/search.html" do
     end
 
     it "renders the weekly_schedule partial" do
-      should_render_partial("schedules/date_header")
-      should_render_partial("weekly_schedule.html").once
       render
+      should render_template(:partial => "schedules/_date_header")
     end
   end
 end

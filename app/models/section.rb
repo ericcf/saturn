@@ -87,7 +87,7 @@ class Section < ActiveRecord::Base
   end
 
   def members
-    Physician.where(:id => member_ids)
+    Physician.by_ids member_ids
   end
 
   def member_ids
@@ -97,10 +97,8 @@ class Section < ActiveRecord::Base
   # returns the members of this section grouped by SCHEDULE_GROUPS, i.e.:
   # { "Faculty" => [p1, p2], "Fellows" => [p3, p4], "Residents" => [p5, p6] }
   def members_by_group
-    physicians = members.includes(:names_alias, :memberships)
-    groups = RadDirectory::Group.find_all_by_title(SCHEDULE_GROUPS)
-    groups.each_with_object({}) do |group, grouped_members|
-      grouped_members[group.title] = physicians.select do |physician|
+    SCHEDULE_GROUPS.each_with_object({}) do |group, grouped_members|
+      grouped_members[group] = members.select do |physician|
         physician.in_group? group
       end
     end
@@ -139,8 +137,11 @@ class Section < ActiveRecord::Base
     return admin_role unless admin_role.blank?
     manage_section_permission = Deadbolt::Permission.
       find_or_create_by_action_and_target_type("manage", "Section")
-    role = manage_section_permission.roles.
-      find_or_create_by_name("#{title} Administrator")
+    role_name = "#{title} Administrator"
+    unless manage_section_permission.roles.exists? :name => role_name
+      manage_section_permission.roles.create :name => role_name
+    end
+    role = manage_section_permission.roles.find_by_name(role_name)
     role.role_permissions.first.update_attributes(:target_id => id)
     create_section_role_assignment(:role => role)
     role

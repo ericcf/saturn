@@ -1,26 +1,27 @@
-RadDirectory::Physician.class_eval do
+class Physician < RadDirectoryClient::Physician
 
-  attr_accessible []
-
-  with_options :dependent => :destroy do |assoc|
-    assoc.has_many :assignments, :foreign_key => :physician_id
-    assoc.has_many :assignment_requests, :foreign_key => :requester_id
-    assoc.has_one :names_alias, :class_name => "PhysicianAlias",
-      :foreign_key => :physician_id
-    assoc.has_many :section_memberships, :foreign_key => :physician_id
+  def section_memberships
+    ::SectionMembership.where :physician_id => id
   end
 
   def sections
-    ::Section.where(:id => section_memberships.map(&:section_id))
+    ::Section.where :id => section_memberships.map(&:section_id)
   end
 
   def shifts
-    ::Shift.includes(:sections).merge(sections)
+    sections.map(&:shifts).flatten
   end
 
-  def initials
-    return names_alias.initials if names_alias && names_alias.initials
-    given_name.first + (family_name && family_name.first || "")
+  def assignment_requests
+    ::AssignmentRequest.where :requester_id => id
+  end
+
+  def names_alias
+    ::PhysicianAlias.find_by_physician_id id
+  end
+
+  def primary_email
+    emails.count > 0 && emails.first.value
   end
 
   def short_name
@@ -28,37 +29,19 @@ RadDirectory::Physician.class_eval do
     "#{given_name[0, 1]}. #{family_name}".strip
   end
 
-  def work_email
-    email = emails.first
-    email.present? ? email.value : ""
+  def initials
+    return names_alias.initials if names_alias && names_alias.initials
+    given_name.first + (family_name && family_name.first || "")
+  end
+
+  def in_group?(group_title)
+    groups.map(&:title).include? group_title
   end
 
   def as_json(options = {})
-    {
-      :id => id,
-      :short_name => short_name
-    }
+    super(options.merge(
+          :only => [:id],
+          :methods => [:short_name]
+    ))
   end
-
-  def to_json
-    [
-      "{\"physician\":",
-        "{",
-          "\"id\":#{id},",
-          "\"short_name\":\"#{short_name}\"",
-        "}",
-      "}"
-    ].join("")
-  end
-
-  scope :with_assignments, lambda { |assignments|
-    where(:id => assignments.map(&:physician_id))
-  }
-
-  def self.section_members
-    where(:id => SectionMembership.all.map(&:physician_id).uniq)
-  end
-end
-
-class Physician < RadDirectory::Physician
 end

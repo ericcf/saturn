@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "memberships/manage_new.html" do
 
   let(:mock_section) { mock_model(Section).as_null_object }
-  let(:mock_physician) { stub_model(Physician) }
+  let(:mock_physician) { mock_model(Physician, :full_name => "X Y") }
 
   before(:each) do
     assign(:section, mock_section)

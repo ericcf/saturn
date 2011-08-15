@@ -2,18 +2,20 @@ require 'spec_helper'
 
 describe SectionMembership do
 
-  let(:mock_physician) { stub_model(Physician) }
-  let(:mock_section) { stub_model(Section) }
+  let(:mock_physician) do
+    mock_model(Physician, :primary_email => "foo@bar.com")
+  end
+  let(:mock_section) { mock_model(Section) }
   let(:valid_attributes) do
     {
-      :physician => mock_physician,
+      :physician_id => mock_physician.id,
       :section => mock_section
     }
   end
   let(:section_membership) { SectionMembership.create!(valid_attributes) }
   
   before(:each) do
-    Physician.stub!(:find).with(mock_physician.id, anything) { mock_physician }
+    Physician.stub!(:find).with(mock_physician.id) { mock_physician }
     Section.stub!(:find).with(mock_section.id, anything) { mock_section }
   end
 
@@ -33,13 +35,11 @@ describe SectionMembership do
 
   # associations
 
-  it { should belong_to(:physician) }
-
   it { should belong_to(:section) }
 
   # validations
 
-  it { should validate_presence_of(:physician) }
+  it { should validate_presence_of(:physician_id) }
 
   it { should validate_presence_of(:section) }
 

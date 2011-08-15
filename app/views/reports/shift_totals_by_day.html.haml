@@ -5,15 +5,15 @@
     %tr
       %th
       - @shift_totals_report.physicians_by_group.each do |group, physicians|
-        %th= group.title
+        %th= group
         = render :partial => "/reports/headers/physician", :collection => physicians, :locals => { :section => @section, :group_name => nil, :start_date => @start_date, :end_date => @end_date }
   %tbody
     - totals_by_physician_id_and_day = @shift_totals_report.totals_by_physician_id_and_day(@shift.id)
-    - totals_by_group_id_and_day = @shift_totals_report.totals_by_group_id_and_day(@shift.id)
+    - totals_by_group_and_day = @shift_totals_report.totals_by_group_and_day(@shift.id)
     - {1=>"Monday", 2=>"Tuesday", 3=>"Wednesday", 4=>"Thursday", 5=>"Friday", 6=>"Saturday", 0=>"Sunday"}.each do |day, day_name|
       %tr{ :class => cycle("odd", "", :name => "row") }
         %th= day_name
         - @shift_totals_report.physicians_by_group.each do |group, physicians|
-          %td= totals_by_group_id_and_day[[group.id, day]]
+          %td= totals_by_group_and_day[[group, day]]
           - physicians.each do |physician|
             %td= totals_by_physician_id_and_day[[physician.id, day]]

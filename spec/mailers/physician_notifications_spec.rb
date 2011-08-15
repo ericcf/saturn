@@ -5,7 +5,10 @@ describe PhysicianNotifications do
   describe "assignment_request_approved" do
 
     let(:mock_requester) do
-      mock_model(Physician, :full_name => "Dr. Nick", :work_email => "u@n.com")
+      mock_model(Physician,
+                 :full_name => "Dr. Nick",
+                 :primary_email => "u@n.com"
+                )
     end
     let(:today) { Date.today }
     let(:tomorrow) { Date.tomorrow }
@@ -23,7 +26,7 @@ describe PhysicianNotifications do
 
     it "renders the headers" do
       mail.subject.should eq("Request approved")
-      mail.to.should eq([mock_requester.work_email])
+      mail.to.should eq([mock_requester.primary_email])
       mail.from.should eq([APP_CONFIG["from_email"]])
     end
 

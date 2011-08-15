@@ -12,12 +12,14 @@ When /^I create a new section$/ do
 end
 
 When /^I update an existing section$/ do
-  Given %{a section "Thumb"}
+  Given %{a section}
+  original_title = @section.title
     And %{I prepare to manage sections}
   within(".section:first") { click_on "Edit" }
-  Then %{I should be on the edit section page for "Thumb"}
-  fill_in "Title", :with => "Ring finger"
+  fill_in "Title", :with => "#{original_title} Too"
   click_on "Update Section"
-  assert Section.find_by_title("Thumb").nil?
-  assert !Section.find_by_title("Ring finger").nil?
+  assert_nil Section.find_by_title(original_title)
+    "expected not to find section by original title"
+  assert_not_nil Section.find_by_title(original_title + " Too"),
+    "expected to find section by new title"
 end

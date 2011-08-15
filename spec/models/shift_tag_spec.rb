@@ -59,7 +59,8 @@ describe ShiftTag do
   context "#destroy is called when no assignments are associated" do
 
     it "returns true" do
-      shift_tag.stub!(:assignments).and_return([])
+      mock_assignments = mock("assignments", :delete_all => true).as_null_object
+      shift_tag.stub!(:assignments) { mock_assignments }
       shift_tag.destroy.should be_true
     end
   end

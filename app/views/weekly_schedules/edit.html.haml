@@ -1,7 +1,7 @@
 - page_title "Editing weekly schedule for #{@section.title}"
 
 - content_for :javascripts do
-  = javascript_include_tag "json2", "jquery.tmpl", "third_party/knockout-1.2.0pre.debug", "third_party/knockout.mapping-latest.debug", "saturn/models/scheduleDate", "saturn/models/ruleConflicts", "saturn/models/shiftWeek", "saturn/models/shiftDay", "saturn/models/assignment", "saturn/models/weeklySchedule", "saturn/bindings", :cache => "cache/schedule_editor"
+  = javascript_include_tag "schedules"
   :javascript
     var viewModel = new weeklySchedule();
 
@@ -16,7 +16,7 @@
       "_rulesConflicts.htm"
     ], function(index, template) {
       $.ajax({
-        url: "#{root_url + "javascripts/saturn/templates/"}" + template,
+        url: "#{root_url + "assets/saturn/templates/"}" + template,
         async: false,
         success: function(template) {
           $("head").append(template);

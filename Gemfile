@@ -1,36 +1,29 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.0.9'
-gem 'mysql2', '~> 0.2.7'
+gem 'rails', '~> 3.1.0.rc5'
+gem 'uglifier'
+gem 'mysql2'
 gem 'haml'
-gem 'sass'
+gem 'sass-rails', '~> 3.1.0.rc'
 gem 'will_paginate', '~> 3.0.pre2'
-gem 'formtastic'
-gem 'http_accept_language'
+gem 'formtastic', '~> 2.0.0.rc3'
+gem 'jquery-rails'
+gem 'friendly_id'
 
 # custom error pages
 gem 'goalie'
 
-gem 'rad_directory', :git => 'git://github.com/ericcf/rad_directory.git'
-# required by Rad Directory
-gem 'rack-cache', :require => 'rack/cache'
-gem 'dragonfly'
-gem 'friendly_id'
+gem 'rad_directory_client',
+  :git => 'git://github.com/ericcf/rad_directory_client.git',
+  :branch => "rails31"
+
 # authentication/authorization
 gem 'deadbolt', :git => 'git://github.com/ericcf/deadbolt.git'
 gem 'devise'
 gem 'cancan'
 
-# Gmail interaction
-gem 'tlsmail'
-
 # Excel export
 gem 'ekuseru'
-
-# Excel import (roo and dependencies)
-#gem 'roo'
-#gem 'zip'
-#gem 'google-spreadsheet-ruby'
 
 # iCalendar import/export
 gem 'vpim'
@@ -46,25 +39,13 @@ group :development, :test do
   gem 'ruby-debug19', :require => 'ruby-debug'
 end
 
-group :development do
-  gem 'haml-rails'
-  gem 'metric_fu'
-  gem 'jquery-rails'
-end
-
 group :test do
-  gem 'simplecov'
-  gem 'autotest-standalone'
-  gem 'autotest-growl'
   gem 'database_cleaner'
-  gem 'selenium-client', '~> 1.2.18'
-  gem 'selenium-webdriver', '~> 0.2.2'
-  gem 'cucumber-rails', '~> 0.4.1'
-  gem 'cucumber', '= 0.10.2'
-  gem 'gherkin', '= 2.3.7'
+  gem 'cucumber-rails'
   gem 'webrat', '~> 0.7.3'
-  gem 'capybara', '~> 0.4.1'
+  gem 'capybara-webkit', :git => 'git://github.com/thoughtbot/capybara-webkit.git'
   gem 'shoulda'
   gem 'jasmine'
   gem 'rad_matchers'
+  gem 'fakeweb'
 end

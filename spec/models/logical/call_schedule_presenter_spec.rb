@@ -5,7 +5,9 @@ describe ::Logical::CallSchedulePresenter do
   let(:today) { Date.today }
   let(:mock_section) { mock_model(Section) }
   let(:mock_shift) { mock_model(Shift) }
-  let(:mock_physician) { mock_model(Physician, :short_name => "Wile E. Coyote") }
+  let(:mock_physician) do
+    mock_model(Physician, :short_name => "Wile E. Coyote")
+  end
   let(:mock_assignment) do
     mock_model(Assignment,
       :public_note => "Foo",
@@ -23,8 +25,7 @@ describe ::Logical::CallSchedulePresenter do
   let(:presenter) { ::Logical::CallSchedulePresenter.new(valid_attributes) }
 
   before(:each) do
-    Physician.stub_chain("includes.hash_by_id").
-      and_return({ mock_physician.id => mock_physician })
+    Physician.stub!(:all) { [mock_physician] }
   end
 
   subject { presenter }

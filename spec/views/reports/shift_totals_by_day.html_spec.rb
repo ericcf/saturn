@@ -4,12 +4,13 @@ describe "reports/shift_totals_by_day.html.haml" do
 
   let(:mock_section) { stub_model(Section) }
   let(:mock_shift) { stub_model(Shift, :title => "Conference") }
-  let(:mock_physician) { stub_model(Physician, :initials => "QQ") }
-  let(:mock_group) { stub_model(RadDirectory::Group, :title => "Fellows") }
+  let(:mock_physician) do
+    mock_model(Physician, :initials => "QQ", :full_name => "Q Q")
+  end
   let(:mock_report) do
     stub_model(::Logical::ShiftTotalsReport, :start_date => "2010-05-05",
       :end_date => "2010-06-01",
-      :physicians_by_group => { mock_group => [mock_physician] },
+      :physicians_by_group => { "Residents" => [mock_physician] },
       :section => mock_section)
   end
 
@@ -30,7 +31,7 @@ describe "reports/shift_totals_by_day.html.haml" do
 
   it "displays each group followed by its members in the header" do
     should have_selector("table thead tr") do |header_row|
-      header_row.should have_selector("th", :content => mock_group.title)
+      header_row.should have_selector("th", :content => "Residents")
       header_row.should have_selector("th", :content => mock_physician.initials)
     end
   end

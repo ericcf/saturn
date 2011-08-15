@@ -13,8 +13,7 @@ describe PhysiciansController do
   describe "GET 'index'" do
 
     before(:each) do
-      Physician.stub_chain("section_members.includes.paginate").
-        and_return([mock_physician])
+      Physician.stub!(:all) { [mock_physician] }
       get :index
     end
 
@@ -35,15 +34,14 @@ describe PhysiciansController do
     context "query parameter present" do
 
       before(:each) do
-        Physician.stub_chain("section_members.name_like.paginate").
-          and_return([mock_physician])
+        Physician.stub_chain(:name_like) { [mock_physician] }
         mock_shift = stub_model(Shift)
         @mock_assignment = stub_model(Assignment, :shift => mock_shift,
           :physician_id => mock_physician.id)
         mock_schedule = stub_model(WeeklySchedule, :dates => [Date.today])
         WeeklySchedule.stub_chain("published.include_dates") { [mock_schedule] }
         mock_schedule.stub_chain("assignments.where.includes").
-          and_return([@mock_assignment])
+         and_return([@mock_assignment])
         get :search, :query => "Boo"
       end
 
@@ -62,8 +60,7 @@ describe PhysiciansController do
     context "the requested physician is found" do
 
       before(:each) do
-        Physician.should_receive(:find).with(mock_physician.id).
-          and_return(mock_physician)
+        Physician.stub!(:find).with(mock_physician.id.to_s) { mock_physician }
         @mock_schedule = stub_model(::Logical::PhysicianSchedule)
         ::Logical::PhysicianSchedule.should_receive(:new).with(
           :physician => mock_physician,
@@ -96,7 +93,9 @@ describe PhysiciansController do
     context "the requested physician is not found" do
 
       before(:each) do
-        Physician.stub!(:find).and_raise(ActiveRecord::RecordNotFound)
+        Physician.stub!(:find).with("1").and_raise(
+          ActiveResource::ResourceNotFound.new(mock("err", :code => "404"))
+        )
         get :schedule, :id => 1
       end
 

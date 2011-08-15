@@ -16,7 +16,7 @@ describe RulesController do
 
   before(:each) do
     @mock_section = stub_model(Section)
-    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
+    Section.stub!(:find).with(@mock_section.id.to_s).and_return(@mock_section)
   end
 
   describe "GET 'show'" do
@@ -117,7 +117,7 @@ describe RulesController do
 
       it "updates the section with the specified attributes" do
         @mock_section.should_receive(:update_attributes).
-          with("these" => :params)
+          with("these" => "params")
         put :update, :section_id => @mock_section.id, :section => { :these => :params }
       end
     end

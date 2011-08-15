@@ -11,7 +11,7 @@ describe ShiftTagsController do
   before(:each) do
     @section_shift_tags = stub("shift_tags")
     @mock_section = mock_model(Section, :shift_tags => @section_shift_tags)
-    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
+    Section.stub!(:find).with(@mock_section.id.to_s).and_return(@mock_section)
     controller.should_receive(:authenticate_user!)
     controller.should_receive(:authorize!).with(:manage, @mock_section)
   end
@@ -47,7 +47,7 @@ describe ShiftTagsController do
 
       before(:each) do
         ShiftTag.should_receive(:new).
-          with("these" => :params).
+          with("these" => "params").
           and_return(mock_shift_tag)
         post :create, :section_id => @mock_section.id,
           :shift_tag => { :these => :params }

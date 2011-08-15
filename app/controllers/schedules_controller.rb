@@ -18,7 +18,7 @@ class SchedulesController < ApplicationController
     schedule = @section.weekly_schedules.published.find_by_date(start_date) ||
       @section.weekly_schedules.build(:date => start_date)
     @assignments = schedule.is_published ? schedule.assignments : []
-    physician_names_by_id = @section.members.includes(:names_alias).each_with_object({}) do |physician, hsh|
+    physician_names_by_id = @section.members.each_with_object({}) do |physician, hsh|
       hsh[physician.id] = physician.short_name
     end
     @view_mode = params[:view_mode]

@@ -13,10 +13,6 @@ module SectionHelper
     Section.find_or_create_by_title(section_title)
   end
 
-  def find_or_create_group(group_title)
-    RadDirectory::Group.find_or_create_by_title(group_title)
-  end
-
   def parse_date(date)
     case date
     when "Monday"
@@ -30,24 +26,6 @@ module SectionHelper
 end
 
 World(SectionHelper)
-
-Given /^a section "([^"]*)"$/ do |title|
-  find_or_create_section(title)
-end
-
-Given /^a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |group_title, given_name, family_name|
-  Given %{a physician "#{given_name} #{family_name}"}
-  physician = find_or_create_physician(given_name, family_name)
-  group = find_or_create_group(group_title)
-  group.members << physician unless group.members.include? physician
-end
-
-Given /^a section "([^"]*)" with a "([^"]*)" member "([^ ]+) ([^"]+)"$/ do |section_title, group_title, given_name, family_name|
-  Given %{a "#{group_title}" member "#{given_name} #{family_name}"}
-  physician = find_or_create_physician(given_name, family_name)
-  section = find_or_create_section(section_title)
-  section.memberships.create(:physician_id => physician.id)
-end
 
 Given /^a shift "([^"]*)" in the section "([^"]*)"$/ do |shift_title, section_title|
   section = find_or_create_section(section_title)
@@ -107,20 +85,6 @@ Given /^"([^ ]+) ([^"]+)" is assigned to "([^"]*)" in "([^"]*)" ((?:\d{4}-\d{2}-
   Assignment.create(:physician_id => physician.id, :shift => shift, :date => assignment_date)
 end
 
-Given /^User "([^"]*)" is a section administrator for the "([^"]*)" section$/ do |user_email, section_title|
-  user = User.find_by_email(user_email)
-  section = find_or_create_section(section_title)
-  section.administrator_ids = section.administrator_ids.concat([user.id])
-end
-
-Given /^I am an authenticated section administrator for "([^"]*)"$/ do |section_title|
-  user_email = "joe@joe.com"
-  password = "secret"
-  Given %{there is a user "#{user_email}" with password "#{password}"}
-  And %{User "#{user_email}" is a section administrator for the "#{section_title}" section}
-  And %{I sign in as user "#{user_email}" with password "#{password}"}
-end
-
 Then /^I should be able to view the edit weekly schedule page for "([^"]*)"$/ do |section_title|
   Given %{I go to the edit weekly schedule page for "#{section_title}"}
   Then %{I should see "Editing the week of "}
@@ -134,4 +98,16 @@ Then /^"([^ ]+) ([^"]+)" should be assigned to "([^"]+)" in "([^"]+)"(?: on (tod
   conditions[:date] = Date.today unless today.nil?
   assignments = section.assignments.where(conditions)
   assert !assignments.blank?, "requested assignment not found"
+end
+
+When /^I view the yearly schedule for a section$/ do
+  Given %{a section}
+    And %{an unpublished weekly schedule in the section}
+  visit section_path(@section)
+end
+
+Then /^I should see the schedule dates$/ do
+  @weekly_schedule.dates.each do |date|
+    page.should have_content(date.day.to_s)
+  end
 end

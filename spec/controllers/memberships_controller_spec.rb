@@ -10,7 +10,7 @@ describe MembershipsController do
 
   before(:each) do
     @mock_section = mock_model(Section, :memberships => [mock_membership])
-    Section.stub!(:find).with(@mock_section.id).and_return(@mock_section)
+    Section.stub!(:find).with(@mock_section.id.to_s).and_return(@mock_section)
   end
 
   describe "GET index" do
@@ -27,11 +27,9 @@ describe MembershipsController do
   describe "GET manage_new" do
 
     before(:each) do
-      RadDirectory::Group.stub!(:find_all_by_title).
-        and_return([mock_model(RadDirectory::Group)])
       @mock_section.stub!(:memberships).and_return([])
-      @mock_physician = stub_model(Physician, :in_group? => true)
-      Physician.stub_chain(:current, :includes).and_return([@mock_physician])
+      @mock_physician = stub_model(Physician)
+      Physician.stub!(:all) { [@mock_physician] }
       controller.should_receive(:authenticate_user!)
       controller.should_receive(:authorize!).with(:update, @mock_section)
       get :manage_new, :section_id => @mock_section.id

@@ -12,14 +12,12 @@
         = submit_tag "Search Physicians", :class => "button"
 
 - unless @query.blank?
-  %h3= "#{pluralize(@physicians.total_entries, "Result")} for '#{@query}'"
+  %h3= "#{pluralize(@physicians.count, "Result")} for '#{@query}'"
 
 - unless @physicians.blank?
-  = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"
   %table.schedule.paginated-schedule
     %thead
       %tr
         %th.empty
         = render :partial => "schedules/date_header", :collection => @dates, :as => :date
     = render :partial => "weekly_schedule.html", :collection => physicians_weekly_schedules(@physicians, @dates, @assignments)
-  = will_paginate @physicians, :previous_label => "« Previous", :next_label => "Next »"
