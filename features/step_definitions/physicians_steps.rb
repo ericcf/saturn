@@ -8,7 +8,7 @@ When /^I create an alias for a physician$/ do
     And %{a physician}
     And %{the physician is a member of the section}
     And %{I prepare to manage physicians}
-  physicians = Physician.all
+  physicians = Section.first.members
   assert_equal 1, physicians.count
   within("tbody tr:first") { click_link "Edit Alias" }
   assert_equal new_physician_physician_alias_path(physicians.first),
@@ -27,7 +27,7 @@ When /^I update an alias for a physician$/ do
     And %{the physician is a member of the section}
     And %{an alias for the physician}
     And %{I prepare to manage physicians}
-  physicians = Physician.all
+  physicians = Section.first.members
   assert_equal 1, physicians.count
   within("tbody tr:first") { click_link "Edit Alias" }
   assert_equal edit_physician_physician_alias_path(physicians.first),

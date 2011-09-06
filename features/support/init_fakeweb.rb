@@ -3,10 +3,6 @@
 
 require 'fakeweb'
 
-# only allow local connections, not internet connections
-#FakeWeb.allow_net_connect = %r[^https?://(localhost|127.0.0.1)]
-FakeWeb.allow_net_connect = false
-
 API_URL = "#{RadDirectoryClient::Config.rad_directory_url}/rad_directory"
 
 def load_fixture(name)

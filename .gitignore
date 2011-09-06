@@ -3,6 +3,7 @@
 .rspec
 .autotest
 .rvmrc
+.sass-cache
 db/*seeds*
 log
 tmp
