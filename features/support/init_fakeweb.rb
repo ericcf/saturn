@@ -5,6 +5,7 @@ require 'fakeweb'
 
 # only allow local connections, not internet connections
 #FakeWeb.allow_net_connect = %r[^https?://(localhost|127.0.0.1)]
+FakeWeb.allow_net_connect = false
 
 API_URL = "#{RadDirectoryClient::Config.rad_directory_url}/rad_directory"
 
@@ -15,25 +16,24 @@ end
 
 physicians = load_fixture("physicians")
 
-# Proxy::Physician.all
-FakeWeb.register_uri :get,
-                     "#{API_URL}/physicians.json",
-                     :body => physicians.to_json,
-                     :status => ["304", "Not Modified"],
-                     :content_type => "application/json"
-
-physicians.each do |physician|
-  # Proxy::Physician.find(id)
-  FakeWeb.register_uri :get,
-                       "#{API_URL}/physicians/#{physician['id']}.json",
-                       :body => physician.to_json,
+def register_response(method, path, body)
+  FakeWeb.register_uri(method,
+                       "#{API_URL}#{path}",
+                       :body => body,
                        :status => ["304", "Not Modified"],
-                       :content_type => "application/json"
+                       :content_type => "application/json")
 end
 
-# Proxy::Physician.name_like("Flenderson")
-FakeWeb.register_uri :get,
-                     "#{API_URL}/physicians/search.json?name_like=Flenderson",
-                     :body => physicians.to_json,
-                     :status => ["200", "OK"],
-                     :content_type => "application/json"
+# Physician.all
+register_response(:get, "/physicians.json", physicians.to_json)
+
+physicians.each do |physician|
+  # Physician.find(id)
+  register_response(:get,
+                    "/physicians/#{physician['id']}.json",
+                    physician.to_json)
+  # Physician.name_like("Flenderson")
+  register_response(:get,
+                    "/physicians/search.json?name_like=#{physician['family_name']}",
+                    [physician].to_json)
+end

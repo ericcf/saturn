@@ -1,3 +1,22 @@
+Transform /^table:Section,Date,Published\?$/ do |table|
+  table.hashes.map do |hash|
+    section = Section.find_by_title hash["Section"]
+    date = Chronic.parse hash["Date"]
+    is_published = { "Yes" => true, "No" => false }[hash["Published?"]]
+    { :section => section, :date => date, :is_published => is_published }
+  end
+end
+
+Given /^(?:a )?weekly schedules? exists? with the following attributes:$/ do |groups|
+  groups.each do |attributes|
+    section = attributes[:section]
+    FactoryGirl.create(:weekly_schedule,
+                       :section => section,
+                       :date => attributes[:date],
+                       :is_published => attributes[:is_published])
+  end
+end
+
 Given /^I prepare to manage the weekly schedule for my section$/ do
   Given %{a section}
     And %{a physician}

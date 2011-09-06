@@ -1,3 +1,18 @@
+Transform /^table:Shift Title,Section$/ do |table|
+  table.hashes.map do |hash|
+    section = Section.find_by_title hash["Section"]
+    { :section => section, :shift_title => hash["Shift Title"] }
+  end
+end
+
+Given /^(?:a )?shifts? exists? with the following attributes:$/ do |groups|
+  groups.each do |attributes|
+    section = attributes[:section]
+    shift = FactoryGirl.create(:shift, :title => attributes[:shift_title])
+    FactoryGirl.create(:section_shift, :section => section, :shift => shift)
+  end
+end
+
 When /^I prepare to manage shifts for the section$/ do
   Given %{a section}
     And %{I am an authenticated section administrator for the section}
@@ -57,7 +72,7 @@ When /^I retire a shift$/ do
     And %{a shift}
     And %{the shift is associated with the section}
     And %{I prepare to manage shifts for the section}
-  @shifts_page = ShiftsPage.new(page, :section_id => @section.id)
+  @shifts_page = ShiftPages::Index.new(page, :section_id => @section.id)
   @shifts_page.visit
   @shifts_page.retire_shift 0
   @shifts_page.update

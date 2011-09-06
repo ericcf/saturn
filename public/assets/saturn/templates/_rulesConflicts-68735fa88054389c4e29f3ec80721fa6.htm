@@ -1,0 +1,18 @@
+<script id="ruleConflict" type="text/html">
+    <tr>
+        <td data-bind="text: viewModel.physicianName(physician_id())"></td>
+        <td data-bind="text: description"></td>
+    </tr>
+</script>
+
+<script id="ruleConflicts" type="text/html">
+    <h4 data-bind="text: title"></h4>
+    <table data-bind="template: { name: 'ruleConflict', foreach: conflict_by_offender_id }"></table>
+</script>
+
+<script id="rulesConflicts" type="text/html">
+    {{if rules_conflicts().length > 0}}
+    <h3>Rules conflicts</h3>
+    <div id="rules-conflicts" data-bind="template: { name: 'ruleConflicts', foreach: rules_conflicts }"></div>
+    {{/if}}
+</script>

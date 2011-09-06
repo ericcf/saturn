@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110815165034) do
+ActiveRecord::Schema.define(:version => 20110906155639) do
 
   create_table "assignment_requests", :force => true do |t|
     t.integer  "requester_id",                        :null => false
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20110815165034) do
     t.datetime "updated_at"
   end
 
+  add_index "assignments", ["date", "physician_id", "shift_id"], :name => "index_assignments_on_date_and_physician_id_and_shift_id", :unique => true
   add_index "assignments", ["date", "shift_id"], :name => "index_assignments_on_date_and_shift_id"
   add_index "assignments", ["date"], :name => "index_assignments_on_date"
   add_index "assignments", ["physician_id"], :name => "index_assignments_on_physician_id"

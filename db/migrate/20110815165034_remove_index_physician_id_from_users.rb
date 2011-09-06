@@ -1,6 +1,6 @@
 class RemoveIndexPhysicianIdFromUsers < ActiveRecord::Migration
   def up
-    remove_index :users, :physician_id
+    #remove_index :users, :physician_id
   end
 
   def down

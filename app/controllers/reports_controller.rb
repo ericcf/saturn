@@ -10,9 +10,10 @@ class ReportsController < ApplicationController
     dates = (@start_date..@end_date).to_a
     published_schedules = @section.weekly_schedules.published.include_dates(dates)
     published_dates = published_schedules.map(&:dates).flatten
+    published_search_dates = published_dates & dates
     physician_ids = @physicians_by_group.values.flatten.map(&:id)
     assignments = @section.assignments.
-      where(:physician_id => physician_ids, :date => published_dates)
+      where(:physician_id => physician_ids, :date => published_search_dates)
     @totals_by_physician_and_shift = assignments.
       each_with_object({}) do |assignment, hsh|
         key = [assignment.physician_id, assignment.shift_id]

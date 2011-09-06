@@ -15,5 +15,22 @@
         "title" => "Faculty"
       }
     ]
+  },
+  {
+    "id" => 2,
+    "family_name" => "Serrano",
+    "given_name" => "Julia",
+    "full_name" => "Julia Serrano",
+    "emails" => [
+      {
+        "value" => "j-serrano@bar.com"
+      }
+    ],
+    "groups" => [
+      {
+        "id" => 1,
+        "title" => "Faculty"
+      }
+    ]
   }
 ]

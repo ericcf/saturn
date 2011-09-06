@@ -47,6 +47,14 @@ describe Assignment do
 
   it { should have_db_index(:physician_id) }
 
+  it "should validate uniqueness at the db level" do
+    expect {
+      assignment # reference it to instantiate the model
+      assignment_dup = Assignment.new valid_attributes
+      assignment_dup.save :validate => false
+    }.to raise_error(ActiveRecord::RecordNotUnique)
+  end
+
   # associations
 
   it { should belong_to(:shift) }
